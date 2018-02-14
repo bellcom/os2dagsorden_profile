@@ -1,35 +1,47 @@
 <?php
+
+/**
+ * @file
+ * OS2Dagsorden fields and content types.
+ */
+
 include_once 'os2dagsorden_fields_and_content_types.features.inc';
 
+/**
+ * Generated the meeting metadata.
+ *
+ * @param object $entity
+ *   Node.
+ * @param string $entity_type
+ *   Type of the node.
+ *
+ * @return string
+ *   Generated metadata.
+ */
 function os2dagsorden_fields_and_content_types_meeting_search_metadata($entity, $entity_type) {
-  //extracting data from basic fields
+  // Extracting data from basic fields.
   $title = $entity->title;
 
-  $abbr = '';
-  /*if (is_array(field_get_items($entity_type, $entity, 'field_os2web_meetings_abbr'))) {
-    $abbr = ' ' . array_pop(array_pop(field_get_items($entity_type, $entity, 'field_os2web_meetings_abbr')));
-  }*/
-
   $location = '';
-  if (isset($entity->field_os2web_meetings_location['und'])){
+  if (isset($entity->field_os2web_meetings_location['und'])) {
     $location_id = $entity->field_os2web_meetings_location['und'][0]['tid'];
     $location = ' ' . taxonomy_term_load($location_id)->name;
   }
 
   $committee = '';
-  if (isset($entity->field_os2web_meetings_committee['und'])){
+  if (isset($entity->field_os2web_meetings_committee['und'])) {
     $committee_id = $entity->field_os2web_meetings_committee['und'][0]['tid'];
     $committee = ' ' . taxonomy_term_load($committee_id)->name;
   }
 
-  $output = '[search_token][meeting] ' . $title . ' ' . $abbr . ' ' . $location . ' ' . $committee;
+  $output = '[search_token][meeting] ' . $title . ' ' . $location . ' ' . $committee;
 
-  //extracting data from bullet points
+  // Extracting data from bullet points.
   if (isset($entity->field_os2web_meetings_bullets['und'])) {
     foreach ($entity->field_os2web_meetings_bullets['und'] as $bullet_point_tid) {
       $bullet_point = node_load($bullet_point_tid['target_id']);
 
-      //extracting data from bullet points attachments
+      // Extracting data from bullet points attachments.
       if (isset($bullet_point->field_os2web_meetings_attach['und'])) {
         foreach ($bullet_point->field_os2web_meetings_attach['und'] as $bpa_tid) {
           $bullet_point_attachment = node_load($bpa_tid['target_id']);
@@ -37,7 +49,7 @@ function os2dagsorden_fields_and_content_types_meeting_search_metadata($entity, 
           $output .= ' [search_token][bp][' . $bullet_point->nid . ']';
 
           $text = '';
-          if (isset($bullet_point_attachment->field_os2web_meetings_bpa_body['und'])){
+          if (isset($bullet_point_attachment->field_os2web_meetings_bpa_body['und'])) {
             $text = str_replace("\r\n", " ", strip_tags($bullet_point_attachment->field_os2web_meetings_bpa_body['und'][0]['value']));
             $text = str_replace("\n\r", " ", $text);
             $text = str_replace("\n", " ", $text);
@@ -51,19 +63,37 @@ function os2dagsorden_fields_and_content_types_meeting_search_metadata($entity, 
 
   return $output;
 }
-// hook_form_alter function
+
+/**
+ * Implements hook_form_alter().
+ *
+ * @param mixed $form
+ *   Form.
+ * @param mixed $form_state
+ *   Form state.
+ * @param string $form_id
+ *   Id of the form.
+ */
 function os2dagsorden_fields_and_content_types_form_alter(&$form, &$form_state, $form_id) {
-    // We want this on a specific node type
-    if ($form_id == 'os2web_meetings_spaper_node_form') {
-      $form['#after_build'][] = 'os2dagsorden_fields_and_content_types_meeting_spaper_node_form_after_build';
-    }
+  // We want this on a specific node type.
+  if ($form_id == 'os2web_meetings_spaper_node_form') {
+    $form['#after_build'][] = 'os2dagsorden_fields_and_content_types_meeting_spaper_node_form_after_build';
+  }
 }
 
-// afterbuild function
+/**
+ * Afterbuild function.
+ *
+ * @param mixed $form
+ *   Form.
+ *
+ * @return mixed
+ *   The form.
+ */
 function os2dagsorden_fields_and_content_types_meeting_spaper_node_form_after_build($form) {
-    // We want this on a specific field
-    $form['body']['und']['0']['format']['#access'] = FALSE;
-    $form['revision_information']['#access'] = FALSE;
-    $form['field_os2web_meetings_sp_shared'][LANGUAGE_NONE]['add_more']['#value'] = t('Del med flere brugere');
-    return $form;
+  // We want this on a specific field.
+  $form['body']['und']['0']['format']['#access'] = FALSE;
+  $form['revision_information']['#access'] = FALSE;
+  $form['field_os2web_meetings_sp_shared'][LANGUAGE_NONE]['add_more']['#value'] = t('Del med flere brugere');
+  return $form;
 }

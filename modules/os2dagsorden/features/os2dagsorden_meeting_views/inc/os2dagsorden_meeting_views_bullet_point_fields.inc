@@ -1,19 +1,25 @@
 <?php
+
 /**
  * @file
  * Code for the OS2Web Meeting Views - speaker paper (bullet point) view.
  */
 
-/////////////////////////////////////////header START /////////////////////////////////////////
+/**
+ * Implements hook_breadcrumb().
+ */
 function os2dagsorden_meeting_views_bullet_point_breadcrumb() {
   global $base_url;
   $q = explode('/', $_GET['q']);
-  $breadcrumb[] = l('Forsiden', $base_url);
-  $breadcrumb[] .= l('Mødedetaljer', 'meeting/' . $q[1]);
+  $breadcrumb[] = l(t('Forsiden'), $base_url);
+  $breadcrumb[] .= l(t('Mødedetaljer'), 'meeting/' . $q[1]);
   $breadcrumb[] .= '<span class="breadcrumb-active">Dagsordenspunkt</span>';
   drupal_set_breadcrumb($breadcrumb);
 }
 
+/**
+ * Prints send to friend link.
+ */
 function os2dagsorden_meeting_views_bullet_point_print_send_to_friend() {
   if (module_exists('os2web_print_send_to_friend')) {
     if (os2dagsorden_access_helper_check_pdf_download_enabled()) {
@@ -34,9 +40,13 @@ function os2dagsorden_meeting_views_bullet_point_print_send_to_friend() {
     }
   }
 }
-/////////////////////////////////////////header END /////////////////////////////////////////
 
-/////////////////////////////////////////PAGE START /////////////////////////////////////////
+/**
+ * Check if user can see bullet point.
+ *
+ * @return bool
+ *   True of false.
+ */
 function os2dagsorden_meeting_views_bullet_point_page_access() {
   $q = explode("/", $_GET['q']);
 
@@ -46,10 +56,22 @@ function os2dagsorden_meeting_views_bullet_point_page_access() {
   return os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id);
 }
 
+/**
+ * Wrapper to call to os2dagsorden_meeting_views_common_bullet_point_has_notes.
+ *
+ * @param int $bp_id
+ *   Nid of bullet point.
+ */
 function os2dagsorden_meeting_views_bullet_point_fields_indicator_bullet_point_has_notes($bp_id) {
   os2dagsorden_meeting_views_common_bullet_point_has_notes($bp_id);
 }
 
+/**
+ * Prints navigation buttons to jump between bullet points.
+ *
+ * @param int $bp_id
+ *   Nid of bullet point.
+ */
 function os2dagsorden_meeting_views_bullet_point_fields_title_navigation_buttons($bp_id) {
   $q = explode("/", $_GET['q']);
 
@@ -67,34 +89,35 @@ function os2dagsorden_meeting_views_bullet_point_fields_title_navigation_buttons
       foreach ($meeting->field_os2web_meetings_bullets['und'] as $new_bp) {
         if (intval($bp_id) != intval($new_bp['target_id'])) {
           $new_bullet_point = node_load($new_bp['target_id']);
-          //checking if the ordinal number of new bullet point is BELOW the current bulet point ordinal number
-          //at the same time, checking if user has an access to that bullet point
+          // Checking if the ordinal number of new bullet point is BELOW the current bulet point ordinal number
+          // at the same time, checking if user has an access to that bullet point.
           if ($new_bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] < $bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] && os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $new_bp['target_id'])) {
-            //checking if there is no pointer to previous bullet point
-            //or the ordinal number of the new bullet point is higher than the ordinal number of current previous bullet point
+            // Checking if there is no pointer to previous bullet point
+            // or the ordinal number of the new bullet point is higher than the ordinal number of current previous bullet point.
             if (!$previous_bullet_point || $new_bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] > $previous_bullet_point->field_bul_point_number['und'][0]['value']) {
               $previous_bullet_point = $new_bullet_point;
             }
           }
-          //checking if the ordinal number of new bullet point is ABOVE the current bulet point ordinal number
-          //at the same time, checking if user has an access to that bullet point
-          else if ($new_bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] > $bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] && os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $new_bp['target_id'])) {
-            //checking if there is no pointer to next bullet point
-            //or the ordinal number of the new bullet point is higher than the ordinal number of current next bullet point
+          // Checking if the ordinal number of new bullet point is ABOVE the current bulet point ordinal number
+          // at the same time, checking if user has an access to that bullet point.
+          elseif ($new_bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] > $bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] && os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $new_bp['target_id'])) {
+            // Checking if there is no pointer to next bullet point
+            // or the ordinal number of the new bullet point is higher than the ordinal number of current next bullet point.
             if (!$next_bullet_point || $new_bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] < $next_bullet_point->field_bul_point_number['und'][0]['value']) {
               $next_bullet_point = $new_bullet_point;
             }
           }
 
-          //check if everything is set already, then break the loop
+          // Check if everything is set already, then break the loop.
           if ($previous_bullet_point && $next_bullet_point &&
             $previous_bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] + 1 ==
             $bullet_point->field_os2web_meetings_bul_number['und'][0]['value']
             &&
             $next_bullet_point->field_os2web_meetings_bul_number['und'][0]['value'] - 1 ==
             $bullet_point->field_os2web_meetings_bul_number['und'][0]['value']
-          )
+          ) {
             break;
+          }
         }
       }
     }
@@ -102,25 +125,38 @@ function os2dagsorden_meeting_views_bullet_point_fields_title_navigation_buttons
 
   global $base_url;
 
-  if ($previous_bullet_point)
+  if ($previous_bullet_point) {
     print '<a href="' . $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $previous_bullet_point->nid . '" class="form-submit nav-button left"><</a>';
-  if ($next_bullet_point)
+  }
+  if ($next_bullet_point) {
     print '<a href="' . $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $next_bullet_point->nid . '" class="form-submit nav-button right">></a>';
+  }
 
-  if ($bullet_point->field_os2web_meetings_bul_closed['und'][0]['value'] == 1)
+  if ($bullet_point->field_os2web_meetings_bul_closed['und'][0]['value'] == 1) {
     print '<div class="indicator-unlocked"></div>';
-  if ($bullet_point->field_os2web_meetings_bul_pers['und'][0]['value'] == 1)
+  }
+  if ($bullet_point->field_os2web_meetings_bul_pers['und'][0]['value'] == 1) {
     print '<div class="indicator-personal"></div>';
+  }
 
   $title = $bullet_point->title;
   if (variable_get('os2dagsorden_show_bullet_case_nr', FALSE)) {
     $bp = node_load($bp_id);
-    if ($bp->field_os2web_meetings_bul_case['und'] && !empty($bp->field_os2web_meetings_bul_case['und'][0]['value']))
+    if ($bp->field_os2web_meetings_bul_case['und'] && !empty($bp->field_os2web_meetings_bul_case['und'][0]['value'])) {
       $title .= ' (' . $bp->field_os2web_meetings_bul_case['und'][0]['value'] . ')';
+    }
   }
   print $title;
 }
 
+/**
+ * Prints bullet point fields and content.
+ *
+ * @param int $meeting_id
+ *   Nid of meeting.
+ * @param int $bp_id
+ *   Nid of bullet point.
+ */
 function os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content($meeting_id, $bp_id) {
   global $base_url;
   $bullet_point = node_load($bp_id);
@@ -140,20 +176,24 @@ function os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content(
     foreach ($all_attachments as $attachment_id) {
       $attachment = node_load($attachment_id['target_id']);
 
-      if (!empty($attachment->field_os2web_meetings_bpa_file['und'])) { // if is bilag
-        //saving bilags to the end
+      // If is bilag.
+      if (!empty($attachment->field_os2web_meetings_bpa_file['und'])) {
+        // Saving bilags to the end.
         if ($attachment->field_os2web_meetings_bpa_type['und'][0]['value'] == 'Sager') {
           $cases[] = $attachment;
-        } else {
+        }
+        else {
           $bilags[] = $attachment;
         }
-      } else { //not bilag
+      }
+      // Not bilag.
+      else {
         print '<li class="non-bilag">';
 
         $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/bullet-point-attachment/' . $attachment->nid;
         print '<a href="' . $link . '" class="first-child last-child"><div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>' . $attachment->title . '</a>';
 
-        //attachment text - if any
+        // Attachment text - if any.
         if (!empty($attachment->field_os2web_meetings_bpa_body['und'][0]['value'])) {
           print '<div class="attachment_text_container">';
 
@@ -171,24 +211,31 @@ function os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content(
     if ($bullet_point->title !== 'Bilag' && $bullet_point->title !== 'Sager') {
       if (!empty($cases) && !(variable_get('os2dagsorden_show_case_bullet_point', FALSE)) && variable_get('os2dagsorden_show_bilag_bullet_point', FALSE)) {
         _os2dagsorden_meeting_views_bullet_point_bilag_cases($cases, $meeting_id, $bp_id);
-        if (!empty($bilags))
-          _os2dagsorden_meeting_views_bullet_point_bilag_cases_bullet_point('Bilag', $bilags, $meeting_id, $bp_id, 'bilags');
-      } else {
         if (!empty($bilags)) {
-          if (variable_get('os2dagsorden_show_bilag_bullet_point', FALSE))
+          _os2dagsorden_meeting_views_bullet_point_bilag_cases_bullet_point('Bilag', $bilags, $meeting_id, $bp_id, 'bilags');
+        }
+      }
+      else {
+        if (!empty($bilags)) {
+          if (variable_get('os2dagsorden_show_bilag_bullet_point', FALSE)) {
             _os2dagsorden_meeting_views_bullet_point_bilag_cases_bullet_point('Bilag', $bilags, $meeting_id, $bp_id, 'bilags');
-          else
+          }
+          else {
             _os2dagsorden_meeting_views_bullet_point_bilag_cases($bilags, $meeting_id, $bp_id);
+          }
         }
         if (!empty($cases)) {
-          if (variable_get('os2dagsorden_show_case_bullet_point', FALSE))
+          if (variable_get('os2dagsorden_show_case_bullet_point', FALSE)) {
             _os2dagsorden_meeting_views_bullet_point_bilag_cases_bullet_point(variable_get('os2dagsorden_sager_group_title', 'Sager'), $cases, $meeting_id, $bp_id, 'cases');
-          else
+          }
+          else {
             _os2dagsorden_meeting_views_bullet_point_bilag_cases($cases, $meeting_id, $bp_id);
+          }
 
         }
       }
-    } else {
+    }
+    else {
       _os2dagsorden_meeting_views_bullet_point_bilag_cases_with_content($bilags, $meeting_id, $bp_id);
       _os2dagsorden_meeting_views_bullet_point_bilag_cases_with_content($cases, $meeting_id, $bp_id);
     }
@@ -198,26 +245,40 @@ function os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content(
   }
 }
 
+/**
+ * Prints bullet point cases.
+ *
+ * @param mixed $elements
+ *   Attachments.
+ * @param int $meeting_id
+ *   Nid of meeting.
+ * @param int $bp_id
+ *   Nid of bullet point.
+ */
 function _os2dagsorden_meeting_views_bullet_point_bilag_cases($elements, $meeting_id, $bp_id) {
   global $base_url;
   foreach ($elements as $attachment) {
     print '<li class="bilag">';
 
-    if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0]))
+    if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0])) {
       $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/bullet-point-attachment/' . $attachment->nid;
-    else
+    }
+    else {
       $link = file_create_url($attachment->field_os2web_meetings_bpa_file['und'][0]['uri']);
+    }
 
     if (os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bp_id, $attachment->nid)) {
       print '<a href="' . $link . '" target="_blank" class="first-child last-child">';
-      if ($attachment->field_os2web_meetings_bpa_closed['und'][0]['value'] == 1)
+      if ($attachment->field_os2web_meetings_bpa_closed['und'][0]['value'] == 1) {
         print '<div class="indicator-unlocked"></div>';
-      else
+      }
+      else {
         print '<div class="indicator-empty"></div>';
+      }
 
       print '<div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>' . $attachment->title . '</a>';
 
-      //attachment text - if any
+      // Attachment text - if any.
       if (variable_get('os2dagsorden_show_bilag', TRUE)) {
         if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0])) {
           print '<div class="attachment_text_container">';
@@ -231,12 +292,15 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases($elements, $meetin
           print '</div>';
         }
       }
-    } else {
+    }
+    else {
       print '<a class="first-child last-child">';
-      if ($attachment->field_os2web_meetings_bpa_closed['und'][0]['value'] == 1)
+      if ($attachment->field_os2web_meetings_bpa_closed['und'][0]['value'] == 1) {
         print '<div class="indicator-unlocked"></div>';
-      else
+      }
+      else {
         print '<div class="indicator-empty"></div>';
+      }
 
       print '<div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>' . $attachment->title . '</a>';
     }
@@ -244,6 +308,20 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases($elements, $meetin
   }
 }
 
+/**
+ * Prints bullet point cases.
+ *
+ * @param string $bp_title
+ *   Title of bullet point.
+ * @param mixed $elements
+ *   Attachments.
+ * @param int $meeting_id
+ *   Nid of meeting.
+ * @param int $bp_id
+ *   Nid of bullet point.
+ * @param string $attachment_type
+ *   Type of the attachment.
+ */
 function _os2dagsorden_meeting_views_bullet_point_bilag_cases_bullet_point($bp_title, $elements, $meeting_id, $bp_id, $attachment_type) {
   global $base_url;
   print '<li class="bilags_cases ' . $attachment_type . '">';
@@ -251,25 +329,30 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases_bullet_point($bp_t
   print '<a class="first-child last-child">' . $bp_title . '</a>';
   print '<div class="bilags_cases_container">';
 
-  //going through all bilags
+  // Going through all bilags.
   foreach ($elements as $attachment) {
     print '<div class="bilag">';
 
-    if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0]))
+    if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0])) {
       $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/bullet-point-attachment/' . $attachment->nid;
-    else
+    }
+    else {
       $link = file_create_url($attachment->field_os2web_meetings_bpa_file['und'][0]['uri']);
+    }
 
     if (os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bp_id, $attachment->nid)) {
       print '<a href="' . $link . '" target="_blank" class="first-child last-child">';
-    } else {
+    }
+    else {
       print '<a class="first-child last-child">';
     }
 
-    if ($attachment->field_os2web_meetings_bpa_closed['und'][0]['value'] == 1)
+    if ($attachment->field_os2web_meetings_bpa_closed['und'][0]['value'] == 1) {
       print '<div class="indicator-unlocked"></div>';
-    else
+    }
+    else {
       print '<div class="indicator-empty"></div>';
+    }
     print '<div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>' . $attachment->title . '</a>';
 
     print '</div>';
@@ -278,15 +361,26 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases_bullet_point($bp_t
   print '</li>';
 }
 
+/**
+ * Prints the bullet point with attachments.
+ *
+ * @param mixed $elements
+ *   Array of attachments.
+ * @param int $meeting_id
+ *   Nid of the meeting.
+ * @param int $bp_id
+ *   Nid of bullet point.
+ */
 function _os2dagsorden_meeting_views_bullet_point_bilag_cases_with_content($elements, $meeting_id, $bp_id) {
   global $base_url;
-  //going through all bilags
+  // Going through all bilags.
   foreach ($elements as $attachment) {
     print '<li class="bilag">';
 
     if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0])) {
       $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/bullet-point-attachment/' . $attachment->nid;
-    } else {
+    }
+    else {
       $link = file_create_url($attachment->field_os2web_meetings_bpa_file['und'][0]['uri']);
     }
 
@@ -299,9 +393,9 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases_with_content($elem
 
       print '<div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>' . $attachment->title . '</a>';
 
-      //attachment text - if any
+      // Attachment text - if any.
       if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0])) {
-        //should bilag be visible
+        // Should bilag be visible.
         if (variable_get('os2dagsorden_show_bilag', TRUE)) {
           print '<div class="attachment_text_container">';
 
@@ -314,7 +408,8 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases_with_content($elem
           print '</div>';
         }
       }
-    } else {
+    }
+    else {
       print '<a class="first-child last-child">';
 
       if ($attachment->field_os2web_meetings_bpa_closed['und'][0]['value'] == 1) {
@@ -327,9 +422,14 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases_with_content($elem
   }
 }
 
-/////////////////////////////////////////PAGE END /////////////////////////////////////////
-
-/////////////////////////////////////////SPEAKER PAPER START /////////////////////////////////////////
+/**
+ * Prints print link for speaker paper.
+ *
+ * @param int $bp_id
+ *   Nid of bullet point.
+ * @param int $sp_id
+ *   Nid of speaker paper.
+ */
 function os2dagsorden_meeting_views_bullet_point_fields_print_link($bp_id, $sp_id) {
   global $base_url;
   print "<div class='speaker-paper-print'>";
@@ -339,6 +439,9 @@ function os2dagsorden_meeting_views_bullet_point_fields_print_link($bp_id, $sp_i
   print "</div>";
 }
 
+/**
+ * Prints a link to create new speaker paper for a specific bullet point.
+ */
 function os2dagsorden_meeting_views_bullet_point_fields_create_new_speaker_paper() {
   global $base_url;
   $q = $_GET['q'];
@@ -347,23 +450,29 @@ function os2dagsorden_meeting_views_bullet_point_fields_create_new_speaker_paper
   print '<a href="' . $base_url . '/node/add/os2web-meetings-spaper?edit[field_os2web_meetings_sp_bullet][und][0][target_id]=' . $bullet_point->title . ' (' . $bullet_point->nid . ')&destination=' . $q . '"><div class="indicator-create-speaker-paper"></div>Nyt talepapir</a>';
 }
 
+/**
+ * Prints a list of names or groups which speaker paper is shared with.
+ *
+ * @param int $sp_id
+ *   Nid of the speaker paper.
+ */
 function os2dagsorden_meeting_views_bullet_point_fields_shared_with($sp_id) {
   if (variable_get('os2dagsorden_shared_speaker_paper', TRUE)) {
     $sp = node_load($sp_id);
-    $shared_with_html = null;
+    $shared_with_html = NULL;
 
-    $shared_with_str = null;
-    $shared_with_group_str = null;
-    if (isset($sp->field_os2web_meetings_sp_shared['und'])){
-      foreach ($sp->field_os2web_meetings_sp_shared['und'] as $shared_with){
-	    $shared_with_user = user_load($shared_with['target_id']);
-	    $shared_with_str .= ($shared_with_user->field_user_full_name['und'])? $shared_with_user->field_user_full_name['und'][0]['value'] : $shared_with_user->name;
+    $shared_with_str = NULL;
+    $shared_with_group_str = NULL;
+    if (isset($sp->field_os2web_meetings_sp_shared['und'])) {
+      foreach ($sp->field_os2web_meetings_sp_shared['und'] as $shared_with) {
+        $shared_with_user = user_load($shared_with['target_id']);
+        $shared_with_str .= ($shared_with_user->field_user_full_name['und']) ? $shared_with_user->field_user_full_name['und'][0]['value'] : $shared_with_user->name;
 
         $shared_with_str .= ', ';
       }
     }
-    if (isset($sp->field_os2web_meetings_sp_shar_gr['und'])){
-      foreach ($sp->field_os2web_meetings_sp_shar_gr['und'] as $shared_with){
+    if (isset($sp->field_os2web_meetings_sp_shar_gr['und'])) {
+      foreach ($sp->field_os2web_meetings_sp_shar_gr['und'] as $shared_with) {
         $shared_with_group = taxonomy_term_load($shared_with['tid']);
         $shared_with_group_str .= $shared_with_group->name;
         $shared_with_group_str .= ', ';
@@ -383,7 +492,15 @@ function os2dagsorden_meeting_views_bullet_point_fields_shared_with($sp_id) {
   }
 }
 
-function os2dagsorden_meeting_views_bullet_point_fields_filter($sp_id){
+/**
+ * Filter function, inverts the call of os2dagsorden_access_helper_check_user_can_see_speaker_paper.
+ *
+ * @param int $sp_id
+ *   Nid of the speaker paper.
+ *
+ * @return bool
+ *   False is user can see speaker paper, true if cannot.
+ */
+function os2dagsorden_meeting_views_bullet_point_fields_filter($sp_id) {
   return !os2dagsorden_access_helper_check_user_can_see_speaker_paper($sp_id, variable_get('os2dagsorden_shared_speaker_paper', TRUE));
 }
-/////////////////////////////////////////SPEAKER PAPER END /////////////////////////////////////////

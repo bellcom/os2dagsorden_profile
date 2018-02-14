@@ -33,10 +33,13 @@ function os2dagsorden_ad_integration_menu() {
 /**
  * The custom setting form for LDAP AD integration.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   Form.
+ * @param mixed $form_state
+ *   Form state.
  *
  * @return mixed
+ *   Generated system settings forms.
  */
 function os2dagsorden_ad_integration_user_sync_settings_form($form, $form_state) {
   $form['os2dagsorden_ad_integration_user_sync_query_fieldset'] = array(
@@ -87,8 +90,7 @@ function os2dagsorden_ad_integration_cronapi($op, $job = NULL) {
 }
 
 /**
- * Implementation of hook_cron().
- * Fires all imports.
+ * Implementation of hook_cron(). Fires all imports.
  */
 function os2dagsorden_ad_integration_cron() {
   os2dagsorden_ad_integration_do_user_sync();
@@ -96,8 +98,7 @@ function os2dagsorden_ad_integration_cron() {
 }
 
 /**
- * Callback to start user import
- * Syncs the user information, as well as creates the custom user groups, such as speaper paper user groups.
+ * Callback to start user import. Syncs the user information, as well as creates the custom user groups, such as speaper paper user groups.
  */
 function os2dagsorden_ad_integration_do_user_sync() {
   if (variable_get('os2dagsorden_ad_integration_user_sync_attr', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_filter', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_dn_str', '') == '') {
@@ -174,8 +175,7 @@ function os2dagsorden_ad_integration_do_user_sync() {
 }
 
 /**
- * Callback to start user synch
- * Deactivates the users that have to be deactivated.
+ * Callback to start user synch. Deactivates the users that have to be deactivated.
  */
 function os2dagsorden_ad_integration_do_user_inactive_sync() {
   if (variable_get('os2dagsorden_ad_integration_user_sync_attr', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_filter', '') == '' || variable_get('os2dagsorden_ad_integration_user_inactive_sync_dn_str', '') == '') {
@@ -222,12 +222,14 @@ function os2dagsorden_ad_integration_do_user_inactive_sync() {
 }
 
 /**
- * Gets a speaker paper group from memberof attribute of the provided data.
- * If a SOFD Grupper is encountered then function will recursively search is any of the parent is speaker paper group.
+ * Gets a speaker paper group from memberof attribute of the provided data. If a SOFD Grupper is encountered then function will recursively search is any of the parent is speaker paper group.
  *
- * @param $ldap_server
- * @param $data
- * @param $terms
+ * @param object $ldap_server
+ *   LDAP server object.
+ * @param mixed $data
+ *   User data.
+ * @param mixed $terms
+ *   Terms.
  */
 function _os2dagsorden_ad_integration_get_speaker_paper_group($ldap_server, $data, &$terms) {
   if (isset($data['memberof'])) {

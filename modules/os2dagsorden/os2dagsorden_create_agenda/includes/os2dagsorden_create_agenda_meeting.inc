@@ -48,7 +48,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
     '#upload_validators' => array(
       'file_validate_extensions' => array('doc docx pdf'),
       // Pass the maximum file size in bytes
-      'file_validate_size' => array(2 * 1024 * 1024 * 1024), //2 MB
+  // 2 MB.
+      'file_validate_size' => array(2 * 1024 * 1024 * 1024),
     ),
   );
   $form['description_closed'] = array(
@@ -59,7 +60,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
     '#upload_validators' => array(
       'file_validate_extensions' => array('doc docx pdf'),
       // Pass the maximum file size in bytes
-      'file_validate_size' => array(2 * 1024 * 1024 * 1024), //2 MB
+  // 2 MB.
+      'file_validate_size' => array(2 * 1024 * 1024 * 1024),
     ),
   );
 
@@ -102,7 +104,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
       foreach ($bullet_points_target_ids as $bp_target) {
         $bp = node_load($bp_target['target_id']);
 
-        //ordering BPs by number
+        // Ordering BPs by number.
         $i = 0;
         while (isset($bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . '-' . $i])) {
           $i++;
@@ -143,7 +145,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
         );
 
         $form['agenda'][] = array(
-          '#markup' => '</span>', //'<span class="create-agenda-edit-delete-container">',
+        // '<span class="create-agenda-edit-delete-container">',.
+          '#markup' => '</span>',
         );
 
         $form['agenda'][] = array(
@@ -174,14 +177,16 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
         }
 
         $form['agenda'][] = array(
-          '#markup' => '</span>', //'<span class="create-agenda-privacy-container">',
+        // '<span class="create-agenda-privacy-container">',.
+          '#markup' => '</span>',
         );
 
         $form['agenda'][] = array(
           '#markup' => '[' . $bp->field_os2web_meetings_bul_number['und'][0]['value'] . '] ' . $bp->title,
         );
         $form['agenda'][] = array(
-          '#markup' => '</div>', //'<div class="create-agenda-list-item">',
+        // '<div class="create-agenda-list-item">',.
+          '#markup' => '</div>',
         );
       }
     }
@@ -309,7 +314,7 @@ function os2dagsorden_create_agenda_meeting_submit($form, &$form_state) {
   $start_date = $form_state['input']['start_date']['date'];
   $start_date = date_create_from_format("d/m/Y", $start_date);
 
-  //$form_state['redirect'] = 'calendar-field-date/month/' . $start_date->format('Y') . '-' . $start_date->format('m');
+  // $form_state['redirect'] = 'calendar-field-date/month/' . $start_date->format('Y') . '-' . $start_date->format('m');.
   $form_state['redirect'] = 'meeting/' . $node->nid;
 }
 

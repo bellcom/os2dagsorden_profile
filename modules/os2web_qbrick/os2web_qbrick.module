@@ -87,12 +87,9 @@ function _os2web_qbrick_get_movie_id($nid) {
   }
 }
 
-// -- QBrick movie field:
-// --- Info:
 /**
  * Implements hook_field_info().
  */
-
 function os2web_qbrick_field_info() {
   $field = array();
   $field['os2web_qbrick_movie'] = array(
@@ -113,11 +110,9 @@ function os2web_qbrick_field_is_empty($item, $field) {
   }
 }
 
-// --- Widget:
 /**
  * Implments hook_field_widget_info().
  */
-
 function os2web_qbrick_field_widget_info() {
   $widgets = array();
   $widgets['os2web_qbrick_movie_simple'] = array(

@@ -117,14 +117,16 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
           ),
         );
         $form['bpas'][] = array(
-          '#markup' => '</span>', //'<span class="create-agenda-edit-delete-container">',
+        // '<span class="create-agenda-edit-delete-container">',.
+          '#markup' => '</span>',
         );
 
         $form['bpas'][] = array(
           '#markup' => $bpa->title,
         );
         $form['bpas'][] = array(
-          '#markup' => '</div>', //'<div class="create-agenda-list-item">',
+        // '<div class="create-agenda-list-item">',.
+          '#markup' => '</div>',
         );
       }
     }
