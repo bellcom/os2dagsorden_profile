@@ -5,7 +5,7 @@
  * Code for the OS2Web indstillinger feature.
  */
 
-include_once('os2web_settings.features.inc');
+include_once 'os2web_settings.features.inc';
 
 /**
  * Os2web_settings_permission.
@@ -14,7 +14,7 @@ function os2web_settings_permission() {
   return array(
     'administer os2web' => array(
       'title' => t('Administer OS2Web'),
-      'description' => t('Access settings and administration pages for OS2Web')
+      'description' => t('Access settings and administration pages for OS2Web'),
     ),
   );
 }
@@ -43,14 +43,14 @@ function os2web_settings_menu() {
     'type' => MENU_NORMAL_ITEM | MENU_DEFAULT_LOCAL_TASK,
     'file' => 'os2web_settings.admin.inc',
   );
-//  $items['admin/config/os2web/import'] = array(
-//      'title' => 'OS2web Imports',
-//      'description' => t('Fire all initial imports.'),
-//      'page callback' => 'drupal_get_form',
-//      'page arguments' => array('os2web_settings_import_form'),
-//      'access arguments' => array('administer os2web'),
-//      'type' => MENU_LOCAL_TASK,
-//  );
+  // $items['admin/config/os2web/import'] = array(
+  //      'title' => 'OS2web Imports',
+  //      'description' => t('Fire all initial imports.'),
+  //      'page callback' => 'drupal_get_form',
+  //      'page arguments' => array('os2web_settings_import_form'),
+  //      'access arguments' => array('administer os2web'),
+  //      'type' => MENU_LOCAL_TASK,
+  //  );.
   $items['node/%/dump'] = array(
     'title' => 'Node dump',
     'page callback' => 'os2web_settings_nodedump',
@@ -98,8 +98,7 @@ function os2web_settings_start_form_submit(&$form, &$form_state) {
     'finished' => 'os2web_settings_langfix_finished',
   );
   foreach ($fields as $field) {
-    // $batch['operations'][] = array('os2web_settings_langfix_process', array('revision', $field));
-
+    // $batch['operations'][] = array('os2web_settings_langfix_process', array('revision', $field));.
     $batch['operations'][] = array('os2web_settings_langfix_process',
       array('data', $field),
     );
@@ -131,7 +130,7 @@ function os2web_settings_langfix_process($type, $field, &$context) {
   $revtable = 'field_revision_' . $field;
 
   // Find dubes
-  // Update language for all non-dupes
+  // Update language for all non-dupes.
   $rows = db_query('SELECT entity_id,count(language) as c FROM {' . $table . '} GROUP BY entity_id, delta HAVING c > 1 ORDER BY c DESC');
   $dupes = $rows->fetchCol();
   if (!empty($dupes)) {
@@ -142,8 +141,8 @@ function os2web_settings_langfix_process($type, $field, &$context) {
   $context['result']['dupes'] = array_merge($context['result'], $dupes);
 
   $ids = db_select($table, 'f')
-      ->fields('f')
-      ->condition('language', 'da');
+    ->fields('f')
+    ->condition('language', 'da');
   if (count($dupes) > 0) {
     $ids = $ids->condition('entity_id', $dupes, 'NOT IN');
   }
@@ -151,18 +150,18 @@ function os2web_settings_langfix_process($type, $field, &$context) {
   while ($row = $ids->fetchObject()) {
     error_log("Var: \$row->entity_id = " . print_r($row->entity_id, 1));
     db_update($table)
-        ->fields(array('language' => 'und'))
-        ->condition('entity_id', $row->entity_id)
-        ->condition('revision_id', $row->revision_id)
-        ->condition('delta', $row->delta)
-        ->execute();
+      ->fields(array('language' => 'und'))
+      ->condition('entity_id', $row->entity_id)
+      ->condition('revision_id', $row->revision_id)
+      ->condition('delta', $row->delta)
+      ->execute();
 
     $revcount = db_select($revtable, 'r')
-            ->fields('r')
-            ->condition('entity_id', $row->entity_id)
-            ->condition('revision_id', $row->revision_id)
-            ->condition('delta', $row->delta)
-            ->execute()->rowCount();
+      ->fields('r')
+      ->condition('entity_id', $row->entity_id)
+      ->condition('revision_id', $row->revision_id)
+      ->condition('delta', $row->delta)
+      ->execute()->rowCount();
     error_log("Var: \$revcount = " . print_r($revcount, 1));
 
     if ($revcount > 1) {
@@ -170,11 +169,11 @@ function os2web_settings_langfix_process($type, $field, &$context) {
     }
     else {
       db_update($revtable)
-          ->fields(array('language' => 'und'))
-          ->condition('entity_id', $row->entity_id)
-          ->condition('revision_id', $row->revision_id)
-          ->condition('delta', $row->delta)
-          ->execute();
+        ->fields(array('language' => 'und'))
+        ->condition('entity_id', $row->entity_id)
+        ->condition('revision_id', $row->revision_id)
+        ->condition('delta', $row->delta)
+        ->execute();
     }
   }
 

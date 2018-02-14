@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * @file
+ */
+
+/**
  * Creates a table in the database that will controll the workflow of the module.
  *
  * @return created schema

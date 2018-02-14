@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_sidepane_menu.features.menu_links.inc
@@ -10,7 +11,7 @@
 function os2dagsorden_sidepane_menu_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-sidepane-menu:<front>
+  // Exported menu link: menu-sidepane-menu:<front>.
   $menu_links['menu-sidepane-menu:<front>'] = array(
     'menu_name' => 'menu-sidepane-menu',
     'link_path' => '<front>',
@@ -31,7 +32,7 @@ function os2dagsorden_sidepane_menu_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-50',
   );
-  // Exported menu link: menu-sidepane-menu:meetings/print
+  // Exported menu link: menu-sidepane-menu:meetings/print.
   $menu_links['menu-sidepane-menu:meetings/print'] = array(
     'menu_name' => 'menu-sidepane-menu',
     'link_path' => 'meetings/print',
@@ -56,7 +57,6 @@ function os2dagsorden_sidepane_menu_menu_default_menu_links() {
   // Included for use with string extractors like potx.
   t('Halvårs-kalender');
   t('Forsiden');
-
 
   return $menu_links;
 }

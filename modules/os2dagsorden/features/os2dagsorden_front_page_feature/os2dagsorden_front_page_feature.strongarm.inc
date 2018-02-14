@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_front_page_feature.strongarm.inc

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_automated_logout_configuration.strongarm.inc

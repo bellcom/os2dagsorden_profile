@@ -1,6 +1,10 @@
 <?php
 
-// Number of files to handle at once.
+/**
+ * @file
+ * Number of files to handle at once.
+ */
+
 define('DEFAULT_GS_CONVERSION_LIMIT', 500);
 
 /**
@@ -16,11 +20,10 @@ function os2dagsorden_gs_conversion_file_insert($file) {
     $status = NULL;
 
     // Checking the version prior to schedule, maybe the file is already in the correct version
-// Removed as now now everything needs to be force converted to A4
-//  if (strcasecmp($pdf_version, '1.4') == 0) {
-//    $status = 'Completed';
-//  }
-
+    // Removed as now now everything needs to be force converted to A4
+    //  if (strcasecmp($pdf_version, '1.4') == 0) {
+    //    $status = 'Completed';
+    //  }.
     db_insert('os2dagsorden_gs_conversion_files')
       ->fields(array(
         'fid' => $file->fid,
@@ -53,11 +56,10 @@ function os2dagsorden_gs_conversion_file_update($file) {
       $status = NULL;
 
       // Checking the version prior to schedule, maybe the file is already in the correct version
-// Removed as now now everything needs to be force converted to A4
-//    if (strcasecmp($pdf_version, '1.4') == 0) {
-//      $status = 'Completed';
-//    }
-
+      // Removed as now now everything needs to be force converted to A4
+      //    if (strcasecmp($pdf_version, '1.4') == 0) {
+      //      $status = 'Completed';
+      //    }.
       db_insert('os2dagsorden_gs_conversion_files')
         ->fields(array(
           'fid' => $file->fid,
@@ -96,7 +98,6 @@ function os2dagsorden_gs_conversion_cron() {
 /**
  * Runs throgh all the files (respecting the batch limit DEFAULT_GS_CONVERSION_LIMIT) and calls the conversion function on them.
  * Later on calls the file_save function to update file entity metadata (size etc).
- *
  */
 function os2dagsorden_gs_conversion_convert() {
   // Select files for conversion.
@@ -142,7 +143,7 @@ function os2dagsorden_gs_conversion_convert() {
  * @param $uri
  */
 function os2dagsorden_gs_conversion_convert_single($fid, $uri) {
-  // Deleting entry if the file does not exist
+  // Deleting entry if the file does not exist.
   if (!file_exists($uri)) {
     db_delete('os2dagsorden_gs_conversion_files')
       ->condition('fid', $fid)
@@ -164,15 +165,15 @@ function os2dagsorden_gs_conversion_convert_single($fid, $uri) {
   // Successful conversion?
   $new_pdf_version = os2dagsorden_gs_conversion_get_pdf_version($file_path_converted);
   if (strcasecmp($new_pdf_version, '1.4') == 0) {
-    // Removing original file
+    // Removing original file.
     unlink($file_path_real);
-    // Renaming new file
+    // Renaming new file.
     rename($file_path_converted, $file_path_real);
 
     db_update('os2dagsorden_gs_conversion_files')
       ->fields(array(
         'status' => 'Converted',
-        'pdf_version' => $new_pdf_version
+        'pdf_version' => $new_pdf_version,
       ))
       ->condition('fid', $fid)
       ->execute();
@@ -192,6 +193,7 @@ function os2dagsorden_gs_conversion_convert_single($fid, $uri) {
  * This is done by using a head shell command.
  *
  * @param $uri
+ *
  * @return mixed|null
  */
 function os2dagsorden_gs_conversion_get_pdf_version($uri) {
@@ -211,9 +213,10 @@ function os2dagsorden_gs_conversion_get_pdf_version($uri) {
 }
 
 /**
- * Helper function that checks if a single file has been successfully converted
+ * Helper function that checks if a single file has been successfully converted.
  *
  * @param $fid
+ *
  * @return bool
  */
 function os2dagsorden_gs_conversion_is_file_converted($fid) {

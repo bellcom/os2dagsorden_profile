@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2logging.features.inc

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_ultimate_cron_configuration.default_ultimate_cron_functions.inc

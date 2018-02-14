@@ -1,10 +1,11 @@
 <?php
+
 /**
  * @file
  * Code for the OS2Web AD Integration feature.
  */
 
-include_once('os2dagsorden_ad_integration.features.inc');
+include_once 'os2dagsorden_ad_integration.features.inc';
 
 /**
  * Implements hook_menu.
@@ -30,10 +31,11 @@ function os2dagsorden_ad_integration_menu() {
 }
 
 /**
- * The custom setting form for LDAP AD integration
+ * The custom setting form for LDAP AD integration.
  *
  * @param $form
  * @param $form_state
+ *
  * @return mixed
  */
 function os2dagsorden_ad_integration_user_sync_settings_form($form, $form_state) {
@@ -87,7 +89,6 @@ function os2dagsorden_ad_integration_cronapi($op, $job = NULL) {
 /**
  * Implementation of hook_cron().
  * Fires all imports.
- *
  */
 function os2dagsorden_ad_integration_cron() {
   os2dagsorden_ad_integration_do_user_sync();
@@ -96,7 +97,7 @@ function os2dagsorden_ad_integration_cron() {
 
 /**
  * Callback to start user import
- * Syncs the user information, as well as creates the custom user groups, such as speaper paper user groups
+ * Syncs the user information, as well as creates the custom user groups, such as speaper paper user groups.
  */
 function os2dagsorden_ad_integration_do_user_sync() {
   if (variable_get('os2dagsorden_ad_integration_user_sync_attr', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_filter', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_dn_str', '') == '') {
@@ -108,7 +109,6 @@ function os2dagsorden_ad_integration_do_user_sync() {
     // Get first server.
     $ldap_server = current($ldap_servers);
     // Run a search.
-
     $filters = variable_get('os2dagsorden_ad_integration_user_sync_filter', '');
     $attr = explode(',', variable_get('os2dagsorden_ad_integration_user_sync_attr', ''));
 
@@ -150,10 +150,10 @@ function os2dagsorden_ad_integration_do_user_sync() {
           $user->field_user_organization['und'][0]['value'] = $company;
           $user->field_user_full_name['und'][0]['value'] = $full_name;
 
-          //add user to speaker paper group
+          // Add user to speaker paper group.
           if ($terms) {
             foreach ($terms as $term) {
-              //add only if user is newly created or does not have this group already
+              // Add only if user is newly created or does not have this group already.
               if (!$user->uid ||
                 !in_array($term->tid, os2dagsorden_access_helper_get_user_sp_groups($user->uid))
               ) {
@@ -175,7 +175,7 @@ function os2dagsorden_ad_integration_do_user_sync() {
 
 /**
  * Callback to start user synch
- * Deactivates the users that have to be deactivated
+ * Deactivates the users that have to be deactivated.
  */
 function os2dagsorden_ad_integration_do_user_inactive_sync() {
   if (variable_get('os2dagsorden_ad_integration_user_sync_attr', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_filter', '') == '' || variable_get('os2dagsorden_ad_integration_user_inactive_sync_dn_str', '') == '') {
@@ -187,7 +187,6 @@ function os2dagsorden_ad_integration_do_user_inactive_sync() {
     // Get first server.
     $ldap_server = current($ldap_servers);
     // Run a search.
-
     $filters = variable_get('os2dagsorden_ad_integration_user_sync_filter', '');
     $attr = explode(',', variable_get('os2dagsorden_ad_integration_user_sync_attr', ''));
 
@@ -234,7 +233,7 @@ function _os2dagsorden_ad_integration_get_speaker_paper_group($ldap_server, $dat
   if (isset($data['memberof'])) {
     foreach ($data['memberof'] as $memberof) {
       $memberof_parts = explode(',', $memberof);
-      //creating nice array
+      // Creating nice array.
       $keyed_memberof_parts = array();
       foreach ($memberof_parts as $memberofpart) {
         $memberofpart_parts = explode('=', $memberofpart);
@@ -243,20 +242,20 @@ function _os2dagsorden_ad_integration_get_speaker_paper_group($ldap_server, $dat
 
       if (is_array($keyed_memberof_parts['OU'])) {
         if (in_array('Talepapir', $keyed_memberof_parts['OU'])) {
-          //if yes get the Talepapir group custom name
+          // If yes get the Talepapir group custom name.
           $name = $keyed_memberof_parts['CN'][0];
           $term = os2dagsorden_access_helper_fetch_or_create_taxonomy_term($name, 'os2web_users_tax_sp_group');
 
           $terms[] = $term;
         }
         elseif (in_array('SOFD Grupper', $keyed_memberof_parts['OU'])) {
-          //if yes, get the group name
+          // If yes, get the group name.
           $name = $keyed_memberof_parts['CN'][0];
 
-          //and perform a new search
+          // And perform a new search.
           $result = $ldap_server->search("OU=SOFD Grupper,OU=grupper,OU=syddjurs,DC=intern,DC=syddjurs,DC=dk", "(&(objectclass=group)(name=$name))", array(
             'name',
-            'memberof'
+            'memberof',
           ));
           if (is_array($result)) {
             _os2dagsorden_ad_integration_get_speaker_paper_group($ldap_server, $result[0], $terms);

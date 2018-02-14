@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_ultimate_cron_configuration.strongarm.inc

@@ -1,10 +1,14 @@
 <?php
 
 /**
+ * @file
+ */
+
+/**
  * Function that generates a PDF version of meeting agenda with or without PDF attachments.
  * Internally uses mPDF library to compose a PDF file.
  *
- * in the end of the function uses print_pdf_dispose_content to return the file with correct headers.
+ * In the end of the function uses print_pdf_dispose_content to return the file with correct headers.
  *
  * @param $meeting_id
  * @param bool $with_attachments
@@ -12,7 +16,7 @@
 function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments = TRUE) {
   require_once DRUPAL_ROOT . '/profiles/os2dagsorden/libraries/mpdf/vendor/autoload.php';
 
-  // Set up and prepare mPDF tool
+  // Set up and prepare mPDF tool.
   module_load_include('inc', 'print', 'includes/print');
 
   $pdf_tool = explode('|', variable_get('print_pdf_pdf_tool', PRINT_PDF_PDF_TOOL_DEFAULT));
@@ -32,22 +36,23 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
     }
   }
 
-  require_once(DRUPAL_ROOT . '/' . $pdf_tool[1]);
+  require_once DRUPAL_ROOT . '/' . $pdf_tool[1];
 
   $format = ($page_orientation == "landscape") ? $paper_size . "-L" : $paper_size;
 
-  // Set document information
+  // Set document information.
   $mpdf = new mPDF('UTF-8', $format);
   $mpdf->SetCreator(variable_get('site_name', 'Drupal'));
 
-  // Need this in order to import PDF's
+  // Need this in order to import PDF's.
   $mpdf->SetImportUse();
 
   // Add the css
-  $stylesheet = file_get_contents(DRUPAL_ROOT . '/profiles/os2dagsorden/modules/os2dagsorden/os2web_print_send_to_friend/css/os2web_print_send_to_friend_pdf.css'); // external css
+  // external css.
+  $stylesheet = file_get_contents(DRUPAL_ROOT . '/profiles/os2dagsorden/modules/os2dagsorden/os2web_print_send_to_friend/css/os2web_print_send_to_friend_pdf.css');
   $mpdf->WriteHTML($stylesheet, 1);
 
-  // Start the real output
+  // Start the real output.
   $meeting = node_load($meeting_id);
   $mpdf = os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting, $mpdf);
 
@@ -63,7 +68,7 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
     }
   }
 
-  // try to recover from any warning/error
+  // Try to recover from any warning/error.
   ob_clean();
 
   print_pdf_dispose_content($mpdf->Output('', 'S'), $meeting->title . '.pdf');
@@ -74,6 +79,7 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
  *
  * @param $meeting
  * @param $mpdf
+ *
  * @return mixed updated mPDF object
  */
 function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting, $mpdf) {
@@ -116,6 +122,7 @@ function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting,
  * @param $mpdf
  * @param bool $with_attachments
  * @param bool $is_last_bp
+ *
  * @return mixed updated mPDF object
  */
 function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id, $mpdf, $with_attachments = TRUE, $is_last_bp) {
@@ -133,10 +140,10 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
       }
     }
 
-    // Help flag to add a new page after PDF attachmed has been imported
+    // Help flag to add a new page after PDF attachmed has been imported.
     $newPortaitPageRequired = FALSE;
 
-    // Looping though each attachment
+    // Looping though each attachment.
     foreach ($attachments as $attachment_id) {
       if ($newPortaitPageRequired) {
         $mpdf->addPage('P');
@@ -151,11 +158,11 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
       }
       elseif ($with_attachments && $attachment->field_os2web_meetings_bpa_file['und'][0]['fid']) {
         $uri = $attachment->field_os2web_meetings_bpa_file['und'][0]['uri'];
-        // Quick check without file loading if the file is PDF
+        // Quick check without file loading if the file is PDF.
         if (strcasecmp(pathinfo($uri, PATHINFO_EXTENSION), 'pdf') == 0) {
           if (file_exists($uri)) {
             try {
-              // Import file and include it into the output
+              // Import file and include it into the output.
               $pagecount = $mpdf->SetSourceFile(drupal_realpath($uri));
               for ($i = 1; $i <= $pagecount; $i++) {
                 $tplidx = $mpdf->importPage($i);
@@ -164,7 +171,8 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
                 $mpdf->useTemplate($tplidx);
               }
               $newPortaitPageRequired = TRUE;
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
               watchdog('Print send to friend', 'This file !uri cannot be included. Maybe it is still not converted to PDF 1.4? Failed with this message: !message. ' . $e->getMessage(),
                 array('!uri' => $uri, '!message' => $e->getMessage()), WATCHDOG_WARNING);
             }
@@ -174,7 +182,7 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
     }
   }
 
-  // Making sure a new page is added
+  // Making sure a new page is added.
   if (!$is_last_bp) {
     $mpdf->addPage('P');
   }

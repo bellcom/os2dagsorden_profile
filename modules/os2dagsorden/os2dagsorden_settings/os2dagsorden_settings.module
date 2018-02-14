@@ -49,7 +49,7 @@ function os2dagsorden_settings_menu() {
     'page callback' => 'drupal_get_form',
     'access arguments' => array('administer os2web'),
     'type' => MENU_NORMAL_ITEM,
-   'file' => 'os2dagsorden_settings.admin.inc',
+    'file' => 'os2dagsorden_settings.admin.inc',
   );
 
   $items['admin/config/os2dagsorden/flush_calendar_preferences'] = array(

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_meetings_calendar_view.strongarm.inc

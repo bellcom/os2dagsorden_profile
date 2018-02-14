@@ -201,11 +201,10 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
 
   os2dagsorden_create_agenda_add_bpa_to_bullet_point($form_state['bullet_point_id'], $node->nid);
 
-  //schedule file for html conversion
+  // Schedule file for html conversion.
   if ($bilag) {
     os2dagsorden_pdf2htmlex_schedule_if_bpa($bilag->fid);
   }
-
 
   return $node;
 }

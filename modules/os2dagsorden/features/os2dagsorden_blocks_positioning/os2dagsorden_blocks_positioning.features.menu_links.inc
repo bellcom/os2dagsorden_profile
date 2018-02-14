@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_blocks_positioning.features.menu_links.inc
@@ -10,7 +11,7 @@
 function os2dagsorden_blocks_positioning_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: management:admin/structure/menu/manage/menu-sidepane-menu
+  // Exported menu link: management:admin/structure/menu/manage/menu-sidepane-menu.
   $menu_links['management:admin/structure/menu/manage/menu-sidepane-menu'] = array(
     'menu_name' => 'management',
     'link_path' => 'admin/structure/menu/manage/menu-sidepane-menu',
@@ -28,7 +29,6 @@ function os2dagsorden_blocks_positioning_menu_default_menu_links() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Sidepane menu');
-
 
   return $menu_links;
 }

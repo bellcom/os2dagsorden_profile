@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_blocks_positioning.features.fe_block_settings.inc
@@ -89,7 +90,7 @@ function os2dagsorden_blocks_positioning_default_fe_block_settings() {
         'theme' => 'os2dagsorden_theme_ringsted',
         'weight' => '-19',
       ),
-       'os2dagsorden_theme' => array(
+      'os2dagsorden_theme' => array(
         'region' => 'content',
         'status' => 1,
         'theme' => 'os2dagsorden_theme',

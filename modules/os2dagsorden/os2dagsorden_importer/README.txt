@@ -9,5 +9,3 @@ Modules is designed to create/update/delete a particular entry based on the pull
 
 The module has specific configuration, which is the links, using which the particular view can be accesses: admin/config/os2web/settings
 The module also has the support, of proxing the connection - configured in the same config page.
-
-
