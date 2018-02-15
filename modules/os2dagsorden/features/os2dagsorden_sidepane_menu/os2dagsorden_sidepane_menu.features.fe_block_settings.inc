@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * os2dagsorden_sidepane_menu.features.fe_block_settings.inc
+ * OS2dagsorden_sidepane_menu.features.fe_block_settings.inc.
  */
 
 /**
@@ -19,25 +20,23 @@ function os2dagsorden_sidepane_menu_default_fe_block_settings() {
     'module' => 'block',
     'node_types' => array(),
     'pages' => '',
-    'roles' => array(
-      'authenticated user' => 2,
-    ),
+    'roles' => array('authenticated user' => 2),
     'themes' => array(
       'os2dagsorden_classic_theme' => array(
         'region' => 'menu',
         'status' => 1,
         'theme' => 'os2dagsorden_classic_theme',
-        'weight' => -20,
+        'weight' => -20
       ),
       'rubik' => array(
         'region' => 'content',
         'status' => 1,
         'theme' => 'rubik',
-        'weight' => -20,
-      ),
+        'weight' => -20
+      )
     ),
     'title' => '<none>',
-    'visibility' => 0,
+    'visibility' => 0
   );
 
   $export['menu-menu-sidepane-menu'] = array(
@@ -47,25 +46,23 @@ function os2dagsorden_sidepane_menu_default_fe_block_settings() {
     'module' => 'menu',
     'node_types' => array(),
     'pages' => '',
-    'roles' => array(
-      'authenticated user' => 2,
-    ),
+    'roles' => array('authenticated user' => 2),
     'themes' => array(
       'os2dagsorden_classic_theme' => array(
         'region' => 'sidebar_second',
         'status' => 1,
         'theme' => 'os2dagsorden_classic_theme',
-        'weight' => -20,
+        'weight' => -20
       ),
       'rubik' => array(
         'region' => 'content',
         'status' => 1,
         'theme' => 'rubik',
-        'weight' => -20,
-      ),
+        'weight' => -20
+      )
     ),
     'title' => '<none>',
-    'visibility' => 0,
+    'visibility' => 0
   );
 
   return $export;

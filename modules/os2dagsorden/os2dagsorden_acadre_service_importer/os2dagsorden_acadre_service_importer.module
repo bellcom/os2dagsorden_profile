@@ -20,7 +20,8 @@ module_load_include('inc', 'os2dagsorden_acadre_service_importer', '/includes/os
 /**
  * Implementation of hook_menu().
  *
- * @return array of links.
+ * @return mixed
+ *   Array of links.
  */
 function os2dagsorden_acadre_service_importer_menu() {
   $items = array();
@@ -52,8 +53,6 @@ function os2dagsorden_acadre_service_importer_cron() {
 
 /**
  * Call back function to start processing committees import.
- *
- * @return none
  */
 function os2dagsorden_acadre_service_importer_import_committees() {
   $url = curl_init(variable_get('os2dagsorden_acadre_service_committees_url'));
@@ -69,8 +68,6 @@ function os2dagsorden_acadre_service_importer_import_committees() {
 
 /**
  * Imports the meetings from the remotely located xml view.
- *
- * @return none
  */
 function os2dagsorden_acadre_service_importer_import_meetings() {
   $url = curl_init(variable_get('os2dagsorden_acadre_service_meetings_url'));
@@ -81,48 +78,6 @@ function os2dagsorden_acadre_service_importer_import_meetings() {
     $meetings = new SimpleXMLElement($meetings_raw);
     _os2dagsorden_acadre_service_importer_process_meetings($meetings);
   }
-}
-
-/**
- * Implements hook_requirements().
- */
-function os2dagsorden_acadre_service_importer_requirements($phase) {
-  if ($phase !== 'runtime') {
-    return array();
-  }
-  $t = get_t();
-
-  if (!empty(variable_get('os2dagsorden_acadre_service_meetings _url', ''))) {
-    $requirements['os2dagsorden_acadre_service_importer_meetings_url'] = array(
-      'title' => $t('OS2Dagsorden meetings importer webservice.'),
-    );
-    if (!_os2dagsorden_acadre_service_importer_webservice_url_exists(variable_get('os2dagsorden_acadre_service_meetings_url'))) {
-      $requirements['os2dagsorden_acadre_service_importer_meetings_url']['value'] = $t('Not accessible');
-      $requirements['os2dagsorden_acadre_service_importer_meetings_url']['severity'] = REQUIREMENT_ERROR;
-      $requirements['os2dagsorden_acadre_service_importer_meetings_url']['description'] = t('Webservice %variable  is not accessible', array('%variable' => variable_get('os2dagsorden_acadre_service_meetings_url')));
-    }
-    else {
-      $requirements['os2dagsorden_acadre_service_importer_meetings_url']['value'] = $t('Webservice accessible');
-      $requirements['os2dagsorden_acadre_service_importer_meetings_url']['severity'] = REQUIREMENT_OK;
-      $requirements['os2dagsorden_acadre_service_importer_meetings_url']['description'] = t('Webservice %variable  is accessible', array('%variable' => variable_get('os2dagsorden_acadre_service_meetings_url')));
-    }
-  }
-  if (!empty(variable_get('os2dagsorden_acadre_service_committees_url'))) {
-    $requirements['os2dagsorden_acadre_service_importer_committees_url'] = array(
-      'title' => $t('OS2Dagsorden committees importer webservice.'),
-    );
-    if (!_os2dagsorden_acadre_service_importer_webservice_url_exists(variable_get('os2dagsorden_acadre_service_committees_url'))) {
-      $requirements['os2dagsorden_acadre_service_importer_committees_url']['value'] = $t('Not accessible');
-      $requirements['os2dagsorden_acadre_service_importer_committees_url']['severity'] = REQUIREMENT_ERROR;
-      $requirements['os2dagsorden_acadre_service_importer_committees_url']['description'] = t('Webservice %variable  is not accessible', array('%variable' => variable_get('os2dagsorden_acadre_service_committees_url')));
-    }
-    else {
-      $requirements['os2dagsorden_acadre_service_importer_committees_url']['value'] = $t('Webservice accessible');
-      $requirements['os2dagsorden_acadre_service_importer_committees_url']['severity'] = REQUIREMENT_OK;
-      $requirements['os2dagsorden_acadre_service_importer_committees_url']['description'] = t('Webservice %variable  is accessible', array('%variable' => variable_get('os2dagsorden_acadre_service_committees_url')));
-    }
-  }
-  return $requirements;
 }
 
 /**

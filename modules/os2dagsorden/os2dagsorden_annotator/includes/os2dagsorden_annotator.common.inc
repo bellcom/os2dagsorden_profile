@@ -18,9 +18,10 @@
  * Returns the notes using the attachment id.
  *
  * @param int $bilag_id
- *   attachment id.
+ *   Attachment id.
  *
- * @return array of notes.
+ * @return mixed
+ *   Array of notes.
  */
 function os2dagsorden_annotator_get_notes_by_attachment_id($bilag_id) {
   global $user;
@@ -55,9 +56,10 @@ function os2dagsorden_annotator_get_notes_by_attachment_id($bilag_id) {
  * Returns the notes using the bullet point id.
  *
  * @param int $bullet_point_id
- *   bullet point id.
+ *   Bullet point id.
  *
- * @return array of notes.
+ * @return mixed
+ *   Array of notes.
  */
 function os2dagsorden_annotator_get_notes_by_bullet_point_id($bullet_point_id) {
   global $user;
@@ -92,9 +94,10 @@ function os2dagsorden_annotator_get_notes_by_bullet_point_id($bullet_point_id) {
  * Returns the notes using the meeting id.
  *
  * @param int $meeting_id
- *   meeting id.
+ *   Meeting id.
  *
- * @return array of notes.
+ * @return mixed
+ *   Array of notes.
  */
 function os2dagsorden_annotator_get_notes_by_meeting_id($meeting_id) {
   global $user;
@@ -133,8 +136,10 @@ function os2dagsorden_annotator_get_notes_by_meeting_id($meeting_id) {
 /**
  * Function that updates the reference of meeting nid.
  *
- * @param $old_meeting_nid
- * @param $new_meeting_nid
+ * @param int $old_meeting_nid
+ *   Old meeting nid.
+ * @param int $new_meeting_nid
+ *   New meeting nid.
  */
 function os2dagsorden_annotator_update_notes_meeting($old_meeting_nid, $new_meeting_nid) {
   db_update('os2dagsorden_annotator_notes')
@@ -148,8 +153,10 @@ function os2dagsorden_annotator_update_notes_meeting($old_meeting_nid, $new_meet
 /**
  * Function that updates the reference of bilag nid.
  *
- * @param $old_attachment_nid
- * @param $new_attachment_nid
+ * @param int $old_attachment_nid
+ *   Old nid of the attachment.
+ * @param int $new_attachment_nid
+ *   New nid of the attachment.
  */
 function os2dagsorden_annotator_update_notes_attachment($old_attachment_nid, $new_attachment_nid) {
   $old_attachment = node_load($old_attachment_nid);
@@ -217,11 +224,15 @@ function os2dagsorden_annotator_update_notes_attachment($old_attachment_nid, $ne
 /**
  * Returns the right DOM path for the certain text, is used recursively.
  *
- * @param DOMNode $domNode
- * @param $first_word
+ * @param object $domNode
+ *   DOMNode.
+ * @param string $first_word
+ *   The first word.
  * @param string $current_path
+ *   The current path.
  *
  * @return string
+ *   Path of the text.
  */
 function _os2dagsorden_annotator_find_path(DOMNode $domNode, $first_word, $current_path = '') {
   foreach ($domNode->childNodes as $node) {

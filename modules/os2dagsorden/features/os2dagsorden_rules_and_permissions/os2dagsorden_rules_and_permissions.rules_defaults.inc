@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * os2dagsorden_rules_and_permissions.rules_defaults.inc
+ * OS2dagsorden_rules_and_permissions.rules_defaults.inc.
  */
 
 /**

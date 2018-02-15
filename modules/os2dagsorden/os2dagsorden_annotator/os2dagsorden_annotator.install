@@ -5,7 +5,10 @@
  */
 
 /**
+ * Implement hook_schema.
  *
+ * @return mixed
+ *   Schema array.
  */
 function os2dagsorden_annotator_schema() {
   $schema['os2dagsorden_annotator_notes'] = array(

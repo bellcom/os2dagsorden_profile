@@ -1,6 +1,8 @@
 <?php
+
 /**
  * @file
+ * OS2Dagsorden_rules_and_permissons.module.
  */
 
 // Drupal needs this blank file.

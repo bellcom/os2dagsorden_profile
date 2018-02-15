@@ -2,16 +2,14 @@
 
 /**
  * @file
+ * OS2Dagsorden_acadre_service_imported_committees.inc.
  */
 
 /**
- * Helper function. Processes the committees xml.
- * Delegates to create committees.
+ * Helper function. Processes the committees xml. Delegates to create committees.
  *
  * @param mixed $xml_file
- *   xml file.
- *
- * @return none
+ *   Xml file.
  */
 function _os2dagsorden_acadre_service_importer_process_committees($xml_file) {
   $vid = db_select('taxonomy_vocabulary', 'tv')
@@ -35,7 +33,7 @@ function _os2dagsorden_acadre_service_importer_process_committees($xml_file) {
       'active' => (string) $row->Active,
     );
 
-    // create/update committee if missing.
+    // Create/update committee if missing.
     os2dagsorden_acadre_service_importer_create_committee($xml_data, $vid);
   }
 }
@@ -44,9 +42,10 @@ function _os2dagsorden_acadre_service_importer_process_committees($xml_file) {
  * Helper function. Creates/updates the committee.
  *
  * @param mixed $xml_data
- *   xml.
+ *   Xml data.
  *
- * @return the id of created/updated entry.
+ * @return int
+ *   The id of created/updated entry.
  */
 function os2dagsorden_acadre_service_importer_create_committee($xml_data, $vid) {
   // Getting committee by sub ID.

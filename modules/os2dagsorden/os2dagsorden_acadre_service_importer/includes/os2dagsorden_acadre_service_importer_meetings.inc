@@ -2,16 +2,14 @@
 
 /**
  * @file
+ * OS2Dagsorden_acadre_service_importer_meetings.inc.
  */
 
 /**
- * Helper function. Processes the meetings xml.
- * Delegates to create meeings, unpublish meetings, create committee function based on controllers.
+ * Helper function. Processes the meetings xml. Delegates to create meeings, unpublish meetings, create committee function based on controllers.
  *
  * @param mixed $xml_file
- *   xml file.
- *
- * @return none
+ *   Xml file.
  */
 function _os2dagsorden_acadre_service_importer_process_meetings($xml_file) {
   foreach ($xml_file as $row) {
@@ -40,12 +38,10 @@ function _os2dagsorden_acadre_service_importer_process_meetings($xml_file) {
 /**
  * Helper function. Creates/updates the meeting.
  *
- * @param array $xml_data
- *   entry parameters.
+ * @param mixed $xml_data
+ *   Entry parameters.
  * @param int $tid
- *   committee id.
- *
- * @return none
+ *   Committee id.
  */
 function _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $tid) {
   $query = new EntityFieldQuery();
@@ -97,10 +93,8 @@ function _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $tid) {
 /**
  * Helper function. Marks the meeting as unpublished.
  *
- * @param array $xml_data
- *   entry params.
- *
- * @return none
+ * @param mixed $xml_data
+ *   Entry params.
  */
 function _os2dagsorden_acadre_service_importer_unpublish_meeting($xml_data) {
   $query = new EntityFieldQuery();
@@ -123,9 +117,10 @@ function _os2dagsorden_acadre_service_importer_unpublish_meeting($xml_data) {
  * Helper function. Finds the location term based on the name, if none found new term is created.
  *
  * @param string $location
- *   name of the location.
+ *   Name of the location.
  *
- * @return term tid
+ * @return int
+ *   Term tid.
  */
 function _os2dagsorden_acadre_service_importer_get_location($location) {
   $location_term = array_pop(taxonomy_get_term_by_name($location, 'os2web_meetings_tax_location'));

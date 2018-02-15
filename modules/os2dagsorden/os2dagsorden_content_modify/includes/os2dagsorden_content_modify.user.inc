@@ -125,7 +125,7 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
  *   array array of uid
  */
 function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uids) {
-  $single_or_batch_class = (sizeof($uids) == 1) ? 'single' : 'batch';
+  $single_or_batch_class = (count($uids) == 1) ? 'single' : 'batch';
 
   $form[] = array(
     '#markup' => "<div class=\"select-committee {$single_or_batch_class}\">",

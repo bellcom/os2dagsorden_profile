@@ -6,7 +6,7 @@
  */
 
 /**
- * Prints comming meetings help text.
+ * Prints coming meetings help text.
  */
 function os2dagsorden_meeting_views_coming_meetings_help_text() {
   print '<div class="help-button" id="os2dagsorden_meeting_views_coming_meetings_help" aria-label="' . variable_get('os2dagsorden_upcoming_meetings_help_text', 'Her vises de kommende 5 møder i "Mine udvalg".

@@ -3,6 +3,7 @@ core = 7.x
 package = OS2Dagsorden
 version = 7.x-1.0-alpha
 project = os2dagsorden_rules_and_permissions
+description = Feature to keep all custom rules and permissions related to OS2Dagsorden
 dependencies[] = context_permissions
 dependencies[] = ctools
 dependencies[] = edit_own_user_account_permission

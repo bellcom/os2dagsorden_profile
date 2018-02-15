@@ -196,7 +196,7 @@ function os2dagsorden_admin_suite_user_remove_org_meetings_category() {
     if (isset($user->field_user_committee['und'])) {
       print("MEMBER: ");
       print_r($user->field_user_committee['und']);
-      for ($i = 0; $i <= sizeof($user->field_user_committee['und']); $i++) {
+      for ($i = 0; $i <= count($user->field_user_committee['und']); $i++) {
         if (in_array($user->field_user_committee['und'][$i]['tid'], $old_com_ids)) {
           $user->field_user_committee['und'][$i]['tid'] = $new_com_id;
           $changed = TRUE;
@@ -210,7 +210,7 @@ function os2dagsorden_admin_suite_user_remove_org_meetings_category() {
       print("<br/>");
       print("FOLLOWS: ");
       print_r($user->field_follows_committee['und']);
-      for ($i = 0; $i <= sizeof($user->field_follows_committee['und']); $i++) {
+      for ($i = 0; $i <= count($user->field_follows_committee['und']); $i++) {
         if (in_array($user->field_follows_committee['und'][$i]['tid'], $old_com_ids)) {
           $user->field_follows_committee['und'][$i]['tid'] = $new_com_id;
           $changed = TRUE;
@@ -223,7 +223,7 @@ function os2dagsorden_admin_suite_user_remove_org_meetings_category() {
       print("<br/>");
       print("FOLLOWS PLUS: ");
       print_r($user->field_follows_committee_plus['und']);
-      for ($i = 0; $i <= sizeof($user->field_follows_committee_plus['und']); $i++) {
+      for ($i = 0; $i <= count($user->field_follows_committee_plus['und']); $i++) {
         if (in_array($user->field_follows_committee_plus['und'][$i]['tid'], $old_com_ids)) {
           $user->field_follows_committee_plus['und'][$i]['tid'] = $new_com_id;
           $changed = TRUE;
@@ -236,7 +236,7 @@ function os2dagsorden_admin_suite_user_remove_org_meetings_category() {
       print("<br/>");
       print("FOLLOWS PLUS PLUS: ");
       print_r($user->field_follows_committee_pp['und']);
-      for ($i = 0; $i <= sizeof($user->field_follows_committee_pp['und']); $i++) {
+      for ($i = 0; $i <= count($user->field_follows_committee_pp['und']); $i++) {
         if (in_array($user->field_follows_committee_pp['und'][$i]['tid'], $old_com_ids)) {
           $user->field_follows_committee_pp['und'][$i]['tid'] = $new_com_id;
           $changed = TRUE;
