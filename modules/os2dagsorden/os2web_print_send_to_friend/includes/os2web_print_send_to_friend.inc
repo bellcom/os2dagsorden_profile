@@ -128,8 +128,8 @@ function os2web_print_send_to_friend_send_to_friend_form($meeting_id, $bullet_po
  *
  * @param int $bullet_point_id
  *   Bullet point id.
- * @param string $email           
- *   Email.
+ * @param int $meeting_id
+ *   Meeting id.
  */
 function os2web_print_send_to_friend_send_to_friend($meeting_id, $bullet_point_id) {
   global $user;
