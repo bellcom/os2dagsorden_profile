@@ -2,16 +2,20 @@
 
 /**
  * @file
+ * Os2web_print_send_to_friend_pdf_generate.
  */
 
 /**
  * Function that generates a PDF version of meeting agenda with or without PDF attachments.
+ *
  * Internally uses mPDF library to compose a PDF file.
  *
  * In the end of the function uses print_pdf_dispose_content to return the file with correct headers.
  *
- * @param $meeting_id
+ * @param int $meeting_id
+ *   Meeting ID.
  * @param bool $with_attachments
+ *   TRUE if attachments must be added, otherwise - FALSE.
  */
 function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments = TRUE) {
   require_once DRUPAL_ROOT . '/profiles/os2dagsorden/libraries/mpdf/vendor/autoload.php';
@@ -77,10 +81,13 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
 /**
  * Fills the provided mPDF object with meeting general info (as HTML).
  *
- * @param $meeting
- * @param $mpdf
+ * @param object $meeting
+ *   Meeting object.
+ * @param object $mpdf
+ *   mPDF object.
  *
- * @return mixed updated mPDF object
+ * @return mixed
+ *   Updated mPDF object.
  */
 function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting, $mpdf) {
   $start_date = $meeting->field_os2web_meetings_date['und'][0]['value'];
@@ -116,14 +123,20 @@ function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting,
 
 /**
  * Fills the provided mPDF object with bullet point data.
+ *
  * If with_attachments is set to TRUE, all PDF attachments are included as well.
  *
  * @param $bullet_point_id
- * @param $mpdf
+ *  bullet point object.
+ * @param object $mpdf
+ *  mPDF object.
  * @param bool $with_attachments
+ *  TRUE or FALSE.
  * @param bool $is_last_bp
+ *  TRUE or FALSE.
  *
- * @return mixed updated mPDF object
+ * @return mixed
+ *  Updated mPDF object.
  */
 function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id, $mpdf, $with_attachments = TRUE, $is_last_bp) {
   $bullet_point = node_load($bullet_point_id);

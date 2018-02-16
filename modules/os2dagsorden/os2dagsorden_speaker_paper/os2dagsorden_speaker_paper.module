@@ -16,13 +16,12 @@
 module_load_include('inc', 'os2dagsorden_speaker_paper', '/includes/os2dagsorden_speaker_paper.util');
 
 /**
- * Hook to node_insert
+ * Hook to node_insert.
+ *
  * The function will send the email to the user, with which this speaker paper has been shared.
  *
- * @param $node
- *   mixed  meeting node to be saved
- *
- * @return $node meeting
+ * @param mixed $node
+ *   Meeting node to be saved.
  */
 function os2dagsorden_speaker_paper_node_insert($node) {
   if ($node->type === 'os2web_meetings_spaper') {
@@ -42,13 +41,12 @@ function os2dagsorden_speaker_paper_node_insert($node) {
 }
 
 /**
- * Hook to node_insert
+ * Hook to node_insert.
+ *
  * The function will send the email to the user (if it wasn't sent before), with which this speaker paper has been shared.
  *
- * @param $node
- *   mixed  meeting node to be saved
- *
- * @return $node meeting
+ * @param mixed $node
+ *   Meeting node to be saved.
  */
 function os2dagsorden_speaker_paper_node_update($node) {
   if ($node->type === 'os2web_meetings_spaper') {
@@ -74,9 +72,15 @@ function os2dagsorden_speaker_paper_node_update($node) {
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * @param $form
- * @param $form_state
- * @param $form_id
+ * @param mixed $form
+ *   Form object.
+ * @param mixed &$form_state
+ *   Form state.
+ * @param mixed $form_id
+ *   The ID of the form.
+ *
+ * @return mixed
+ *   Rendered form.
  */
 function os2dagsorden_speaker_paper_form_os2dagsorden_settings_settings_form_alter(&$form, &$form_state, $form_id) {
   $form['os2dagsorden_speaker_paper_settings'] = array(
@@ -145,9 +149,15 @@ function os2dagsorden_speaker_paper_form_os2dagsorden_settings_settings_form_alt
  *
  * Multiple modifications to speaper paper create/edit form.
  *
- * @param $form
- * @param $form_state
- * @param $form_id
+ * @param mixed $form
+ *   Form object.
+ * @param mixed &$form_state
+ *   Form state.
+ * @param mixed $form_id
+ *   The ID of the form.
+ *
+ * @return mixed
+ *   Rendered form.
  */
 function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'os2web_meetings_spaper_node_form') {

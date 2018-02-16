@@ -17,8 +17,10 @@
 /**
  * Returns true if the message has been sent, false otherwise.
  *
- * @param $uid
- * @param $nid
+ * @param int $uid
+ *   The user ID.
+ * @param int $nid
+ *   The node ID.
  */
 function _os2dagsorden_speaker_paper_is_message_sent($uid, $nid) {
   $query = db_select('os2dagsorden_speaker_paper_notification_emails', 'ne');
@@ -33,8 +35,10 @@ function _os2dagsorden_speaker_paper_is_message_sent($uid, $nid) {
 /**
  * Sends the message to a user that the following speaker paper is now shared with him.
  *
- * @param $uid
- * @param $node
+ * @param int $uid
+ *   The user ID.
+ * @param object $node
+ *   The node object.
  */
 function _os2dagsorden_speaker_paper_send_message($uid, $node) {
   global $base_url;
@@ -72,7 +76,17 @@ function _os2dagsorden_speaker_paper_send_message($uid, $node) {
     '!author',
     PHP_EOL,
   );
-  $replace = array($cName, $mName, $mDate, $bpName, $spName, $spLink, $uName, $authorName, '<br/>');
+  $replace = array(
+    $cName,
+    $mName,
+    $mDate,
+    $bpName,
+    $spName,
+    $spLink,
+    $uName,
+    $authorName,
+    '<br/>'
+    );
 
   // Making replacements.
   $subject = str_replace($search, $replace, $subject_template);
@@ -112,10 +126,11 @@ function _os2dagsorden_speaker_paper_send_message($uid, $node) {
 /**
  * Functions that retus the uids of all the users that are part of the speaker paper group with that tid.
  *
- * @param $tid
- *   - speaker paper group tid
+ * @param int $tid
+ *   The speaker paper group tid.
  *
- * @return array - array of user uids
+ * @return mixed
+ *   Array of user uids.
  */
 function _os2dagsorden_speaker_paper_fetch_group_users($tid) {
   $query = new EntityFieldQuery();

@@ -6,7 +6,10 @@
  */
 
 /**
+ * Creates a table in the database that will store content access information for statistics.
  *
+ * @return mixed
+ *   Created schema.
  */
 function os2dagsorden_statistics_schema() {
   $schema['os2dagsorden_statistics_content_tracker'] = array(

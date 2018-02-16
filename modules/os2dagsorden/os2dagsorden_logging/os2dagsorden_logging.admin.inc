@@ -8,12 +8,13 @@
 /**
  * Implementation of settings form  OS2dagsorden logging system.
  *
- * @param $form
- *   the settings form
- * @param $form_state
- *   the state of the form
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of the form.
  *
- * @return settings form.
+ * @return mixed
+ *   Settings form.
  */
 function os2dagsorden_logging_settings_settings_form($form, $form_state) {
   $type_array;

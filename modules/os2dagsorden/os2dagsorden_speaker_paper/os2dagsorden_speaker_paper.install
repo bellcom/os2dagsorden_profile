@@ -16,9 +16,11 @@
 
 /**
  * Creates a table in the database that will the sent email messages by access helper module.
+ *
  * The messages are sent to the interested members, when the status of a specific meeting changes.
  *
- * @return created schema
+ * @return mixed
+ *   Created schema.
  */
 function os2dagsorden_speaker_paper_schema() {
   $schema['os2dagsorden_speaker_paper_notification_emails'] = array(

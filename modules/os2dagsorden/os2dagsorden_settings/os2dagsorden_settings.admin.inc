@@ -20,12 +20,13 @@ define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
 /**
  * Implementation of settings form specifically for OS2dagsorden system.
  *
- * @param $form
- *   the settings form
- * @param $form_state
- *   the state of the form
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of the form.
  *
- * @return array - settings form.
+ * @return mixed
+ *   Settings form.
  */
 function os2dagsorden_settings_settings_form($form, $form_state) {
   $output = os2dagsorden_blocks_positioning_show_git_version();
@@ -1307,16 +1308,21 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   return system_settings_form($form);
 }
 
- function os2dagsorden_settings_theme_settings() {
-   $theme = variable_get('theme_default');
-   drupal_goto('admin/appearance/settings/' . $theme );
- }
+/**
+ * Implements hook_theme_settings.
+ */
+function os2dagsorden_settings_theme_settings() {
+  $theme = variable_get('theme_default');
+  drupal_goto('admin/appearance/settings/' . $theme);
+}
 
 /**
  * Validates pdf2htmlEX installation by checking if which commands returns anything.
  *
- * @param $element
- * @param $form_state
+ * @param mixed $element
+ *   The form element.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function _os2dagsorden_pdf2htmlEX_validate($element, &$form_state) {
   $value = $element['#value'];
@@ -1324,17 +1330,20 @@ function _os2dagsorden_pdf2htmlEX_validate($element, &$form_state) {
     $exec = shell_exec("which " . $value);
     if (empty($exec)) {
       form_error($element, "Incorrect pdf2htmlEX path");
-      watchdog("os2dagsorden", t('Incorrect pdf2htmlEX path'));
+      watchdog("os2dagsorden", 'Incorrect pdf2htmlEX path');
     }
   }
 }
 
 /**
  * Validates URL responce.
- * if response code not 200, form error is set.
  *
- * @param $element
- * @param $form_state
+ * If response code not 200, form error is set.
+ *
+ * @param mixed $element
+ *   The form element.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function _os2dagsorden_url_responce_validate($element, &$form_state) {
   $value = $element['#value'];
@@ -1362,12 +1371,13 @@ function _os2dagsorden_url_responce_validate($element, &$form_state) {
 
 /**
  * Checks that files for SOFD are presen.
- * File paths are: "public://acadre_views/V_web_MeetingGroups.xml",
- * "public://acadre_views/V_web_AcadreGroups.xml",
- * "public://acadre_views/V_web_Meetings.xml",.
  *
- * @param $element
- * @param $form_state
+ * File paths are: "public://acadre_views/V_web_MeetingGroups.xml", "public://acadre_views/V_web_AcadreGroups.xml", "public://acadre_views/V_web_Meetings.xml",.
+ *
+ * @param mixed $element
+ *   The form element.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function _os2dagsorden_sofd_local_copy_validate($element, &$form_state) {
   $value = $element['#value'];
@@ -1397,8 +1407,10 @@ function _os2dagsorden_sofd_local_copy_validate($element, &$form_state) {
 /**
  * Validates that the pdf rendering path is present and writable.
  *
- * @param $element
- * @param $form_state
+ * @param mixed $element
+ *   The form element.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function _os2dagsorden_pdf2html_rendering_path_validate($element, &$form_state) {
   $value = $element['#value'];
@@ -1417,8 +1429,10 @@ function _os2dagsorden_pdf2html_rendering_path_validate($element, &$form_state) 
 /**
  * Validates that the os2web conversion path is present and writable.
  *
- * @param $element
- * @param $form_state
+ * @param mixed $element
+ *   The form element.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function _os2dagsorden_os2web_convertion_dir_validate($element, &$form_state) {
   $value = $element['#value'];
@@ -1435,12 +1449,10 @@ function _os2dagsorden_os2web_convertion_dir_validate($element, &$form_state) {
 /**
  * Hook to system for submit. Stores the frequencies of the cronjob if they are different from the default provided by ultimate cron module.
  *
- * @param $form
- *   the settings form
- * @param $form_state
- *   the state of the form
- *
- * @return none
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of the form.
  */
 function os2dagsorden_settings_cron_job_submit($form, &$form_state) {
   $input = $form_state['input'];
@@ -1504,12 +1516,10 @@ function os2dagsorden_settings_cron_job_submit($form, &$form_state) {
 /**
  * Sets the variables to the ones imported from the file.
  *
- * @param $form
- *   the settings form
- * @param $form_state
- *   the state of the form
- *
- * @return none
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of the form.
  */
 function os2dagsorden_settings_import_from_file($form, &$form_state) {
   if (!$form_state['values']['os2dagsorden_settings_file']) {
@@ -1545,7 +1555,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bilag', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag']);
     variable_set('os2dagsorden_use_abbr', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_use_abbr']);
     variable_set('os2dagsorden_show_bp_comname', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_comname']);
-    //FIXME: new variable
+    // FIXME: new variable.
     variable_set('os2dagsorden_pdf_download_whitelist_enabled', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled']);
     variable_set('os2dagsorden_pdf_download_whitelist', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist']);
     variable_set('os2dagsorden_sager_group_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_sager_group_title']);

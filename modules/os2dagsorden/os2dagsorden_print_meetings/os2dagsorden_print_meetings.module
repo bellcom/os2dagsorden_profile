@@ -16,7 +16,8 @@
 /**
  * Implementation of hook_menu().
  *
- * @return array of links.
+ * @return mixed
+ *   Array of links.
  */
 function os2dagsorden_print_meetings_menu() {
   $items = array();
@@ -34,11 +35,12 @@ function os2dagsorden_print_meetings_menu() {
 /**
  * Print meetings callback.
  *
- * @return rendered form.
+ * @return mixed
+ *   Rendered form.
  */
 function _os2dagsorden_print_meetings_callback() {
   global $base_url;
-  $breadcrumb[] = l('Forsiden', $base_url);
+  $breadcrumb[] = l(t('Forsiden'), $base_url);
   $breadcrumb[] .= '<span class="breadcrumb-active">' . variable_get('os2dagsorden_title_frontpage_halfyear_calendar', 'Halvårs-kalender') . '</span>';
   drupal_set_breadcrumb($breadcrumb);
 
@@ -52,11 +54,12 @@ function _os2dagsorden_print_meetings_callback() {
  * Composes the filter form.
  *
  * @param mixed $form
- *   form object.
+ *   Form object.
  * @param mixed &$form_state
- *   form state.
+ *   Form state.
  *
- * @return form
+ * @return mixed
+ *   Rendered form.
  */
 function _os2dagsorden_print_meetings_form($form, &$form_state) {
   // Init.
@@ -158,11 +161,9 @@ function _os2dagsorden_print_meetings_form($form, &$form_state) {
  * Presets the form parameter. Form will show the result for the first half year (1-6 month)
  *
  * @param mixed $form
- *   form object.
+ *   Form object.
  * @param mixed &$form_state
- *   form state.
- *
- * @return none
+ *   Form state.
  */
 function _os2dagsorden_print_meetings_form_submit_1_half($form, &$form_state) {
   $form_state['rebuild'] = TRUE;
@@ -174,11 +175,9 @@ function _os2dagsorden_print_meetings_form_submit_1_half($form, &$form_state) {
  * Presets the form parameter. Form will show the result for the second half year (7-12 month)
  *
  * @param mixed $form
- *   form object.
+ *   Form object.
  * @param mixed &$form_state
- *   form state.
- *
- * @return none
+ *   Form state.
  */
 function _os2dagsorden_print_meetings_form_submit_2_half($form, &$form_state) {
   $form_state['rebuild'] = TRUE;
@@ -189,12 +188,13 @@ function _os2dagsorden_print_meetings_form_submit_2_half($form, &$form_state) {
 /**
  * Cascade method to generates the table of dates filled with meetings.
  *
- * @param date $from_month
- *   start month.
- * @param date $to_month
- *   end month.
+ * @param int $from_month
+ *   Start month.
+ * @param int $to_month
+ *   End month.
  *
- * @return generated table
+ * @return string
+ *   Generated HTML table.
  */
 function _os2dagsorden_print_meetings_get_table($from_month, $to_month) {
   $user = os2dagsorden_access_helper_get_user();
@@ -224,14 +224,15 @@ function _os2dagsorden_print_meetings_get_table($from_month, $to_month) {
 /**
  * Generates the table of 6 month filled with meetings.
  *
- * @param date $from_month
- *   start month.
- * @param date $to_month
- *   end month.
- * @param array $meetings
- *   array of meetings.
+ * @param int $from_month
+ *   Start month.
+ * @param int $to_month
+ *   End month.
+ * @param mixed $meetings
+ *   Array of meetings.
  *
- * @return generated table
+ * @return string
+ *   Generated HTML table.
  */
 function _os2dagsorden_print_meetings_get_six_month_data($from_month, $to_month, $meetings) {
   // Headers.
@@ -254,12 +255,13 @@ function _os2dagsorden_print_meetings_get_six_month_data($from_month, $to_month,
 /**
  * Generates the headers (month names)
  *
- * @param date $from_month
- *   start month.
- * @param date $to_month
- *   end month.
+ * @param int $from_month
+ *   Start month.
+ * @param int $to_month
+ *   End month.
  *
- * @return generated headers
+ * @return string
+ *   Generated headers.
  */
 function os2dagsorden_print_meetings_generate_month_headers($from_month, $to_month) {
   $months_names = os2dagsorden_print_meetings_get_months();
@@ -275,14 +277,15 @@ function os2dagsorden_print_meetings_generate_month_headers($from_month, $to_mon
 /**
  * Generates the one month and fills it with meetings.
  *
- * @param date $from_month
- *   start month.
- * @param date $to_month
- *   end month.
- * @param array $meetings
- *   array of meetings.
+ * @param int $from_month
+ *   Start month.
+ * @param int $to_month
+ *   End month.
+ * @param mixed $meetings
+ *   Array of meetings.
  *
- * @return generated month
+ * @return string
+ *   Generated month.
  */
 function os2dagsorden_print_meetings_generate_month($from_month, $to_month, $meetings) {
   global $base_url;
@@ -353,11 +356,12 @@ function os2dagsorden_print_meetings_generate_month($from_month, $to_month, $mee
  * Determines and marks the day with the gray color if the given day is a weekend.
  *
  * @param int $month
- *   month number.
+ *   Month number.
  * @param int $day
- *   day number.
+ *   Day number.
  *
- * @return string with added/not added "gray" flag.
+ * @return string
+ *   String with added/not added "gray" flag.
  */
 function _os2dagsorden_print_meetings_mark_weekend_gray($month, $day) {
   if (date('N', mktime(0, 0, 0, $month, $day, date('Y'))) >= 6) {
@@ -372,11 +376,12 @@ function _os2dagsorden_print_meetings_mark_weekend_gray($month, $day) {
  * Adds week number if the day is Monday.
  *
  * @param int $month
- *   month number.
+ *   Month number.
  * @param int $day
- *   day number.
+ *   Day number.
  *
- * @return string with added/not added week number.
+ * @return string
+ *   String with added/not added week number.
  */
 function _os2dagsorden_print_meetings_mark_week_start($month, $day) {
   if (date('N', mktime(0, 0, 0, $month, $day, date('Y'))) == 1) {
@@ -391,11 +396,12 @@ function _os2dagsorden_print_meetings_mark_week_start($month, $day) {
  * Modifies the html markup for the day-cell, if the day is not Monday.
  *
  * @param int $month
- *   month number.
+ *   Month number.
  * @param int $day
- *   day number.
+ *   Day number.
  *
- * @return modified string.
+ * @return string
+ *   Modified string.
  */
 function _os2dagsorden_print_meetings_add_col_span($month, $day) {
   if (date('N', mktime(0, 0, 0, $month, $day, date('Y'))) != 1) {
@@ -409,7 +415,8 @@ function _os2dagsorden_print_meetings_add_col_span($month, $day) {
 /**
  * Danish names of the months.
  *
- * @return array of months
+ * @return mixed
+ *   Array of months.
  */
 function os2dagsorden_print_meetings_get_months() {
   return (array(

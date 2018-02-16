@@ -1,4 +1,5 @@
 name = OS2dagsorden update DB
+description = OS2dagsorden update DB module
 core = 7.x
 package = OS2Dagsorden
 php = 5.2.4

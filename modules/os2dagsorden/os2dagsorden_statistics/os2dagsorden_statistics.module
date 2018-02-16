@@ -8,9 +8,10 @@
 include_once 'os2dagsorden_statistics.features.inc';
 
 /**
- * Implementation of hook_menu()
+ * Implementation of hook_menu().
  *
- * @return list of links
+ * @return mixed
+ *   List of links.
  */
 function os2dagsorden_statistics_menu() {
   $items['admin/statistik'] = array(
@@ -51,7 +52,12 @@ function os2dagsorden_statistics_menu() {
     'title' => 'Content views statistics',
     'description' => 'Statistic of content views',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('os2dagsorden_statistics_content_views_node_statistic_form', 3, 4, 5),
+    'page arguments' => array(
+      'os2dagsorden_statistics_content_views_node_statistic_form',
+      3,
+      4,
+      5
+      ),
     'access arguments' => array('administer os2web'),
   );
   return $items;
@@ -61,6 +67,7 @@ function os2dagsorden_statistics_menu() {
  * Renders user statistics page output.
  *
  * @return string
+ *   HTML string with page output.
  */
 function os2dagsorden_statistics_user_statistics_page() {
   $output = "<h3>" . t('User statistics') . "</h3>";
@@ -70,7 +77,11 @@ function os2dagsorden_statistics_user_statistics_page() {
     foreach ($result as $row) {
       $items[] = l($row->Year . ' (' . $row->login . ') ', '/admin/statistik/login_tracker/' . $row->Year);
     }
-    $output .= theme_item_list(array('items' => $items, 'type' => 'ul', 'attributes' => array()));
+    $output .= theme_item_list(array(
+      'items' => $items,
+      'type' => 'ul',
+      'attributes' => array()
+      ));
   }
   return $output;
 }
@@ -78,9 +89,11 @@ function os2dagsorden_statistics_user_statistics_page() {
 /**
  * User statistics page output by year.
  *
- * @param null $year
+ * @param string $year
+ *   Year number.
  *
  * @return string
+ *   HTML string with data.
  */
 function os2dagsorden_statistics_user_statistics_by_year($year = NULL) {
   $output = "<h3>" . t('User statistics by @year year', array('@year' => $year)) . "</h3>";
@@ -113,7 +126,11 @@ function os2dagsorden_statistics_user_statistics_by_year($year = NULL) {
     $rows[$key]["login_timestamp"] = date('d-m-Y H:i:s', $row->login_timestamp);
   }
 
-  $output .= theme('table', array('header' => $headers, 'rows' => $rows, 'attributes' => array('id' => 'sort-table')));
+  $output .= theme('table', array(
+    'header' => $headers,
+    'rows' => $rows,
+    'attributes' => array('id' => 'sort-table')
+    ));
   $output .= theme('pager');
 
   return $output;
@@ -123,6 +140,7 @@ function os2dagsorden_statistics_user_statistics_by_year($year = NULL) {
  * Renders content statistics page output.
  *
  * @return string
+ *   Rendered content.
  */
 function os2dagsorden_statistics_content_statistics_page() {
   $output = "<h1>Opgørelse over antal dagsordner og referater der er importeret til OS2dagsorden fordelt på antal år</h1>";
@@ -133,14 +151,24 @@ function os2dagsorden_statistics_content_statistics_page() {
     foreach ($result as $row) {
       $items[] = l($row->Year . ' (' . $row->nodes . ') ', '/admin/imported-content/' . $row->Year);
     };
-    $output .= theme_item_list(array('items' => $items, 'type' => 'ul', 'attributes' => array()));
+    $output .= theme_item_list(array(
+      'items' => $items,
+      'type' => 'ul',
+      'attributes' => array()
+      ));
   }
   $output .= '<i>Antallet er angivet i parantes efter årstallet.</i>';
   return $output;
 }
 
 /**
+ * Content access statistics page output by year.
  *
+ * @param string $year
+ *   Year number.
+ *
+ * @return string
+ *   HTML string with data.
  */
 function os2dagsorden_statistics_content_statistics_by_year($year = NULL) {
   $output = "<h1>Opgørelse over antal dagsordner og referater der er importeret til OS2dagsorden fordelt på antal år</h1>";
@@ -149,7 +177,11 @@ function os2dagsorden_statistics_content_statistics_by_year($year = NULL) {
   $headers = array(
     array('data' => t('')),
     array('data' => t('Date'), 'field' => 'created'),
-    array('data' => t('Updated'), 'field' => 'changed', 'sort' => 'desc'),
+    array(
+      'data' => t('Updated'),
+      'field' => 'changed',
+      'sort' => 'desc'
+      ),
     array('data' => t('Name'), 'field' => 'name'),
   );
 
@@ -178,16 +210,21 @@ function os2dagsorden_statistics_content_statistics_by_year($year = NULL) {
     $rows[$key]["name"] = $row->name == "" ? "Anonymous (not verified)" : l($row->name, '/user/' . $row->uid);
   }
 
-  $output .= theme('table', array('header' => $headers, 'rows' => $rows, 'attributes' => array('id' => 'sort-table')));
+  $output .= theme('table', array(
+    'header' => $headers,
+    'rows' => $rows,
+    'attributes' => array('id' => 'sort-table')
+    ));
   $output .= theme('pager');
 
   return $output;
 }
 
 /**
- * Implements hook_exit().
+ * Implements page_build().
  *
- * Gathers statistics for content accesses.
+ * @param object &$page
+ *   Page object.
  */
 function os2dagsorden_statistics_page_build(&$page) {
   global $user;
@@ -211,10 +248,13 @@ function os2dagsorden_statistics_page_build(&$page) {
 /**
  * Search form for content statistics.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The search form.
+ * @param mixed $form_state
+ *   The state of form.
  *
  * @return mixed
+ *   The search form.
  */
 function os2dagsorden_statistics_content_views_search_form($form, $form_state) {
   drupal_add_css(drupal_get_path('module', 'os2dagsorden_statistics') . '/css/os2dagsorden_statistics.css');
@@ -224,7 +264,11 @@ function os2dagsorden_statistics_content_views_search_form($form, $form_state) {
     'Title' => array('data' => t('Title')),
     'Committee' => array('data' => t('Committee'), 'field' => 'name'),
    // 'Date' => array('data' => t('Date'), 'field' => 'timestamp', 'sort' => 'desc'));.
-    'Views' => array('data' => t('Views count'), 'field' => 'views_count', 'sort' => 'desc'),
+    'Views' => array(
+      'data' => t('Views count'),
+      'field' => 'views_count',
+      'sort' => 'desc'
+      ),
   );
 
   $query = db_select('os2dagsorden_statistics_content_tracker', 't');
@@ -411,7 +455,12 @@ function os2dagsorden_statistics_content_views_search_form($form, $form_state) {
 }
 
 /**
- * Form Submit method.
+ * Implements hook_form_submit().
+ *
+ * @param mixed $form
+ *   The search form.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function os2dagsorden_statistics_content_views_search_form_submit($form, &$form_state) {
   $values = $form_state['input'];
@@ -431,9 +480,11 @@ function os2dagsorden_statistics_content_views_search_form_submit($form, &$form_
 /**
  * Return title in format meeting->bullet_point->bpa.
  *
- * @param $url
+ * @param string $url
+ *   URL to the content.
  *
  * @return string
+ *   Title in format meeting->bullet_point->bpa.
  */
 function _os2dagsorden_statistics_get_full_title($url) {
   $url_parts = parse_url($url);
@@ -452,9 +503,11 @@ function _os2dagsorden_statistics_get_full_title($url) {
 /**
  * Helper function to get title based on node id.
  *
- * @param $nid
+ * @param int $nid
+ *   Node id.
  *
- * @return mixed
+ * @return string
+ *   Node title.
  */
 function _os2dagsorden_statistics_get_node_title($nid) {
   return db_query('SELECT title FROM {node} WHERE nid = :nid', array(':nid' => $nid))->fetchField();
@@ -463,9 +516,11 @@ function _os2dagsorden_statistics_get_node_title($nid) {
 /**
  * Helper function to get meeting date based on node id.
  *
- * @param $nid
+ * @param int $nid
+ *   Node id.
  *
- * @return mixed
+ * @return string
+ *   Meeting date.
  */
 function _os2dagsorden_statistics_get_meeting_date($nid) {
   return db_query('SELECT  field_os2web_meetings_date_value FROM {field_revision_field_os2web_meetings_date} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();
@@ -474,10 +529,13 @@ function _os2dagsorden_statistics_get_meeting_date($nid) {
 /**
  * Ajax callback to load meetings based on selected committee.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The search form.
+ * @param mixed $form_state
+ *   The state of form.
  *
  * @return mixed
+ *   Array with all meetings in selected committee.
  */
 function os2dagsorden_statistics_ajax_display_dropdown_meetings_callback($form, $form_state) {
   $commitee = $form_state['values']['committes'];
@@ -488,10 +546,13 @@ function os2dagsorden_statistics_ajax_display_dropdown_meetings_callback($form, 
 /**
  * Ajax callback to load bulletpoint based on selected meeting.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The search form.
+ * @param mixed $form_state
+ *   The state of form.
  *
  * @return mixed
+ *   Array with all bullet points in selected meeting.
  */
 function os2dagsorden_statistics_ajax_display_dropdown_bullet_points_callback($form, $form_state) {
   $meetings = $form_state['values']['meetings'];
@@ -502,10 +563,13 @@ function os2dagsorden_statistics_ajax_display_dropdown_bullet_points_callback($f
 /**
  * Ajax callback to load BPA based on selected bullet point.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The search form.
+ * @param mixed $form_state
+ *   The state of form.
  *
  * @return mixed
+ *   Array with all bullet point attachments in selected bullet point.
  */
 function os2dagsorden_statistics_ajax_display_dropdown_bpa_callback($form, $form_state) {
   $bullet_point = $form_state['values']['bullet_points'];
@@ -516,9 +580,11 @@ function os2dagsorden_statistics_ajax_display_dropdown_bpa_callback($form, $form
 /**
  * Returns list of meetings based on provided committee term.
  *
- * @param $commitee
+ * @param int $commitee
+ *   Committee ID.
  *
- * @return array
+ * @return mixed
+ *   Array with list of meetings based on provided committee term.
  */
 function _os2dagsorden_statistics_get_meetings_by_commitee($commitee) {
   $meetings = array('all' => t('All'));
@@ -547,9 +613,11 @@ function _os2dagsorden_statistics_get_meetings_by_commitee($commitee) {
 /**
  * Return all bullet_points of meeting.
  *
- * @param $meeting_nid
+ * @param int $meeting_nid
+ *   Meeting ID.
  *
- * @return array
+ * @return mixed
+ *   Array which contain all bullet_points of meeting.
  */
 function _os2dagsorden_statistics_get_bullet_points($meeting_nid) {
   $bullet_points_list = array('all' => t('All'));
@@ -567,9 +635,11 @@ function _os2dagsorden_statistics_get_bullet_points($meeting_nid) {
 /**
  * Return all bpa of bullet point.
  *
- * @param $bullet_point_nid
+ * @param int $bullet_point_nid
+ *   Bullet point ID.
  *
- * @return array
+ * @return mixed
+ *   Array which contain all bpa of bullet point.
  */
 function _os2dagsorden_statistics_get_bpa($bullet_point_nid) {
   $bpa_list = array('all' => t('All'));
@@ -587,9 +657,11 @@ function _os2dagsorden_statistics_get_bpa($bullet_point_nid) {
 /**
  * Returns list of committees that are active.
  *
- * @param $vocabulary
+ * @param string $vocabulary
+ *   Taxonomy vocabulary name.
  *
- * @return array
+ * @return mixed
+ *   Array of committees that are active.
  */
 function _os2dagsorden_statistics_get_all_commitees($vocabulary) {
   $vocabulary = taxonomy_vocabulary_machine_name_load($vocabulary);
@@ -613,20 +685,30 @@ function _os2dagsorden_statistics_get_all_commitees($vocabulary) {
 /**
  * Advanced statistics for node view.
  *
- * @param $form
- * @param $form_state
- * @param $nid
- * @param $date_from
- * @param $date_to
+ * @param mixed $form
+ *   The search form.
+ * @param mixed $form_state
+ *   The state of form.
+ * @param int $nid
+ *   Node id.
+ * @param string $date_from
+ *   Start date.
+ * @param string $date_to
+ *   End date.
  *
  * @return mixed
+ *   The search form.
  */
 function os2dagsorden_statistics_content_views_node_statistic_form($form, $form_state, $nid, $date_from, $date_to) {
   drupal_set_title(t('Udvidet statistik på brug af OS2dagsorden'));
   $headers = array(
     'Title' => array('data' => t('Title')),
     'User' => array('data' => t('User'), 'field' => 'u.name'),
-    'Views' => array('data' => t('Views count'), 'field' => 'views_count', 'sort' => 'desc'),
+    'Views' => array(
+      'data' => t('Views count'),
+      'field' => 'views_count',
+      'sort' => 'desc'
+      ),
   );
 
   $form['search'] = array(
@@ -703,10 +785,12 @@ function os2dagsorden_statistics_content_views_node_statistic_form($form, $form_
 }
 
 /**
- * Form Submit method.
+ * Implements hook_form_submit for views_node_statistic_form.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The search form.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function os2dagsorden_statistics_content_views_node_statistic_form_submit($form, &$form_state) {
   $values = $form_state['input'];

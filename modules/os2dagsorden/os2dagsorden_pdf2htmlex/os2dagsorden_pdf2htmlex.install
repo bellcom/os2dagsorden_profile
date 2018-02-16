@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Os2dagsorden_adlib_api.
+ * Os2dagsorden_pdf2htmlex.
  *
  * PHP version 5
  *
@@ -17,7 +17,8 @@
 /**
  * Creates a table in the database that will controll the workflow of the module.
  *
- * @return created schema
+ * @return mixed
+ *   Created schema.
  */
 function os2dagsorden_pdf2htmlex_schema() {
   $schema['os2dagsorden_pdf2htmlex_files'] = array(

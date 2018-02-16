@@ -2,14 +2,16 @@
 
 /**
  * @file
+ * Code for os2web_print_send_to_friend
  */
 
 /**
  * Creates a light version of the bullet point for printing.
  *
  * @param int $bullet_point_id
- *   bullet point id.
+ *   Bullet point id.
  * @param bool $show_commitee
+ *   TRUE if commetee must be shown, otherwise FALSE.
  */
 function os2web_print_send_to_friend_print_bullet_point($meeting_id, $bullet_point_id, $show_commitee = TRUE) {
   module_load_include('inc', 'os2dagsorden_meeting_views', 'os2dagsorden_meeting_views_common_fields');
@@ -55,9 +57,11 @@ function os2web_print_send_to_friend_print_bullet_point($meeting_id, $bullet_poi
 /**
  * Returns a list of files that are associated with the provided bullet point.
  *
- * @param $bullet_point_id
+ * @param int $bullet_point_id
+ *   Bullet point ID.
  *
- * @return array of files
+ * @return mixed
+ *   Array of files.
  */
 function os2web_print_send_to_friend_print_bullet_point_attachments($bullet_point_id) {
   $bullet_point = node_load($bullet_point_id);
@@ -90,9 +94,9 @@ function os2web_print_send_to_friend_print_bullet_point_attachments($bullet_poin
  * Creates a form that allows to send the content of the bullet point to an email addess.
  *
  * @param int $meeting_id
- *   meeting id.
+ *   Meeting id.
  * @param int $bullet_point_id
- *   bullet point id.
+ *   Bullet point id.
  */
 function os2web_print_send_to_friend_send_to_friend_form($meeting_id, $bullet_point_id) {
   // Adding css that tweaks the elements for the modal window.
@@ -123,9 +127,9 @@ function os2web_print_send_to_friend_send_to_friend_form($meeting_id, $bullet_po
  * Does the actual sending to the provided email.
  *
  * @param int $bullet_point_id
- *   bullet point id.
- *
- * @patam string $email           email
+ *   Bullet point id.
+ * @param string $email           
+ *   Email.
  */
 function os2web_print_send_to_friend_send_to_friend($meeting_id, $bullet_point_id) {
   global $user;
@@ -172,9 +176,12 @@ function os2web_print_send_to_friend_send_to_friend($meeting_id, $bullet_point_i
 /**
  * Implements hook_mail().
  *
- * @param $key
- * @param $message
- * @param $params
+ * @param string $key
+ *   Mail key.
+ * @param mixed $message
+ *   Message array.
+ * @param mixed $params
+ *   Parameters array.
  */
 function os2web_print_send_to_friend_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];

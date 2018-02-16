@@ -26,6 +26,7 @@ define('MIN_PDF2HTMLEX_VERSION', '0.6');
  * Implements hook_menu().
  *
  * @return array
+ *   Items.
  */
 function os2dagsorden_pdf2htmlex_menu() {
   $items = array();
@@ -37,7 +38,7 @@ function os2dagsorden_pdf2htmlex_menu() {
 
   $items['admin/reports/pdf2htmlex'] = array(
     'title' => 'PDF to HTML',
-    'description' => t("PDF to HTML convertion files and statuses."),
+    'description' => "PDF to HTML convertion files and statuses.",
     'page callback' => 'os2dagsorden_pdf2htmlex_report',
     'access arguments' => array('administer content'),
   );
@@ -49,6 +50,7 @@ function os2dagsorden_pdf2htmlex_menu() {
  * Report page.
  *
  * @return mixed
+ *   Report comnetnt
  */
 function os2dagsorden_pdf2htmlex_report() {
   /*
@@ -95,7 +97,14 @@ function os2dagsorden_pdf2htmlex_report() {
     );
   }
   else {
-    $headers = array('File entry fid', 'Destination nid', 'File name', 'HTML path', 'Status', '');
+    $headers = array(
+      'File entry fid',
+      'Destination nid',
+      'File name',
+      'HTML path',
+      'Status',
+      ''
+      );
     $rows = array();
 
     foreach ($result as $row) {
@@ -125,6 +134,7 @@ function os2dagsorden_pdf2htmlex_report() {
  * Starts the convertsion and prints the debug info, userful for quick debugging.
  *
  * @return string
+ *   Debug info.
  */
 function os2dagsorden_pdf2htmlex_do_convert() {
   global $debug_info;
@@ -132,26 +142,26 @@ function os2dagsorden_pdf2htmlex_do_convert() {
   return '<div><textarea cols="150" rows=50>' . print_r($debug_info, 1) . '</textarea>';
 
   // Reschedule all
-  //     $nodes = entity_load('node', FALSE, array('type' => 'os2web_meetings_bullet_attach'));
-  //     foreach ($nodes as $node){
-  //       if (!empty($node->field_os2web_meetings_bpa_file)){
+  // $nodes = entity_load('node', FALSE, array('type' => 'os2web_meetings_bullet_attach'));
+  // foreach ($nodes as $node){
+  // if (!empty($node->field_os2web_meetings_bpa_file)){
   // print_r($node->nid . ' ' . $node->field_os2web_meetings_bpa_file['und'][0]['fid']);
   // $file = file_load($node->field_os2web_meetings_bpa_file['und'][0]['fid']);
   // if (strcmp($file->filemime,'application/pdf') == 0){
   // os2dagsorden_pdf2htmlex_schedule($node->field_os2web_meetings_bpa_file['und'][0]['fid'], $node->nid);
   // print_r("<br/>");
   // }
-  //       }
-  //     }.
+  // }
+  // }.
 }
 
 /**
  * Schedules the future convertion.
  *
  * @param int $fid
- *   file id.
+ *   File id.
  * @param int $did
- *   node id.
+ *   Node id.
  */
 function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
   try {
@@ -173,27 +183,31 @@ function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
 /**
  * Implement hook_cronapi.
  *
- * @param $op
- * @param null $job
+ * @param string $op
+ *   Operation.
+ * @param mixed $job
+ *   Job.
  *
- * @return array
+ * @return mixed
+ *   Cron api array.
  */
 function os2dagsorden_pdf2htmlex_cronapi($op, $job = NULL) {
   switch ($op) {
     case 'list':
-      return array('os2dagsorden_pdf2htmlex_cron' => t('Converts PDF files to HTML'));
+      return array(
+        'os2dagsorden_pdf2htmlex_cron' => t('Converts PDF files to HTML')
+        );
   }
 }
 
 /**
  * Cron implementation.
- * Goes through the entries in database table, converts the new records,
- * also updates the destination node with the html taken from converted file.
+ *
+ * Goes through the entries in database table, converts the new records, also updates the destination node with the html taken from converted file.
+ *
  * When node is updated, the database entry progress field is changed to Complete.
  *
  * Also calls function to update meeting status.
- *
- * @return none
  */
 function os2dagsorden_pdf2htmlex_cron() {
   setlocale(LC_CTYPE, "en_US.UTF-8");
@@ -299,9 +313,10 @@ function os2dagsorden_pdf2htmlex_cron() {
  * Calculate the amount of the pages in HTML file.
  *
  * @param string $html
- *   html code.
+ *   Html code.
  *
- * @return page amount
+ * @return int
+ *   Page amount.
  */
 function _os2dagsorden_pdf2htmlex_calc_page_amount($html) {
   ini_set('max_execution_time', 0);
@@ -327,13 +342,15 @@ function _os2dagsorden_pdf2htmlex_calc_page_amount($html) {
 }
 
 /**
- * Improvment of the HTML code, produced by pdf2htmlEX
+ * Improvment of the HTML code, produced by pdf2htmlEX.
+ *
  * At the moment only removes the empty paragraph tags.
  *
  * @param string $data
- *   html code.
+ *   HTML code.
  *
- * @return data
+ * @return string
+ *   Improved HTML code.
  */
 function _os2dagsorden_pdf2htmlex_improve_html($data) {
   // Removing unneeded paragraphs.
@@ -352,14 +369,13 @@ function _os2dagsorden_pdf2htmlex_improve_html($data) {
 
 /**
  * Call to console pdf2htmlEX programm ro convert PDF to html.
+ *
  * Updates the record progress to Converted on success, and file_not_found is the file is missing.
  *
  * @param int $fid
- *   file id.
+ *   File id.
  * @param int $did
- *   node id.
- *
- * @return none
+ *   Node id.
  */
 function os2dagsorden_pdf2htmlex_convert($fid, $did) {
   // Deleting entry if the did is not pointing anywhere.
@@ -461,15 +477,16 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
 }
 
 /**
- * Changes the status of the parent meeting of the given bullet point attachment to Dagsorden+/Referat+
- * if all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
+ * Changes the status of the parent meeting of the given bullet point attachment to Dagsorden+/Referat+.
+ *
+ * If all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
+ *
  * Does that by checking if all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
  *
- * @author Stanislav Kutasevits <stan@bellcom.dk>
  * @param string $node
- *   bullet points attachment.
+ *   Bullet points attachment.
  *
- * @return TRUE or false
+ * @author Stanislav Kutasevits <stan@bellcom.dk>
  */
 function _os2dagsorden_pdf2htmlex_set_status_published_plus($node) {
   // Getting corresponding bullet point.
@@ -516,15 +533,16 @@ function _os2dagsorden_pdf2htmlex_set_status_published_plus($node) {
  * Is used in the places where only preview of the document is shown.
  *
  * @param string $html
- *   html.
+ *   HTML.
  * @param int $meeting_id
- *   nid of the meeting.
+ *   Nid of the meeting.
  * @param int $bullet_point_id
- *   nid of the bullet point.
+ *   Nid of the bullet point.
  * @param int $bilag_id
- *   nid of the bullet point attachment.
+ *   Nid of the bullet point attachment.
  *
- * @return html with selected pages left
+ * @return string
+ *   HTML with selected pages left.
  */
 function os2dagsorden_pdf2htmlex_print_first_page($html, $meeting_id, $bullet_point_id, $bilag_id) {
   $doc = new DOMDocument();
@@ -578,13 +596,14 @@ function os2dagsorden_pdf2htmlex_print_first_page($html, $meeting_id, $bullet_po
  * Is used in the places where only preview of the document is shown.
  *
  * @param string $html
- *   html.
+ *   HTML.
  * @param int $startPage
- *   start page number (incl)
+ *   Start page number (incl).
  * @param int $endPage
- *   end page number (incl)
+ *   End page number (incl).
  *
- * @return html with selected pages left
+ * @return string
+ *   HTML with selected pages left.
  */
 function os2dagsorden_pdf2htmlex_hide_unused_pages($html, $startPage, $endPage) {
   $doc = new DOMDocument();
@@ -628,7 +647,7 @@ function os2dagsorden_pdf2htmlex_hide_unused_pages($html, $startPage, $endPage) 
  * Schedules the future pdf convertion for bullet point attachments files.
  *
  * @param int $fid
- *   file id.
+ *   File id.
  */
 function os2dagsorden_pdf2htmlex_schedule_if_bpa($fid) {
   $query = new EntityFieldQuery();

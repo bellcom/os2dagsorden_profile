@@ -2,12 +2,17 @@
 
 /**
  * @file
- */
-
-/**
+ * Os2web_audit_log.
  *
  * @author Stanislav Kutasevits <stan@bellcom.dk>
  * @copyright Bellcom Open Source aps.
+ */
+
+/**
+ * Creates a table in the database that will controll the workflow of the module.
+ *
+ * @return mixed
+ *   Created schema.
  */
 function os2web_audit_log_schema() {
   $schema['os2web_audit_log'] = array(

@@ -19,7 +19,8 @@ include_once 'os2dagsorden_settings.features.inc';
 /**
  * Implementation of hook_menu()
  *
- * @return array - list of links
+ * @return mixed
+ *   Array - list of links.
  */
 function os2dagsorden_settings_menu() {
   $items['admin/config/os2dagsorden'] = array(
@@ -256,6 +257,7 @@ function os2dagsorden_settings_flush_calendar_preferences() {
  * Helper function for committee autocomplete.
  *
  * @param string $string
+ *   Search string.
  */
 function os2dagsorden_settings_committee_autocomplete_callback($string = '') {
   $vid = db_select('taxonomy_vocabulary', 'tv')
@@ -276,9 +278,11 @@ function os2dagsorden_settings_committee_autocomplete_callback($string = '') {
 
 /**
  * Implement hook_views_pre_render().
+ *
  * Alters the view title (block titles) - by using the values from the settings.
  *
- * @param $view
+ * @param object &$view
+ *   The view object.
  */
 function os2dagsorden_settings_views_pre_render(&$view) {
   if ($view->name == 'user_committee') {
@@ -290,11 +294,15 @@ function os2dagsorden_settings_views_pre_render(&$view) {
 
 /**
  * Implements hook_views_pre_view().
+ *
  * Alters various texts - by using the values from the settings.
  *
- * @param $view
- * @param $display_id
- * @param $args
+ * @param object $view
+ *   The view object.
+ * @param string &$display_id
+ *   The current display ID.
+ * @param mixed &$args
+ *   The array of arguments.
  */
 function os2dagsorden_settings_views_pre_view(&$view, &$display_id, &$args) {
   if ($view->name == 'seneste_8_m_der_i_de_st_ende_politiske_udvalg_') {
@@ -366,10 +374,13 @@ function os2dagsorden_settings_views_pre_view(&$view, &$display_id, &$args) {
 /**
  * Helper function, which creates ini file based on the provided associative array.
  *
- * @param $assoc_arr
+ * @param mixed $assoc_arr
+ *   The associative array.
  * @param bool $has_sections
+ *   The has_section flag.
  *
  * @return string
+ *   The content of INI file.
  */
 function os2dagsorden_settings_write_ini_file($assoc_arr, $has_sections = FALSE) {
   $content = "";
@@ -412,11 +423,15 @@ function os2dagsorden_settings_write_ini_file($assoc_arr, $has_sections = FALSE)
 
 /**
  * Implements hook_form_alter().
- * does various modifications to the custom forms based on the os2dagsorden settings state.
  *
- * @param $form
- * @param $form_state
- * @param $form_id
+ * Does various modifications to the custom forms based on the os2dagsorden settings state.
+ *
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of form.
+ * @param string $form_id
+ *   The ID of the form.
  */
 function os2dagsorden_settings_form_alter(&$form, &$form_state, $form_id) {
   if ($form['#id'] == 'views-exposed-form-meetings-search-page') {
@@ -456,8 +471,10 @@ function os2dagsorden_settings_form_alter(&$form, &$form_state, $form_id) {
 /**
  * Form submit function that adds/removes quick guide file from/to file usage table.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function os2dagsorden_settings_guide_file_lock($form, &$form_state) {
   if (isset($form_state['values']['quick_guide_upload_fid']) && !empty($form_state['values']['quick_guide_upload_fid'])) {
@@ -484,10 +501,13 @@ function os2dagsorden_settings_guide_file_lock($form, &$form_state) {
 
 /**
  * Implements hook_block_view_alter().
+ *
  * Alters various texts - by using the values from the settings.
  *
- * @param $data
- * @param $block
+ * @param mixed $data
+ *   The data array.
+ * @param mixed $block
+ *   The block object.
  */
 function os2dagsorden_settings_block_view_alter(&$data, $block) {
   switch ($block->delta) {
@@ -531,7 +551,8 @@ function os2dagsorden_settings_block_view_alter(&$data, $block) {
 /**
  * Helper function that returns a list of active committees from the settings.
  *
- * @return array
+ * @return mixed
+ *   Array of of active committees list.
  */
 function os2dagsorden_settings_get_active_committees() {
   $vid = db_select('taxonomy_vocabulary', 'tv')
@@ -556,7 +577,8 @@ function os2dagsorden_settings_get_active_committees() {
 /**
  * Helper functions that returns the subid of the committees that are set to be imported.
  *
- * @return array
+ * @return mixed
+ *   The subid of the committees that are set to be imported.
  */
 function os2dagsorden_settings_get_import_committees_sub_id() {
   $vid = db_select('taxonomy_vocabulary', 'tv')

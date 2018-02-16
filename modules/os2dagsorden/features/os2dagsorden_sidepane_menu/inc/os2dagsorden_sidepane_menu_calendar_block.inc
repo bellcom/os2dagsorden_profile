@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Code for the OS2Dagsorden sidepane menu - calendar block
+ * Code for the OS2Dagsorden sidepane menu - calendar block.
  */
 
 /**

@@ -12,11 +12,12 @@ include_once DRUPAL_ROOT . '/includes/install.inc';
  * Implements hook_menu().
  *
  * @return mixed
+ *   List of links.
  */
 function os2dagsorden_updatedb_menu() {
   $items['admin/updatedb'] = array(
     'title' => 'OS2dagsorden update DB',
-    'description' => t('Choose the version to run all the hook_update_N() functions'),
+    'description' => 'Choose the version to run all the hook_update_N() functions',
     'access arguments' => array('administer os2web'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2dagsorden_updatedb_setting_form'),
@@ -29,10 +30,13 @@ function os2dagsorden_updatedb_menu() {
 /**
  * Setting form.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of form.
  *
  * @return mixed
+ *   The settings form.
  */
 function os2dagsorden_updatedb_setting_form($form, $form_state) {
   $info_path = drupal_get_path('profile', 'os2dagsorden') . '/os2dagsorden.info';
@@ -72,10 +76,13 @@ function os2dagsorden_updatedb_setting_form($form, $form_state) {
 /**
  * Check if system requires any updates.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of form.
  *
- * @return array
+ * @return mixed
+ *   List of updates.
  */
 function os2dagsorden_updatedb_check($form, &$form_state) {
   if ($form_state['values']['os2dagsorden_update_version'] == 'no version') {
@@ -144,10 +151,13 @@ function os2dagsorden_updatedb_check($form, &$form_state) {
 /**
  * Runs all the pending updates.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of form.
  *
  * @return mixed
+ *   The settings form.
  */
 function os2dagsorden_updatedb_run($form, &$form_state) {
   if ($form_state['values']['os2dagsorden_update_version'] == 'no version') {
@@ -180,9 +190,11 @@ function os2dagsorden_updatedb_run($form, &$form_state) {
 /**
  * Helper function to get the module type.
  *
- * @param $module
+ * @param string $module
+ *   Module name.
  *
- * @return mixed
+ * @return string
+ *   Module type.
  */
 function os2dagsorden_updatedb_get_module_type($module) {
   $record = db_select('system', 's')

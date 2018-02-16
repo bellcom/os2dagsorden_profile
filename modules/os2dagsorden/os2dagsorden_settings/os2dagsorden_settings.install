@@ -16,8 +16,6 @@
 
 /**
  * Implementation of module uninstall. Resets the variables.
- *
- * @return array of links.
  */
 function os2dagsorden_settings_uninstall() {
   variable_del('os2dagsorden_pws_v_meetings_url');

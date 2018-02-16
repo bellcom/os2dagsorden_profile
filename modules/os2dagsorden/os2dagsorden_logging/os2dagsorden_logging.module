@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Code for the OS2Dagsorden Logging.
  */
 
 include_once 'os2dagsorden_logging.features.inc';
@@ -29,7 +30,7 @@ function os2dagsorden_logging_monolog_channel_info() {
 function os2dagsorden_logging_menu() {
   $items['admin/config/development/monolog/os2dagsorden_logging_settings'] = array(
     'title' => 'Os2dagsorden Logging',
-    'description' => t('Configure watchlist for specific watchdog log messages.'),
+    'description' => 'Configure watchlist for specific watchdog log messages.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2dagsorden_logging_settings_settings_form'),
     'access arguments' => array('administer os2web'),
@@ -42,9 +43,11 @@ function os2dagsorden_logging_menu() {
 
 /**
  * Implements hook_watchdog().
+ *
  * Makes sure that watchdog commands end up rerouted to monolog.
  *
  * @param array $log_entry
+ *   The log entry array.
  */
 function os2dagsorden_logging_watchdog(array $log_entry) {
   try {
@@ -79,8 +82,7 @@ function os2dagsorden_logging_watchdog(array $log_entry) {
 }
 
 /**
- * Ensure that required subsystems and modules are loaded if watchdog messages
- * are logged prior to a full Drupal bootstrap.
+ * Ensure that required subsystems and modules are loaded if watchdog messages are logged prior to a full Drupal bootstrap.
  *
  * @see _drupal_bootstrap_full()
  * @see http://drupal.org/node/1997462
@@ -118,6 +120,7 @@ function os2dagsorden_logging_bootstrap() {
  * Returns the selected event contexts.
  *
  * @return array
+ *   Selected event context
  */
 function os2dagsorden_logging_get_contexts() {
   static $contexts = array();
@@ -157,8 +160,9 @@ function os2dagsorden_logging_map_severity_level($level) {
 }
 
 /**
- * Deletes entries from the database table os2web_print_send_to_friend_log, which are older than the certain number
- * of days - 100 days is default.
+ * Deletes entries from the database table os2web_print_send_to_friend_log, which are older than the certain number of days.
+ *
+ * By default - 100 days.
  */
 function os2dagsorden_logging_database_log_clear() {
   $time_limit = strtotime('-' . variable_get('os2dagsorden_logging_day_limit', 100) . ' days');
@@ -179,49 +183,17 @@ function os2dagsorden_logging_cron() {
 /**
  * Implements hook_cronapi().
  *
- * @param $op
- * @param null $job
+ * @param string $op
+ *   Operation.
+ * @param mixed $job
+ *   Job.
  *
- * @return array
+ * @return mixed
+ *   Cron api array.
  */
 function os2dagsorden_logging_cronapi($op, $job = NULL) {
   switch ($op) {
     case 'list':
       return array('os2dagsorden_logging_cron' => t('Remove expired log messages and flood control events'));
   }
-}
-
-/**
- * Implements hook_requirements().
- */
-function os2dagsorden_logging_requirements($phase) {
-  if ($phase !== 'runtime') {
-    return array();
-  }
-  $t = get_t();
-  $channel_info = monolog_channel_info_load_all();
-  foreach ($channel_info as $channel_name => $info) {
-    $profile_info = (monolog_profile_load($info['default profile']));
-    if (isset($profile_info->options['handlers']) && is_array($profile_info->options['handlers'])) {
-      foreach ($profile_info->options['handlers'] as $handler_name => $options) {
-        if ($handler_name == 'rotating_file_handler') {
-          $requirements['os2dagsorden_logging_log_dir_' . $channel_name] = array(
-            'title' => $t('OS2Dagsorden Logging'),
-            'value' => $t('Log file directory'),
-          );
-          if (!(is_dir(drupal_realpath(dirname($options['filepath']))) && is_writable(drupal_realpath(dirname($options['filepath']))))) {
-            $requirements['os2dagsorden_logging_log_dir_' . $channel_name]['severity'] = REQUIREMENT_ERROR;
-            $requirements['os2dagsorden_logging_log_dir_' . $channel_name]['description'] = t('Channel: %channel. Directory for log files <b>%path</b> is not exists or not writable.',
-              array('%channel' => $channel_name, '%path' => dirname($options['filepath'])));
-          }
-          else {
-            $requirements['os2dagsorden_logging_log_dir_' . $channel_name]['severity'] = REQUIREMENT_OK;
-            $requirements['os2dagsorden_logging_log_dir_' . $channel_name]['description'] = t('Channel: %channel. Directory for log files <b>%path</b> is  exists and writable.',
-              array('%channel' => $channel_name, '%path' => dirname($options['filepath'])));
-          }
-        }
-      }
-    }
-  }
-  return $requirements;
 }

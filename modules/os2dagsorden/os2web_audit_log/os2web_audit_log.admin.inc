@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Code for OS2Web audit log admin.
  *
  * @author Stanislav Kutasevits <stan@bellcom.dk>
  * @copyright Bellcom Open Source aps.
@@ -286,8 +287,10 @@ function os2web_audit_log_overview_page_form($form, $form_state) {
 /**
  * Form submit, set the form_state rebuild.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of form.
  */
 function os2web_audit_log_overview_page_form_submit($form, &$form_state) {
   $form_state['rebuild'] = TRUE;

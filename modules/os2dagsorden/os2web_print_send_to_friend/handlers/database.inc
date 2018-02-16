@@ -11,6 +11,7 @@ use Monolog\Handler\MySQLHandler;
  * Monolog loader callback; Loads a MySQLHandler handler.
  *
  * @return HandlerInterface
+ *   Instance of HandlerInterface.
  */
 function os2web_print_send_to_friend_handler_loader($options) {
 
