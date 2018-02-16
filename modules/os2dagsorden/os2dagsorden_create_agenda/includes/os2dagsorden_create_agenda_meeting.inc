@@ -16,12 +16,13 @@
  /**
   * Generates the form for meeting creating/modifying.
   *
-  * @param $form
-  *   the form to be created
-  * @param $form_state
-  *   the current state of the form
+  * @param mixed $form
+  *   The form to be created.
+  * @param mixed $form_state
+  *   The current state of the form.
   *
-  * @return $form the created form
+  * @return mixed
+  *   The created form.
   */
 function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
   if (!empty($form_state['page_num']) && $form_state['page_num'] == 2) {
@@ -229,10 +230,10 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
 /**
  * Callback for deleting bullet point.
  *
- * @param $form
- *   the form
- * @param $form_state
- *   the current state of the form
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
  */
 function os2dagsorden_create_agenda_bullet_point_delete_ajax($form, $form_state) {
   return $form['agenda'];
@@ -241,12 +242,13 @@ function os2dagsorden_create_agenda_bullet_point_delete_ajax($form, $form_state)
 /**
  * Saves the meeting - either by creating new or modifying the existing.
  *
- * @param $form
- *   the form
- * @param $form_state
- *   the current state of the form
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
  *
- * @return $node meeting
+ * @return object
+ *   the meeting node.
  */
 function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
   $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
@@ -302,12 +304,10 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
 /**
  * Helper functions, meeting form submit. Calls meeting save and redirects to the calendar view.
  *
- * @param $form
- *   the form
- * @param $form_state
- *   the current state of the form
- *
- * @return none
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
  */
 function os2dagsorden_create_agenda_meeting_submit($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_meeting($form, $form_state);
@@ -321,10 +321,10 @@ function os2dagsorden_create_agenda_meeting_submit($form, &$form_state) {
 /**
  * Calls os2dagsorden_create_agenda_save_meeting and redirects to bullet point creation/modification page.
  *
- * @param $bullet_point_id
- *   int id of the bullet point
- * @param $bpa_id
- *   int id of the bullet point attachment
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
  */
 function os2dagsorden_create_agenda_meeting_submit_add_edit_bullet_point($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_meeting($form, $form_state);
@@ -340,12 +340,10 @@ function os2dagsorden_create_agenda_meeting_submit_add_edit_bullet_point($form, 
 /**
  * Helper functions to delete bullet point.
  *
- * @param $form
- *   the form
- * @param $form_state
- *   the current state of the form
- *
- * @return none
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
  */
 function os2dagsorden_create_agenda_meeting_submit_delete_bullet_point($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_meeting($form, $form_state);
@@ -362,12 +360,10 @@ function os2dagsorden_create_agenda_meeting_submit_delete_bullet_point($form, &$
 /**
  * Removes the bullet point from the meeting.
  *
- * @param $bullet_point_id
- *   id of the bullet point
- * @param $bpa_id
- *   id of the bullet point attachment
- *
- * @return $meeting meeting
+ * @param int $meeting_id
+ *   ID of the meeting.
+ * @param int $bullet_point_id
+ *   ID of the bullet point.
  */
 function os2dagsorden_create_agenda_remove_bullet_point_from_meeting($meeting_id, $bullet_point_id) {
   $meeting = node_load($meeting_id);

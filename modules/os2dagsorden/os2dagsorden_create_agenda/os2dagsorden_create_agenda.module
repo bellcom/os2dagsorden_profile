@@ -22,7 +22,8 @@ require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2
 /**
  * Implementation of hook_menu.
  *
- * @return list of links
+ * @return mixed
+ *   List of links.
  */
 function os2dagsorden_create_agenda_menu() {
   $items = array();
@@ -80,10 +81,8 @@ function os2dagsorden_create_agenda_menu() {
 /**
  * Helper function, allows the menu hooks to be redirected to the correct links.
  *
- * @param int $meeing_id
- *   id of the meeting_id.
- *
- * @return none
+ * @param int $meeting_id
+ *   ID of the meeting_id.
  */
 function _os2dagsorden_create_agenda_redirect($meeting_id = NULL) {
   if (!$meeting_id) {
@@ -97,10 +96,8 @@ function _os2dagsorden_create_agenda_redirect($meeting_id = NULL) {
 /**
  * Helper function, allows the menu hooks to be redirected to the correct links.
  *
- * @param int $meeing_id
- *   id of the meeting_id.
- *
- * @return none
+ * @param int $meeting_id
+ *   ID of the meeting_id.
  */
 function _os2dagsorden_create_agenda_simple_redirect($meeting_id = NULL) {
   if (!$meeting_id) {
@@ -114,10 +111,11 @@ function _os2dagsorden_create_agenda_simple_redirect($meeting_id = NULL) {
 /**
  * Access callback. Returns the create meeeting form.
  *
- * @param int $meeing_id
- *   id of the meeting.
+ * @param int $meeting_id
+ *   ID of the meeting.
  *
- * @return form
+ * @return mixed
+ *   The meeting form.
  */
 function os2dagsorden_create_agenda_meeting_page($meeting_id = NULL) {
   if ($_GET['simple']) {
@@ -131,10 +129,11 @@ function os2dagsorden_create_agenda_meeting_page($meeting_id = NULL) {
 /**
  * Access callback. Show tab only on meeting pages, and if user has access.
  *
- * @param int $meeing_id
- *   id of the meeting.
+ * @param int $meeting_id
+ *   ID of the meeting.
  *
- * @return true of false
+ * @return bool
+ *   TRUE or FALSE.
  */
 function _os2dagsorden_create_agenda_meeting_access($meeting_id) {
   $node = node_load($meeting_id);

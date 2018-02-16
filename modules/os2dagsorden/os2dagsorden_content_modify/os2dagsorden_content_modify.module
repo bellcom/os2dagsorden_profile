@@ -2,6 +2,9 @@
 
 /**
  * @file
+ * Os2dagsorden content modify module.
+ *
+ * A module that allows to manually add/edit the content like user positions, committee etc.
  */
 
 module_load_include('inc', 'os2dagsorden_content_modify', '/includes/os2dagsorden_content_modify.user');
@@ -10,7 +13,8 @@ module_load_include('inc', 'os2dagsorden_content_modify', '/includes/os2dagsorde
 /**
  * Implementation of hook_menu.
  *
- * @return list of links
+ * @return array
+ *   List of links.
  */
 function os2dagsorden_content_modify_menu() {
   $items = array();
@@ -75,8 +79,6 @@ function os2dagsorden_content_modify_menu() {
 
 /**
  * Helper function, redirects to taxonomy creation page.
- *
- * @return none
  */
 function _os2dagsorden_content_modify_committee() {
   drupal_goto('admin/structure/taxonomy/os2web_meetings_tax_committee');
@@ -84,8 +86,6 @@ function _os2dagsorden_content_modify_committee() {
 
 /**
  * Helper function, redirects to taxonomy user position creation page.
- *
- * @return none
  */
 function _os2dagsorden_content_modify_user_position() {
   drupal_goto('admin/structure/taxonomy/user_position');
@@ -93,8 +93,6 @@ function _os2dagsorden_content_modify_user_position() {
 
 /**
  * Helper function, redirects to taxonomy users edit page.
- *
- * @return none
  */
 function _os2dagsorden_content_modify_users() {
   drupal_goto('admin/people');
@@ -102,9 +100,11 @@ function _os2dagsorden_content_modify_users() {
 
 /**
  * Hook to user operations.
+ *
  * Adds custom user edit page.
  *
- * @return none
+ * @return mixed
+ *   The array of operations.
  */
 function os2dagsorden_content_modify_user_operations() {
   $operations = array(
@@ -118,12 +118,11 @@ function os2dagsorden_content_modify_user_operations() {
 
 /**
  * Redirect for the user edit link from user operation menu.
+ *
  * Redirects to simple edit link.
  *
- * @param $accounts
- *   array array of the user ids.
- *
- * @return none
+ * @param mixed $accounts
+ *   Array of the user ids.
  */
 function _os2dagsorden_content_modify_user_edit_redirect($accounts) {
   $account = array_pop($accounts);
@@ -132,12 +131,14 @@ function _os2dagsorden_content_modify_user_edit_redirect($accounts) {
 
 /**
  * Calls form for user simple edit.
+ *
  * If user has no administer os2web rights, he will be allowed only to edit his own profile.
  *
- * @param $uid
- *   int id of the user to modify.
+ * @param int $uid
+ *   ID of the user to modify.
  *
- * @return form
+ * @return mixed
+ *   The form.
  */
 function _os2dagsorden_content_modify_user_edit_page($uid = NULL) {
   $full_user = os2dagsorden_access_helper_get_user();
@@ -157,10 +158,11 @@ function _os2dagsorden_content_modify_user_edit_page($uid = NULL) {
 /**
  * Callback for users batch edit page.
  *
- * @param $uids
- *   CSV of the user ID's (uid) that will be affected by this batch process
+ * @param mixed $uids
+ *   CSV of the user ID's (uid) that will be affected by this batch process.
  *
- * @return form
+ * @return mixed
+ *   The form.
  */
 function _os2dagsorden_content_modify_user_batch_edit_page($uids) {
   return drupal_get_form('os2dagsorden_content_modify_user_batch_edit_form', $uids);

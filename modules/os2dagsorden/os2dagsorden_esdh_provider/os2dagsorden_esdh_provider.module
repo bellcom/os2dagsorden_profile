@@ -2,20 +2,25 @@
 
 /**
  * @file
+ * Os2dagsorden esdh provider module.
+ *
+ * Adds the functionality to original OS2Web esdh provider module.
  */
 
 /**
  * Creates additional attachment from the raw enlosure.
+ *
  * Also if enclosures has a file in PDF, PDF->HTML conversion is scheduled.
+ *
+ * @param mixed $enclosure
+ *   Raw information about the enclosure.
+ * @param mixed $file
+ *   File object to be attached to the attachment.
  *
  * @access protected
  *
- * @param array $enclosure
- *   raw information about the enclosure.
- * @param mixed $file
- *   file object to be attached to the attachment.
- *
- * @return int  $nid        node id of the created attachment
+ * @return int
+ *   Node id of the created attachment.
  */
 function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
   global $PROCESSING_MEETING_ID, $PROCESSING_BP;
@@ -35,7 +40,12 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
   }
 
   watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] [BPA: !bpa] Initialized BPA import: !title',
-    array('!id' => $PROCESSING_MEETING_ID, '!sysid' => $PROCESSING_BP, '!bpa' => $enclosure['sysid'], '!title' => $node->title), WATCHDOG_INFO);
+    array(
+      '!id' => $PROCESSING_MEETING_ID,
+      '!sysid' => $PROCESSING_BP,
+      '!bpa' => $enclosure['sysid'],
+      '!title' => $node->title
+      ), WATCHDOG_INFO);
 
   if (strlen($node->title) > 254) {
     $node->title = substr($node->title, 0, 254);
@@ -56,7 +66,12 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
   node_submit($node);
   node_save($node);
   watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] [BPA: !bpa] Finished BPA import, nid: !nid',
-    array('!id' => $PROCESSING_MEETING_ID, '!sysid' => $PROCESSING_BP, '!bpa' => $enclosure['sysid'], '!nid' => $node->nid), WATCHDOG_INFO);
+    array(
+      '!id' => $PROCESSING_MEETING_ID,
+      '!sysid' => $PROCESSING_BP,
+      '!bpa' => $enclosure['sysid'],
+      '!nid' => $node->nid
+      ), WATCHDOG_INFO);
 
   // PDF conversion.
   if (module_exists("os2dagsorden_pdf2htmlex")) {
@@ -72,14 +87,12 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
 /**
  * Adds the subid to the committee term, if this subid has not been added there before.
  *
- * @access protected
- *
- * @param term Object $committee_term
- *   committee term object.
+ * @param object $committee_term
+ *   Committee term object.
  * @param int $sub_id
- *   subid to be added.
+ *   Subid to be added.
  *
- * @return none
+ * @access protected
  */
 function os2dagsorden_esdh_provider_committee_add_subid($committee_term, $sub_id) {
   // Check already has this subid.
@@ -103,16 +116,17 @@ function os2dagsorden_esdh_provider_committee_add_subid($committee_term, $sub_id
 /**
  * Checks if there is a meeting analogue imported from SOFD system.
  *
+ * @param object $committee
+ *   Committee term object.
+ * @param string $meeting_start
+ *   Start date of the meeting.
+ * @param string $meeting_finish
+ *   End date of the meeting.
+ *
  * @access protected
  *
- * @param term Object $committee
- *   committee term object.
- * @param string $meeting_start
- *   start date of the meeting.
- * @param string $meeting_finish
- *   end date of the meeting.
- *
- * @return Object     $found_meeting  found meeting, if any, void otherwise
+ * @return object
+ *   Found meeting, if any, void otherwise.
  */
 function os2dagsorden_esdh_provider_find_sofd_meeting($committee, $meeting_start, $meeting_finish) {
   // Getting meeting.
@@ -138,12 +152,13 @@ function os2dagsorden_esdh_provider_find_sofd_meeting($committee, $meeting_start
 /**
  * Adds a number to the bullet point.
  *
- * @param node object $node
- *   bullet point.
+ * @param object $node
+ *   Bullet point.
  * @param int $number
- *   the number to add.
+ *   The number to add.
  *
- * @return Object     $node   updated bullet point
+ * @return Object
+ *   Updated bullet point.
  */
 function os2dagsorden_esdh_provider_bullet_add_number($node, $number) {
   $node->field_os2web_meetings_bul_number[LANGUAGE_NONE][0]['value'] = $number;
@@ -175,10 +190,13 @@ function os2dagsorden_esdh_provider_node_delete($node) {
 /**
  * Appends word "Tillægsdagsorden" to the bullet title if bullet is of type additional dagsorden.
  *
- * @param $node
- * @param $is_additional
+ * @param object $node
+ *   The node object.
+ * @param bool $is_additional
+ *   TRUE or FALSE.
  *
  * @return mixed
+ *   The node object.
  */
 function os2dagsorden_esdh_provider_handle_additional_bullet($node, $is_additional) {
   if ($is_additional) {
@@ -190,10 +208,13 @@ function os2dagsorden_esdh_provider_handle_additional_bullet($node, $is_addition
 /**
  * Appends word "Tillægsdagsorden" to the meeting title if meeting is of type additional dagsorden.
  *
- * @param $node
- * @param $agenda_name
+ * @param object $node
+ *   The node object.
+ * @param string $agenda_name
+ *   The name of agenda.
  *
  * @return mixed
+ *   The node object.
  */
 function os2dagsorden_esdh_provider_handle_additional_meeting($node, $agenda_name) {
   if (stripos($agenda_name, 'tillæg') !== FALSE) {
@@ -207,6 +228,7 @@ function os2dagsorden_esdh_provider_handle_additional_meeting($node, $agenda_nam
  * Return TRUE if closed attachments must be imported.
  *
  * @return bool
+ *   TRUE.
  */
 function os2dagsorden_esdh_provider_import_closed_attachment() {
   return TRUE;
@@ -215,10 +237,13 @@ function os2dagsorden_esdh_provider_import_closed_attachment() {
 /**
  * Assigned meeting's category based on the list of committees provided in the settings.
  *
- * @param $node
- * @param $committee_subid
+ * @param object $node
+ *   The node object.
+ * @param int $committee_subid
+ *   SUB_ID of Commitee.
  *
  * @return mixed
+ *   The node object.
  */
 function os2dagsorden_esdh_provider_assign_meeting_category($node, $committee_subid) {
   $pol_committees = array_map('trim', explode(',', variable_get('os2dagsorden_committee_category_pol', '')));
@@ -237,11 +262,15 @@ function os2dagsorden_esdh_provider_assign_meeting_category($node, $committee_su
 /**
  * Returns the corresponding bullet if exists, bases on the name.
  *
- * @param $title
- * @param $sys_id
- * @param $bullet_nids
+ * @param string $title
+ *   The title of bullet point.
+ * @param int $sys_id
+ *   The SYS_ID.
+ * @param array $bullet_nids
+ *   The array of bullet_points nid.
  *
  * @return mixed
+ *   The bullet point object or NULL.
  */
 function os2dagsorden_esdh_provider_find_corresponding_bullet($title, $sys_id, $bullet_nids) {
   foreach ($bullet_nids as $bullet_nid) {
@@ -259,10 +288,13 @@ function os2dagsorden_esdh_provider_find_corresponding_bullet($title, $sys_id, $
 /**
  * Returns the corresponding attachment if exists, bases on the name and content.
  *
- * @param $bullet_entity
- * @param $attachment_nids
+ * @param mixed $bullet_entity
+ *   The bullet point entity.
+ * @param mixed $attachment_nids
+ *   The array of bullet point attachments nids.
  *
  * @return mixed
+ *   The bullet point attachment node or NULL
  */
 function os2dagsorden_esdh_provider_find_corresponding_attachment($bullet_entity, $attachment_nids) {
   foreach ($attachment_nids as $attachment_nid) {
@@ -278,10 +310,13 @@ function os2dagsorden_esdh_provider_find_corresponding_attachment($bullet_entity
 /**
  * This function will either returns the existing committee or create a new one.
  *
- * @param $sub_id
- * @param $name
+ * @param int $sub_id
+ *   The committee subID.
+ * @param string $name
+ *   The name of commitee.
  *
- * @return $committee term
+ * @return object
+ *   The committee term.
  */
 function osdagsorden_esdh_provider_import_or_return_committee($sub_id, $name) {
   $term = _os2dagsorden_access_helper_get_committee_by_subid_and_name($sub_id, $name);
@@ -304,9 +339,11 @@ function osdagsorden_esdh_provider_import_or_return_committee($sub_id, $name) {
 /**
  * This functions will returns the found bullet point based on provided sysid.
  *
- * @param $sysid
+ * @param int $sysid
+ *   The bullet point sysID.
  *
- * @return $bullet nid
+ * @return int
+ *   The bullet nid.
  */
 function os2dagsorden_esdh_provider_find_bullet_by_sysid($sysid) {
   $query = new EntityFieldQuery();
@@ -323,14 +360,18 @@ function os2dagsorden_esdh_provider_find_bullet_by_sysid($sysid) {
 
 /**
  * This function will try to find an equal bullet point in the additional (tillaægs) agendas.
+ *
  * If the bullet point is found, it is then reassigned to a new meeting and removed from the previous meeting.
+ *
  * Bullet point related information references (e.g. user notes) are also updated.
  *
- * @param $bullet_sysid
- * @param $meeting_nid
- *   nid of the meeting where the bullet point should be reassigned to
+ * @param int $bullet_sysid
+ *   The bullet point sysID.
+ * @param int $meeting_nid
+ *   Nid of the meeting where the bullet point should be reassigned to.
  *
- * @return $bullet found bullet point or null
+ * @return mixed
+ *   The found bullet point or null.
  */
 function os2dagsorden_esdh_provider_find_and_reassign_additional_agenda_bullet($bullet_sysid, $meeting_nid) {
   $add_bullet_nid = os2dagsorden_esdh_provider_find_bullet_by_sysid($bullet_sysid);
@@ -374,10 +415,13 @@ function os2dagsorden_esdh_provider_find_and_reassign_additional_agenda_bullet($
 
 /**
  * Remaps the notes from attachments that are going to be deleted to the new attachments.
+ *
  * That is useful when the attachments are going to be substituted.
  *
- * @param $attachments_to_delete_nids
- * @param $existing_attachments_nids
+ * @param mixed $attachments_to_delete_nids
+ *   The array of nids to delete.
+ * @param mixed $existing_attachments_nids
+ *   The array of existing nids.
  */
 function os2dagsorden_esdh_provider_reassign_notes($attachments_to_delete_nids, $existing_attachments_nids) {
   $attachments_to_delete = node_load_multiple($attachments_to_delete_nids);

@@ -16,12 +16,13 @@
 /**
  * Generates the form for bullet point attachment creating/modifying.
  *
- * @param $form
- *   the form to be created
- * @param $form_state
- *   the current state of the form
+ * @param mixed $form
+ *   The form to be created.
+ * @param mixed $form_state
+ *   The current state of the form.
  *
- * @return $form the created form
+ * @return mixed
+ *   The created form.
  */
 function os2dagsorden_create_agenda_bpa($form, &$form_state) {
   $form[] = array(
@@ -126,15 +127,14 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
 }
 
 /**
- * Custom validation of bullet point attachment form. Validates that only one of the option
- * is chosen  - either file is uploaded or body of the bullet point attachmet is filled.
+ * Custom validation of bullet point attachment form.
  *
- * @param $form
- *   the form
- * @param $form_state
- *   the current state of the form
+ * Validates that only one of the option is chosen  - either file is uploaded or body of the bullet point attachmet is filled.
  *
- * @return none
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
  */
 function os2dagsorden_create_agenda_bpa_validate($form, &$form_state) {
   $input = $form_state['input'];
@@ -148,14 +148,16 @@ function os2dagsorden_create_agenda_bpa_validate($form, &$form_state) {
 
 /**
  * Saves the bullet point attachment - either by creating new or modifying the existing.
+ *
  * Performs call to os2dagsorden_create_agenda_add_bpa_to_bullet_point.
  *
- * @param $form
- *   the form
- * @param $form_state
- *   the current state of the form
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
  *
- * @return $node bullet point attachment
+ * @return object
+ *   Bullet point attachment.
  */
 function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
   $input = $form_state['input'];
@@ -212,12 +214,10 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
 /**
  * Adds the bullet points attachment to the bullet point, if it has not been added before.
  *
- * @param $bullet_point_id
- *   id of the bullet point
- * @param $bpa_id
- *   id of the bullet point attachment
- *
- * @return none
+ * @param int $bullet_point_id
+ *   ID of the bullet point.
+ * @param int $bpa_id
+ *   ID of the bullet point attachment.
  */
 function os2dagsorden_create_agenda_add_bpa_to_bullet_point($bullet_point_id, $bpa_id) {
   $bullet_point = node_load($bullet_point_id);
@@ -236,15 +236,14 @@ function os2dagsorden_create_agenda_add_bpa_to_bullet_point($bullet_point_id, $b
 }
 
 /**
- * Helper functions, bullet point attachment form submit. Calls os2dagsorden_create_agenda_save_bpa
- * returns to the previous page of multiform (bullet point creation/modification).
+ * Helper functions, bullet point attachment form submit.
  *
- * @param $form
- *   the form to be created
- * @param $form_state
- *   the current state of the form
+ * Calls os2dagsorden_create_agenda_save_bpa returns to the previous page of multiform (bullet point creation/modification).
  *
- * @return none
+ * @param mixed $form
+ *   The form to be created.
+ * @param mixed $form_state
+ *   The current state of the form.
  */
 function os2dagsorden_create_agenda_bpa_submit($form, &$form_state) {
   os2dagsorden_create_agenda_save_bpa($form, $form_state);
@@ -256,12 +255,10 @@ function os2dagsorden_create_agenda_bpa_submit($form, &$form_state) {
 /**
  * Helper functions, returns to the previous page of multiform (bullet point creation/modification).
  *
- * @param $form
- *   the form to be created
- * @param $form_state
- *   the current state of the form
- *
- * @return none
+ * @param mixed $form
+ *   The form to be created.
+ * @param mixed $form_state
+ *   The current state of the form.
  */
 function os2dagsorden_create_agenda_bpa_back($form, &$form_state) {
   $form_state['page_num'] = 2;

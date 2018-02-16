@@ -2,12 +2,16 @@
 
 /**
  * @file
+ * Os2dagsorden_admin_suite module.
+ *
+ * Various functions that help to fix the consecuences of some error.
  */
 
 /**
  * Implementation of hook_menu.
  *
- * @return array - list of links
+ * @return array
+ *   List of links.
  */
 function os2dagsorden_admin_suite_menu() {
   $items = array();
@@ -140,7 +144,7 @@ function os2dagsorden_admin_suite_menu() {
 }
 
 /**
- *
+ * Function os2dasorden_admin_suite_add_committee_to_users.
  */
 function os2dasorden_admin_suite_add_committee_to_users() {
   $query = new EntityFieldQuery();
@@ -180,7 +184,7 @@ function os2dasorden_admin_suite_add_committee_to_users() {
 }
 
 /**
- *
+ * Function os2dagsorden_admin_suite_user_remove_org_meetings_category.
  */
 function os2dagsorden_admin_suite_user_remove_org_meetings_category() {
   $query = new EntityFieldQuery();
@@ -256,7 +260,9 @@ function os2dagsorden_admin_suite_user_remove_org_meetings_category() {
 }
 
 /**
+ * Function os2dagsorden_admin_suite_update_meetings_sysid.
  *
+ * Update sysid for old meetings.
  */
 function os2dagsorden_admin_suite_update_meetings_sysid() {
   $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
@@ -345,7 +351,8 @@ function os2dagsorden_admin_suite_update_meetings_sysid() {
 
 /**
  * Function to resave all the meetings.
- * That will update the meetings meta data field (user for the search)
+ *
+ * That will update the meetings meta data field (user for the search).
  */
 function os2dagsorden_admin_suite_resaved_all_meetings() {
   $new_com_id = 521;
@@ -375,7 +382,9 @@ function os2dagsorden_admin_suite_resaved_all_meetings() {
 }
 
 /**
+ * Function os2dagsorden_admin_suite_calculate_damaged_meetings.
  *
+ * Searching for meetings that have references to non-existing nodes.
  */
 function os2dagsorden_admin_suite_calculate_damaged_meetings() {
   $query = new EntityFieldQuery();
@@ -530,8 +539,6 @@ function os2dagsorden_admin_suite_delete_extra_files() {
 
 /**
  * Deletes the files from acadre dir (not xml or pdf) that are not used by dagsorden.
- *
- * @return none
  */
 function os2dagsorden_admin_suite_delete_unused_files() {
   // $acadre_dir =  drupal_realpath("private://");.
@@ -591,8 +598,6 @@ function os2dagsorden_admin_suite_delete_unused_files() {
 
 /**
  * Forces the meeting description files to be converted to pdf.
- *
- * @return none
  */
 function os2dagsorden_admin_suite_force_meeting_description_converting() {
   $nodes = entity_load('node', FALSE, array('type' => 'os2web_meetings_meeting'));
@@ -623,10 +628,7 @@ function os2dagsorden_admin_suite_force_meeting_description_converting() {
 }
 
 /**
- * Updates the meeting statuses to dagsorden/dagsorden+, referat/referat+
- * also sets the right acadre id to the meeting.
- *
- * @return none
+ * Updates the meeting statuses to dagsorden/dagsorden+, referat/referat+ also sets the right acadre id to the meeting.
  */
 function os2dagsorden_admin_suite_update_meeting_status() {
   $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
@@ -720,8 +722,6 @@ function os2dagsorden_admin_suite_update_meeting_status() {
 
 /**
  * Sets the bullet point number from the bullet point title, assuming that title is "Punkt [number] ...].
- *
- * @return none
  */
 function os2dagsorden_admin_suite_set_bullet_point_number() {
   $query = new EntityFieldQuery();
@@ -756,8 +756,6 @@ function os2dagsorden_admin_suite_set_bullet_point_number() {
 
         $bullet_point->title = $new_title;
         $bullet_point->field_os2web_meetings_bul_case['und'][0]['value'] = $case_nr;
-        // If (isset($case_nr) && !empty($case_nr))
-        //    node_save($bullet_point);
       }
     }
   }
@@ -765,10 +763,9 @@ function os2dagsorden_admin_suite_set_bullet_point_number() {
 }
 
 /**
- * Updates the all the files (and the notes they are attached to: either meeting or bullet point attachment)
- * which have url set as 'public://acadre/Files_...' to 'private:///Files...'.
+ * Updates the all the files (and the notes they are attached to.
  *
- * @return none
+ * Either meeting or bullet point attachment) which have url set as 'public://acadre/Files_...' to 'private:///Files...'.
  */
 function os2dagsorden_admin_suite_update_files_path() {
   $files = entity_load('file');
@@ -847,18 +844,19 @@ function os2dagsorden_admin_suite_update_files_path() {
  * Return is a string is starting with some other string.
  *
  * @param string $haystack
- *   where to look.
+ *   Where to look.
  * @param string $needle
- *   what to look for.
+ *   What to look for.
  *
- * @return TRUE of FALSE
+ * @return bool
+ *   TRUE of FALSE.
  */
 function os2dagsorden_admin_suite_starts_with($haystack, $needle) {
   return !strncmp($haystack, $needle, strlen($needle));
 }
 
 /**
- *
+ * Function os2dagsorden_admin_suite_check_dblog.
  */
 function os2dagsorden_admin_suite_check_dblog() {
   watchdog('TEST', 'Unpublished test', WATCHDOG_INFO);
@@ -867,7 +865,9 @@ function os2dagsorden_admin_suite_check_dblog() {
 }
 
 /**
+ * Function os2dagsorden_admin_suite_add_meeting_files.
  *
+ * Added full doc to meetings.
  */
 function os2dagsorden_admin_suite_add_meeting_files() {
   drupal_load('module', 'os2web_esdh_provider');
@@ -912,7 +912,7 @@ function os2dagsorden_admin_suite_add_meeting_files() {
 }
 
 /**
- *
+ * Updated meeting type.
  */
 function os2dagsorden_admin_suite_update_meetings_type() {
   $nodes = entity_load('node', FALSE, array('type' => 'os2web_meetings_meeting'));
@@ -931,7 +931,9 @@ function os2dagsorden_admin_suite_update_meetings_type() {
 }
 
 /**
+ * Function os2dasorden_admin_suite_reschedule_file_adlib.
  *
+ * Reschedule files for adlib convertation.
  */
 function os2dasorden_admin_suite_reschedule_file_adlib() {
   // Getting all bullet_point_attachments.
@@ -962,7 +964,7 @@ function os2dasorden_admin_suite_reschedule_file_adlib() {
 }
 
 /**
- *
+ * Function os2dasorden_admin_suite_just_code.
  */
 function os2dasorden_admin_suite_just_code() {
   $node = node_load(2804);
@@ -972,7 +974,9 @@ function os2dasorden_admin_suite_just_code() {
 }
 
 /**
+ * Function os2dasorden_admin_suite_update_ldap_users.
  *
+ * Updated LDAP users.
  */
 function os2dasorden_admin_suite_update_ldap_users() {
   $ldap_servers = ldap_servers_get_servers(NULL, 'enabled');
@@ -1009,7 +1013,7 @@ function os2dasorden_admin_suite_update_ldap_users() {
 }
 
 /**
- *
+ * Function os2dasorden_admin_suite_update_ldap_users.
  */
 function os2dagsorden_admin_suite_user_forbid_send_closed_bp($val) {
   if (!isset($val)) {

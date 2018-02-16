@@ -1,12 +1,20 @@
 <?php
 
 /**
+ * OS2Dagsorden access helper module tests.
  *
+ * This file includes the defined tests for the OS2Dagsorden access helper module.
+ *
+ * Test of os2dagsorden_access_helper_file_download function.
  */
-class Os2dagsordenAccessHelper_FileDownload_WebTestCase extends Os2dagsordenAccessHelperTest {
+
+/**
+ * Implements of Os2dagsordenAccessHelperFileDownloadWebTestCase class.
+ */
+class Os2dagsordenAccessHelperFileDownloadWebTestCase extends Os2dagsordenAccessHelperTest {
 
   /**
-   *
+   * Implements getInfo.
    */
   public static function getInfo() {
     return array(

@@ -1,16 +1,24 @@
 <?php
 
 /**
+ * OS2Dagsorden access helper module tests.
  *
+ * This file includes the defined tests for the OS2Dagsorden access helper module.
+ *
+ * Test of os2dagsorden_access_helper_check_user_can_see_closed_agenda function.
  */
-class Os2dagsordenAccessHelper_CheckUserCanSeeClosedAgenda_WebTestCase extends Os2dagsordenAccessHelperTest {
+
+/**
+ * Implements of Os2dagsordenAccessHelperCheckUserCanSeeClosedAgendaWebTestCase class.
+ */
+class Os2dagsordenAccessHelperCheckUserCanSeeClosedAgendaWebTestCase extends Os2dagsordenAccessHelperTest {
 
   /**
-   *
+   * Implements of getInfo.
    */
   public static function getInfo() {
     return array(
-      'name' => 'os2dagsorden_access_helper_check_user_can_see_closed_agenda',
+      'name' => 'os2dagsordenAccessHelperCheckUserCanSeeClosedAgenda',
       'description' => 'Test of os2dagsorden_access_helper_check_user_can_see_closed_agenda function',
       'group' => 'os2dagsorden_access_helper',
     );
@@ -19,7 +27,7 @@ class Os2dagsordenAccessHelper_CheckUserCanSeeClosedAgenda_WebTestCase extends O
   /**
    * Member can see closed agenda.
    */
-  public function test_os2dagsorden_access_helper_check_user_can_see_closed_agenda1() {
+  public function testOs2dagsordenAccessHelperCheckUserCanSeeClosedAgenda1() {
     $this->os2dagsordenLogin($this->committee1_member);
     $this->assertTrue(os2dagsorden_access_helper_check_user_can_see_closed_agenda($this->meeting->nid));
     $this->fixSetUp();
@@ -28,7 +36,7 @@ class Os2dagsordenAccessHelper_CheckUserCanSeeClosedAgenda_WebTestCase extends O
   /**
    * Follows+ can see closed agenda.
    */
-  public function test_os2dagsorden_access_helper_check_user_can_see_closed_agenda2() {
+  public function testOs2dagsordenAccessHelperCheckUserCanSeeClosedAgenda2() {
     $this->os2dagsordenLogin($this->committee1_follows_plus);
     $this->assertTrue(os2dagsorden_access_helper_check_user_can_see_closed_agenda($this->meeting->nid));
     $this->fixSetUp();
@@ -37,7 +45,7 @@ class Os2dagsordenAccessHelper_CheckUserCanSeeClosedAgenda_WebTestCase extends O
   /**
    * Follow cannot see closed agenda.
    */
-  public function test_os2dagsorden_access_helper_check_user_can_see_closed_agenda3() {
+  public function testOs2dagsordenAccessHelperCheckUserCanSeeClosedAgenda3() {
     $this->os2dagsordenLogin($this->committee1_follows);
     $this->assertFalse(os2dagsorden_access_helper_check_user_can_see_closed_agenda($this->meeting->nid));
     $this->fixSetUp();
@@ -46,7 +54,7 @@ class Os2dagsordenAccessHelper_CheckUserCanSeeClosedAgenda_WebTestCase extends O
   /**
    * Logged in user, without permission cannot see closed agenda.
    */
-  public function test_os2dagsorden_access_helper_check_user_can_see_closed_agenda4() {
+  public function testOs2dagsordenAccessHelperCheckUserCanSeeClosedAgenda4() {
     $this->os2dagsordenLogin($this->user1);
     $this->assertFalse(os2dagsorden_access_helper_check_user_can_see_closed_agenda($this->meeting->nid));
     $this->fixSetUp();
@@ -55,7 +63,7 @@ class Os2dagsordenAccessHelper_CheckUserCanSeeClosedAgenda_WebTestCase extends O
   /**
    * Anonymous user cannot see closed agenda.
    */
-  public function test_os2dagsorden_access_helper_check_user_can_see_closed_agenda5() {
+  public function testOs2dagsordenAccessHelperCheckUserCanSeeClosedAgenda5() {
     $this->os2dagsordenLogout();
     $this->assertFalse(os2dagsorden_access_helper_check_user_can_see_closed_agenda($this->meeting->nid));
     $this->fixSetUp();

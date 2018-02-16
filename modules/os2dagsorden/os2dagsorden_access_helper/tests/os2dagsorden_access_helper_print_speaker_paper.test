@@ -1,16 +1,24 @@
 <?php
 
 /**
+ * OS2Dagsorden access helper module tests.
  *
+ * This file includes the defined tests for the OS2Dagsorden access helper module.
+ *
+ * Test of os2dagsorden_access_helper_print function.
  */
-class Os2dagsordenAccessHelper_PrintSpeakerPaper_WebTestCase extends Os2dagsordenAccessHelperTest {
+
+/**
+ * Implements of Os2dagsordenAccessHelperPrintSpeakerPaperWebTestCase class.
+ */
+class Os2dagsordenAccessHelperPrintSpeakerPaperWebTestCase extends Os2dagsordenAccessHelperTest {
 
   /**
-   *
+   * Implements of getInfo.
    */
   public static function getInfo() {
     return array(
-      'name' => 'Os2dagsorden_access_helper_print_speaker_paper',
+      'name' => 'os2dagsordenAccessHelperPrintSpeakerPaper',
       'description' => 'Test of os2dagsorden_access_helper_print function',
       'group' => 'os2dagsorden_access_helper',
     );
@@ -19,7 +27,7 @@ class Os2dagsordenAccessHelper_PrintSpeakerPaper_WebTestCase extends Os2dagsorde
   /**
    * Text present on the page for authorized user.
    */
-  public function test_os2dagsorden_access_helper_print_speaker_paper1() {
+  public function testOs2dagsordenAccessHelperPrintSpeakerPaper1() {
     $this->drupalGet('print/bullet-point/' . $this->bp1->nid . '/speaker-paper/' . $this->sp1->nid . '/print');
     $this->assertResponse('200');
 
@@ -33,7 +41,7 @@ class Os2dagsordenAccessHelper_PrintSpeakerPaper_WebTestCase extends Os2dagsorde
   /**
    * Text of other speaker paper (same user) is not present on the page for authorized user.
    */
-  public function test_os2dagsorden_access_helper_print_speaker_paper2() {
+  public function testOs2dagsordenAccessHelperPrintSpeakerPaper2() {
     $this->drupalGet('print/bullet-point/' . $this->bp1->nid . '/speaker-paper/' . $this->sp1->nid . '/print');
     $this->assertResponse('200');
 
@@ -47,7 +55,7 @@ class Os2dagsordenAccessHelper_PrintSpeakerPaper_WebTestCase extends Os2dagsorde
   /**
    * Text of other speaker paper (different user) is not present on the page for authorized user.
    */
-  public function test_os2dagsorden_access_helper_print_speaker_paper3() {
+  public function testOs2dagsordenAccessHelperPrintSpeakerPaper3() {
     $this->drupalGet('print/bullet-point/' . $this->bp1->nid . '/speaker-paper/' . $this->sp1->nid . '/print');
     $this->assertResponse('200');
 
@@ -61,7 +69,7 @@ class Os2dagsordenAccessHelper_PrintSpeakerPaper_WebTestCase extends Os2dagsorde
   /**
    * Text not present on the page without any user logged in.
    */
-  public function test_os2dagsorden_access_helper_print_speaker_paper4() {
+  public function testOs2dagsordenAccessHelperPrintSpeakerPaper4() {
     $this->os2dagsordenLogout();
     $this->drupalGet('print/bullet-point/' . $this->bp1->nid . '/speaker-paper/' . $this->sp1->nid . '/print');
     $this->assertResponse('403');
@@ -76,7 +84,7 @@ class Os2dagsordenAccessHelper_PrintSpeakerPaper_WebTestCase extends Os2dagsorde
   /**
    * Text not present on the page with other user logged in.
    */
-  public function test_os2dagsorden_access_helper_print_speaker_paper5() {
+  public function testOs2dagsordenAccessHelperPrintSpeakerPaper5() {
     $this->os2dagsordenLogin($this->user2);
 
     $this->drupalGet('print/bullet-point/' . $this->bp1->nid . '/speaker-paper/' . $this->sp1->nid . '/print');

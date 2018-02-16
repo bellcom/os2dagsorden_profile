@@ -16,10 +16,11 @@
 /**
  * Add to the form the field both used for simple and full agenda meeting creation.
  *
- * @param $form
- *   the form which should be modified
+ * @param mixed $form
+ *   The form which should be modified.
  *
- * @return $form the form with new field
+ * @return mixed
+ *   The form with new field.
  */
 function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
   $form[] = array(
@@ -130,12 +131,13 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
 /**
  * Fill the general fields of the form with the values from meeting. Both used for simple and full agenda meeting creation.
  *
- * @param $form
- *   the form which should be filled
- * @param $node
- *   the meeting node, where the information should be taken from
+ * @param mixed $form
+ *   The form which should be filled.
+ * @param object $node
+ *   The meeting node, where the information should be taken from.
  *
- * @return $form the form with filled fields
+ * @return mixed
+ *   The form with filled fields.
  */
 function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node) {
   $form['title']['#default_value'] = $node->title;
@@ -184,12 +186,13 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
 /**
  * Populates the meeting node (either new or existing depending on the content) with the information taken from the form.
  *
- * @param $form
- *   the form where information is taken from
- * @param $form_state
- *   the current state of the form
+ * @param mixed $form
+ *   The form where information is taken from.
+ * @param mixed $form_state
+ *   The current state of the form.
  *
- * @return populated but unsaved(!) node
+ * @return object
+ *   Populated but unsaved(!) node.
  */
 function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state) {
   $input = $form_state['input'];

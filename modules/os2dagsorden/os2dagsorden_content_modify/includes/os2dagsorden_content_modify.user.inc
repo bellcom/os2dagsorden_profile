@@ -2,20 +2,23 @@
 
 /**
  * @file
+ * Os2dagsorden_content_modify.user.
  */
 
 /**
  * Generates user edit form and (if uid is not null) loads and sets the parameters.
+ *
  * Depending on the user rights form is either limited (with no right) of full (with administer os2web right).
  *
- * @param $form
- *   mixed the form
- * @param $form_state
- *   mixed the state of the form
- * @param $uid
- *   int   the id of the user to be modified
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The state of the form.
+ * @param int $uid
+ *   The id of the user to be modified.
  *
- * @return form
+ * @return mixed
+ *   The form.
  */
 function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
   $form[] = array(
@@ -112,17 +115,17 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
 }
 
 /**
- * Fills forms with drag and drop controls for manipulating users committees
- * (member of/follows/follows+/follows++ and all committees).
+ * Fils forms with drag and drop controls for manipulating users committees (member of/follows/follows+/follows++ and all committees).
  *
  * If uids is not null, the drag and drops controls will be prefilled with right values.
+ *
  * In case uids contains more than one id (batch edit), then only the committees shared amount
  * all users will be prefilled into the boxes.
  *
- * @param $form
- *   mixed the form
- * @param $uids
- *   array array of uid
+ * @param mixed $form
+ *   The form.
+ * @param mixed $uids
+ *   Array of uid.
  */
 function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uids) {
   $single_or_batch_class = (count($uids) == 1) ? 'single' : 'batch';
@@ -362,10 +365,10 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
 /**
  * Prefills the form with the user information, loads everything except the committees preferences.
  *
- * @param $form
- *   mixed the form
- * @param $uid
- *   int   single uid
+ * @param mixed $form
+ *   The form.
+ * @param int $uid
+ *   Single uid.
  */
 function _os2dagsorden_conten_modify_load_user_fields(&$form, $uid) {
   // Saving for usage in the submit function.
@@ -421,12 +424,10 @@ function _os2dagsorden_conten_modify_load_user_fields(&$form, $uid) {
 /**
  * Submit for user edit form. Updates user profile.
  *
- * @param $form
- *   mixed the form
- * @param $form_state
- *   mixed state of the form
- *
- * @return none
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The state of the form.
  */
 function os2dagsorden_content_modify_user_submit($form, $form_state) {
   $input = $form_state['input'];
@@ -575,9 +576,11 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
 /**
  * Sorting terms alphabetically based on field_os2web_meetings_com_shname.
  *
- * @param array $term_list
+ * @param mixed $term_list
+ *   The list of terms.
  *
- * @return array
+ * @return mixed
+ *   Sorted array of terms.
  */
 function os2dagsorden_content_modify_asort($term_list = array()) {
   $new_array = array();

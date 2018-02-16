@@ -1,16 +1,24 @@
 <?php
 
 /**
+ * OS2Dagsorden access helper module tests.
  *
+ * This file includes the defined tests for the OS2Dagsorden access helper module.
+ *
+ * Test of os2dagsorden_access_helper_meeting_has_speaker_paper function.
  */
-class Os2dagsordenAccessHelper_MeetingHasSpeakerPaper_WebTestCase extends Os2dagsordenAccessHelperTest {
+
+/**
+ * Implements of Os2dagsordenAccessHelperMeetingHasSpeakerPaperWebTestCase class.
+ */
+class Os2dagsordenAccessHelperMeetingHasSpeakerPaperWebTestCase extends Os2dagsordenAccessHelperTest {
 
   /**
-   *
+   * Implements of getInfo.
    */
   public static function getInfo() {
     return array(
-      'name' => 'os2dagsorden_access_helper_meeting_has_speaker_paper',
+      'name' => 'os2dagsordenAccessHelperMeetingHasSpeakerPaper',
       'description' => 'Test of os2dagsorden_access_helper_meeting_has_speaker_paper function',
       'group' => 'os2dagsorden_access_helper',
     );
@@ -19,14 +27,14 @@ class Os2dagsordenAccessHelper_MeetingHasSpeakerPaper_WebTestCase extends Os2dag
   /**
    * Assert meeting has speaker paper.
    */
-  public function test_os2dagsorden_access_helper_meeting_has_speaker_paper1() {
+  public function testOs2dagsordenAccessHelperMeetingHasSpeakerPaper1() {
     $this->assertTrue(os2dagsorden_access_helper_meeting_has_speaker_paper($this->meeting->nid));
   }
 
   /**
    * Assert empty meeting does not have speaker paper.
    */
-  public function test_os2dagsorden_access_helper_meeting_has_speaker_paper2() {
+  public function testOs2dagsordenAccessHelperMeetingHasSpeakerPaper2() {
     $meeting_info = array();
     $meeting_info['type'] = 'os2web_meetings_meeting';
     $meeting_info['title'] = $this->randomName(32);
@@ -38,7 +46,7 @@ class Os2dagsordenAccessHelper_MeetingHasSpeakerPaper_WebTestCase extends Os2dag
   /**
    * Assert empty meeting with bullet points does not have speaker paper.
    */
-  public function test_os2dagsorden_access_helper_meeting_has_speaker_paper3() {
+  public function testOs2dagsordenAccessHelperMeetingHasSpeakerPaper3() {
     $bp_info = array();
     $bp_info['type'] = 'os2web_meetings_bullet';
     $bp_info['title'] = $this->randomName(32);

@@ -16,7 +16,8 @@
 /**
  * Implementation of hook_menu().
  *
- * @return array of links.
+ * @return mixed
+ *   Array of links.
  */
 function os2dagsorden_ical_meetings_export_menu() {
   $items = array();
@@ -48,10 +49,8 @@ function os2dagsorden_ical_meetings_export_menu() {
 /**
  * Serves the meetings in iCal format for the month period.
  *
- * @param data $date
- *   the period from which the meetings should be returned. Date comes in yyyy-mm format.
- *
- * @return the ical formated meetings list.
+ * @param string $date
+ *   The period from which the meetings should be returned. Date comes in yyyy-mm format.
  */
 function _os2dagsorden_ical_meetings_export_month_callback($date) {
   // Extracting the month.
@@ -79,10 +78,8 @@ function _os2dagsorden_ical_meetings_export_month_callback($date) {
 /**
  * Serves the meetings in iCal format for the day period.
  *
- * @param data $date
- *   the period from which the meetings should be returned. Date come in yyyy-mm-dd format.
- *
- * @return the ical formated meetings list.
+ * @param string $date
+ *   The period from which the meetings should be returned. Date come in yyyy-mm-dd format.
  */
 function _os2dagsorden_ical_meetings_export_day_callback($date) {
   // Extracting the day.
@@ -111,10 +108,10 @@ function _os2dagsorden_ical_meetings_export_day_callback($date) {
 /**
  * Serves the meetings in iCal format for the several month period.
  *
- * @param data $date
- *   the period from which the meetings should be returned.
- *
- * @return the ical formated meetings list.
+ * @param int $from_month
+ *   The number of month.
+ * @param int $to_month
+ *   The number of month.
  */
 function _os2dagsorden_ical_meetings_export_month_period_callback($from_month, $to_month) {
   // Current year.
@@ -139,12 +136,10 @@ function _os2dagsorden_ical_meetings_export_month_period_callback($from_month, $
 /**
  * Helper function, composes the ical format from the array of meeting objects.
  *
- * @param array $meetings
- *   array of meetings objects.
+ * @param mixed $meetings
+ *   Array of meetings objects.
  * @param string $name
- *   custom name of the calendar.
- *
- * @return the .ics file with the composed string.
+ *   Custom name of the calendar.
  */
 function _os2dagsorden_ical_meetings_export_make_ical($meetings, $name = 'kalendar') {
   global $base_url;

@@ -2,8 +2,10 @@
 
 /**
  * @file
+ * Os2dagsorden_gs_conversion_resave_all_pdf.
+ *
  * @author: Stanislav Kutasevits, stan@bellcom.dk
- **/
+ */
 
 $time_start = microtime(TRUE);
 print('==========================' . PHP_EOL);

@@ -20,7 +20,8 @@ define('ANNOTATOR_PAGES_PER_VIEW', (IS_IPAD) ? 3 : 5);
 /**
  * Implementation of hook_menu().
  *
- * @return array of links.
+ * @return array
+ *   Array of links.
  */
 function os2dagsorden_annotator_menu() {
   $items = array();
@@ -110,9 +111,8 @@ function os2dagsorden_annotator_menu() {
 
 /**
  * Implementation create note endpoint.
- * Creates a note, saves it in the database and redirects to the read endpoint in order to update a note with generated ID.
  *
- * @return none
+ * Creates a note, saves it in the database and redirects to the read endpoint in order to update a note with generated ID.
  */
 function _os2dagsorden_annotator_create() {
   global $user;
@@ -146,9 +146,8 @@ function _os2dagsorden_annotator_create() {
 
 /**
  * Implementation read note endpoint.
- * Updates a freshly created note with the generated id.
  *
- * @return the found note in JSON.
+ * Updates a freshly created note with the generated id.
  */
 function _os2dagsorden_annotator_read($id) {
   drupal_add_http_header('Content-Type', 'application/json');
@@ -176,12 +175,11 @@ function _os2dagsorden_annotator_read($id) {
 
 /**
  * Implementation update note endpoint.
+ *
  * Updates the content of the note.
  *
  * @param int $id
- *   the note id.
- *
- * @return none
+ *   The note id.
  */
 function _os2dagsorden_annotator_update($id) {
   drupal_add_http_header('Content-Type', 'application/json');
@@ -209,12 +207,8 @@ function _os2dagsorden_annotator_update($id) {
 
 /**
  * Implementation delete note endpoint.
+ *
  * Deletes the node from the database.
- *
- * @param int $id
- *   the note id.
- *
- * @return none
  */
 function _os2dagsorden_annotator_delete($id) {
   db_delete('os2dagsorden_annotator_notes')
@@ -227,9 +221,8 @@ function _os2dagsorden_annotator_delete($id) {
 
 /**
  * Implementation search notes endpoint.
- * Makes and sql-query to the database with a params taken from $_GET.
  *
- * @return array - list of notes in JSON.
+ * Makes and sql-query to the database with a params taken from $_GET.
  */
 function _os2dagsorden_annotator_search() {
   drupal_add_http_header('Content-Type', 'application/json');
@@ -288,7 +281,8 @@ function _os2dagsorden_annotator_search() {
 }
 
 /**
- * Dummy function, in order to make annotate not throw the exception, when using Touch Plugin on Desktop device
+ * Dummy function, in order to make annotate not throw the exception, when using Touch Plugin on Desktop device.
+ *
  * For some undiscovered reasons, annotator is making request to /annotator/update url, and throws an error if that url does not exist.
  */
 function _os2dagsorden_annotator_dummy() {
@@ -305,10 +299,10 @@ function _os2dagsorden_annotator_dummy() {
  * @param int $bilag_id
  *   ID of the attachment (bilag)
  *
- *   calls the function, that checks if a user is allowed
- *   to see a specific bullet point.
+ *   calls the function, that checks if a user is allowed to see a specific bullet point.
  *
  * @return bool
+ *   TRUE or FALSE
  */
 function _os2dagsorden_annotator_check_permission($meeting_id, $bullet_point_id, $bilag_id) {
   return os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bullet_point_id, $bilag_id);
@@ -324,7 +318,8 @@ function _os2dagsorden_annotator_check_permission($meeting_id, $bullet_point_id,
  * @param int $bilag_id
  *   ID of the attachment (bilag)
  *
- * @return the html code of the specific attachment with annotating option.
+ * @return string
+ *   The html code of the specific attachment with annotating option.
  */
 function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) {
   $bilag = node_load($bilag_id);
@@ -381,9 +376,9 @@ HTML;
 		<div class="controls-right">';
 
   // Starting the breadcrumb - common for bilag/not bilag.
-  $breadcrumb[] = l('Forsiden', $base_url);
-  $breadcrumb[] .= l('Mødedetaljer', 'meeting/' . $meeting_id);
-  $breadcrumb[] .= l('Dagsordenspunkt', 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id);
+  $breadcrumb[] = l(t('Forsiden'), $base_url);
+  $breadcrumb[] .= l(t('Mødedetaljer'), 'meeting/' . $meeting_id);
+  $breadcrumb[] .= l(t('Dagsordenspunkt'), 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id);
 
   // Is an actual bilag.
   if (!empty($bilag->field_os2web_meetings_bpa_file['und'][0]['uri'])) {
@@ -451,10 +446,8 @@ HTML;
     }
 
     // Composing html output.
-    $html .= '</div>' .
-          '<div class="clearfix"></div>' .
-          '<div class="clearfix" id="content">' . $text . '</div>' .
-          '</div>';
+    $html .= '</div><div class="clearfix"></div>' .
+          '<div class="clearfix" id="content">' . $text . '</div></div>';
   }
 
   return $html;
@@ -469,8 +462,6 @@ HTML;
  *   ID of the bullet point.
  * @param int $bilag_id
  *   ID of the attachment (bilag)
- *
- * @return the html code of the specific attachment.
  */
 function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_id) {
   $bilag = node_load($bilag_id);
@@ -503,11 +494,12 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
  * @param int $bilag_id
  *   ID of the attachment (bilag)
  * @param int $pageLimit
- *   maximum numbers of pages in this bilag.
+ *   Maximum numbers of pages in this bilag.
  * @param bool $light
- *   is used in the light mode.
+ *   Is used in the light mode.
  *
- * @return the html code of pager.
+ * @return string
+ *   The html code of pager.
  */
 function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageLimit, $light = FALSE) {
   // Value or 0 if not set.
@@ -535,7 +527,7 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
   $pager = '<div class="item-list clearfix annotator-pager">
 		<ul class="pager">';
   if (isset($prev_page_link)) {
-    $pager .= '<li class="page-prev"> 
+    $pager .= '<li class="page-prev">
 		    <a rel="nofollow" href="' . $prev_page_link . '">« Tidligere</a>
 		  </li>';
   }
@@ -557,9 +549,10 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
  * @param int $bullet_point_id
  *   ID of the bullet point.
  * @param int $bilag_id
- *   ID of the attachment (bilag)
+ *   ID of the attachment (bilag).
  *
- * @return the html code for print version of the specific attachment with annotating option.
+ * @return string
+ *   The html code for print version of the specific attachment with annotating option.
  */
 function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bilag_id) {
   $bilag = node_load($bilag_id);
@@ -640,17 +633,18 @@ function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bila
  * Composes the view of all user's note for this meeting.
  *
  * @param int $meeting_id
- *   if of the meeting.
+ *   ID of the meeting.
  *
- * @return the html of the created page
+ * @return string
+ *   The html of the created page.
  */
 function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
   // Overriding title for bilag.
   drupal_set_title("Mødenoter");
 
   // Breadcrumb.
-  $breadcrumb[] = l('Forsiden', $base_url);
-  $breadcrumb[] .= l('Mødedetaljer', 'meeting/' . $meeting_id);
+  $breadcrumb[] = l(t('Forsiden'), $base_url);
+  $breadcrumb[] .= l(t('Mødedetaljer'), 'meeting/' . $meeting_id);
   $breadcrumb[] .= '<span class="breadcrumb-active">Mødenoter</span>';
   drupal_set_breadcrumb($breadcrumb);
 
@@ -731,11 +725,12 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
  * Compares two xpath.
  *
  * @param string $path1
- *   first xpath.
+ *   First xpath.
  * @param string $path2
- *   first xpath.
+ *   First xpath.
  *
- * @return -1 if $path1 is before, 1 if $path1 is after, 0 if equal.
+ * @return int
+ *   Return -1 if $path1 is before, 1 if $path1 is after, 0 if equal.
  */
 function _os2dagsorden_compare_xpath($path1, $path2) {
   $path1_el = explode('/', $path1);
@@ -785,13 +780,14 @@ function _os2dagsorden_compare_xpath($path1, $path2) {
  * Appends the right index number to a word/set of words, that has a annotation attached.
  *
  * @param string $body
- *   the entire text of the attachment.
+ *   The entire text of the attachment.
  * @param object $note
- *   the note object.
+ *   The note object.
  * @param int $note_nr
- *   the ordinal number of the note.
+ *   The ordinal number of the note.
  *
- * @return the modified body text with attached index.
+ * @return string
+ *   The modified body text with attached index.
  */
 function _os2dagsorden_annotator_append_index($body, $note, $note_nr) {
   $positionStart = strpos($body, $note->quote, $note->ranges['0']->startOffset);
@@ -803,18 +799,20 @@ function _os2dagsorden_annotator_append_index($body, $note, $note_nr) {
 
 /**
  * Composes the line with note ordinal index and the note text.
+ *
  * Is used below the attachment text as footnotes.
  *
  * @param object $note
- *   the note object.
+ *   The note object.
  * @param int $index
- *   the ordinal number of the note.
+ *   The ordinal number of the note.
  * @param bool $print_text
- *   print or not print the annotated text.
+ *   Print or not print the annotated text.
  * @param string $link
- *   the link that needs to be associated with the note text.
+ *   The link that needs to be associated with the note text.
  *
- * @return the footnote with note text.
+ * @return string
+ *   The footnote with note text.
  */
 function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE, $link = FALSE) {
   $to_return = '<b>[' . $index . ']</b> ';

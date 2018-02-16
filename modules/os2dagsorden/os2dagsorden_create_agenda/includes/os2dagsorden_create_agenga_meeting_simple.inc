@@ -16,11 +16,15 @@
 /**
  * Generates form for meeting simple edit.
  *
- * @param $form
- * @param $form_state
- * @param $meeting_id
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The state of the form.
+ * @param int $meeting_id
+ *   ID of the meeting.
  *
- * @return array|the
+ * @return mixed
+ *   The form.
  */
 function os2dagsorden_create_agenda_meeting_simple($form, &$form_state, $meeting_id) {
   $form[] = array(
@@ -69,10 +73,13 @@ function os2dagsorden_create_agenda_meeting_simple($form, &$form_state, $meeting
 /**
  * Saves the meeting from the submitted form.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The form where information is taken from.
+ * @param mixed $form_state
+ *   The current state of the form.
  *
- * @return populated
+ * @return object
+ *   Populated but unsaved(!) node.
  */
 function os2dagsorden_create_agenda_save_meeting_simple($form, $form_state) {
   $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
@@ -88,14 +95,18 @@ function os2dagsorden_create_agenda_save_meeting_simple($form, $form_state) {
 /**
  * Meeting simple form submit callback.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The state of the form.
  */
 function os2dagsorden_create_agenda_meeting_simple_submit($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_meeting_simple($form, $form_state);
   $start_date = $form_state['input']['start_date']['date'];
   $start_date = date_create_from_format("d/m/Y", $start_date);
 
-  //$form_state['redirect'] = 'calendar-field-date/month/' . $start_date->format('Y') . '-' . $start_date->format('m');
+  /*
+   * $form_state['redirect'] = 'calendar-field-date/month/' . $start_date->format('Y') . '-' . $start_date->format('m');
+   */
   $form_state['redirect'] = 'meeting/' . $node->nid;
 }

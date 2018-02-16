@@ -2,19 +2,21 @@
 
 /**
  * @file
+ * Os2dagsorden_content_modify.user.batch.
  */
 
 /**
  * Generates multiple users edit form, limited to committees manipulating only.
  *
- * @param $form
- *   mixed the form
- * @param $form_state
- *   mixed the state of the form
- * @param $uids
- *   array the array of uid of users to modify
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The state of the form.
+ * @param mixed $uids
+ *   The array of uid of users to modify.
  *
- * @return form
+ * @return mixed
+ *   The form.
  */
 function os2dagsorden_content_modify_user_batch_edit_form($form, $form_state, $uids) {
   $form['uids'] = array(
@@ -75,7 +77,8 @@ function os2dagsorden_content_modify_user_batch_edit_form($form, $form_state, $u
 /**
  * Renders the drag and drop controls for add/remove committee functionality.
  *
- * @param $form
+ * @param mixed $form
+ *   The form.
  */
 function _os2dagsorden_content_modify_render_drag_and_drop_remove_committees_controls(&$form) {
   $form[] = array(
@@ -108,12 +111,10 @@ function _os2dagsorden_content_modify_render_drag_and_drop_remove_committees_con
 /**
  * Submit for user bach form. Updates user profiles.
  *
- * @param $form
- *   mixed the form
- * @param $form_state
- *   mixed state of the form
- *
- * @return none
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   State of the form.
  */
 function os2dagsorden_content_modify_user_batch_submit($form, $form_state) {
   $input = $form_state['input'];

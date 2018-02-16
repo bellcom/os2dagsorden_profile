@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Os2dagsorden_annotator.install.
  */
 
 /**
@@ -49,7 +50,10 @@ function os2dagsorden_annotator_schema() {
       'ind_bilag_id'        => array('bilag_id'),
       'ind_bullet_point'    => array('bullet_point_id'),
       'ind_meeting'         => array('meeting_id'),
-      'ind_combined'        => array('bilag_id', 'bullet_point_id', 'meeting_id'),
+      'ind_combined'        => array('bilag_id',
+                                'bullet_point_id',
+                                'meeting_id'
+                                ),
       'uid'                 => array('uid'),
     ),
   );

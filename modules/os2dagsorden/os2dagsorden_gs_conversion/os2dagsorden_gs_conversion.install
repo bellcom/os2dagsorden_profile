@@ -2,12 +2,14 @@
 
 /**
  * @file
+ * Os2dagsorden_gs_conversion.install.
  */
 
 /**
  * Creates a table in the database that will controll the workflow of the module.
  *
- * @return created schema
+ * @return mixed
+ *   Created schema.
  */
 function os2dagsorden_gs_conversion_schema() {
   $schema['os2dagsorden_gs_conversion_files'] = array(

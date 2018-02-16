@@ -15,8 +15,6 @@
 
 /**
  * Implements hook_menu().
- *
- * @return array
  */
 function os2dagsorden_annotator_notes_migrate_menu() {
   $items = array();
@@ -45,10 +43,13 @@ function os2dagsorden_annotator_notes_migrate_menu() {
 /**
  * Notes migrate export/import form.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of the form.
  *
  * @return mixed
+ *   Settings form.
  */
 function os2dagsorden_annotator_notes_migrate_form($form, $form_state) {
   $form['os2dagsorden_notes_migrate']['export'] = array(
@@ -117,8 +118,10 @@ function os2dagsorden_annotator_notes_migrate_export() {
 /**
  * Form submit callback to import the note as XML file.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The state of the form.
  */
 function os2dagsorden_annotator_notes_migrate_import($form, &$form_state) {
   $data = simplexml_load_file(drupal_realpath(variable_get('os2dagsorden_notes_file', 'public://os2dagsorden_notes/notes.xml')));
@@ -216,11 +219,15 @@ function os2dagsorden_annotator_notes_migrate_import($form, &$form_state) {
 /**
  * Helper function to format notes as XML.
  *
- * @param $data
+ * @param mixed $data
+ *   The array of meetings.
  * @param string $rootNodeName
- * @param null $xml
+ *   The name of root node.
+ * @param mixed $xml
+ *   The XML sting.
  *
  * @return null|SimpleXMLElement
+ *   The SimpleXMLElement.
  */
 function os2dagsorden_annotator_notes_migrate_create_xml($data, $rootNodeName = 'data', $xml = NULL) {
   if ($xml == NULL) {
