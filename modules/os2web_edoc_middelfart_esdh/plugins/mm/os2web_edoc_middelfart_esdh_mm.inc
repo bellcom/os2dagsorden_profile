@@ -81,7 +81,7 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
 /**
  * Imports a meeting, and return the import as a structured array.
  *
- * @param object agenda
+ * @param object $agenda
  *   Meeting XML object.
  *
  * @return array
@@ -254,14 +254,13 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
  *
  * @param array $meeting
  *   Meeting array.
- *
  * @param SimpleXMLElement $agenda_xml
  *   Meeting agenda XML object.
  *
  * @return mixed
  *   Meeting_struct array for an accepted import, else FALSE
  */
-function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda(&$meeting, $agenda_xml) {
+function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda(array &$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
   $publish_committee = array_map('trim', explode(',', variable_get('os2web_edoc_middelfart_esdh_approved_committees', MM_DEFAULT_APPROVED)));
   if ($meeting['committee'] == '' || !in_array($meeting['committee'], $publish_committee)) {
@@ -290,14 +289,13 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda(&$meeting, $agend
  *
  * @param array $meeting
  *   Meeting array.
- *
  * @param SimpleXMLElement $xml
  *   Xml segment containing the item.
  *
  * @return array
  *   The imported item.
  */
-function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
+function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item(array $meeting, SimpleXMLElement $xml) {
   $xml_item = array();
   $serialno_xpath = $xml->xpath('edoc:HandlingItem/edoc:SerialNo');
   $xml_item['number'] = (int) array_shift($serialno_xpath);
@@ -335,12 +333,12 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, $x
     'bullets' => array(),
     'enclosures' => array(),
   // 'doc' => array(
-  //      'uri' => implode('/', array(
-  //        trim($meeting['uri'], "/"),
-  //        $xml_item['pdf']
-  //      )),
-  //      'title' => $xml_item['name'],
-  //    ),.
+  // 'uri' => implode('/', array(
+  // trim($meeting['uri'], "/"),
+  // $xml_item['pdf']
+  // )),
+  // 'title' => $xml_item['name'],
+  // ),.
   );
 
   if ($item['access'] !== 'Lukket' || variable_get('os2web_edoc_middelfart_esdh_import_closed_agenda', FALSE)) {
@@ -548,10 +546,11 @@ function _os2web_edoc_middelfart_esdh_mm_order_addenums($drush = FALSE) {
 /**
  * This function generates the INT value from a string ID using crc32 function.
  *
- * @param $meeting_date
- * @param $committee
+ * @param string $string
+ *   String ID.
  *
  * @return int|string
+ *   Generates the INT value.
  */
 function _os2web_edoc_middelfart_esdh_generate_id($string) {
   // Generated meeting_id.
@@ -566,12 +565,13 @@ function _os2web_edoc_middelfart_esdh_generate_id($string) {
 /**
  * Improve the body HTML by substituting img references,.
  *
- * @param $data
- *   -string - the body text
- * @param $meeting_uri
- *   - string - the uri of the meeting folder
+ * @param string $data
+ *   String - the body text.
+ * @param string $meeting_uri
+ *   String - the uri of the meeting folder.
  *
  * @return mixed
+ *   Improved string.
  */
 function _os2web_edoc_esdh_mm_improve_body_html($data, $meeting_uri) {
   $doc = new DOMDocument();

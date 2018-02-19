@@ -67,7 +67,7 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
       $is_last_bp = ($i == count($meeting->field_os2web_meetings_bullets['und']) - 1);
 
       if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id)) {
-        $mpdf = os2web_print_send_to_friend_generate_pdf_bullet_point($bp_id, $mpdf, $with_attachments, $is_last_bp);
+        $mpdf = os2web_print_send_to_friend_generate_pdf_bullet_point($bp_id, $mpdf, $is_last_bp, $with_attachments);
       }
     }
   }
@@ -126,19 +126,19 @@ function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting,
  *
  * If with_attachments is set to TRUE, all PDF attachments are included as well.
  *
- * @param $bullet_point_id
- *  bullet point object.
+ * @param int $bullet_point_id
+ *   Bullet point id.
  * @param object $mpdf
- *  mPDF object.
- * @param bool $with_attachments
- *  TRUE or FALSE.
+ *   mPDF object.
  * @param bool $is_last_bp
- *  TRUE or FALSE.
+ *   TRUE or FALSE.
+ * @param bool $with_attachments
+ *   TRUE or FALSE.
  *
  * @return mixed
- *  Updated mPDF object.
+ *   Updated mPDF object.
  */
-function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id, $mpdf, $with_attachments = TRUE, $is_last_bp) {
+function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id, $mpdf, $is_last_bp, $with_attachments = TRUE) {
   $bullet_point = node_load($bullet_point_id);
 
   if (strcmp($bullet_point->type, 'os2web_meetings_bullet') == 0) {
@@ -186,7 +186,7 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
               $newPortaitPageRequired = TRUE;
             }
             catch (Exception $e) {
-              watchdog('Print send to friend', 'This file !uri cannot be included. Maybe it is still not converted to PDF 1.4? Failed with this message: !message. ' . $e->getMessage(),
+              watchdog('Print send to friend', 'This file !uri cannot be included. Maybe it is still not converted to PDF 1.4? Failed with this message: !message. ',
                 array('!uri' => $uri, '!message' => $e->getMessage()), WATCHDOG_WARNING);
             }
           }

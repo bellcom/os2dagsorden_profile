@@ -344,12 +344,12 @@ function _os2web_esdh_field_doc_access($docid) {
 /**
  * Helper function that compares two arrays.
  *
- * @access protected
- *
  * @param array $a1
  *   First array.
  * @param array $a2
  *   Second array.
+ *
+ * @access protected
  *
  * @return bool
  *   True if all keys in $a1 is equivilent in $a2
@@ -388,7 +388,7 @@ function os2web_esdh_field_node_update($node) {
 /**
  * Helper function to call the PWS and put documents in queue for updates.
  *
- * @param Object $node
+ * @param object $node
  *   The node.
  */
 function _os2web_esdh_field_update_cm_documents_from_pws($node) {
@@ -545,7 +545,7 @@ function os2web_esdh_field_cron_queue_info() {
  * @param array $document
  *   The document.
  */
-function _os2web_esdh_field_update_document($document) {
+function _os2web_esdh_field_update_document(array $document) {
   if (isset($document['did'])) {
 
     $doc = os2web_esdh_provider_invoke('cm', 'get_document', $document['did']);
@@ -579,10 +579,11 @@ function _os2web_esdh_field_update_document($document) {
 /**
  * Helper function to get the file instance of a document.
  *
- * @param $document_id
- *   int The document ID
+ * @param int $document_id
+ *   The document ID.
  *
- * @return Object             The drupal file Object.
+ * @return object
+ *   The drupal file Object.
  */
 function _os2web_esdh_field_get_file_by_did($document_id) {
 
@@ -597,10 +598,11 @@ function _os2web_esdh_field_get_file_by_did($document_id) {
 /**
  * Helper function to get the document by document id.
  *
- * @param $document_id
- *   int The document ID
+ * @param int $document_id
+ *   The document ID.
  *
- * @return array             The document.
+ * @return array
+ *   The document.
  */
 function _os2web_esdh_field_get_doc_by_did($document_id) {
   $doc_in_db = db_select('os2web_esdh_field_cm_documents', 'd')
@@ -615,8 +617,8 @@ function _os2web_esdh_field_get_doc_by_did($document_id) {
 /**
  * Helper function to delete an document from out table.
  *
- * @param $document_id
- *   int The document ID
+ * @param int $document_id
+ *   The document ID.
  */
 function _os2web_esdh_field_delete_doc_by_did($document_id) {
   db_delete('os2web_esdh_field_cm_documents')

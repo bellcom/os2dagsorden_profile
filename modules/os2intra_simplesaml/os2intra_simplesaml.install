@@ -2,12 +2,14 @@
 
 /**
  * @file
+ * Os2intra_simplesaml install.
  */
 
 /**
  * Implements hook_schema().
  *
  * @return mixed
+ *   Created schema.
  */
 function os2intra_simplesaml_schema() {
   $schema['os2intra_simplesaml_nemid_pid_mapping'] = array(

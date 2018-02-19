@@ -17,8 +17,8 @@ function os2logging_menu() {
   $items = array();
 
   $items['admin/config/os2logging'] = array(
-    'title' => t('OS2 Logging Setup'),
-    'description' => t('Set up OS2 Logging'),
+    'title' => 'OS2 Logging Setup',
+    'description' => 'Set up OS2 Logging',
     'access arguments' => array('access administration pages'),
     'page callback' => 'system_admin_menu_block_page',
     'file' => 'system.admin.inc',
@@ -27,8 +27,8 @@ function os2logging_menu() {
   );
 
   $items['admin/config/os2logging/settings'] = array(
-    'title' => t('OS2 Logging Settings'),
-    'description' => t('General description for OS2 Logging'),
+    'title' => 'OS2 Logging Settings',
+    'description' => 'General description for OS2 Logging',
     'access arguments' => array('access administration pages'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2logging_settings_form'),
@@ -39,7 +39,10 @@ function os2logging_menu() {
 }
 
 /**
+ * Implements hook_monolog_channel_info.
  *
+ * @return mixed
+ *   Monolog log channel.
  */
 function os2logging_monolog_channel_info() {
   $channels = array();
@@ -76,7 +79,15 @@ function os2logging_node_load($nodes, $types) {
 }
 
 /**
+ * Settings form.
  *
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of the form.
+ *
+ * @return mixed
+ *   Settings form.
  */
 function os2logging_settings_form($form, $form_state) {
   $node_types = node_type_get_types();
@@ -101,7 +112,12 @@ function os2logging_settings_form($form, $form_state) {
 }
 
 /**
+ * Settings form submit handler.
  *
+ * @param mixed $form
+ *   The settings form.
+ * @param mixed $form_state
+ *   The state of the form.
  */
 function os2logging_settings_form_submit($form, &$form_state) {
   $node_types = node_type_get_types();
@@ -117,7 +133,13 @@ function os2logging_settings_form_submit($form, &$form_state) {
 }
 
 /**
+ * Return selected types of nodes.
  *
+ * @param string $node_type
+ *   The type of node.
+ *
+ * @return bool
+ *   TRUE if current type of current node is selected, otherwise - FALSE
  */
 function _os2logging_node_type_chosen($node_type) {
   $types_list = variable_get('os2logging_chosen_node_types');
@@ -126,6 +148,14 @@ function _os2logging_node_type_chosen($node_type) {
 
 /**
  * Implements hook_help().
+ *
+ * @param string $path
+ *   The menu path.
+ * @param mixed $arg
+ *   Array with arguments.
+ *
+ * @return string
+ *   String containing the help text.
  */
 function os2logging_help($path, $arg) {
   switch ($path) {
@@ -205,8 +235,7 @@ function os2logging_watchdog(array $log_entry) {
 }
 
 /**
- * Ensure that required subsystems and modules are loaded if watchdog messages
- * are logged prior to a full Drupal bootstrap.
+ * Ensure that required subsystems and modules are loaded if watchdog messages are logged prior to a full Drupal bootstrap.
  *
  * @see _drupal_bootstrap_full()
  * @see http://drupal.org/node/1997462

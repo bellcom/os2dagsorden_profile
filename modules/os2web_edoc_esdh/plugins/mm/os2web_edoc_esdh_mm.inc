@@ -56,20 +56,24 @@ function os2web_edoc_esdh_mm_get_import_list() {
       }
     }
 
-    $uris[] = array('id' => _os2web_edoc_esdh_generate_meeting_id($meeting_date, $committee), 'uri' => $xml_file->uri);
+    $uris[] = array(
+      'id' => _os2web_edoc_esdh_generate_meeting_id($meeting_date, $committee),
+      'uri' => $xml_file->uri
+      );
   }
   return $uris;
 }
 
 /**
  * Strip illegal characters from the XML.
+ *
  * Ex &#xC = ASCII new line feed.
  *
- * @param $string
- *   string to sanitise
+ * @param string $string
+ *   String to sanitise.
  *
- *   $return array
- *   The string sanitised
+ * @return string
+ *   The string sanitised.
  */
 function utf8_for_xml($string) {
   // Using regex.
@@ -210,14 +214,13 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
  *
  * @param array $meeting
  *   Meeting array.
- *
  * @param SimpleXMLElement $agenda_xml
  *   Meeting agenda XML object.
  *
  * @return mixed
  *   Meeting_struct array for an accepted import, else FALSE
  */
-function _os2web_edoc_esdh_mm_import_meeting_agenda(&$meeting, $agenda_xml) {
+function _os2web_edoc_esdh_mm_import_meeting_agenda(array &$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
   $publish_committee = array_map('trim', explode(',', variable_get('os2web_edoc_esdh_approved_committees', MM_DEFAULT_APPROVED)));
   if ($meeting['committee'] == '' || !in_array($meeting['committee'], $publish_committee)) {
@@ -255,14 +258,13 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda(&$meeting, $agenda_xml) {
  *
  * @param array $meeting
  *   Meeting array.
- *
  * @param SimpleXMLElement $xml
  *   Xml segment containing the item.
  *
  * @return array
  *   The imported item.
  */
-function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
+function _os2web_edoc_esdh_mm_import_meeting_agenda_item(array $meeting, SimpleXMLElement $xml) {
   $xml_item = array();
   $xml_item['number'] = (int) $xml->AgendaItemNumber;
   $xml_item['pdf'] = (string) $xml->PDFDocument;
@@ -273,7 +275,7 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
   $xml_item['agenda_type'] = (string) $meeting->AgendaType;
   $xml_item['documentid'] = (string) $xml_item_document['documentid'];
   if (empty($xml_item['documentid']) || $xml_item['documentid'] == '') {
-    $pdf_name = split('.', $xml_item['pdf']);
+    $pdf_name = explode('.', $xml_item['pdf']);
     $xml_item['documentid'] = $pdf_name[0];
   }
 
@@ -557,10 +559,13 @@ function _os2web_edoc_esdh_mm_order_addenums($drush = FALSE) {
 /**
  * This function generates the meeting xml ID, when it is missing in the XML.
  *
- * @param $meeting_date
- * @param $committee
+ * @param string $meeting_date
+ *   The date of meeting.
+ * @param string $committee
+ *   The committee ID.
  *
  * @return int|string
+ *   XML ID.
  */
 function _os2web_edoc_esdh_generate_meeting_id($meeting_date, $committee) {
   // Generated meeting_id.
@@ -575,9 +580,12 @@ function _os2web_edoc_esdh_generate_meeting_id($meeting_date, $committee) {
 /**
  * This function generates the ID for bullet point, when it is missing in the XML.
  *
- * @param $committee
- * @param $meeting_date
- * @param $doc_id
+ * @param string $committee
+ *   The committee ID.
+ * @param string $meeting_date
+ *   The date of meeting.
+ * @param string $doc_id
+ *   Doc ID.
  */
 function _os2web_edoc_esdh_generate_item_id($committee, $meeting_date, $doc_id) {
   $item_id = sprintf("%u", crc32($committee . ' ' . $meeting_date . ' ' . $doc_id));
@@ -591,9 +599,11 @@ function _os2web_edoc_esdh_generate_item_id($committee, $meeting_date, $doc_id) 
 /**
  * This function generates the ID for committee, when it is missing in the XML.
  *
- * @param $committee_name
+ * @param string $committee_name
+ *   The name of committee.
  *
  * @return int|string
+ *   Generated ID.
  */
 function _os2web_edoc_esdh_generate_committee_id($committee_name) {
   $committee_id = sprintf("%u", crc32($committee_name));

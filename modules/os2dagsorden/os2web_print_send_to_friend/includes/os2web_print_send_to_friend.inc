@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Code for os2web_print_send_to_friend
+ * Code for os2web_print_send_to_friend.
  */
 
 /**
@@ -126,10 +126,10 @@ function os2web_print_send_to_friend_send_to_friend_form($meeting_id, $bullet_po
 /**
  * Does the actual sending to the provided email.
  *
- * @param int $bullet_point_id
- *   Bullet point id.
  * @param int $meeting_id
  *   Meeting id.
+ * @param int $bullet_point_id
+ *   Bullet point id.
  */
 function os2web_print_send_to_friend_send_to_friend($meeting_id, $bullet_point_id) {
   global $user;

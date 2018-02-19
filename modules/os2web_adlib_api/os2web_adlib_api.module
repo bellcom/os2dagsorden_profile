@@ -172,14 +172,14 @@ function _os2web_adlib_api_bulletpoint_nid() {
 /**
  * Worker function, adds fid's attached to nid's to adlib queue.
  *
- * @author Thomas Thune Hansen <tth@bellcom.dk>
- *
  * @param array $nid
  *   List of bulletpoint nids.
- * @param array $context
+ * @param mixed $context
  *   Context information.
+ *
+ * @author Thomas Thune Hansen <tth@bellcom.dk>
  */
-function _os2web_adlib_api_reprocess_nid($nid, &$context = array()) {
+function _os2web_adlib_api_reprocess_nid(array $nid, &$context = array()) {
   if (is_array($nid)) {
     foreach ($nid as $n) {
       _os2web_adlib_api_reprocess_nid($n);
@@ -192,7 +192,7 @@ function _os2web_adlib_api_reprocess_nid($nid, &$context = array()) {
     foreach ($node->field_enclosures['und'] as $file) {
       if (file_exists(drupal_realpath($file['uri'])) && _os2web_adlib_api_is_filetype_approved($file['fid'])) {
         if (os2web_adlib_api_convert_to_pdf($file['fid'])) {
-          watchdog('adlib_api', 'readded fid to conversion queue:' . $file['fid'], NULL, WATCHDOG_DEBUG);
+          watchdog('adlib_api', 'readded fid to conversion queue: !fid', array('!fid' => $file['fid']), WATCHDOG_DEBUG);
         }
       }
     }
@@ -333,7 +333,15 @@ function os2web_adlib_api_page() {
 }
 
 /**
+ * Implement hook_cronapi().
  *
+ * @param string $op
+ *   Operation.
+ * @param mixed $job
+ *   Job.
+ *
+ * @return mixed
+ *   Cron api array. *
  */
 function os2web_adlib_api_cronapi($op, $job = NULL) {
   switch ($op) {
@@ -869,13 +877,13 @@ function _os2web_adlib_api_queue_file($file) {
 /**
  * Helper function, check if file type is correct.
  *
- * @access protected
- *
  * @param int $fid
  *   File id.
  *
+ * @access protected
+ *
  * @return bool
- *   True if file is approved for processing.
+ *   True if file is approved for processing. *
  */
 function _os2web_adlib_api_is_filetype_approved($fid) {
 

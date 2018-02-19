@@ -23,7 +23,7 @@
  *   Node id of the created attachment.
  */
 function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
-  global $PROCESSING_MEETING_ID, $PROCESSING_BP;
+  global $_os2dagsorden_esdh_provider_processing_meeting_id, $_os2dagsorden_esdh_provider_processing_bp;
 
   // Creating attachment content.
   $node = new stdClass();
@@ -41,8 +41,8 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
 
   watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] [BPA: !bpa] Initialized BPA import: !title',
     array(
-      '!id' => $PROCESSING_MEETING_ID,
-      '!sysid' => $PROCESSING_BP,
+      '!id' => $_os2dagsorden_esdh_provider_processing_meeting_id,
+      '!sysid' => $_os2dagsorden_esdh_provider_processing_bp,
       '!bpa' => $enclosure['sysid'],
       '!title' => $node->title
       ), WATCHDOG_INFO);
@@ -67,8 +67,8 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
   node_save($node);
   watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] [BPA: !bpa] Finished BPA import, nid: !nid',
     array(
-      '!id' => $PROCESSING_MEETING_ID,
-      '!sysid' => $PROCESSING_BP,
+      '!id' => $_os2dagsorden_esdh_provider_processing_meeting_id,
+      '!sysid' => $_os2dagsorden_esdh_provider_processing_bp,
       '!bpa' => $enclosure['sysid'],
       '!nid' => $node->nid
       ), WATCHDOG_INFO);
@@ -266,7 +266,7 @@ function os2dagsorden_esdh_provider_assign_meeting_category($node, $committee_su
  *   The title of bullet point.
  * @param int $sys_id
  *   The SYS_ID.
- * @param array $bullet_nids
+ * @param mixed $bullet_nids
  *   The array of bullet_points nid.
  *
  * @return mixed

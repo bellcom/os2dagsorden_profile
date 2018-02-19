@@ -787,7 +787,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#title' => t('Path to pdf2htmlEX'),
       '#description' => t('Path to pdf2htmlEX'),
       '#default_value' => variable_get('os2dagsorden_pdf2htmlex_path', ""),
-      '#element_validate' => array('_os2dagsorden_pdf2htmlEX_validate'),
+      '#element_validate' => array('_os2dagsorden_pdf2htmlex_validate'),
     );
     $form['os2dagsorden_pdf2htmlex_settings']['pdf2html_rendering_path'] = array(
       '#type' => 'textfield',
@@ -1324,7 +1324,7 @@ function os2dagsorden_settings_theme_settings() {
  * @param mixed $form_state
  *   The state of form.
  */
-function _os2dagsorden_pdf2htmlEX_validate($element, &$form_state) {
+function _os2dagsorden_pdf2htmlex_validate($element, &$form_state) {
   $value = $element['#value'];
   if (!empty($value)) {
     $exec = shell_exec("which " . $value);

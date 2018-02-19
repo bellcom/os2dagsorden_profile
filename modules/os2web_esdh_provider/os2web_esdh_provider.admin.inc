@@ -2,8 +2,7 @@
 
 /**
  * @file
- * This file implements administration menus and functionality for
- * the provider module.
+ * This file implements administration menus and functionality for the provider module.
  */
 
 /**

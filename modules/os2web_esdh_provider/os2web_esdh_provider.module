@@ -2,9 +2,12 @@
 
 /**
  * @file
+ * Os2web_esdh_provider.
+ *
  * Implements pluginable interface for accessing ESDH systems.
- * All plugins should be implemented in a seperate provider module
- * which implements the ctools api.
+ *
+ * All plugins should be implemented in a seperate provider module which implements the ctools api.
+ *
  * Look to acadre_esdh for example.
  */
 
@@ -237,8 +240,8 @@ function os2web_esdh_provider_queue_meetings() {
       // $query = db_select('os2web_esdh_provider_import', 'i')->fields('i');
       // $results = $query->execute();
       // if ($results) {
-      //  while ($result = $results->fetchAssoc()) {
-      //   $imported_meetings[$result['filename']] = $result['changed'];
+      // while ($result = $results->fetchAssoc()) {
+      // $imported_meetings[$result['filename']] = $result['changed'];
       // }
       // }
       // Do the magic in a queue.
@@ -248,24 +251,24 @@ function os2web_esdh_provider_queue_meetings() {
         // $import = FALSE;
         // if (isset($imported_meetings[$filename])) {
         // if ($imported_meetings[$filename] != $changed) {
-        //  $queue->createItem(array('meeting' => $meeting, 'force' => FALSE));
+        // $queue->createItem(array('meeting' => $meeting, 'force' => FALSE));
         // db_update('os2web_esdh_provider_import')
-        //  ->fields(array(
-        //    'changed' => filemtime($meeting['uri']),
-        //  ))
-        //  ->condition('filename', basename($meeting['uri']), '=')
-        //  ->execute();
+        // ->fields(array(
+        // 'changed' => filemtime($meeting['uri']),
+        // ))
+        // ->condition('filename', basename($meeting['uri']), '=')
+        // ->execute();
         // }
         // }
         // else {.
         $queue->createItem(array('meeting' => $meeting, 'force' => FALSE));
         // db_insert('os2web_esdh_provider_import')
-        //  ->fields(array(
-        //    'filename' => basename($meeting['uri']),
-        //    'changed' => filemtime($meeting['uri']),
-        //  ))
-        //  ->execute();
-        //  }
+        // ->fields(array(
+        // 'filename' => basename($meeting['uri']),
+        // 'changed' => filemtime($meeting['uri']),
+        // ))
+        // ->execute();
+        // }
       }
       $queue->createItem(array('post_import_process' => TRUE));
 
@@ -301,7 +304,7 @@ function os2web_esdh_provider_cron_queue_info() {
  * @param array $args
  *   Meeting data for the import.
  */
-function _os2web_esdh_provider_cron_queue_worker($args) {
+function _os2web_esdh_provider_cron_queue_worker(array $args) {
   if (isset($args['meeting']) && isset($args['force'])) {
     module_load_include('inc', 'os2web_esdh_provider', 'os2web_esdh_provider.mmapi');
     _os2web_esdh_provider_import_meeting($args['meeting'], $args['force']);
@@ -578,7 +581,8 @@ function os2web_esdh_provider_default_bullet() {
 /**
  * Checks ESDH Meeting import status, ESDH case/document backend check, AdLib PDF Conversion.
  *
- * @param $checks
+ * @param mixed $checks
+ *   Checks array.
  */
 function os2web_esdh_provider_prod_check_alter(&$checks) {
   $checks['os2web'] = array(
@@ -596,8 +600,10 @@ function os2web_esdh_provider_prod_check_alter(&$checks) {
  * Checks the status of importer.
  *
  * @param string $caller
+ *   Caller.
  *
  * @return mixed
+ *   The status of importer.
  */
 function _os2web_esdh_provider_import_check($caller = 'internal') {
   $last_import = variable_get('os2web_esdh_provider_last_import', 0);
@@ -634,8 +640,10 @@ function _os2web_esdh_provider_import_check($caller = 'internal') {
  * Checks the status of PWS service.
  *
  * @param string $caller
+ *   Caller.
  *
  * @return mixed
+ *   The status of PWS service.
  */
 function _os2web_esdh_provider_pws_check($caller = 'internal') {
   $status = os2web_esdh_provider_has_api('cm');
@@ -664,8 +672,10 @@ function _os2web_esdh_provider_pws_check($caller = 'internal') {
  * Checks the status of adlib service.
  *
  * @param string $caller
+ *   Caller.
  *
  * @return mixed
+ *   The status of adlib service.
  */
 function _os2web_esdh_provider_adlib_check($caller = 'internal') {
   $status = FALSE;
@@ -775,7 +785,7 @@ function _os2web_esdh_provider_send_fatalerrormail($message) {
 }
 
 /**
- *
+ * Mail function.
  */
 function os2web_esdh_provider_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];

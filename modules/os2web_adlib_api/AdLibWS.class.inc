@@ -18,9 +18,6 @@ define('ADLIB_DISABLED', !variable_get('os2web_adlib_api_allowed_ip_host', 0));
 class AdLibWS {
 
   protected $client;
-  /**
-   * Private static $base_path = 'd:\\wwwroot\\';.
-   */
   protected static $basePath = 'C:\\InetPub\\wwwroot\\';
   protected static $baseUrl = 'http://10.1.1.180/';
 
@@ -76,8 +73,12 @@ class AdLibWS {
    *
    * @param array $file_info
    *   Fileinfo structure.
+   * @param int $type
+   *   Adlib jobtype.
+   * @param int $priority
+   *   ADLib job priority.
    */
-  public function addJob($file_info, $type = ADLIB_JOBTYPE_PDF, $priority = 3) {
+  public function addJob(array $file_info, $type = ADLIB_JOBTYPE_PDF, $priority = 3) {
     if (ADLIB_DISABLED) {
       return FALSE;
     }
@@ -277,6 +278,8 @@ class AdLibWS {
    *   Filename.
    * @param mixed $data
    *   Binary contents of data.
+   * @param int $type
+   *   Optional. Job type.
    * @param string $folder
    *   Optional. Adlib folder, if ommited, new folder is created.
    *

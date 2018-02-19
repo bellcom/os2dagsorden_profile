@@ -64,12 +64,12 @@ class TraenPublishingDestinationSystemService {
     exit;
   }
 
-  /**
- * PUBLIC API .***************/ / .
-  * /
+  /*
+   * PUBLIC API.
+   */
 
   /**
-   *
+   * Implemented public method RecievedEntityLayout.
    */
   public function RecievedEntityLayout($data) {
     error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $data = ' . print_r($data, 1));
@@ -77,7 +77,7 @@ class TraenPublishingDestinationSystemService {
   }
 
   /**
-   *
+   * Implemented public method RecievedItemUnPublished.
    */
   public function RecievedItemUnPublished($data) {
     $success = FALSE;
@@ -91,7 +91,7 @@ class TraenPublishingDestinationSystemService {
   }
 
   /**
-   *
+   * Implemented public method RecievedConfiguration.
    */
   public function RecievedConfiguration($data) {
     // Function used to handle the configuration.
@@ -107,7 +107,7 @@ class TraenPublishingDestinationSystemService {
   }
 
   /**
-   *
+   * Implemented public method RecievedItemPublished.
    */
   public function RecievedItemPublished($data) {
     switch (strtolower($data->entityItem->EntityName)) {
@@ -168,7 +168,7 @@ class TraenPublishingDestinationSystemService {
   }
 
   /**
-   *
+   * Implemented public method RecievedItemPublished.
    */
   public function __call($name, $arguments) {
     watchdog('os2web_acadre_esdh', 'Unsupported request recieved: %req', array('%req' => $name), WATCHDOG_NOTICE);

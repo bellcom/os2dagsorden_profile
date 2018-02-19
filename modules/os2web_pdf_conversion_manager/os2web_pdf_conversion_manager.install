@@ -2,12 +2,14 @@
 
 /**
  * @file
+ * Os2web_pdf_conversion_manager.install.
  */
 
 /**
  * Creates a table in the database that will control the workflow of the module.
  *
- * @return created schema
+ * @return mixed
+ *   Created schema
  */
 function os2web_pdf_conversion_manager_schema() {
   $schema['os2web_pdf_conversion_manager_files'] = array(
@@ -38,7 +40,11 @@ function os2web_pdf_conversion_manager_schema() {
         'length' => 1024,
         'serialize' => TRUE,
       ),
-      'message' => array('description' => 'Error message', 'type' => 'text', 'serialize' => TRUE),
+      'message' => array(
+        'description' => 'Error message',
+        'type' => 'text',
+        'serialize' => TRUE
+        ),
       'attempt' => array(
         'description' => 'The number of attempts file has been tried to be convered',
         'type' => 'int',
@@ -65,7 +71,12 @@ function os2web_pdf_conversion_manager_update_7100() {
       'not null' => FALSE,
       'default' => '',
     ),
-    'message' => array('description' => 'Error message', 'type' => 'text', 'serialize' => TRUE, 'not null' => FALSE),
+    'message' => array(
+      'description' => 'Error message',
+      'type' => 'text',
+      'serialize' => TRUE,
+      'not null' => FALSE
+      ),
     'attempt' => array(
       'description' => 'The number of attempts file has been tried to be convered',
       'type' => 'int',
@@ -80,4 +91,59 @@ function os2web_pdf_conversion_manager_update_7100() {
       db_add_field('os2web_pdf_conversion_manager_files', $key, $field);
     }
   }
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function os2web_pdf_conversion_manager_requirements($phase) {
+  if ($phase !== 'runtime') {
+    return array();
+  }
+  $required_apps = array(
+    'mapitool' => 'Convert .msg to .eml',
+    'munpack' => 'Unpack .eml files',
+    'soffice' => 'Use libre or oo to convert any type to PDF',
+    'ImageMagick' => 'Convert multipaged .tiff files to PDF',
+  );
+  $t = get_t();
+  foreach ($required_apps as $app => $desc) {
+    if (!shell_exec('which ' . $app)) {
+      $requirements['os2web_pdf_conversion_manager_' . $app . '_installed'] = array(
+        'title' => $t('OS2Web PDF conversion manager'),
+        'value' => $t('Not installed'),
+        'severity' => REQUIREMENT_WARNING,
+        'description' => t('%app application is not installed (%desc)', array('%app' => $app, '%desc' => $desc)),
+      );
+    }
+  }
+  // Get soffice version.
+  $soffice_version = shell_exec('soffice --version');
+  preg_match('/(\d+\.)(\d+\.)(\*|\d+).?(\*|\d+)/', $soffice_version, $version);
+  $requirements['os2web_pdf_conversion_manager_soffice_ver'] = array(
+    'title' => $t('OS2Web PDF conversion manager'),
+    'value' => $t('soffice version'),
+  );
+  if (version_compare($version[0], MIN_SOFFICE_VERSION) == -1) {
+    $requirements['os2web_pdf_conversion_manager_soffice_ver']['severity'] = REQUIREMENT_WARNING;
+    $requirements['os2web_pdf_conversion_manager_soffice_ver']['description'] = t('Update soffice version up to %req_ver or higher', array('%req_ver' => MIN_SOFFICE_VERSION));
+  }
+  else {
+    $requirements['os2web_pdf_conversion_manager_soffice_ver']['severity'] = REQUIREMENT_OK;
+    $requirements['os2web_pdf_conversion_manager_soffice_ver']['value'] = t('Soffice version %ver', array('%ver' => $soffice_version));
+  }
+  $os2web_convertion_dir = drupal_realpath(variable_get('os2web_convertion_dir'));
+  $requirements['os2web_convertion_dir'] = array(
+    'title' => $t('OS2Web PDF conversion manager'),
+    'value' => $t('Directory to send the files for converting'),
+  );
+  if (!(is_dir($os2web_convertion_dir) && is_writable($os2web_convertion_dir))) {
+    $requirements['os2web_convertion_dir']['severity'] = REQUIREMENT_ERROR;
+    $requirements['os2web_convertion_dir']['description'] = t('Os2web convert directory %variable is not exists or not writable', array('%variable' => variable_get('os2web_convertion_dir')));
+  }
+  else {
+    $requirements['os2web_convertion_dir']['severity'] = REQUIREMENT_OK;
+    $requirements['os2web_convertion_dir']['value'] = t('Directory to send the files for converting is exists and writable');
+  }
+  return $requirements;
 }

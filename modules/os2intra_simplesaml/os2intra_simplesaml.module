@@ -2,10 +2,14 @@
 
 /**
  * @file
+ * Code for os2intra_simplesaml.
  */
 
 /**
- * Implements hook_menu()
+ * Implements hook_menu().
+ *
+ * @return mixed
+ *   List of links.
  */
 function os2intra_simplesaml_menu() {
   $items = array();
@@ -37,6 +41,7 @@ function os2intra_simplesaml_menu() {
  * Implements hook_monolog_channel_info().
  *
  * @return array
+ *   Monolog channels
  */
 function os2intra_simplesaml_monolog_channel_info() {
   $channels = array();
@@ -183,7 +188,7 @@ function os2intra_simplesaml_init() {
   // // Do not run this from CLI.
   if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid == 0) {
     $custom_ips = explode(',', variable_get('os2intra_simplesaml_redirected_ips'));
-    $remote_ip = $_SERVER['REMOTE_ADDR'];
+    $remote_ip = ip_address();
 
     if (variable_get('os2intra_simplesaml_simplesaml_enable')) {
       foreach ($custom_ips as $custom_ip) {
@@ -192,7 +197,12 @@ function os2intra_simplesaml_init() {
         // This makes it possible to add only the beginning of the IP range.
         // F.ex. 192.168 will allow all ip adresses including 192.168 as part of the io.
         if (strpos($remote_ip, $custom_ip) !== FALSE) {
-          if (!in_array($_GET['q'], array('saml_login', 'user/logout', 'user/login', 'logout'))) {
+          if (!in_array($_GET['q'], array(
+            'saml_login',
+            'user/logout',
+            'user/login',
+            'logout'
+            ))) {
             if (module_exists('simplesamlphp_auth')) {
               // Loading the Simplesamlphp autoloader.
               require_once variable_get('simplesamlphp_auth_installdir') . '/lib/_autoload.php';

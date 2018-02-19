@@ -137,9 +137,9 @@ function os2dagsorden_pdf2htmlex_report() {
  *   Debug info.
  */
 function os2dagsorden_pdf2htmlex_do_convert() {
-  global $debug_info;
+  global $_os2dagsorden_pdf2htmlex_debug_info;
   os2dagsorden_pdf2htmlex_cron();
-  return '<div><textarea cols="150" rows=50>' . print_r($debug_info, 1) . '</textarea>';
+  return '<div><textarea cols="150" rows=50>' . print_r($_os2dagsorden_pdf2htmlex_debug_info, 1) . '</textarea>';
 
   // Reschedule all
   // $nodes = entity_load('node', FALSE, array('type' => 'os2web_meetings_bullet_attach'));
@@ -176,7 +176,14 @@ function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
       ->execute();
   }
   catch (Exception $e) {
-    watchdog('pdf2htmlEX', 'Cannot schedule a file: fid: %fid, did: %did, e: %e', array('%fid' => $fid, '%did' => $did, '%e' => $e->getMessage()), WATCHDOG_ERROR);
+    watchdog('pdf2htmlEX',
+      'Cannot schedule a file: fid: %fid, did: %did, e: %e',
+      array(
+        '%fid' => $fid,
+        '%did' => $did,
+        '%e' => $e->getMessage()
+        ),
+      WATCHDOG_ERROR);
   }
 }
 

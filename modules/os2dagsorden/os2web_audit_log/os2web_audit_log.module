@@ -50,7 +50,7 @@ function os2web_audit_log_node_load($nodes, $types) {
 
   foreach ($nodes as $node) {
     if (in_array($node->type, $node_types, TRUE)) {
-      _os2web_audit_log_do_log(gmdate("Y-m-d H:i:s", $_SERVER['REQUEST_TIME']), $user->uid, empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'], $node->nid, $node->type, 'load');
+      _os2web_audit_log_do_log(gmdate("Y-m-d H:i:s", $_SERVER['REQUEST_TIME']), $user->uid, empty(ip_address()) ? '' : ip_address(), $node->nid, $node->type, 'load');
     }
   }
 }

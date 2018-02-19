@@ -8,10 +8,10 @@
 /**
  * Helper function. Makes danish characters ascii-safe.
  *
- * @access protected
- *
  * @param string $str
  *   Input string.
+ *
+ * @access protected
  *
  * @return string
  *   Safe string
@@ -23,10 +23,10 @@ function _os2web_qbrick_safedk($str) {
 /**
  * Gets the chapters of a movie.
  *
- * @access protected
- *
  * @param string $movie_id
  *   Movie id.
+ *
+ * @access protected
  *
  * @return array
  *   List of chapters. False on error.
@@ -51,10 +51,10 @@ function _os2web_qbrick_get_chapters($movie_id) {
 /**
  * Returns the movie_id for a given meeting.
  *
- * @access protected
- *
  * @param int $nid
  *   Node id.
+ *
+ * @access protected
  *
  * @return string
  *   Movie id, or False on error.

@@ -103,7 +103,7 @@ function ops2web_acadre_esdh_get_document($doc_id) {
  * @return array
  *   List of documents meta data.
  */
-function ops2web_acadre_esdh_get_documents($document_ids) {
+function ops2web_acadre_esdh_get_documents(array $document_ids) {
   $pws = _ops2web_acadre_esdh_get_pws_instance();
   // Translate the SSSSSS/YY serial into database identifier.
   foreach ($document_ids as &$doc_id) {

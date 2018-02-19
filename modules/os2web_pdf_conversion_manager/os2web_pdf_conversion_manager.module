@@ -21,6 +21,7 @@ define('MIN_SOFFICE_VERSION', '4.3.3.2');
  * Implements hook_menu()
  *
  * @return array
+ *   List of menu items.
  */
 function os2web_pdf_conversion_manager_menu() {
   $items = array();
@@ -49,7 +50,7 @@ function os2web_pdf_conversion_manager_menu() {
  * Callback to call PDF conversion manager cron.
  */
 function os2web_pdf_conversion_manager_file_manager() {
-  global $debug_info;
+  global $_os2web_pdf_conversion_managerdebug_info;
 
   os2web_pdf_conversion_manager_cron();
   drupal_goto('admin/config/os2web/pdf_converter');
@@ -80,8 +81,6 @@ function os2web_pdf_conversion_manager_remove_outdated() {
 
 /**
  * Callback to the settings page.
- *
- * @return string
  */
 function os2web_pdf_convertion_manager_setting_page() {
   if (isset($_GET['reset'])) {
@@ -103,7 +102,15 @@ function os2web_pdf_convertion_manager_setting_page() {
     ->execute()
     ->fetchAllAssoc('fid');
 
-  $headers = array('FID', 'Filename', 'Temp filename', 'Status', 'Message', 'Attempts', 'Actions');
+  $headers = array(
+    'FID',
+    'Filename',
+    'Temp filename',
+    'Status',
+    'Message',
+    'Attempts',
+    'Actions'
+    );
   $rows = array();
 
   foreach ($result as $row) {
@@ -123,10 +130,13 @@ function os2web_pdf_convertion_manager_setting_page() {
 /**
  * PDF conversion manager settings form.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   Settings form.
+ * @param mixed $form_state
+ *   Form state.
  *
  * @return mixed
+ *   Generated system settings forms.
  */
 function os2web_pdf_conversion_manager_pdf_converter_form($form, $form_state) {
   // Avoiding duplication of settings. If os2dagsorden_settings module is present and enabled - the settings will be presented there.
@@ -171,10 +181,13 @@ function os2web_pdf_conversion_manager_pdf_converter_form($form, $form_state) {
 /**
  * Implements hook_cronapi.
  *
- * @param $op
- * @param $job
+ * @param string $op
+ *   Operation.
+ * @param mixed $job
+ *   Job.
  *
- * @return array
+ * @return mixed
+ *   Cron api array.
  */
 function os2web_pdf_conversion_manager_cronapi($op, $job = NULL) {
   switch ($op) {
@@ -185,14 +198,13 @@ function os2web_pdf_conversion_manager_cronapi($op, $job = NULL) {
 
 /**
  * Cron implementation.
- * additionally, there should also be a cron job, which checks the mentioned directory to see if some of the files there have been conveted to pdf.
- * or example, if there is file "name1.doc" and "name1.pdf", it means that the file is converted to pdf. In this case:
- * pdf file should be copied into the initial directory, where the original .doc file is
- * reference to the file in file_managed table is updated from .doc version to .pdf version
- * both files (.doc and .pdf) are deleted from the convertion directory.
- * Also calls function to update meeting status.
  *
- * @return none
+ * Additionally, there should also be a cron job, which checks the mentioned directory to see if some of the files there have been conveted to pdf.
+ * For example, if there is file "name1.doc" and "name1.pdf", it means that the file is converted to pdf.
+ * In this case: pdf file should be copied into the initial directory, where the original .doc file is.
+ * Reference to the file in file_managed table is updated from .doc version to .pdf version.
+ * both files (.doc and .pdf) are deleted from the convertion directory.
+ * Also calls function to update meeting status. *
  */
 function os2web_pdf_conversion_manager_cron() {
   $convertion_dir_path = drupal_realpath(variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR));
@@ -213,7 +225,8 @@ function os2web_pdf_conversion_manager_cron() {
 /**
  * Manages MSG conversion.
  *
- * @param $convertion_dir_path
+ * @param string $convertion_dir_path
+ *   Path to folder with converted files.
  */
 function _os2web_pdf_conversion_manager_manage_msg($convertion_dir_path) {
   $converted_files = array();
@@ -281,7 +294,8 @@ function _os2web_pdf_conversion_manager_manage_msg($convertion_dir_path) {
 /**
  * Manages PDF convertsion.
  *
- * @param $convertion_dir_path
+ * @param string $convertion_dir_path
+ *   Path to folder with converted files.
  */
 function _os2web_pdf_conversion_manager_manage_pdf($convertion_dir_path) {
   $converted_files = array();
@@ -343,9 +357,11 @@ function _os2web_pdf_conversion_manager_manage_pdf($convertion_dir_path) {
 
 /**
  * Copies the file to conversion directory.
+ *
  * Also schedules the file conversion by adding entiry into os2web_pdf_conversion_manager_files table.
  *
- * @param $fid
+ * @param int $fid
+ *   File ID.
  */
 function _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($fid) {
   $convertion_dir_path = drupal_realpath(variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR));
@@ -397,9 +413,11 @@ function _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($fid) {
 /**
  * Check if the file with similar name (case insensitive) exists in the provided location.
  *
- * @param $filename
+ * @param string $filename
+ *   Name of file.
  *
  * @return bool
+ *   TRUE if file is exists, otherwise - FALSE.
  */
 function _os2web_pdf_conversion_manager_similar_file_exists($filename) {
   if (file_exists($filename)) {
@@ -417,7 +435,14 @@ function _os2web_pdf_conversion_manager_similar_file_exists($filename) {
 }
 
 /**
+ * Update bullet point attachment with converted files.
  *
+ * @param int $fid
+ *   File ID.
+ * @param string $original_file
+ *   Path to original file.
+ * @param string $html_file
+ *   Path to HTML file.
  */
 function _os2web_pdf_conversion_manager_update_msg_bpa($fid, $original_file, $html_file) {
   if (!file_exists($html_file)) {
@@ -478,11 +503,15 @@ function _os2web_pdf_conversion_manager_update_msg_bpa($fid, $original_file, $ht
 /**
  * Function that updated the managed file entry in the database.
  *
- * @param $fid
- * @param $original_file
- * @param $pdf_file
+ * @param int $fid
+ *   File ID.
+ * @param string $original_file
+ *   Path to original file.
+ * @param string $pdf_file
+ *   Path to pdf file.
  *
  * @return bool
+ *   TRUE  if updated successfully, otherwise - FALSE.
  */
 function _os2web_pdf_conversion_manager_update_managed_file($fid, $original_file, $pdf_file) {
   $original_path_parts = pathinfo($original_file);
@@ -524,11 +553,15 @@ function _os2web_pdf_conversion_manager_update_managed_file($fid, $original_file
 /**
  * Function that uploads the converted file to drupal and updates the corresponding fields to use the new file.
  *
- * @param $fid
- * @param $msg_file_uri
- * @param $pdf_file
+ * @param int $fid
+ *   File ID.
+ * @param string $msg_file_uri
+ *   MSG file uri.
+ * @param string $pdf_file
+ *   Path to pdf file.
  *
  * @return bool
+ *   True if bpa updated successfully, otherwise - FALSE.
  */
 function _os2web_pdf_conversion_manager_import_attachments_file($fid, $msg_file_uri, $pdf_file) {
   $original_path_parts = pathinfo($msg_file_uri);
@@ -608,14 +641,16 @@ function _os2web_pdf_conversion_manager_import_attachments_file($fid, $msg_file_
 /**
  * Delets the MSG files from a provided directory.
  *
- * @param $convertion_dir_path
+ * @param string $convertion_dir_path
+ *   Path to directory.
  *
  * @return bool
+ *   TRUE if file deleted successfully, otherwise - FALSE.
  */
 function _os2web_pdf_conversion_manager_delete_msg_attachments_folder($convertion_dir_path) {
   $msg_files = glob($convertion_dir_path . '/*.{msg, MSG}', GLOB_BRACE);
   if (!$msg_files) {
-    return;
+    return FALSE;
   }
   foreach ($msg_files as $msg_file) {
     $msg_file_parts = pathinfo($msg_file);
@@ -640,15 +675,15 @@ function _os2web_pdf_conversion_manager_delete_msg_attachments_folder($convertio
 /**
  * Imports a file metadata into a managed drupal file.
  *
- * @access protected
- *
  * @param array $file_meta
  *   File metadata.
  *
+ * @access protected
+ *
  * @return object
- *   Drupal standard file object
+ *   Drupal standard file object.
  */
-function _os2web_pdf_conversion_manager_import_file($file_meta) {
+function _os2web_pdf_conversion_manager_import_file(array $file_meta) {
 
   $fid = db_select('file_managed', 'fm')
     ->fields('fm', array('fid'))
@@ -674,7 +709,8 @@ function _os2web_pdf_conversion_manager_import_file($file_meta) {
 /**
  * Callback to check if the meeting type must be changes to dagsorden+/referat+.
  *
- * @param $node
+ * @param object $node
+ *   Meeting node.
  */
 function _os2web_pdf_conversion_manager_set_status_published_plus($node) {
   // Getting corresponding bullet point.
@@ -715,7 +751,11 @@ function _os2web_pdf_conversion_manager_set_status_published_plus($node) {
 
 /**
  * Hook to file delete.
+ *
  * Deletes the temporary file scheduled for the conversion and deletes corresponding entry in the table.
+ *
+ * @param object $file
+ *   File object.
  */
 function os2web_pdf_conversion_manager_file_delete($file) {
   $result = db_select('os2web_pdf_conversion_manager_files', 'o')
@@ -764,59 +804,4 @@ function _os2web_pdf_conversion_manager_delete_lock_files($convertion_dir_path) 
       watchdog('os2web pdf conversion manager:', 'Locked file %uri was deleted', array('%uri' => $lock_file), WATCHDOG_INFO);
     }
   }
-}
-
-/**
- * Implements hook_requirements().
- */
-function os2web_pdf_conversion_manager_requirements($phase) {
-  if ($phase !== 'runtime') {
-    return array();
-  }
-  $required_apps = array(
-    'mapitool' => 'Convert .msg to .eml',
-    'munpack' => 'Unpack .eml files',
-    'soffice' => 'Use libre or oo to convert any type to PDF',
-    'ImageMagick' => 'Convert multipaged .tiff files to PDF',
-  );
-  $t = get_t();
-  foreach ($required_apps as $app => $desc) {
-    if (!shell_exec('which ' . $app)) {
-      $requirements['os2web_pdf_conversion_manager_' . $app . '_installed'] = array(
-        'title' => $t('OS2Web PDF conversion manager'),
-        'value' => $t('Not installed'),
-        'severity' => REQUIREMENT_WARNING,
-        'description' => t('%app application is not installed (%desc)', array('%app' => $app, '%desc' => $desc)),
-      );
-    }
-  }
-  // Get soffice version.
-  $soffice_version = shell_exec('soffice --version');
-  preg_match('/(\d+\.)(\d+\.)(\*|\d+).?(\*|\d+)/', $soffice_version, $version);
-  $requirements['os2web_pdf_conversion_manager_soffice_ver'] = array(
-    'title' => $t('OS2Web PDF conversion manager'),
-    'value' => $t('soffice version'),
-  );
-  if (version_compare($version[0], MIN_SOFFICE_VERSION) == -1) {
-    $requirements['os2web_pdf_conversion_manager_soffice_ver']['severity'] = REQUIREMENT_WARNING;
-    $requirements['os2web_pdf_conversion_manager_soffice_ver']['description'] = t('Update soffice version up to %req_ver or higher', array('%req_ver' => MIN_SOFFICE_VERSION));
-  }
-  else {
-    $requirements['os2web_pdf_conversion_manager_soffice_ver']['severity'] = REQUIREMENT_OK;
-    $requirements['os2web_pdf_conversion_manager_soffice_ver']['value'] = t('Soffice version %ver', array('%ver' => $soffice_version));
-  }
-  $os2web_convertion_dir = drupal_realpath(variable_get('os2web_convertion_dir'));
-  $requirements['os2web_convertion_dir'] = array(
-    'title' => $t('OS2Web PDF conversion manager'),
-    'value' => $t('Directory to send the files for converting'),
-  );
-  if (!(is_dir($os2web_convertion_dir) && is_writable($os2web_convertion_dir))) {
-    $requirements['os2web_convertion_dir']['severity'] = REQUIREMENT_ERROR;
-    $requirements['os2web_convertion_dir']['description'] = t('Os2web convert directory %variable is not exists or not writable', array('%variable' => variable_get('os2web_convertion_dir')));
-  }
-  else {
-    $requirements['os2web_convertion_dir']['severity'] = REQUIREMENT_OK;
-    $requirements['os2web_convertion_dir']['value'] = t('Directory to send the files for converting is exists and writable');
-  }
-  return $requirements;
 }

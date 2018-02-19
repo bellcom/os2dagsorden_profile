@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * os2web_esdh_provider.queue.inc
  */
 
 const IMPORT_STATUS_SCHEDULED = "Scheduled";
@@ -12,9 +13,14 @@ const IMPORT_STATUS_DELETED = "Deleted";
 /**
  * This function adds a meeting entry to the database.
  *
- * @param $meeting
+ * @param int $nid
+ *   Meeting id.
+ * @param array $manifest
+ *   Manifest array.
+ * @param array $agenda
+ *   Agenda array.
  */
-function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
+function os2web_esdh_provider_index_meeting($nid, array $manifest, array $agenda) {
   // drupal_set_message("MANIFEST: " . print_r($manifest,1));
   // drupal_set_message("AGENDA: " . print_r($agenda,1));.
   $status = IMPORT_STATUS_SCHEDULED;
@@ -75,7 +81,15 @@ function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
 }
 
 /**
+ * Check if manifest is outdated.
  *
+ * @param int $meeting_xmlid
+ *   Meeting XML ID.
+ * @param int $currentXmlChanged
+ *   XML file modify time.
+ *
+ * @return bool
+ *   TRUE if manifest is outdated, otherwise - FALSE.
  */
 function os2web_esdh_provider_index_meeting_is_manifest_outdated($meeting_xmlid, $currentXmlChanged) {
   // Manifest is not indexed.
@@ -94,7 +108,13 @@ function os2web_esdh_provider_index_meeting_is_manifest_outdated($meeting_xmlid,
 }
 
 /**
+ * Check, if meeting has deleted agendas.
  *
+ * @param int $meeting_xmlid
+ *   Meeting XML ID.
+ *
+ * @return bool
+ *   TRUE if meeting has deleted agendas, otherwise - FALSE.
  */
 function os2web_esdh_provider_index_meeting_has_deleted_agendas($meeting_xmlid) {
   $rowCount = db_select('os2web_esdh_provider_import', 'o')
@@ -108,7 +128,15 @@ function os2web_esdh_provider_index_meeting_has_deleted_agendas($meeting_xmlid) 
 }
 
 /**
+ * Check, if meeting is indexed.
  *
+ * @param int $meeting_xmlid
+ *   Meeting XML ID.
+ * @param int|bool $agenda_sysid
+ *   Agenda sysid.
+ *
+ * @return bool
+ *   TRUE if meeting already indexed, otherwise - FALSE.
  */
 function os2web_esdh_provider_index_meeting_is_meeting_indexed($meeting_xmlid, $agenda_sysid = FALSE) {
   $query = db_select('os2web_esdh_provider_import', 'o')
@@ -126,9 +154,16 @@ function os2web_esdh_provider_index_meeting_is_meeting_indexed($meeting_xmlid, $
 }
 
 /**
+ * This function updated a status of meeting entry in the database.
  *
+ * @param int $meeting_xmlid
+ *   Meeting XML ID.
+ * @param int|bool $agenda_sysid
+ *   Agenda sysid.
+ * @param string $status
+ *   Status.
  */
-function os2web_esdh_provider_index_meeting_update_status($meeting_xmlid, $agenda_sysid = NULL, $status) {
+function os2web_esdh_provider_index_meeting_update_status($meeting_xmlid, $agenda_sysid, $status) {
   $query = db_update('os2web_esdh_provider_import')
     ->fields(array(
       'import_status' => $status,
@@ -143,9 +178,16 @@ function os2web_esdh_provider_index_meeting_update_status($meeting_xmlid, $agend
 }
 
 /**
+ * This function updated a nid of meeting entry in the database.
  *
+ * @param int $meeting_xmlid
+ *   Meeting XML ID.
+ * @param int|bool $agenda_sysid
+ *   Agenda sysid.
+ * @param int $nid
+ *   Meeting ID.
  */
-function os2web_esdh_provider_index_meeting_update_nid($meeting_xmlid, $agenda_sysid = NULL, $nid) {
+function os2web_esdh_provider_index_meeting_update_nid($meeting_xmlid, $agenda_sysid, $nid) {
   $query = db_update('os2web_esdh_provider_import')
     ->fields(array(
       'nid' => $nid,
@@ -160,7 +202,13 @@ function os2web_esdh_provider_index_meeting_update_nid($meeting_xmlid, $agenda_s
 }
 
 /**
+ * This function get a nid of meeting entry by meeting xmlid.
  *
+ * @param int $meeting_xmlid
+ *   Meeting XML ID.
+ *
+ * @return int
+ *   Meeting ID.
  */
 function os2web_esdh_provider_index_meeting_get_nid($meeting_xmlid) {
   $nid = db_select('os2web_esdh_provider_import', 'o')
@@ -174,7 +222,14 @@ function os2web_esdh_provider_index_meeting_get_nid($meeting_xmlid) {
 }
 
 /**
+ * This function updated a committee_id of meeting entry in the database.
  *
+ * @param int $meeting_xmlid
+ *   Meeting XML ID.
+ * @param int|bool $agenda_sysid
+ *   Agenda sysid.
+ * @param int $tid
+ *   Committee ID.
  */
 function os2web_esdh_provider_index_meeting_update_committee_tid($meeting_xmlid, $agenda_sysid, $tid) {
   db_update('os2web_esdh_provider_import')

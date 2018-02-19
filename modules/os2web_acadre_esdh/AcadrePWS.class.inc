@@ -8,7 +8,7 @@
 define('PWS_CACHE_TIMEOUT', 3600 * 4);
 define('ACADRE_CM_DEFAULT_DOC_CACHE_PATH', 'public://pws_documents/');
 /**
- *
+ * Class AcadrePWS.
  */
 class AcadrePWS {
 
@@ -34,7 +34,7 @@ class AcadrePWS {
   /**
    * Basic setup for SOAP connections.
    */
-  private function getBaseWSSetup() {
+  private function getBaseWsSetup() {
     $user = variable_get('os2web_pws_user');
     $password = variable_get('os2web_pws_password');
 
@@ -69,7 +69,7 @@ class AcadrePWS {
       else {
         if ($this->checkUrl($url)) {
           // FIXME: Use a wellformed WSDL for V4 services.
-          $options = $this->getBaseWSSetup();
+          $options = $this->getBaseWsSetup();
           $options['location'] = $url;
           $options['uri'] = 'http://www.traen.com/2007/09/06/';
           if (function_exists('xdebug_disable')) {
@@ -104,7 +104,7 @@ class AcadrePWS {
       }
       else {
         if ($this->checkUrl($url)) {
-          $options = $this->getBaseWSSetup();
+          $options = $this->getBaseWsSetup();
           if (function_exists('xdebug_disable')) {
             xdebug_disable();
           }
@@ -137,7 +137,7 @@ class AcadrePWS {
       }
       else {
         if ($this->checkUrl($url)) {
-          $options = $this->getBaseWSSetup();
+          $options = $this->getBaseWsSetup();
           if (function_exists('xdebug_disable')) {
             xdebug_disable();
           }
@@ -364,7 +364,7 @@ class AcadrePWS {
         }
       }
       catch (SoapFault $sf) {
-        watchdog('acadre_pws', 'Error during SOAP call in ' . __FUNCTION__, NULL, WATCHDOG_WARNING);
+        watchdog('acadre_pws', 'Error during SOAP call in !function', array('!function' => __FUNCTION__), WATCHDOG_WARNING);
       }
       cache_set($cid, $result, 'cache_os2web_pws', time() + PWS_CACHE_TIMEOUT);
     }
@@ -438,10 +438,10 @@ class AcadrePWS {
    * @param array $documents
    *   Document IDs.
    *
-   * @return array
-   *   Documents meta
+   * @return mixed
+   *   Documents meta.
    */
-  public function getDocuments($documents) {
+  public function getDocuments(array $documents) {
     $cid = __FUNCTION__;
     $result = & drupal_static($cid, FALSE);
     if ($result != FALSE) {
@@ -640,7 +640,7 @@ class AcadrePWS {
         }
       }
       catch (SoapFault $sf) {
-        watchdog('acadre_pws', 'Error during SOAP call in ' . __FUNCTION__, NULL, WATCHDOG_WARNING);
+        watchdog('acadre_pws', 'Error during SOAP call in !function', array('!function' => __FUNCTION__), WATCHDOG_WARNING);
       }
     }
     return $result;

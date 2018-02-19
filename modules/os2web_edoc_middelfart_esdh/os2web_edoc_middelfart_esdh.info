@@ -10,4 +10,4 @@ dependencies[] = ctools
 dependencies[] = features
 features[features_api][] = api:1
 
-files[] = plugins/mm/os2web_edoc_esdh_middelfart_mm.inc
+files[] = plugins/mm/os2web_edoc_middelfart_esdh_mm.inc

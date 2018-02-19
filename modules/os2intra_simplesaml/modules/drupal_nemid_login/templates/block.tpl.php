@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Nemid_login block template.
  */
 ?>
 <script type="text/x-nemid" id="nemid_parameters"><?php echo $params;?></script>

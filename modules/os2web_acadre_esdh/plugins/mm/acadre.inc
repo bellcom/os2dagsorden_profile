@@ -176,7 +176,7 @@ function os2web_acadre_esdh_mm_import_meeting($meeting) {
  * @return mixed
  *   Meeting_struct array for an accepted import, else FALSE
  */
-function _os2web_acadre_esdh_import_meeting($info) {
+function _os2web_acadre_esdh_import_meeting(array $info) {
 
   // Debug bit set in os2web_esdh_provider settings.
   $debug = variable_get('os2web_esdh_provider_debug_info');
@@ -365,7 +365,7 @@ function _os2web_acadre_esdh_import_meeting($info) {
  * @return array
  *   The imported item.
  */
-function _os2web_acadre_esdh_import_item($info, $xml) {
+function _os2web_acadre_esdh_import_item(array $info, SimpleXMLElement $xml) {
   // Debug bit set in os2web_esdh_provider settings.
   $debug = variable_get('os2web_esdh_provider_debug_info');
 
@@ -530,7 +530,7 @@ function _os2web_acadre_esdh_import_item($info, $xml) {
  * @return array
  *   The imported bullet.
  */
-function _os2web_acadre_esdh_import_bullet($info, $bullet_xml) {
+function _os2web_acadre_esdh_import_bullet(array $info, SimpleXMLElement $bullet_xml) {
   // Debug bit set in os2web_esdh_provider settings.
   $debug = variable_get('os2web_esdh_provider_debug_info');
   $debug && error_log('MM Import - import bullet - ' . timer_read('mm_import') . 'ms');
@@ -576,6 +576,7 @@ function _os2web_acadre_esdh_similar_file_exists($filename) {
  * This function will set up the addendum connections for meetings.
  *
  * @param bool $drush
+ *   Drush flag.
  */
 function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
   if (!lock_acquire(__FUNCTION__)) {
@@ -738,9 +739,11 @@ function _os2web_acadre_esdh_pdf_file_path($path, $name) {
 /**
  * Improve the body HTML by stripping long URLs and substituting img references,.
  *
- * @param $data
+ * @param string $data
+ *   HTML string.
  *
- * @return mixed
+ * @return string
+ *   Improved HTML string.
  */
 function _acadre_esdh_mm_improve_body_html($data) {
   $data = _acadre_esdh_mm_remove_empty_tags($data);
@@ -805,9 +808,11 @@ function _acadre_esdh_mm_improve_body_html($data) {
 /**
  * Removed the empty tags (tags having no content, or nbsp) from the provided text.
  *
- * @param $data
+ * @param string $data
+ *   HTML string.
  *
- * @return mixed
+ * @return string
+ *   Stripped HTML string.
  */
 function _acadre_esdh_mm_remove_empty_tags($data) {
   do {
@@ -824,10 +829,13 @@ function _acadre_esdh_mm_remove_empty_tags($data) {
 /**
  * Gets the string value from the raw XML.
  *
- * @param $xml_raw
+ * @param mixed $xml_raw
+ *   XML raw.
  * @param string $convert_to
+ *   Flag to determine type of conversion.
  *
  * @return int|string
+ *   Converted value.
  */
 function _get_value_from_xml($xml_raw, $convert_to = 'string') {
   if ($convert_to == 'string') {

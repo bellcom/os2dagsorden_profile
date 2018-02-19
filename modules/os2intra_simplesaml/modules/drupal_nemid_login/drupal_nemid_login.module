@@ -2,10 +2,12 @@
 
 /**
  * @file
- * Based on https://code.google.com/p/nemid-php/ which is under the MIT licences
+ * Based on https://code.google.com/p/nemid-php/ which is under the MIT licences.
+ *
  * The following documents where used to implement the Javascript client:
  * - http://www.nets.eu/dk-da/Service/kundeservice/nemid-tu/NemID-tjenesteudbyderpakken-okt-2014/Documents/Konfiguration%20og%20ops%C3%A6tning.pdf
  * - http://www.nets.eu/dk-da/Service/kundeservice/nemid-tu/NemID-tjenesteudbyderpakken-okt-2014/Documents/NemID%20Integration%20-%20OCES.pdf.
+ *
  * @author Henrik Farre <hf@bellcom.dk>
  */
 
@@ -20,7 +22,7 @@ require dirname(__FILE__) . '/lib/Nemid.php';
 function drupal_nemid_login_menu() {
   $items = array();
   $items['nemid'] = array(
-    'title' => t('NemID login page'),
+    'title' => 'NemID login page',
     'page callback' => '_drupal_nemid_login_page',
     'page arguments' => array(),
     'access callback' => TRUE,
@@ -28,7 +30,7 @@ function drupal_nemid_login_menu() {
   );
 
   $items['nemid/verify'] = array(
-    'title' => t('NemID login verify'),
+    'title' => 'NemID login verify',
     'page callback' => '_drupal_nemid_login_verify',
     'page arguments' => array(),
     'access callback' => TRUE,
@@ -36,8 +38,8 @@ function drupal_nemid_login_menu() {
   );
 
   $items['admin/config/system/nemid'] = array(
-    'title' => t('Configure NemID'),
-    'description' => t('Configure NemID settings'),
+    'title' => 'Configure NemID',
+    'description' => 'Configure NemID settings',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_drupal_nemid_login_admin'),
     'access arguments' => array('access administration pages'),
@@ -82,7 +84,7 @@ function drupal_nemid_login_block_view($delta = '') {
 }
 
 /**
- *
+ * Implements hook_page.
  */
 function _drupal_nemid_login_page() {
   return theme('nemid_login_block', array(
@@ -113,9 +115,15 @@ function drupal_nemid_login_theme(&$existing, $type, $theme, $path) {
 }
 
 /**
+ * Clear certificate.
  *
+ * @param string $toBeStripped
+ *   String with certificate.
+ *
+ * @return string
+ *   Cleared certificate string.
  */
-function stripCertificate($toBeStripped) {
+function drupal_nemid_login_strip_certificate($toBeStripped) {
   $result = str_replace("\n", "", $toBeStripped);
   $result = str_replace("\r", "", $result);
   $result = str_replace("-----BEGIN CERTIFICATE-----", "", $result);
@@ -125,7 +133,10 @@ function stripCertificate($toBeStripped) {
 }
 
 /**
+ * Return parameters for nemid login.
  *
+ * @return mixed
+ *   Parameters array.
  */
 function _drupal_nemid_login_get_params() {
   $nemidlogin = new nemidlogin();
@@ -135,7 +146,7 @@ function _drupal_nemid_login_get_params() {
   $millisec = strval(intval(microtime(TRUE)) * 1000);
 
   $params = [
-    "SP_CERT" => stripCertificate($oldParams['paramcert']),
+    "SP_CERT" => drupal_nemid_login_strip_certificate($oldParams['paramcert']),
     "CLIENTFLOW" => "OCESLOGIN2",
     "SIGN_PROPERTIES" => "challenge=" . $millisec,
     "TIMESTAMP" => $millisec,
@@ -163,7 +174,10 @@ function _drupal_nemid_login_get_params() {
 }
 
 /**
+ * Settings for Nemid login.
  *
+ * @return mixed
+ *   Settings array.
  */
 function _drupal_nemid_login_get_settings() {
   $millisec = round(microtime(TRUE) * 1000);
@@ -182,10 +196,10 @@ function _drupal_nemid_login_get_settings() {
 }
 
 /**
- *
+ * NemID_login verify function.
  */
 function _drupal_nemid_login_verify() {
-  $DISABLE_OCSP_CHECK = TRUE;
+  $disable_ocsp_check = TRUE;
   $message = '';
 
   if (isset($_POST['response'])) {
@@ -219,7 +233,7 @@ function _drupal_nemid_login_verify() {
       $nemid = new NemidCertificateCheck();
       try {
 
-        $certificate = $nemid->checkAndReturnCertificate($_POST['response'], FALSE, $trustedrootdigests, $DISABLE_OCSP_CHECK);
+        $certificate = $nemid->checkAndReturnCertificate($_POST['response'], FALSE, $trustedrootdigests, $disable_ocsp_check);
         $subject = end($certificate['tbsCertificate']['subject']);
 
         $pid = $subject['serialNumber'];
@@ -248,7 +262,10 @@ function _drupal_nemid_login_verify() {
 }
 
 /**
+ * Settings form for drupal_nemid_login.
  *
+ * @return mixed
+ *   The drupal_nemid_login settings form.
  */
 function _drupal_nemid_login_admin() {
   $form = array();
@@ -282,7 +299,7 @@ function _drupal_nemid_login_admin() {
 
   foreach ($modes as $mode) {
     $form[$variablePrefix . $mode] = array(
-      '#title' => t('Settings for ' . $mode . ' mode'),
+      '#title' => t('Settings for !mode mode', array('!mode' => $mode)),
       '#type' => 'fieldset',
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
@@ -316,12 +333,19 @@ function _drupal_nemid_login_admin() {
 }
 
 /**
+ * Create nemid_login config object.
  *
+ * @return object
+ *   Config object.
  */
 function _drupal_nemid_login_get_config_object() {
   $variablePrefix = 'nemid_login_';
   $mode = variable_get($variablePrefix . 'mode', 'test');
-  $search = array("\r\n", "-----BEGIN CERTIFICATE-----\n", "\n-----END CERTIFICATE-----\n");
+  $search = array(
+    "\r\n",
+    "-----BEGIN CERTIFICATE-----\n",
+    "\n-----END CERTIFICATE-----\n"
+    );
   $replace = array("\n", "", "");
 
   if ($mode == 'live') {

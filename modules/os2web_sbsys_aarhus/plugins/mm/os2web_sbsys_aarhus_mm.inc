@@ -47,13 +47,14 @@ function os2web_sbsys_aarhus_mm_get_import_list() {
 
 /**
  * Strip illegal characters from the XML.
+ *
  * Ex &#xC = ASCII new line feed.
  *
- * @param $string
- *   string to sanitise
+ * @param string $string
+ *   String to sanitise.
  *
- *   $return array
- *   The string sanitised
+ * @return array
+ *   The string sanitised.
  */
 function utf8_for_xml($string) {
   // Using regex.
@@ -225,14 +226,13 @@ function os2web_sbsys_aarhus_mm_import_meeting($meeting) {
  *
  * @param array $meeting
  *   Meeting array.
- *
  * @param SimpleXMLElement $agenda_xml
  *   Meeting agenda XML object.
  *
  * @return mixed
  *   Meeting_struct array for an accepted import, else FALSE
  */
-function _os2web_sbsys_aarhus_mm_import_meeting_agenda(&$meeting, $agenda_xml) {
+function _os2web_sbsys_aarhus_mm_import_meeting_agenda(array &$meeting, SimpleXMLElement $agenda_xml) {
 
   // Check if the committee is allowed to publish.
   $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_aarhus_approved_committees', MM_DEFAULT_APPROVED)));
@@ -290,14 +290,13 @@ function _os2web_sbsys_aarhus_mm_import_meeting_agenda(&$meeting, $agenda_xml) {
  *
  * @param array $meeting
  *   Meeting array.
- *
  * @param SimpleXMLElement $xml
  *   Xml segment containing the item.
  *
  * @return array
  *   The imported item.
  */
-function _os2web_sbsys_aarhus_mm_import_meeting_agenda_item($meeting, $xml) {
+function _os2web_sbsys_aarhus_mm_import_meeting_agenda_item(array $meeting, SimpleXMLElement $xml) {
   $xml_item = array();
 
   // Number is not numeric - need to convert.
@@ -591,10 +590,13 @@ function _os2web_sbsys_aarhus_mm_order_addenums($drush = FALSE) {
 /**
  * Replaces the src attribute for img tag by providing the valid path to file.
  *
- * @param $html
- * @param $image_folder_uri
+ * @param string $html
+ *   HTML string.
+ * @param string $image_folder_uri
+ *   Image folder uri.
  *
  * @return mixed
+ *   Improved HTML string.
  */
 function _os2web_sbsys_aarhus_mm_improve_html($html, $image_folder_uri) {
 
@@ -626,9 +628,11 @@ function _os2web_sbsys_aarhus_mm_improve_html($html, $image_folder_uri) {
 /**
  * This function generates numeric IDs, when it is missing in the XML.
  *
- * @param $string
+ * @param string $string
+ *   Id string.
  *
  * @return int|string
+ *   Generated numeric ID.
  */
 function _os2web_sbsys_aarhus_generate_crc_id($string) {
   $id = abs(crc32($string));
@@ -642,9 +646,11 @@ function _os2web_sbsys_aarhus_generate_crc_id($string) {
 /**
  * This function generates numeric Number field, from Item ID string by first 2 chars.
  *
- * @param $string
+ * @param string $string
+ *   Item ID string.
  *
  * @return int|string
+ *   Generated numeric Number field.
  */
 function _os2web_sbsys_aarhus_generate_item_number($string) {
 

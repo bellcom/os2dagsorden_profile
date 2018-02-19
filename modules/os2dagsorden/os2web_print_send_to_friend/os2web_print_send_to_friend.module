@@ -21,7 +21,7 @@ module_load_include('inc', 'os2web_print_send_to_friend', '/handlers/database');
  * Implementation of hook_menu().
  *
  * @return mixed
- *  Array of links.
+ *   Array of links.
  */
 function os2web_print_send_to_friend_menu() {
   $items = array();
@@ -68,7 +68,7 @@ function os2web_print_send_to_friend_menu() {
   );
   $items['admin/reports/send_to_friend_log'] = array(
     'title' => 'Send to friend log Report',
-    'description' => t('View events that have been logged.'),
+    'description' => 'View events that have been logged.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2web_print_send_to_friend_log_filter_form'),
     'access arguments' => array('administer os2web'),
@@ -97,7 +97,7 @@ function os2web_print_send_to_friend_monolog_channel_info() {
  * Implements hook_monolog_handler_info().
  *
  * @return mixed
- *  Handlers array.
+ *   Handlers array.
  */
 function os2web_print_send_to_friend_monolog_handler_info() {
   $handlers = array();
@@ -114,12 +114,16 @@ function os2web_print_send_to_friend_monolog_handler_info() {
 /**
  * Function that logs sending to friend event.
  *
- * @param $message
- * @param array $variables
- * @param $severity
- * @param array $context
+ * @param string $message
+ *   String with log message.
+ * @param mixed $variables
+ *   Array of replacements to make.
+ * @param string $severity
+ *   Severity level.
+ * @param mixed $context
+ *   The log context.
  */
-function os2web_print_send_to_friend_add_to_log($message, $variables = array(), $severity, $context = array()) {
+function os2web_print_send_to_friend_add_to_log($message, $variables = array(), $severity = WATCHDOG_INFO, $context = array()) {
   try {
 
     // Perform a partial bootstrap if watchdog is called prior to the
@@ -143,10 +147,13 @@ function os2web_print_send_to_friend_add_to_log($message, $variables = array(), 
 /**
  * Generates the filter form for sent to friend log values.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The send_to_friend form.
+ * @param mixed $form_state
+ *   The state of the send_to_friend form.
  *
- * @return array
+ * @return mixed
+ *   The send_to_friend form.
  */
 function os2web_print_send_to_friend_log_filter_form($form, &$form_state) {
   drupal_add_css(drupal_get_path('module', 'os2web_print_send_to_friend') . '/css/os2web_print_send_to_friend.css');
@@ -286,10 +293,12 @@ function os2web_print_send_to_friend_log_filter_form($form, &$form_state) {
 }
 
 /**
- * Clears form values.
+ * Send_to_friend form submit hook.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ *   The send_to_friend form.
+ * @param mixed $form_state
+ *   The state of the send_to_friend form.
  */
 function os2web_print_send_to_friend_log_filter_form_submit($form, &$form_state) {
   if ($form_state["values"]["op"] == 'Clear') {
@@ -307,38 +316,4 @@ function os2web_print_send_to_friend_log_filter_form_submit($form, &$form_state)
     $form_state['date']['to'] = $form_state['values']['to'];
     $form_state['rebuild'] = TRUE;
   }
-}
-
-/**
- * Implements hook_requirements().
- */
-function os2web_print_send_to_friend_requirements($phase) {
-  if ($phase !== 'runtime') {
-    return array();
-  }
-  $t = get_t();
-  if (!module_exists('smtp')) {
-    $requirements['os2web_print_send_to_friend_smtp_module'] = array(
-      'title' => $t('OS2Web Print or Send to Friend'),
-      'value' => $t('SMTP module'),
-      'severity' => REQUIREMENT_ERROR,
-      'description' => t('SMTP module is not exists'),
-    );
-  }
-  elseif (variable_get('smtp_on', '0') == 0) {
-    $requirements['os2web_print_send_to_friend_smtp_module_active'] = array(
-      'title' => $t('OS2Web Print or Send to Friend'),
-      'value' => $t('SMTP module'),
-      'severity' => REQUIREMENT_ERROR,
-      'description' => t('SMTP module is not active'),
-    );
-  }
-  else {
-    $requirements['os2web_print_send_to_friend_smtp_module_active'] = array(
-      'title' => $t('OS2Web Print or Send to Friend'),
-      'value' => $t('SMTP module is active'),
-      'severity' => REQUIREMENT_OK,
-    );
-  }
-  return $requirements;
 }

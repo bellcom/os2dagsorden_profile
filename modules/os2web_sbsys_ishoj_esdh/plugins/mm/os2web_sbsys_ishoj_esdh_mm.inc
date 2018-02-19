@@ -53,13 +53,14 @@ function os2web_sbsys_ishoj_esdh_mm_get_import_list() {
 
 /**
  * Strip illegal characters from the XML.
+ *
  * Ex &#xC = ASCII new line feed.
  *
- * @param $string
- *   string to sanitise
+ * @param string $string
+ *   String to sanitise.
  *
- *   $return array
- *   The string sanitised
+ * @return array
+ *   The string sanitised.
  */
 function utf8_for_xml($string) {
   // $replace_me = "&#xC;";.
@@ -180,21 +181,21 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
 
       // Members
       // foreach ($members as $member){
-      //  // Changed by skifter@bellcom.dk 01.08.2013 - to handle "no show" members and messages for "no shoW"
-      //  if (!empty($member->ParticipationNote)) {
-      //    $member->ParticipationNote = ", " . $member->ParticipationNote;
-      //  }
+      // Changed by skifter@bellcom.dk 01.08.2013 - to handle "no show" members and messages for "no shoW"
+      // if (!empty($member->ParticipationNote)) {
+      // $member->ParticipationNote = ", " . $member->ParticipationNote;
+      // }
       //
-      //  if ($member->ParticipationStatusAsValue == '1' || $member->ParticipationStatusAsValue == '4') {
-      //    $participants[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
-      //  }
-      //  // Changed by stan@bellcom.dk 19.09.2013 - to consider participants with "Ikke bestemt" status as actual participants
-      //  else if($member->ParticipationStatusAsText == 'NotDecided' || $member->ParticipationStatusAsValue == '0'){
-      //    $participants[] = (string) $member->Name . $member->ParticipationNote;
-      //  }
-      //  else {
-      //    $participants_cancellation[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
-      //  }
+      // if ($member->ParticipationStatusAsValue == '1' || $member->ParticipationStatusAsValue == '4') {
+      // $participants[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
+      // }
+      // Changed by stan@bellcom.dk 19.09.2013 - to consider participants with "Ikke bestemt" status as actual participants
+      // else if($member->ParticipationStatusAsText == 'NotDecided' || $member->ParticipationStatusAsValue == '0'){
+      // $participants[] = (string) $member->Name . $member->ParticipationNote;
+      // }
+      // else {
+      // $participants_cancellation[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
+      // }
       // }.
       $meeting = array(
         'system_id' => $sys_id,
@@ -218,7 +219,7 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
       $meeting_agendas = array();
       foreach ($manifest->xpath("/Dagsorden/Dagsordenpunkter") as $agenda_instance) {
         if (!$meeting_agendas) {
-          if (sizeof($agenda_instance->xpath("Dagsordenpunkt"))) {
+          if (count($agenda_instance->xpath("Dagsordenpunkt"))) {
             $meeting_agendas = $agenda_instance->xpath("Dagsordenpunkt");
           }
           else {
@@ -266,14 +267,13 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
  *
  * @param array $meeting
  *   Meeting array.
- *
  * @param array $agenda_xml
  *   Meeting agenda XML object.
  *
  * @return mixed
  *   Meeting_struct array for an accepted import, else FALSE
  */
-function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda(&$meeting, $agenda_xml) {
+function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda(array &$meeting, array $agenda_xml) {
   $meeting['items'] = array();
   $agenda = $meeting;
 
@@ -297,14 +297,13 @@ function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda(&$meeting, $agenda_xm
  *
  * @param array $meeting
  *   Meeting array.
- *
  * @param SimpleXMLElement $xml
  *   Xml segment containing the item.
  *
  * @return array
  *   The imported item.
  */
-function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
+function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda_item(array $meeting, SimpleXMLElement $xml) {
   $xml_item = array();
   $xml_item['id'] = (string) $xml->attributes()->DagsordenpunktID;
   $xml_item['number'] = (string) $xml->attributes()->Nummer;
