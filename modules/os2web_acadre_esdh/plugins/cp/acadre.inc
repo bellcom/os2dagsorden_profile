@@ -20,10 +20,10 @@ $plugin = array(
 function os2web_acadre_esdh_cp_handle_request() {
   module_load_include('inc', 'os2web_acadre_esdh', 'plugins/cp/ArpService.class');
   if (isset($_GET['wsdl'])) {
-    TraenPublishingDestinationSystemService::getWSDL($_GET['wsdl']);
+    TraenPublishingDestinationSystemService::getWsdl($_GET['wsdl']);
   }
   if (isset($_GET['xsd'])) {
-    TraenPublishingDestinationSystemService::getXSD($_GET['xsd']);
+    TraenPublishingDestinationSystemService::getXsd($_GET['xsd']);
   }
   if (!lock_acquire(__FUNCTION__, 5)) {
     lock_wait(__FUNCTION__);

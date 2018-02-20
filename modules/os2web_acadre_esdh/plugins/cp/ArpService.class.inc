@@ -16,7 +16,7 @@ class TraenPublishingDestinationSystemService {
   /**
    * Dumps the wsdl for the serivce.
    */
-  public static function getWSDL($wsdl = FALSE) {
+  public static function getWsdl($wsdl = FALSE) {
     if ($wsdl) {
       $wsdl = str_replace('wsdl', '', $wsdl);
       $filename = 'plugins/cp/TraenPublishingDestinationSystemService' . check_plain($wsdl + 1) . '.wsdl';
@@ -30,7 +30,7 @@ class TraenPublishingDestinationSystemService {
   /**
    * Dumps an xsd for the serivce.
    */
-  public static function getXSD($xsd = FALSE) {
+  public static function getXsd($xsd = FALSE) {
     if ($xsd) {
       $xsd = str_replace('xsd', '', $xsd);
       $filename = 'plugins/cp/TraenPublishingDestinationSystemService' . check_plain($xsd + 1) . '.xsd';
@@ -69,17 +69,17 @@ class TraenPublishingDestinationSystemService {
    */
 
   /**
-   * Implemented public method RecievedEntityLayout.
+   * Implemented public method recievedEntityLayout.
    */
-  public function RecievedEntityLayout($data) {
+  public function recievedEntityLayout($data) {
     error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $data = ' . print_r($data, 1));
     return FALSE;
   }
 
   /**
-   * Implemented public method RecievedItemUnPublished.
+   * Implemented public method recievedItemUnPublished.
    */
-  public function RecievedItemUnPublished($data) {
+  public function recievedItemUnPublished($data) {
     $success = FALSE;
     if (isset($data->entityItem->Key->Field->Value)) {
       $function = 'os2web_cp_service_delete';
@@ -91,9 +91,9 @@ class TraenPublishingDestinationSystemService {
   }
 
   /**
-   * Implemented public method RecievedConfiguration.
+   * Implemented public method recievedConfiguration.
    */
-  public function RecievedConfiguration($data) {
+  public function recievedConfiguration($data) {
     // Function used to handle the configuration.
     $function = 'os2web_cp_service_alter_configuration';
     if (function_exists($function)) {
@@ -107,9 +107,9 @@ class TraenPublishingDestinationSystemService {
   }
 
   /**
-   * Implemented public method RecievedItemPublished.
+   * Implemented public method recievedItemPublished.
    */
-  public function RecievedItemPublished($data) {
+  public function recievedItemPublished($data) {
     switch (strtolower($data->entityItem->EntityName)) {
       case 'sag':
         $type = 'case';
