@@ -265,15 +265,15 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
 /**
  * Imports a meeting from filesystem.
  *
- * @param array $meeting
+ * @param mixed $meeting
  *   Meeting array.
- * @param array $agenda_xml
+ * @param mixed $agenda_xml
  *   Meeting agenda XML object.
  *
  * @return mixed
  *   Meeting_struct array for an accepted import, else FALSE
  */
-function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda(array &$meeting, array $agenda_xml) {
+function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda(&$meeting, $agenda_xml) {
   $meeting['items'] = array();
   $agenda = $meeting;
 
@@ -295,7 +295,7 @@ function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda(array &$meeting, arra
 /**
  * Imports a single item for an agenda.
  *
- * @param array $meeting
+ * @param mixed $meeting
  *   Meeting array.
  * @param SimpleXMLElement $xml
  *   Xml segment containing the item.
@@ -303,7 +303,7 @@ function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda(array &$meeting, arra
  * @return array
  *   The imported item.
  */
-function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda_item(array $meeting, SimpleXMLElement $xml) {
+function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElement $xml) {
   $xml_item = array();
   $xml_item['id'] = (string) $xml->attributes()->DagsordenpunktID;
   $xml_item['number'] = (string) $xml->attributes()->Nummer;

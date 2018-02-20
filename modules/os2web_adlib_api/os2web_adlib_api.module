@@ -172,14 +172,14 @@ function _os2web_adlib_api_bulletpoint_nid() {
 /**
  * Worker function, adds fid's attached to nid's to adlib queue.
  *
- * @param array $nid
+ * @param mixed $nid
  *   List of bulletpoint nids.
  * @param mixed $context
  *   Context information.
  *
  * @author Thomas Thune Hansen <tth@bellcom.dk>
  */
-function _os2web_adlib_api_reprocess_nid(array $nid, &$context = array()) {
+function _os2web_adlib_api_reprocess_nid($nid, &$context = array()) {
   if (is_array($nid)) {
     foreach ($nid as $n) {
       _os2web_adlib_api_reprocess_nid($n);

@@ -212,7 +212,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 /**
  * Imports a meeting from filesystem.
  *
- * @param array $meeting
+ * @param mixed $meeting
  *   Meeting array.
  * @param SimpleXMLElement $agenda_xml
  *   Meeting agenda XML object.
@@ -220,7 +220,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
  * @return mixed
  *   Meeting_struct array for an accepted import, else FALSE
  */
-function _os2web_edoc_esdh_mm_import_meeting_agenda(array &$meeting, SimpleXMLElement $agenda_xml) {
+function _os2web_edoc_esdh_mm_import_meeting_agenda(&$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
   $publish_committee = array_map('trim', explode(',', variable_get('os2web_edoc_esdh_approved_committees', MM_DEFAULT_APPROVED)));
   if ($meeting['committee'] == '' || !in_array($meeting['committee'], $publish_committee)) {
@@ -256,7 +256,7 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda(array &$meeting, SimpleXMLEl
 /**
  * Imports a single item for an agenda.
  *
- * @param array $meeting
+ * @param mixed $meeting
  *   Meeting array.
  * @param SimpleXMLElement $xml
  *   Xml segment containing the item.
@@ -264,7 +264,7 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda(array &$meeting, SimpleXMLEl
  * @return array
  *   The imported item.
  */
-function _os2web_edoc_esdh_mm_import_meeting_agenda_item(array $meeting, SimpleXMLElement $xml) {
+function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElement $xml) {
   $xml_item = array();
   $xml_item['number'] = (int) $xml->AgendaItemNumber;
   $xml_item['pdf'] = (string) $xml->PDFDocument;

@@ -170,13 +170,13 @@ function os2web_acadre_esdh_mm_import_meeting($meeting) {
 /**
  * Imports a meeting from filesystem.
  *
- * @param array $info
+ * @param mixed $info
  *   Meeting info block derived from XML.
  *
  * @return mixed
  *   Meeting_struct array for an accepted import, else FALSE
  */
-function _os2web_acadre_esdh_import_meeting(array $info) {
+function _os2web_acadre_esdh_import_meeting($info) {
 
   // Debug bit set in os2web_esdh_provider settings.
   $debug = variable_get('os2web_esdh_provider_debug_info');
@@ -357,7 +357,7 @@ function _os2web_acadre_esdh_import_meeting(array $info) {
 /**
  * Imports a single item for an agenda.
  *
- * @param array $info
+ * @param mixed $info
  *   Import info array.
  * @param SimpleXMLElement $xml
  *   Xml segment containing the item.
@@ -365,7 +365,7 @@ function _os2web_acadre_esdh_import_meeting(array $info) {
  * @return array
  *   The imported item.
  */
-function _os2web_acadre_esdh_import_item(array $info, SimpleXMLElement $xml) {
+function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
   // Debug bit set in os2web_esdh_provider settings.
   $debug = variable_get('os2web_esdh_provider_debug_info');
 
@@ -522,7 +522,7 @@ function _os2web_acadre_esdh_import_item(array $info, SimpleXMLElement $xml) {
 /**
  * Imports a single bullet for an agenda item.
  *
- * @param array $info
+ * @param mixed $info
  *   Import info array.
  * @param SimpleXMLElement $bullet_xml
  *   Xml segment containing the bullet.
@@ -530,7 +530,7 @@ function _os2web_acadre_esdh_import_item(array $info, SimpleXMLElement $xml) {
  * @return array
  *   The imported bullet.
  */
-function _os2web_acadre_esdh_import_bullet(array $info, SimpleXMLElement $bullet_xml) {
+function _os2web_acadre_esdh_import_bullet($info, SimpleXMLElement $bullet_xml) {
   // Debug bit set in os2web_esdh_provider settings.
   $debug = variable_get('os2web_esdh_provider_debug_info');
   $debug && error_log('MM Import - import bullet - ' . timer_read('mm_import') . 'ms');

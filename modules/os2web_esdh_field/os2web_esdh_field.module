@@ -71,7 +71,7 @@ function os2web_esdh_field_field_widget_form(&$form, &$form_state, $field, $inst
   $field_type = $field['type'];
   $default = '';
   if (isset($form_state['node']->{$field_name}[$langcode][$delta][$field_type])) {
-    $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type]) ? : 0;
+    $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type]) ?: 0;
   }
   switch ($instance['widget']['type']) {
     case 'os2web_esdh_field_case_ident_wid':
@@ -542,10 +542,10 @@ function os2web_esdh_field_cron_queue_info() {
 /**
  * Cron worker function to update a document from Acadre PWS.
  *
- * @param array $document
+ * @param mixed $document
  *   The document.
  */
-function _os2web_esdh_field_update_document(array $document) {
+function _os2web_esdh_field_update_document($document) {
   if (isset($document['did'])) {
 
     $doc = os2web_esdh_provider_invoke('cm', 'get_document', $document['did']);

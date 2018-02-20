@@ -435,13 +435,13 @@ class AcadrePWS {
   /**
    * Gets all meta for every document we send the IDs of.
    *
-   * @param array $documents
+   * @param mixed $documents
    *   Document IDs.
    *
    * @return mixed
    *   Documents meta.
    */
-  public function getDocuments(array $documents) {
+  public function getDocuments($documents) {
     $cid = __FUNCTION__;
     $result = & drupal_static($cid, FALSE);
     if ($result != FALSE) {

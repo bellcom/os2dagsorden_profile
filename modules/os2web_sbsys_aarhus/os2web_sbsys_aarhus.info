@@ -9,5 +9,3 @@ dependencies[] = os2web_esdh_provider
 dependencies[] = ctools
 dependencies[] = features
 features[features_api][] = api:1
-
-files[] = plugins/mm/os2web_sbsys_aarhus_mm.inc

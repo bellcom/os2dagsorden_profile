@@ -301,10 +301,10 @@ function os2web_esdh_provider_cron_queue_info() {
 /**
  * Worker function for a single import.
  *
- * @param array $args
+ * @param mixed $args
  *   Meeting data for the import.
  */
-function _os2web_esdh_provider_cron_queue_worker(array $args) {
+function _os2web_esdh_provider_cron_queue_worker($args) {
   if (isset($args['meeting']) && isset($args['force'])) {
     module_load_include('inc', 'os2web_esdh_provider', 'os2web_esdh_provider.mmapi');
     _os2web_esdh_provider_import_meeting($args['meeting'], $args['force']);

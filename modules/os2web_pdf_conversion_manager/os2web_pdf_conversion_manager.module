@@ -675,7 +675,7 @@ function _os2web_pdf_conversion_manager_delete_msg_attachments_folder($convertio
 /**
  * Imports a file metadata into a managed drupal file.
  *
- * @param array $file_meta
+ * @param mixed $file_meta
  *   File metadata.
  *
  * @access protected
@@ -683,7 +683,7 @@ function _os2web_pdf_conversion_manager_delete_msg_attachments_folder($convertio
  * @return object
  *   Drupal standard file object.
  */
-function _os2web_pdf_conversion_manager_import_file(array $file_meta) {
+function _os2web_pdf_conversion_manager_import_file($file_meta) {
 
   $fid = db_select('file_managed', 'fm')
     ->fields('fm', array('fid'))

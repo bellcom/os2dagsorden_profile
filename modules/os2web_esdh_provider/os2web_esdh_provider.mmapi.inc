@@ -523,7 +523,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
 /**
  * Imports item metadata into nodes.
  *
- * @param array $items
+ * @param mixed $items
  *   List of items to import.
  *
  * @access protected
@@ -531,7 +531,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
  * @return array
  *   List of imported node ids
  */
-function _os2web_esdh_provider_import_items(array $items, $existing_bullets = NULL) {
+function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
   global $_os2web_esdh_provider_processing_meeting_id, $_os2web_esdh_provider_processing_meeting_nid, $_os2web_esdh_provider_processing_bp, $_os2web_esdh_provider_processing_meeting_access;
   $nids = array();
   foreach ($items as $item) {
@@ -644,7 +644,7 @@ function _os2web_esdh_provider_import_items(array $items, $existing_bullets = NU
 /**
  * Imports bullet metadata into nodes.
  *
- * @param array $bullets
+ * @param mixed $bullets
  *   List of bullets.
  *
  * @return array
@@ -652,7 +652,7 @@ function _os2web_esdh_provider_import_items(array $items, $existing_bullets = NU
  *
  * @access protected
  */
-function _os2web_esdh_provider_import_bullets(array $bullets, $existing_attachments = NULL) {
+function _os2web_esdh_provider_import_bullets($bullets, $existing_attachments = NULL) {
   global $_os2web_esdh_provider_processing_meeting_id, $_os2web_esdh_provider_processing_bp;
 
   // Since we need to run this often,
@@ -733,7 +733,7 @@ function _os2web_esdh_provider_import_bullets(array $bullets, $existing_attachme
 /**
  * Imports a file metadata into a managed drupal file.
  *
- * @param array $file_meta
+ * @param mixed $file_meta
  *   File metadata.
  *
  * @access protected
@@ -741,7 +741,7 @@ function _os2web_esdh_provider_import_bullets(array $bullets, $existing_attachme
  * @return object
  *   Drupal standard file object
  */
-function _os2web_esdh_provider_import_file(array $file_meta) {
+function _os2web_esdh_provider_import_file($file_meta) {
   global $_os2web_esdh_provider_processing_meeting_id, $_os2web_esdh_provider_processing_bp;
 
   // Since we need to run this often,
@@ -897,13 +897,13 @@ function _os2web_esdh_provider_import_file(array $file_meta) {
  *
  * @param mixed $node
  *   Item node.
- * @param array $item
+ * @param mixed $item
  *   Array containing information about bullets and enclosures.
  *
  * @return object
  *   Item node with filled information about bullet/enclosures.
  */
-function _os2web_esdh_import_handle_bullets($node, array $item) {
+function _os2web_esdh_import_handle_bullets($node, $item) {
   global $_os2web_esdh_provider_processing_meeting_id, $_os2web_esdh_provider_processing_bp, $_os2web_esdh_provider_processing_meeting_access;
   // Gather the bullets for the item.
   if (isset($item['bullets']) && is_array($item['bullets'])) {

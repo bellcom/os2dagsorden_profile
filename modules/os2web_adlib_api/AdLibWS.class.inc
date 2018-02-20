@@ -71,14 +71,14 @@ class AdLibWS {
   /**
    * Starts a job on the adlib server.
    *
-   * @param array $file_info
+   * @param mixed $file_info
    *   Fileinfo structure.
    * @param int $type
    *   Adlib jobtype.
    * @param int $priority
    *   ADLib job priority.
    */
-  public function addJob(array $file_info, $type = ADLIB_JOBTYPE_PDF, $priority = 3) {
+  public function addJob($file_info, $type = ADLIB_JOBTYPE_PDF, $priority = 3) {
     if (ADLIB_DISABLED) {
       return FALSE;
     }
