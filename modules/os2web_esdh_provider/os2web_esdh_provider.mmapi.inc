@@ -404,8 +404,8 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       watchdog('acadre MM', '[XML_ID: !id] Imported bullet points !list ',
         array(
           '!id' => $_os2web_esdh_provider_processing_meeting_id,
-          '!list' => print_r($item_nids, TRUE)
-          ), WATCHDOG_DEBUG);
+          '!list' => print_r($item_nids, TRUE),
+        ), WATCHDOG_DEBUG);
 
       $nids_to_delete = NULL;
 
@@ -468,16 +468,16 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
           '!meeting_date',
           '!meeting_type',
           '!meeting_url',
-          PHP_EOL
-          );
+          PHP_EOL,
+        );
         $replace = array(
           $cName,
           $mName,
           $mDate,
           $published_item,
           $mLink,
-          '<br/>'
-          );
+          '<br/>',
+        );
 
         // Making replacements.
         $subject = str_replace($search, $replace, $subject_template);
@@ -541,8 +541,8 @@ function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
       array(
         '!id' => $_os2web_esdh_provider_processing_meeting_id,
         '!title' => $item['title'],
-        '!sysid' => $_os2web_esdh_provider_processing_bp
-        ), WATCHDOG_NOTICE);
+        '!sysid' => $_os2web_esdh_provider_processing_bp,
+      ), WATCHDOG_NOTICE);
 
     if (module_exists('os2dagsorden_esdh_provider')) {
       if (!empty($existing_bullets)) {
@@ -552,8 +552,8 @@ function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
             array(
               '!id' => $_os2web_esdh_provider_processing_meeting_id,
               '!sysid' => $_os2web_esdh_provider_processing_bp,
-              '!nid' => $node->nid
-              ), WATCHDOG_INFO);
+              '!nid' => $node->nid,
+            ), WATCHDOG_INFO);
         }
       }
 
@@ -597,8 +597,8 @@ function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
       array(
         '!id' => $_os2web_esdh_provider_processing_meeting_id,
         '!sysid' => $_os2web_esdh_provider_processing_bp,
-        '!access' => $item['access']
-        ), WATCHDOG_DEBUG);
+        '!access' => $item['access'],
+      ), WATCHDOG_DEBUG);
 
     if ($item['access'] === 'Lukket' || $item['access'] === 'Person') {
       if ($item['access'] === 'Lukket') {
@@ -635,8 +635,8 @@ function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
       array(
         '!id' => $_os2web_esdh_provider_processing_meeting_id,
         '!sysid' => $_os2web_esdh_provider_processing_bp,
-        '!nid' => $node->nid
-        ), WATCHDOG_NOTICE);
+        '!nid' => $node->nid,
+      ), WATCHDOG_NOTICE);
   }
   return $nids;
 }
@@ -690,8 +690,8 @@ function _os2web_esdh_provider_import_bullets($bullets, $existing_attachments = 
         array(
           '!id' => $_os2web_esdh_provider_processing_meeting_id,
           '!sysid' => $_os2web_esdh_provider_processing_bp,
-          '!bpa' => $bullet['sysid']
-          ), WATCHDOG_DEBUG);
+          '!bpa' => $bullet['sysid'],
+        ), WATCHDOG_DEBUG);
       $node = new stdClass();
       $node->type = "os2web_meetings_bullet_attach";
       $node->language = LANGUAGE_NONE;
@@ -963,8 +963,8 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
           array(
             '!id' => $_os2web_esdh_provider_processing_meeting_id,
             '!sysid' => $_os2web_esdh_provider_processing_bp,
-            '!file' => $file->uri
-            ), WATCHDOG_DEBUG);
+            '!file' => $file->uri,
+          ), WATCHDOG_DEBUG);
         // $node->field_os2web_meetings_enclosures[LANGUAGE_NONE][] = (array) $file;.
         if (module_exists('os2dagsorden_esdh_provider')) {
           $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = os2dagsorden_esdh_provider_process_enclosure($enclosure, $file);

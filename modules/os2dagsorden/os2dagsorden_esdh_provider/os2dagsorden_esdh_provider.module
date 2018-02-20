@@ -44,8 +44,8 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
       '!id' => $_os2dagsorden_esdh_provider_processing_meeting_id,
       '!sysid' => $_os2dagsorden_esdh_provider_processing_bp,
       '!bpa' => $enclosure['sysid'],
-      '!title' => $node->title
-      ), WATCHDOG_INFO);
+      '!title' => $node->title,
+    ), WATCHDOG_INFO);
 
   if (strlen($node->title) > 254) {
     $node->title = substr($node->title, 0, 254);
@@ -70,8 +70,8 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
       '!id' => $_os2dagsorden_esdh_provider_processing_meeting_id,
       '!sysid' => $_os2dagsorden_esdh_provider_processing_bp,
       '!bpa' => $enclosure['sysid'],
-      '!nid' => $node->nid
-      ), WATCHDOG_INFO);
+      '!nid' => $node->nid,
+    ), WATCHDOG_INFO);
 
   // PDF conversion.
   if (module_exists("os2dagsorden_pdf2htmlex")) {

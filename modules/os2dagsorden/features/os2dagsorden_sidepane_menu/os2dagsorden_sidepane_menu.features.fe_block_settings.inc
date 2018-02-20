@@ -26,17 +26,17 @@ function os2dagsorden_sidepane_menu_default_fe_block_settings() {
         'region' => 'menu',
         'status' => 1,
         'theme' => 'os2dagsorden_classic_theme',
-        'weight' => -20
+        'weight' => -20,
       ),
       'rubik' => array(
         'region' => 'content',
         'status' => 1,
         'theme' => 'rubik',
-        'weight' => -20
-      )
+        'weight' => -20,
+      ),
     ),
     'title' => '<none>',
-    'visibility' => 0
+    'visibility' => 0,
   );
 
   $export['menu-menu-sidepane-menu'] = array(
@@ -52,17 +52,17 @@ function os2dagsorden_sidepane_menu_default_fe_block_settings() {
         'region' => 'sidebar_second',
         'status' => 1,
         'theme' => 'os2dagsorden_classic_theme',
-        'weight' => -20
+        'weight' => -20,
       ),
       'rubik' => array(
         'region' => 'content',
         'status' => 1,
         'theme' => 'rubik',
-        'weight' => -20
-      )
+        'weight' => -20,
+      ),
     ),
     'title' => '<none>',
-    'visibility' => 0
+    'visibility' => 0,
   );
 
   return $export;

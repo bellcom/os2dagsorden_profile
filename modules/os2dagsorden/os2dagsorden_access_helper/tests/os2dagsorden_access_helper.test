@@ -33,8 +33,8 @@ class Os2dagsordenAccessHelperTest extends TaxonomyWebTestCase {
     parent::setUp(
       array('os2dagsorden_content_types',
         'os2dagsorden_access_helper',
-        'print'
-        )
+        'print',
+      )
       );
 
     // Creating committee.

@@ -103,8 +103,8 @@ function os2dagsorden_pdf2htmlex_report() {
       'File name',
       'HTML path',
       'Status',
-      ''
-      );
+      '',
+    );
     $rows = array();
 
     foreach ($result as $row) {
@@ -181,8 +181,8 @@ function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
       array(
         '%fid' => $fid,
         '%did' => $did,
-        '%e' => $e->getMessage()
-        ),
+        '%e' => $e->getMessage(),
+      ),
       WATCHDOG_ERROR);
   }
 }
@@ -202,8 +202,8 @@ function os2dagsorden_pdf2htmlex_cronapi($op, $job = NULL) {
   switch ($op) {
     case 'list':
       return array(
-        'os2dagsorden_pdf2htmlex_cron' => t('Converts PDF files to HTML')
-        );
+        'os2dagsorden_pdf2htmlex_cron' => t('Converts PDF files to HTML'),
+      );
   }
 }
 

@@ -1343,7 +1343,7 @@ function os2dagsorden_access_helper_node_save($node) {
               '!meeting_type',
               '!user',
               '!meeting_link',
-              PHP_EOL
+              PHP_EOL,
             );
             $replace = array(
               $cName,
@@ -1352,7 +1352,7 @@ function os2dagsorden_access_helper_node_save($node) {
               $published_item,
               $uName,
               $mLink,
-              '<br/>'
+              '<br/>',
             );
 
             // Making replacements.

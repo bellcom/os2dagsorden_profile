@@ -58,8 +58,8 @@ function os2web_edoc_esdh_mm_get_import_list() {
 
     $uris[] = array(
       'id' => _os2web_edoc_esdh_generate_meeting_id($meeting_date, $committee),
-      'uri' => $xml_file->uri
-      );
+      'uri' => $xml_file->uri,
+    );
   }
   return $uris;
 }

@@ -85,8 +85,8 @@ function _os2dagsorden_speaker_paper_send_message($uid, $node) {
     $spLink,
     $uName,
     $authorName,
-    '<br/>'
-    );
+    '<br/>',
+  );
 
   // Making replacements.
   $subject = str_replace($search, $replace, $subject_template);

@@ -56,8 +56,8 @@ function os2dagsorden_statistics_menu() {
       'os2dagsorden_statistics_content_views_node_statistic_form',
       3,
       4,
-      5
-      ),
+      5,
+    ),
     'access arguments' => array('administer os2web'),
   );
   return $items;
@@ -80,8 +80,8 @@ function os2dagsorden_statistics_user_statistics_page() {
     $output .= theme_item_list(array(
       'items' => $items,
       'type' => 'ul',
-      'attributes' => array()
-      ));
+      'attributes' => array(),
+    ));
   }
   return $output;
 }
@@ -129,8 +129,8 @@ function os2dagsorden_statistics_user_statistics_by_year($year = NULL) {
   $output .= theme('table', array(
     'header' => $headers,
     'rows' => $rows,
-    'attributes' => array('id' => 'sort-table')
-    ));
+    'attributes' => array('id' => 'sort-table'),
+  ));
   $output .= theme('pager');
 
   return $output;
@@ -154,8 +154,8 @@ function os2dagsorden_statistics_content_statistics_page() {
     $output .= theme_item_list(array(
       'items' => $items,
       'type' => 'ul',
-      'attributes' => array()
-      ));
+      'attributes' => array(),
+    ));
   }
   $output .= '<i>Antallet er angivet i parantes efter årstallet.</i>';
   return $output;
@@ -180,8 +180,8 @@ function os2dagsorden_statistics_content_statistics_by_year($year = NULL) {
     array(
       'data' => t('Updated'),
       'field' => 'changed',
-      'sort' => 'desc'
-      ),
+      'sort' => 'desc',
+    ),
     array('data' => t('Name'), 'field' => 'name'),
   );
 
@@ -213,8 +213,8 @@ function os2dagsorden_statistics_content_statistics_by_year($year = NULL) {
   $output .= theme('table', array(
     'header' => $headers,
     'rows' => $rows,
-    'attributes' => array('id' => 'sort-table')
-    ));
+    'attributes' => array('id' => 'sort-table'),
+  ));
   $output .= theme('pager');
 
   return $output;
@@ -267,8 +267,8 @@ function os2dagsorden_statistics_content_views_search_form($form, $form_state) {
     'Views' => array(
       'data' => t('Views count'),
       'field' => 'views_count',
-      'sort' => 'desc'
-      ),
+      'sort' => 'desc',
+    ),
   );
 
   $query = db_select('os2dagsorden_statistics_content_tracker', 't');
@@ -707,8 +707,8 @@ function os2dagsorden_statistics_content_views_node_statistic_form($form, $form_
     'Views' => array(
       'data' => t('Views count'),
       'field' => 'views_count',
-      'sort' => 'desc'
-      ),
+      'sort' => 'desc',
+    ),
   );
 
   $form['search'] = array(

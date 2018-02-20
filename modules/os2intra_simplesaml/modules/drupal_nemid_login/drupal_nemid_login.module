@@ -344,8 +344,8 @@ function _drupal_nemid_login_get_config_object() {
   $search = array(
     "\r\n",
     "-----BEGIN CERTIFICATE-----\n",
-    "\n-----END CERTIFICATE-----\n"
-    );
+    "\n-----END CERTIFICATE-----\n",
+  );
   $replace = array("\n", "", "");
 
   if ($mode == 'live') {
