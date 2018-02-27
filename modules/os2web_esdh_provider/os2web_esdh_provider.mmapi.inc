@@ -353,6 +353,13 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
             '!uri' => $file->uri,
           ), WATCHDOG_DEBUG);
         }
+        elseif (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Person') == 0) {
+          $node->field_os2web_meetings_full_doc_p[$node->language][0] = (array) $file;
+          watchdog('acadre MM', '[XML_ID: !id] Meetings personal description: !uri ', array(
+            '!id' => $_os2web_esdh_provider_processing_meeting_id,
+            '!uri' => $file->uri,
+          ), WATCHDOG_DEBUG);
+        }
         else {
           $node->field_os2web_meetings_full_doc[$node->language][0] = (array) $file;
           watchdog('acadre MM', '[XML_ID: !id] Meetings open description: !uri ', array(
@@ -369,6 +376,13 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
         if (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Lukket') == 0) {
           $node->field_os2web_meetings_att_doc_c[$node->language][0] = (array) $file;
           watchdog('acadre MM', '[XML_ID: !id] Meetings closed full doc with attachments: !uri ', array(
+            '!id' => $_os2web_esdh_provider_processing_meeting_id,
+            '!uri' => $file->uri,
+          ), WATCHDOG_DEBUG);
+        }
+        elseif (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Person') == 0) {
+          $node->field_os2web_meetings_att_doc_p[$node->language][0] = (array) $file;
+          watchdog('acadre MM', '[XML_ID: !id] Meetings personal full doc with attachments: !uri ', array(
             '!id' => $_os2web_esdh_provider_processing_meeting_id,
             '!uri' => $file->uri,
           ), WATCHDOG_DEBUG);

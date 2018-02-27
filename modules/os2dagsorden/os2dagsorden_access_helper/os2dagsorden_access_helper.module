@@ -162,92 +162,125 @@ function os2dagsorden_access_helper_meeting_has_speaker_paper($meeting_id) {
  */
 function os2dagsorden_access_helper_file_download($uri) {
   $uri1 = str_replace('private://', 'private:///', $uri);
-  $result = db_query("SELECT f.* FROM {file_managed} f WHERE uri = :uri or uri = :uri1", array('uri' => $uri, 'uri1' => $uri1));
+  $result = db_query("SELECT f.* FROM {file_managed} f WHERE uri = :uri or uri = :uri1", array(
+    'uri' => $uri,
+    'uri1' => $uri1
+  ));
   foreach ($result as $file) {
-    // Find meeting by file->fid
-    // closed agenda?
-    $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'node')
-      ->fieldCondition('field_os2web_meetings_full_doc_c', 'fid', $file->fid, '=');
+    // Checking if files is Is file associated with meeting.
+    $usages = file_usage_list($file);
+    if (isset($usages['file']['node'])) {
+      $nid = $usages['file']['node'];
+      $node = node_load(key($nid));
+      $meeting = NULL;
+      if ($node->type == 'os2web_meetings_meeting') {
+        $meeting = $node;
 
-    $result = $query->execute();
-
-    if (!isset($result['node'])) {
-      // Closed additional agenda?
-      $query = new EntityFieldQuery();
-      $query->entityCondition('entity_type', 'node')
-        ->fieldCondition('field_os2web_meetings_add_doc_c', 'fid', $file->fid, '=');
-
-      $result = $query->execute();
-    }
-    if (isset($result['node'])) {
-      $nids = array_keys($result['node']);
-      $meeting_id = reset($nids);
-    }
-
-    // If meeting is found - meaning that the file is closed agenda or closed additional agenda. Perform deep check.
-    if ($meeting_id) {
-      if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting_id)) {
-        return array(
-          'Content-Type' => $file->filemime,
-          'Content-Length' => $file->filesize,
-          'Content-Disposition' => 'attachment; filename=' . $file->filename,
-        );
-      }
-      else {
-        return -1;
-      }
-    }
-    // Else check if user can view meeting information at all.
-    else {
-
-      // Find meeting by file->fid
-      // Opened agenda?
-      $query = new EntityFieldQuery();
-      $query->entityCondition('entity_type', 'node')
-        ->fieldCondition('field_os2web_meetings_full_doc', 'fid', $file->fid, '=');
-
-      $result = $query->execute();
-      if (!isset($result['node'])) {
-        // Opened additional agenda?
+        // Related to personal field?
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
-          ->fieldCondition('field_os2web_meetings_add_doc', 'fid', $file->fid, '=');
-
+          ->fieldCondition('field_os2web_meetings_full_doc_p', 'fid', $file->fid, '=');
         $result = $query->execute();
-      }
-      if (isset($result['node'])) {
-        $nids = array_keys($result['node']);
-        $meeting_id = reset($nids);
-      }
+        if (!isset($result['node'])) {
+          // Personal additional agenda?
+          $query = new EntityFieldQuery();
+          $query->entityCondition('entity_type', 'node')
+            ->fieldCondition('field_os2web_meetings_add_doc_p', 'fid', $file->fid, '=');
+          $result = $query->execute();
+        }
+        if (!isset($result['node'])) {
+          // Full doc with attachments personal?
+          $query = new EntityFieldQuery();
+          $query->entityCondition('entity_type', 'node')
+            ->fieldCondition('field_os2web_meetings_att_doc_p', 'fid', $file->fid, '=');
+          $result = $query->execute();
+        }
+        if (isset($result['node'])) {
+          $nids = array_keys($result['node']);
+          $personal_meeting_id = reset($nids);
 
-      if ($meeting_id) {
-        if (os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id)) {
-          return array(
-            'Content-Type' => $file->filemime,
-            'Content-Length' => $file->filesize,
-            'Content-Disposition' => 'attachment; filename=' . $file->filename,
-          );
+          if (os2dagsorden_access_helper_check_user_can_see_personal_agenda($personal_meeting_id)) {
+            os2dagsorden_access_helper_download_file_headers($file);
+          }
+          else {
+            return -1;
+          }
+        }
+
+        // Related to close field?
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'node')
+          ->fieldCondition('field_os2web_meetings_full_doc_c', 'fid', $file->fid, '=');
+        $result = $query->execute();
+        if (!isset($result['node'])) {
+          // Closed additional agenda?
+          $query = new EntityFieldQuery();
+          $query->entityCondition('entity_type', 'node')
+            ->fieldCondition('field_os2web_meetings_add_doc_c', 'fid', $file->fid, '=');
+          $result = $query->execute();
+        }
+        if (!isset($result['node'])) {
+          // Full doc with attachments closed?
+          $query = new EntityFieldQuery();
+          $query->entityCondition('entity_type', 'node')
+            ->fieldCondition('field_os2web_meetings_att_doc_c', 'fid', $file->fid, '=');
+          $result = $query->execute();
+        }
+        if (isset($result['node'])) {
+          $nids = array_keys($result['node']);
+          $closed_meeting_id = reset($nids);
+
+          if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($closed_meeting_id)) {
+            os2dagsorden_access_helper_download_file_headers($file);
+          }
+          else {
+            return -1;
+          }
+        }
+
+        // Not related to close or personal field, do a general check.
+        if (os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting->nid)) {
+          return os2dagsorden_access_helper_download_file_headers($file);
+        }
+        else {
+          return -1;
+        }
+      }
+      elseif ($node->type == 'os2web_meetings_bullet_attach') {
+        if (os2dagsorden_access_helper_check_user_can_download_bullet_point_attachment_file($file->fid)) {
+          return os2dagsorden_access_helper_download_file_headers($file);
         }
         else {
           return -1;
         }
       }
       else {
-        if (os2dagsorden_access_helper_check_user_can_download_bullet_point_attachment_file($file->fid)) {
-          return array(
-            'Content-Type' => $file->filemime,
-            'Content-Length' => $file->filesize,
-            'Content-Disposition' => 'attachment; filename=' . $file->filename,
-          );
-        }
-        else {
-          return -1;
-        }
+        // Not related with os2web_meetings_meeting or os2web_meetings_bullet_attach node..
+        return os2dagsorden_access_helper_download_file_headers($file);
       }
     }
-
+    else {
+      // Not related with any node.
+      return os2dagsorden_access_helper_download_file_headers($file);
+    }
   }
+}
+
+/**
+ * Returns the file headers for downloading it as attachment.
+ *
+ * @param mixed $file
+ *   File to return headers for.
+ *
+ * @return array
+ *   Download file headers.
+ */
+function os2dagsorden_access_helper_download_file_headers($file) {
+  return array(
+    'Content-Type' => $file->filemime,
+    'Content-Length' => $file->filesize,
+    'Content-Disposition' => 'attachment; filename=' . $file->filename,
+  );
 }
 
 /**
@@ -266,31 +299,51 @@ function os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting_id
   }
   $meetings = entity_load('node', array($meeting_id), array('type' => 'os2web_meetings_meeting'));
   $meeting_committee_id = $meetings[$meeting_id]->field_os2web_meetings_committee['und'][0]['tid'];
+
   // Is part of the committee.
-  if (!empty($user_ent->field_user_committee)) {
-    foreach ($user_ent->field_user_committee['und'] as $user_committee_id) {
-      if (intval($meeting_committee_id) == $user_committee_id['tid']) {
-        return TRUE;
-      }
-    }
+  if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
+    return TRUE;
   }
 
-  // Follows committee PLUS.
-  if (!empty($user_ent->field_follows_committee_plus)) {
-    foreach ($user_ent->field_follows_committee_plus['und'] as $user_committee_id) {
-      if (intval($meeting_committee_id) == $user_committee_id['tid']) {
-        return TRUE;
-      }
-    }
+  // Follows PLUS.
+  if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
+    return TRUE;
   }
 
-  // Follows committee PLUS.
-  if (!empty($user_ent->field_follows_committee_pp)) {
-    foreach ($user_ent->field_follows_committee_pp['und'] as $user_committee_id) {
-      if (intval($meeting_committee_id) == $user_committee_id['tid']) {
-        return TRUE;
-      }
-    }
+  // Follow PP.
+  if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+    return TRUE;
+  }
+
+  // None of the above, access denied.
+  return FALSE;
+}
+
+/**
+ * Checks if a user can see the personal agenda of a given meeting.
+ *
+ * @param int $meeting_id
+ *   ID of the meeting.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_access_helper_check_user_can_see_personal_agenda($meeting_id) {
+  $user_ent = os2dagsorden_access_helper_get_user();
+  if (!$user_ent->uid) {
+    return FALSE;
+  }
+  $meetings = entity_load('node', array($meeting_id), array('type' => 'os2web_meetings_meeting'));
+  $meeting_committee_id = $meetings[$meeting_id]->field_os2web_meetings_committee['und'][0]['tid'];
+
+  // Is part of the committee.
+  if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
+    return TRUE;
+  }
+
+  // Follow PP.
+  if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+    return TRUE;
   }
 
   // None of the above, access denied.
@@ -1109,7 +1162,16 @@ function os2dagsorden_access_helper_meeting_fully_converted($meeting) {
   }
 
   // Going through all the descriptions.
-  // closed agenda.
+  // Personal agenda.
+  if (isset($meeting->field_os2web_meetings_full_doc_p[$meeting->language])) {
+    $file_name = $meeting->field_os2web_meetings_full_doc_p[$meeting->language][0]['filename'];
+    $file_name = explode('.', $file_name);
+    $extention = strtoupper($file_name[1]);
+    if (stripos($extention, 'pdf') !== 0) {
+      return FALSE;
+    }
+  }
+  // Closed agenda.
   if (isset($meeting->field_os2web_meetings_full_doc_c[$meeting->language])) {
     $file_name = $meeting->field_os2web_meetings_full_doc_c[$meeting->language][0]['filename'];
     $file_name = explode('.', $file_name);
@@ -1125,6 +1187,17 @@ function os2dagsorden_access_helper_meeting_fully_converted($meeting) {
     $extention = strtoupper($file_name[1]);
     if (stripos($extention, 'pdf') !== 0) {
       return FALSE;
+    }
+  }
+  // Additional personal agenda.
+  if (isset($meeting->field_os2web_meetings_add_doc_p[$meeting->language])) {
+    foreach ($meeting->field_os2web_meetings_add_doc_p[$meeting->language] as $description_field) {
+      $file_name = $description_field['filename'];
+      $file_name = explode('.', $file_name);
+      $extention = strtoupper($file_name[1]);
+      if (stripos($extention, 'pdf') !== 0) {
+        return FALSE;
+      }
     }
   }
   // Additional closed agenda.
@@ -1366,7 +1439,7 @@ function os2dagsorden_access_helper_node_save($node) {
               'subject' => $subject,
               'body' => $body,
             );
-            drupal_mail('os2dagsorden_access_helper', 'os2dagsorden_notification_email_', $user->mail, language_default(), $params, $from);
+            //drupal_mail('os2dagsorden_access_helper', 'os2dagsorden_notification_email_', $user->mail, language_default(), $params, $from);
             /* $message = array(
             'to' => $user->mail,
             'subject' => $subject,

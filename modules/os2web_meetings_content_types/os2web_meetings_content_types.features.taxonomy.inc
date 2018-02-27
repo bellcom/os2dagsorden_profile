@@ -14,7 +14,7 @@ function os2web_meetings_content_types_taxonomy_default_vocabularies() {
       'name' => 'Committee',
       'machine_name' => 'os2web_meetings_tax_committee',
       'description' => 'Udvalg',
-      'hierarchy' => 0,
+      'hierarchy' => 1,
       'module' => 'taxonomy',
       'weight' => 0,
     ),
