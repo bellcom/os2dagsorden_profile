@@ -622,8 +622,10 @@ function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
         $node->field_os2web_meetings_bul_pers[LANGUAGE_NONE][0]['value'] = 1;
       }
 
-      // Allowing overriding of the content only if the agenda == lukket.
-      if (module_exists('os2dagsorden_esdh_provider') && $_os2web_esdh_provider_processing_meeting_access == 'Lukket') {
+      // Allowing overriding of the content only if the agenda == lukket or person.
+      if (module_exists('os2dagsorden_esdh_provider')
+        && ($_os2web_esdh_provider_processing_meeting_access == 'Lukket' || $_os2web_esdh_provider_processing_meeting_access == 'Person')
+      ) {
         $node = _os2web_esdh_import_handle_bullets($node, $item);
       }
       else {
