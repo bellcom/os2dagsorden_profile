@@ -16,16 +16,41 @@
 .attachment_text_full_container .attachment-text ul,
 .attachment_text_full_container.attachment-text ul {
   margin: 0;
-  padding: 0;
+  list-style: disc inside none;
+  /*padding: 0;*/
+}
+.attachment_text_trimmed_container .attachment-text ul[type='circle'] li,
+.attachment_text_full_container .attachment-text ul[type='circle'] li,
+.attachment_text_full_container.attachment-text ul[type='circle'] li {
+  list-style-type: circle;
 }
 
+.attachment_text_trimmed_container .attachment-text ol,
+.attachment_text_full_container .attachment-text ol,
+.attachment_text_full_container.attachment-text ol {
+  margin: 0;
+  list-style: decimal inside none;
+  /*padding: 0;*/
+}
 .attachment_text_trimmed_container .attachment-text li,
 .attachment_text_full_container .attachment-text li,
 .attachment_text_full_container.attachment-text li {
-  list-style: disc inside none;
+
   margin-left: 35px;
   text-indent: -1.5em;
 }
+.attachment_text_trimmed_container .attachment-text ol[type='a'] li,
+.attachment_text_full_container .attachment-text ol[type='a'] li,
+.attachment_text_full_container.attachment-text ol[type='a'] li {
+  list-style-type: lower-alpha;
+}
+
+.attachment_text_trimmed_container .attachment-text ol[type='i'] li,
+.attachment_text_full_container .attachment-text ol[type='i'] li,
+.attachment_text_full_container.attachment-text ol[type='i'] li {
+  list-style-type: lower-roman;
+}
+
 
 .attachment_text_full_container p {
   margin-bottom: 5px;
