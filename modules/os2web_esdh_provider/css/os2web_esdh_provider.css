@@ -11,6 +11,10 @@
 .attachment_text_full_container ol li {
   list-style: decimal inside none;
 }
+.attachment_text_trimmed_container ul li,
+.attachment_text_full_container ul li {
+   list-style: disc inside none;
+}
 
 .attachment_text_trimmed_container .attachment-text ul,
 .attachment_text_full_container .attachment-text ul,
