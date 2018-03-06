@@ -402,10 +402,10 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       $bullet_points = $node->field_os2web_meetings_bullets['und'];
     }
     // Delete all bullet points before importing.
+    $nids_to_delete = array();
     if (property_exists($node, 'field_os2web_meetings_bullets') && is_array($node->field_os2web_meetings_bullets)) {
       $bullets = $node->field_os2web_meetings_bullets['und'];
       if (is_array($bullets)) {
-        $nids_to_delete = array();
         foreach ($bullets as $bullet_nid) {
           $nids_to_delete[$bullet_nid['target_id']] = $bullet_nid['target_id'];
         }
@@ -421,7 +421,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
           '!list' => print_r($item_nids, TRUE),
         ), WATCHDOG_DEBUG);
 
-      $nids_to_delete = NULL;
+      //$nids_to_delete = NULL;
 
       if (module_exists('os2dagsorden_esdh_provider')) {
         if (is_array($nids_to_delete) && is_array($item_nids)) {
