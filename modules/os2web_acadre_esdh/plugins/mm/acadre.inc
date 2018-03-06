@@ -756,10 +756,17 @@ function _acadre_esdh_mm_improve_body_html($data) {
     // Get link text.
     preg_match('/<a ?.*>(.*)<\/a>/is', $match, $arr, PREG_OFFSET_CAPTURE, 0);
     $str = (reset($arr[1]));
+    $link_tag = $match;
+    if (preg_match('/href="[http:|https:|www][^"]+/is', $match, $arr)) {
+      $link_tag = str_replace('<a', '<a target="_blank"', $match);
+    }
     // If strlen > $url_strip_count strip link text.
     if (strlen($str) > $url_strip_count) {
-      $striped_text = preg_replace('/(<a.+?>)(.{0,' . $url_strip_count . '})(.*?)(<\/a>)/is', '$1$2...$4', $match);
+      $striped_text = preg_replace('/(<a.+?>)(.{0,' . $url_strip_count . '})(.*?)(<\/a>)/is', '$1$2...$4', $link_tag);
       $data = str_replace($match, $striped_text, $data);
+    }
+    else {
+      $data = str_replace($match, $link_tag, $data);
     }
   }
   /* $data = preg_replace('/(<a.+?>)(.{0,' . $url_strip_count . '}).*?(<\/a>)/is', '$1$2...$3', $data);*/
