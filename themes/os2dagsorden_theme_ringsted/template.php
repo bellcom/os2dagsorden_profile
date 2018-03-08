@@ -22,10 +22,11 @@
 
 /**
  * Implementation of hook_preprocess_page.
+ *
  * Adds needed JS behaviour, loads the notes/speaker paper indicators, makes the security log entries.
  *
  * @param mixed $variables
- *   array.
+ *   Array.
  */
 function os2dagsorden_theme_ringsted_preprocess_page(&$variables) {
   drupal_add_js(drupal_get_path('theme', 'os2dagsorden_theme_ringsted') . '/js/os2dagsorden_theme_ringsted.js');

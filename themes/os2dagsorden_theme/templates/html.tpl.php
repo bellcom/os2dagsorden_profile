@@ -1,4 +1,11 @@
-<?php print $doctype; ?>
+<?php
+
+/**
+ * @file
+ * Html.tpl.php file.
+ */
+
+print $doctype; ?>
 <html lang="<?php print $language->language; ?>" dir="<?php print $language->dir; ?>"<?php print $rdf->version . $rdf->namespaces; ?>>
 <head<?php print $rdf->profile; ?>>
   <?php print $head; ?>
@@ -25,6 +32,3 @@
   <?php print $page_bottom; ?>
 </body>
 </html>
-
-
-

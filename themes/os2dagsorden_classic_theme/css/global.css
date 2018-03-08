@@ -5,23 +5,17 @@
   /* Fallback */
   background: #e7e7e7 url('../img/img_header_elipse.png') no-repeat bottom left;
   /* W3C */
-  background: url('../img/img_header_elipse.png') no-repeat bottom left,
-  linear-gradient(top, #ffffff 0%,#e7e7e7 100%);
+  background: url('../img/img_header_elipse.png') no-repeat bottom left, linear-gradient(top, #ffffff 0%,#e7e7e7 100%);
   /* Safari 4-5, Chrome 1-9 */
-  background: url('../img/img_header_elipse.png') no-repeat bottom left,
-  -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e7e7e7), to(#ffffff));
+  background: url('../img/img_header_elipse.png') no-repeat bottom left, -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e7e7e7), to(#ffffff));
   /* Safari 5.1, Chrome 10+ */
-  background: url('../img/img_header_elipse.png') no-repeat bottom left,
-  -webkit-linear-gradient(top, #ffffff, #e7e7e7);
+  background: url('../img/img_header_elipse.png') no-repeat bottom left, -webkit-linear-gradient(top, #ffffff, #e7e7e7);
   /* Firefox 3.6+ */
-  background: url('../img/img_header_elipse.png') no-repeat bottom left,
-  -moz-linear-gradient(top, #ffffff, #e7e7e7);
+  background: url('../img/img_header_elipse.png') no-repeat bottom left, -moz-linear-gradient(top, #ffffff, #e7e7e7);
   /* IE 10 */
-  background: url('../img/img_header_elipse.png') no-repeat bottom left,
-  -ms-linear-gradient(top, #ffffff, #e7e7e7);
+  background: url('../img/img_header_elipse.png') no-repeat bottom left, -ms-linear-gradient(top, #ffffff, #e7e7e7);
   /* Opera 11.10+ */
-  background: url('../img/img_header_elipse.png') no-repeat bottom left,
-  -o-linear-gradient(top, #ffffff, #e7e7e7);
+  background: url('../img/img_header_elipse.png') no-repeat bottom left, -o-linear-gradient(top, #ffffff, #e7e7e7);
   background-size: 100% 100%;
 }
 
@@ -29,23 +23,17 @@ body {
   /* Fallback */
   background: #e7e7e7 url('../img/img_body_elipse.png') no-repeat top left;
   /* W3C */
-  background: url('../img/img_body_elipse.png') no-repeat top left,
-  linear-gradient(top, #f5f5f5 0%,#e7e7e7 100%);
+  background: url('../img/img_body_elipse.png') no-repeat top left, linear-gradient(top, #f5f5f5 0%,#e7e7e7 100%);
   /* Safari 4-5, Chrome 1-9 */
-  background: url('../img/img_body_elipse.png') no-repeat top left,
-  -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e7e7e7), to(#f5f5f5));
+  background: url('../img/img_body_elipse.png') no-repeat top left, -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e7e7e7), to(#f5f5f5));
   /* Safari 5.1, Chrome 10+ */
-  background: url('../img/img_body_elipse.png') no-repeat top left,
-  -webkit-linear-gradient(top, #f5f5f5, #e7e7e7);
+  background: url('../img/img_body_elipse.png') no-repeat top left, -webkit-linear-gradient(top, #f5f5f5, #e7e7e7);
   /* Firefox 3.6+ */
-  background: url('../img/img_body_elipse.png') no-repeat top left,
-  -moz-linear-gradient(top, #f5f5f5, #e7e7e7);
+  background: url('../img/img_body_elipse.png') no-repeat top left, -moz-linear-gradient(top, #f5f5f5, #e7e7e7);
   /* IE 10 */
-  background: url('../img/img_body_elipse.png') no-repeat top left,
-  -ms-linear-gradient(top, #f5f5f5, #e7e7e7);
+  background: url('../img/img_body_elipse.png') no-repeat top left, -ms-linear-gradient(top, #f5f5f5, #e7e7e7);
   /* Opera 11.10+ */
-  background: url('../img/img_body_elipse.png') no-repeat top left,
-  -o-linear-gradient(top, #f5f5f5, #e7e7e7);
+  background: url('../img/img_body_elipse.png') no-repeat top left, -o-linear-gradient(top, #f5f5f5, #e7e7e7);
   background-size: 80% 100%;
   background-attachment: fixed;
 }
@@ -913,8 +901,6 @@ div.block-inner {
 .calendar-calendar .month-view .full tr.multi-day td {
   height: auto;
 }
-
-
 
 /*---------------------------- Date override END ----------------------------*/
 

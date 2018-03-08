@@ -2,6 +2,7 @@ name = OS2Dagsorden piwik
 core = 7.x
 package = OS2Web - Backend
 version = 7.x-1.0
+description = Holds information about Piwik integration
 dependencies[] = ctools
 dependencies[] = features
 dependencies[] = piwik_stats

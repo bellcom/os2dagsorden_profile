@@ -2,7 +2,7 @@
 
 /**
  * @file
- * os2dagsorden_classic_theme.
+ * Os2dagsorden_classic_theme.
  *
  * PHP version 5
  *
@@ -22,13 +22,14 @@
 
 /**
  * Implementation of hook_preprocess_page.
+ *
  * Adds needed JS behaviour, loads the notes/speaker paper indicators, makes the security log entries.
  *
  * @param mixed $variables
- *   array.
+ *   Array.
  */
 function os2dagsorden_classic_theme_preprocess_page(&$variables) {
-  drupal_add_library('system', 'ui.draggable'); 
+  drupal_add_library('system', 'ui.draggable');
   drupal_add_js(drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/js/jquery.ui.touch-punch.min.js');
   drupal_add_js(drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/js/os2dagsorden_classic_theme.js');
 
@@ -123,12 +124,12 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
       $destination = explode('/', $destination);
 
       $breadcrumb = array();
-      $breadcrumb[] = l('Forsiden', $GLOBALS['base_url']);
-      $breadcrumb[] .= l('Mødedetaljer', 'meeting/' . $destination[1]);
+      $breadcrumb[] = l(t('Forsiden'), $GLOBALS['base_url']);
+      $breadcrumb[] .= l(t('Mødedetaljer'), 'meeting/' . $destination[1]);
 
       // Bullet point.
       if (isset($destination[3])) {
-        $breadcrumb[] .= l('Dagsordenspunkt', 'meeting/' . $destination[1] . '/bullet-point/' . $destination[3]);
+        $breadcrumb[] .= l(t('Dagsordenspunkt'), 'meeting/' . $destination[1] . '/bullet-point/' . $destination[3]);
       }
 
       $breadcrumb[] .= '<span class="breadcrumb-active">Opret talepapir</span>';
@@ -140,7 +141,7 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
 /**
  * Returns HTML for a breadcrumb trail.
  *
- * @param $variables
+ * @param mixed $variables
  *   An associative array containing:
  *   - breadcrumb: An array containing the breadcrumb links.
  */
@@ -161,12 +162,14 @@ function os2dagsorden_classic_theme_breadcrumb($variables) {
 
 /**
  * Implementation of theming the calendar title.
+ *
  * Change the format of navigation title in calendar day view to be [weekday], [day]. [month] [year].
  *
  * @param mixed $params
- *   params.
+ *   Params.
  *
- * @return string - reformatted title
+ * @return string
+ *   Reformatted title.
  */
 function os2dagsorden_classic_theme_date_nav_title($params) {
   $granularity = $params['granularity'];
@@ -198,7 +201,9 @@ function os2dagsorden_classic_theme_date_nav_title($params) {
 
     case 'week':
       $format = !empty($format) ? $format : (empty($date_info->mini) ? 'F j, Y' : 'F j');
-      $title = t('Week of @date', array('@date' => date_format_date($date_info->min_date, 'custom', $format)));
+      $title = t('Week of @date', array(
+        '@date' => date_format_date($date_info->min_date, 'custom', $format)
+      ));
       $date_arg = $date_info->year . '-W' . date_pad($date_info->week);
       break;
   }
@@ -215,12 +220,14 @@ function os2dagsorden_classic_theme_date_nav_title($params) {
 
 /**
  * Format the time row headings in the week and day view.
+ *
  * Change the time format to be [hour].[minutes].
  *
  * @param mixed $vars
- *   vars.
+ *   Vars.
  *
- * @return string reformatted title
+ * @return string
+ *   Reformatted title.
  */
 function os2dagsorden_classic_theme_calendar_time_row_heading($vars) {
   $start_time = $vars['start_time'];
@@ -255,12 +262,13 @@ function os2dagsorden_classic_theme_calendar_time_row_heading($vars) {
 
 /**
  * Changes the format of the exposed form - meetings search.
+ *
  * Also removes the unneeded links on log in page.
  *
  * @param mixed $form
- *   form.
+ *   Form.
  * @param mixed $form_state
- *   form state.
+ *   Form state.
  */
 function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
   if ($form['#id'] == 'views-exposed-form-meetings-search-page') {
@@ -298,10 +306,11 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
 
 /**
  * Preprocess HTML hook.
+ *
  * Fixes the IE compatibility problem.
  *
- * @param $var
- *   array of variables
+ * @param mixed $vars
+ *   Array of variables.
  */
 function os2dagsorden_classic_theme_preprocess_html(&$vars) {
   // Setup IE meta tag to force IE rendering mode.
@@ -332,7 +341,13 @@ function os2dagsorden_classic_theme_preprocess_html(&$vars) {
 }
 
 /**
+ * Implements template_theme_menu_local_tasks.
  *
+ * @param mixed $variables
+ *   Variables.
+ *
+ * @return string
+ *   Themed local tasks.
  */
 function os2dagsorden_classic_theme_menu_local_task($variables) {
   $link = $variables['element']['#link'];
@@ -360,7 +375,7 @@ function os2dagsorden_classic_theme_menu_local_task($variables) {
 }
 
 /**
- *
+ * Hides the menu on some pages.
  */
 function os2dagsorden_classic_theme_hide_menu_on_pages() {
   if (os2dagsorden_access_helper_is_touch()) {

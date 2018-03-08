@@ -303,7 +303,7 @@ h1.title {
 }
 
 .front #region-content .block div.view {
-  padding: 10px
+  padding: 10px;
 }
 /*---------------------------- Blocks END ----------------------------*/
 
@@ -399,33 +399,32 @@ table .hide_show_bilags_cases {
 .attachment-text thead,
 .attachment-text tr,
 .attachment-text th,
-.attachment-text td
-
-border: 1px solid black;
+.attachment-text td {
+  border: 1px solid black;
 }
 
 table.views-table tr td li.bilag a,
 table.views-table tr td li.bilag a:hover {
-padding-left: 0 !important;
+  padding-left: 0 !important;
 }
 
 .bullet-point-attachments .views-table {
-table-layout: fixed;
+  table-layout: fixed;
 }
 
 .bullet-point-attachments .views-table .print-bullet-point-link {
-width: 1%;
+  width: 1%;
 }
 
 /* ---------------------------- Meeting details attachment text END ---------------------------- */
 
 /*---------------------------- Show hide menu Start ----------------------------*/
 #block-block-1 {
-top: 59px;
+  top: 59px;
 }
 /*---------------------------- Show hide menu End ----------------------------*/
 
 tr.bulletpoint-row {
-position: relative;
-display: block;
+  position: relative;
+  display: block;
 }

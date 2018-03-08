@@ -164,7 +164,7 @@ function os2dagsorden_access_helper_file_download($uri) {
   $uri1 = str_replace('private://', 'private:///', $uri);
   $result = db_query("SELECT f.* FROM {file_managed} f WHERE uri = :uri or uri = :uri1", array(
     'uri' => $uri,
-    'uri1' => $uri1
+    'uri1' => $uri1,
   ));
   foreach ($result as $file) {
     // Checking if files is Is file associated with meeting.
