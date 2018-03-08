@@ -421,8 +421,6 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
           '!list' => print_r($item_nids, TRUE),
         ), WATCHDOG_DEBUG);
 
-      //$nids_to_delete = NULL;
-
       if (module_exists('os2dagsorden_esdh_provider')) {
         if (is_array($nids_to_delete) && is_array($item_nids)) {
           // Deleting only those, that were not added again.

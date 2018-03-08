@@ -1439,7 +1439,7 @@ function os2dagsorden_access_helper_node_save($node) {
               'subject' => $subject,
               'body' => $body,
             );
-            //drupal_mail('os2dagsorden_access_helper', 'os2dagsorden_notification_email_', $user->mail, language_default(), $params, $from);
+            drupal_mail('os2dagsorden_access_helper', 'os2dagsorden_notification_email_', $user->mail, language_default(), $params, $from);
             /* $message = array(
             'to' => $user->mail,
             'subject' => $subject,
