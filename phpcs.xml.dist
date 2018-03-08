@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="loop">
+  <description>PHP CodeSniffer configuration for OS2dagsorden</description>
+
+  <file>modules</file>
+  <file>themes</file>
+
+  <exclude-pattern>*/contrib/*</exclude-pattern>
+  <exclude-pattern>*/libraries/*</exclude-pattern>
+  <exclude-pattern>modules/patched/*</exclude-pattern>
+
+  <exclude-pattern>modules/os2web_adlib_api/simple_html_dom.php</exclude-pattern>
+  <exclude-pattern>modules/os2dagsorden/os2dagsorden_annotator/lib/touch-plugin/annotator.touch.css</exclude-pattern>
+  <exclude-pattern>modules/os2intra_simplesaml/modules/drupal_nemid_login/lib/*</exclude-pattern>
+  <exclude-pattern>themes/os2dagsorden_theme/css/pagescroller.skins.css</exclude-pattern>
+
+  <exclude-pattern>*.features.*</exclude-pattern>
+  <exclude-pattern>*.pages_default.inc</exclude-pattern>
+  <exclude-pattern>*.strongarm.inc</exclude-pattern>
+  <exclude-pattern>*.views_default.inc</exclude-pattern>
+
+  <exclude-pattern>README.txt</exclude-pattern>
+
+  <!-- Show progress -->
+  <arg value="p"/>
+
+  <rule ref="Drupal"/>
+
+</ruleset>
