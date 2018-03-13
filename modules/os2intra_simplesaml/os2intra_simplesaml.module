@@ -185,8 +185,9 @@ function os2intra_simplesaml_user_login(&$edit, $account) {
  * Implements hook_init().
  */
 function os2intra_simplesaml_init() {
-  // // Do not run this from CLI.
-  if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid == 0) {
+  // Do not run this from CLI.
+  // Only proceed if user is NOT logged in and is NOT using drush uli for admin user.
+  if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
     $custom_ips = explode(',', variable_get('os2intra_simplesaml_redirected_ips'));
     $remote_ip = ip_address();
 
@@ -202,7 +203,8 @@ function os2intra_simplesaml_init() {
             'user/logout',
             'user/login',
             'logout',
-          ))) {
+          ))
+          ) {
             if (module_exists('simplesamlphp_auth')) {
               // Loading the Simplesamlphp autoloader.
               require_once variable_get('simplesamlphp_auth_installdir') . '/lib/_autoload.php';
