@@ -466,6 +466,10 @@ function os2dagsorden_settings_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'os2dagsorden_settings_settings_form') {
     $form['#submit'][] = 'os2dagsorden_settings_guide_file_lock';
   }
+
+  if ($form['#id'] == 'system-theme-settings') {
+    $form['#submit'][] = 'os2dagsorden_settings_theme_settings_submit';
+  }
 }
 
 /**
@@ -614,5 +618,32 @@ function os2dagsorden_settings_get_quide_link() {
     $uri = $file->uri;
     $url = file_create_url($uri);
     print l(t('Vejledning'), $url, array('attributes' => array('class' => 'user-guide-btn button', 'target' => '_blank')));
+  }
+}
+
+/**
+ * Implements custom submit function for theme settings form.
+ *
+ * @param mixed $element
+ *   The form element.
+ * @param mixed $form_state
+ *   The state of form.
+ */
+function os2dagsorden_settings_theme_settings_submit($form, &$form_state) {
+  if (isset($form_state['values']['logo_upload']) && !empty($form_state['values']['logo_upload'])) {
+    $file = $form_state['values']['logo_upload'];
+    $dest = 'public://' . $file->filename;
+    $new_file = file_copy($file, $dest);
+    $theme_settings = variable_get('theme_' . variable_get('theme_default') . '_settings');
+    $theme_settings['logo_path'] = $new_file->uri;
+    variable_set('theme_' . variable_get('theme_default') . '_settings', $theme_settings);
+  }
+  if (isset($form_state['values']['favicon_upload']) && !empty($form_state['values']['favicon_upload'])) {
+    $file = $form_state['values']['favicon_upload'];
+    $dest = 'public://' . $file->filename;
+    $new_file = file_copy($file, $dest);
+    $theme_settings = variable_get('theme_' . variable_get('theme_default') . '_settings');
+    $theme_settings['favicon_path'] = $new_file->uri;
+    variable_set('theme_' . variable_get('theme_default') . '_settings', $theme_settings);
   }
 }
