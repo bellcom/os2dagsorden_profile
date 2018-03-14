@@ -15,7 +15,7 @@ function os2web_audit_log_admin_configure($form, $form_state) {
   $form = array();
 
   $form[] = array(
-    '#markup' => '<h2>OS2web audit log setting</h2>',
+    '#markup' => '<h2>' . t('OS2web audit log setting') . '</h2>',
   );
 
   $node_types = node_type_get_types();
