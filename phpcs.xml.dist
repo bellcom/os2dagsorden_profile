@@ -24,6 +24,8 @@
   <!-- Show progress -->
   <arg value="p"/>
 
-  <rule ref="Drupal"/>
-
+  <rule ref="Drupal">
+    <exclude name="Drupal.InfoFiles.AutoAddedKeys.Project"/>
+    <exclude name="Drupal.InfoFiles.AutoAddedKeys.Version"/>
+  </rule>
 </ruleset>
