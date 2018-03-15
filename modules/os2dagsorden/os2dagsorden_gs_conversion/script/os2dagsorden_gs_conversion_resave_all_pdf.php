@@ -1,4 +1,5 @@
 <?php
+// @CODEREVIEW: How this script used?
 
 /**
  * @file

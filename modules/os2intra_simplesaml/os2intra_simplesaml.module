@@ -91,6 +91,7 @@ function os2intra_simplesaml_settings_form_validate($form, &$form_state) {
  * Updates the user's LOOP account details.
  */
 function os2intra_simplesaml_user_login(&$edit, $account) {
+  // @CODEREVIEW: Delete unused code.
   // $attributes = simplesamlphp_auth_get_attributes();
   // if (!empty($attributes)) {
   // if (isset($attributes['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'])) {

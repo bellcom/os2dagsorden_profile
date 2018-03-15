@@ -141,6 +141,7 @@ function os2dagsorden_pdf2htmlex_do_convert() {
   os2dagsorden_pdf2htmlex_cron();
   return '<div><textarea cols="150" rows=50>' . print_r($_os2dagsorden_pdf2htmlex_debug_info, 1) . '</textarea>';
 
+  // @CODEREVIEW: Delete unused code!
   // Reschedule all
   // $nodes = entity_load('node', FALSE, array('type' => 'os2web_meetings_bullet_attach'));
   // foreach ($nodes as $node){

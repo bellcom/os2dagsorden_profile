@@ -1162,6 +1162,7 @@ function _os2dagsorden_importer_webservice_url_exists($url = NULL) {
   $data = curl_exec($ch);
   $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
   curl_close($ch);
+  // @CODEREVIEW: Rewrite to return … ? … : …;
   if ($httpcode >= 200 && $httpcode < 300) {
     return TRUE;
   }

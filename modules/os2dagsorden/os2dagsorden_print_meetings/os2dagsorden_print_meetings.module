@@ -208,6 +208,7 @@ function _os2dagsorden_print_meetings_get_table($from_month, $to_month) {
   // Selecting meetings from the from_month.
     ->fieldCondition('field_os2web_meetings_date', 'value', date('Y') . '-' . $from_month . '-01 00:00:00', '>=')
   // Selecting meetings up to the to_month.
+  // @CODEREVIEW: Not all months have 31 days!
     ->fieldCondition('field_os2web_meetings_date', 'value', date('Y') . '-' . $to_month . '-31 23:59:59', '<=')
     ->fieldOrderBy('field_os2web_meetings_date', 'value', 'ASC');
   $result = $query->execute();
@@ -246,6 +247,7 @@ function _os2dagsorden_print_meetings_get_six_month_data($from_month, $to_month,
   $html .= "</div>";
 
   $html .= '<div class="view-footer">';
+  // @CODEREVIEW: Delete code in comments!
   // $html .= '<a href="' . $base_url . '?q=meetings-export/from_month/' . $from_month . '/to_month/' . $to_month . '" class="button">Eksporter halvårets møder til egen kalender</a>';.
   $html .= '</div>';
 

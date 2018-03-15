@@ -55,6 +55,7 @@ function _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $tid) {
     $node->type = "os2web_meetings_meeting";
     $node->language = LANGUAGE_NONE;
     node_object_prepare($node);
+    // @CODEREVIEW: Consider using a constant rather than the string 'Planlagt'
     $node->field_os2web_meetings_type[$node->language][0]['value'] = 'Planlagt';
     // Meeting found, loading existing one.
   }

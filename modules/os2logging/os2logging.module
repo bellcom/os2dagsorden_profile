@@ -72,6 +72,7 @@ function os2logging_node_load($nodes, $types) {
         $message = sprintf("node type:%s id:%d was loaded by user( uid:%s name:%s  e-mail:%s) \n\r", $node->type, $node->nid, $user->uid, $user->name, $user->email);
         $logger->log(Logger::INFO, $message, array());
 
+        // @CODEREVIEW: Delete unused code.
         // watchdog('mytype', 'TEST', NULL, WATCHDOG_INFO, NULL);.
       }
     }

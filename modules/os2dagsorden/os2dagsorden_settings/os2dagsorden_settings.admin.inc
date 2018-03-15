@@ -15,6 +15,7 @@
  */
 
 define('ACADRE_MM_IMPORT_DIR', 'private://');
+// @CODEREVIEW: Shouldn't this be a configurable site setting?
 define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
 
 /**
@@ -33,6 +34,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
 
   $info_path = drupal_get_path('profile', 'os2dagsorden') . '/os2dagsorden.info';
   $info = drupal_parse_info_file($info_path);
+  // @CODEREVIEW: Double quotes (") should be single quotes (').
   $version = (isset($info["version"])) ? $info["version"] : 'no version';
 
   $form['os2dagsorden_version_text'] = array(
@@ -489,6 +491,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#collapsed' => TRUE,
     '#title' => t('Meeting in unpublished state notification'),
   );
+  // @CODEREVIEW: Delete unused code.
   /*$form['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meetings_unpublished_status'] = array(
   '#type' => 'checkbox',
   '#title' => t('Meeting in unpublished status'),
@@ -844,6 +847,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#options' => array('pol' => t('Political'), 'org' => t('Organisation')),
     '#default_value' => variable_get('os2dagsorden_user_default_meeting_category', 'pol'),
   );
+  // @CODEREVIEW: Delete unused code.
   /*  $form['os2dagsorden_political_organizational_settings']['os2dagsorden_default_meeting_cateroty'] = array(
   '#type' => 'radios',
   '#title' => t('Default meeting category'),
@@ -1004,6 +1008,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     );
   }
 
+  // @CODEREVIEW: Delete unused code.
   // Allowed committees
   /*$form['os2dagsorden_committees_list_placeholder'] = array(
   '#type' => 'fieldset',

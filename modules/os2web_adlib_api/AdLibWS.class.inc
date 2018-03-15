@@ -18,6 +18,7 @@ define('ADLIB_DISABLED', !variable_get('os2web_adlib_api_allowed_ip_host', 0));
 class AdLibWS {
 
   protected $client;
+  // @CODEREVIEW: This path and url should not be hard-coded.
   protected static $basePath = 'C:\\InetPub\\wwwroot\\';
   protected static $baseUrl = 'http://10.1.1.180/';
 

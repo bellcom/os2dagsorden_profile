@@ -95,6 +95,7 @@ function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting,
   $committee = taxonomy_term_load($meeting->field_os2web_meetings_committee['und'][0]['tid']);
   $location = taxonomy_term_load($meeting->field_os2web_meetings_location['und'][0]['tid']);
 
+  // @CODEREVIEW: Why double quotes around strings?
   $mpdf->WriteHTML(
     "<table>
       <thead>

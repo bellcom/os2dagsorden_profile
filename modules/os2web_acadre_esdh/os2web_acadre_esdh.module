@@ -6,6 +6,7 @@
  */
 
 define('OS2WEB_ACADRE_ESDH_ACADRE_MM_IMPORT_DIR', 'public://acadre');
+// @CODEREVIEW: What are these numbers? Should they be configurable?
 define('OS2WEB_ACADRE_ESDH_ACADRE_MM_DEFAULT_APPROVED', '62,59,64,53,54,56,57,63,58,51,55,61,68,69,42');
 
 /**

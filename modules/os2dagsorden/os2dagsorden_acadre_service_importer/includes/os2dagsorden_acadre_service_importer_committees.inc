@@ -25,6 +25,7 @@ function _os2dagsorden_acadre_service_importer_process_committees($xml_file) {
     taxonomy_term_save($term);
   }
 
+  // @CODEREVIEW: Is $xml_file always an array (or iterable)? If so, use "array" as type in @param and give it a better name (it's not a file).
   foreach ($xml_file as $row) {
     $xml_data = array(
       'sub_id' => (string) $row->Id,
@@ -70,6 +71,7 @@ function os2dagsorden_acadre_service_importer_create_committee($xml_data, $vid) 
   }
 
   // See if we need to enable term or its parent.
+  // @CODEREVIEW: $xml_data is declared as having type "mixed", but is (used) as an array.
   if ($xml_data['state'] == 'Aktivt' && $xml_data['active'] == 'true') {
     $parents = taxonomy_get_parents($term->tid);
     if (empty($parents)) {

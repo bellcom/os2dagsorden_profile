@@ -1,4 +1,6 @@
 <?php
+// @CODEREVIEW: How are we supposed to use this script?
+// @CODEREVIEW: Could it be a Drush command?
 
 /**
  * https://os2web.atlassian.net/browse/DAGS-330

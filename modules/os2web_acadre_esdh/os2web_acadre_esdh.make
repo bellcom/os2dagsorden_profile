@@ -4,7 +4,7 @@ core = 7.x
 ;; OS2Web projects:
 
 ; OS2Web Modules
-
+;;; @CODEREVIEW: Delete unused code.
 # projects[os2web_adlib_api][type] = "module"
 # projects[os2web_adlib_api][download][type] = "git"
 # projects[os2web_adlib_api][download][branch] = "master"
@@ -22,5 +22,6 @@ core = 7.x
 ; Contrib modules
 
 ; Basic
+;;; @CODEREVIEW: Delete unused code.
 # projects[ctools][subdir] = "contrib"
 # projects[ctools][version] = "1.3"
