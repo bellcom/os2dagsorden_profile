@@ -23,17 +23,17 @@ To check your code locally, first install Coder Sniffer: https://www.drupal.org/
 Then check all of the code by running
 
 ```
-phpcs
+phpcs --standard=phpcs.xml.dist
 ```
 
 To check only some files, add them as parameters to the `phpcs` command, e.g.
 
 ```
-phpcs modules/os2dagsorden/os2dagsorden_annotator/os2dagsorden_annotator.module
+phpcs --standard=phpcs.xml.dist modules/os2dagsorden/os2dagsorden_annotator/os2dagsorden_annotator.module
 ```
 
 To code you've changed before a commit, use
 
 ```
-phpcs $(git diff --name-only)
+phpcs --standard=phpcs.xml.dist $(git diff --name-only)
 ```
