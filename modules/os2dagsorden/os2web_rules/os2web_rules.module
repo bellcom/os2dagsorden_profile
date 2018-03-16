@@ -6,7 +6,7 @@
  */
 
 /**
- * Implements hook_action_info.
+ * Implements hook_action_info().
  */
 function os2web_rules_rules_action_info() {
   $account = array(
@@ -36,7 +36,8 @@ function os2web_rules_rules_action_drupal_message($account) {
 
   // We only need parts of the account data set inherited from the condition.
   $data = $account->data['ldap_authorizations']['drupal_role'];
-  // Looping over the drupal roles and assigning taxonomies of the same name. Case insensitive.
+  // Looping over the drupal roles and assigning taxonomies of the same name.
+  // Case insensitive.
   foreach ($data as $key => $val) {
     drupal_set_message(print_r($key, TRUE));
     $committeetaxid = taxonomy_get_term_by_name($key, "os2web_meetings_tax_committee");

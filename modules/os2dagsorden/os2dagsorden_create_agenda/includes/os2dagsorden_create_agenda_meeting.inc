@@ -302,7 +302,9 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
 }
 
 /**
- * Helper functions, meeting form submit. Calls meeting save and redirects to the calendar view.
+ * Helper functions, meeting form submit.
+ *
+ * Calls meeting save and redirects to the calendar view.
  *
  * @param mixed $form
  *   The form.
@@ -311,15 +313,14 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
  */
 function os2dagsorden_create_agenda_meeting_submit($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_meeting($form, $form_state);
-  $start_date = $form_state['input']['start_date']['date'];
-  $start_date = date_create_from_format("d/m/Y", $start_date);
 
-  // $form_state['redirect'] = 'calendar-field-date/month/' . $start_date->format('Y') . '-' . $start_date->format('m');.
   $form_state['redirect'] = 'meeting/' . $node->nid;
 }
 
 /**
- * Calls os2dagsorden_create_agenda_save_meeting and redirects to bullet point creation/modification page.
+ * Calls os2dagsorden_create_agenda_save_meeting.
+ *
+ * And redirects to bullet point creation/modification page.
  *
  * @param mixed $form
  *   The form.

@@ -25,7 +25,9 @@ function os2web_sbsys_aarhus_mm_test($stuff) {
 }
 
 /**
- * Returns a list of meeting_ids for import. In our case a list of uri's of xml files.
+ * Returns a list of meeting_ids for import.
+ *
+ * In our case a list of uri's of xml files.
  *
  * @return array
  *   List of URIs
@@ -38,7 +40,7 @@ function os2web_sbsys_aarhus_mm_get_import_list() {
    * as parsed from the dir name of the manifest.
    */
   $uris = array();
-  foreach (file_scan_directory(variable_get('os2web_sbsys_aarhus_mm_path', MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
+  foreach (file_scan_directory(variable_get('os2web_sbsys_aarhus_mm_path', OS2WEB_SBSYS_AARHUS_MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
     $pub_id = (int) str_replace('Publication', '', $xml_file->name);
     $uris[] = array('id' => $pub_id, 'uri' => $xml_file->uri);
   }
@@ -208,7 +210,8 @@ function os2web_sbsys_aarhus_mm_import_meeting($meeting) {
           $imported['publish'] = TRUE;
           $imported['meeting_sub_id'] = $sys_id;
           // stan@bellcom.dk - 17.03.2016
-          // forcing the agenda to be considered as closed, otherwise the closed BP will not be imported.
+          // forcing the agenda to be considered as closed, otherwise the closed
+          // BP will not be imported.
           $imported['agenda_access'] = 'Lukket';
           $meetings[] = $imported;
         }
@@ -235,7 +238,7 @@ function os2web_sbsys_aarhus_mm_import_meeting($meeting) {
 function _os2web_sbsys_aarhus_mm_import_meeting_agenda(&$meeting, SimpleXMLElement $agenda_xml) {
 
   // Check if the committee is allowed to publish.
-  $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_aarhus_approved_committees', MM_DEFAULT_APPROVED)));
+  $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_aarhus_approved_committees', OS2WEB_SBSYS_AARHUS_MM_DEFAULT_APPROVED)));
   $publish_committee = array_map('_os2web_sbsys_aarhus_generate_crc_id', $publish_committee);
 
   if ($meeting['committee_id'] == '' || !in_array($meeting['committee_id'], $publish_committee)) {
@@ -316,7 +319,6 @@ function _os2web_sbsys_aarhus_mm_import_meeting_agenda_item($meeting, SimpleXMLE
   $item = array(
     'id' => $xml_item['number'],
     'sysid' => (string) _os2web_sbsys_aarhus_generate_crc_id($xml['ID']),
-      // 'title' => 'Punkt ' . $xml_item['number'] . ' ' . $xml_item['name'],06.10 stan@bellcom.dk commented to support multiple agendas.
     'title' => 'Punkt ' . $xml_item['number'] . ' ' . $xml_item['name'],
     'case_nr' => $xml_case_id,
     'access' => $xml_item['document_type'],
@@ -399,7 +401,6 @@ function _os2web_sbsys_aarhus_mm_import_meeting_agenda_item($meeting, SimpleXMLE
     foreach ($enclosures->Enclosure as $enclosure) {
       $enclosure_item['filename_in'] = (string) $enclosure->FileName;
       $enclosure_item['access'] = (string) $enclosure->PublishingType;
-      // If (strlen($enclosure_item['filename_in']) > 0 && $enclosure_item['access'] === 'SKAL PUBLICERES') {.
       if (strlen($enclosure_item['filename_in']) > 0) {
         $item['enclosures'][] = array(
           'uri' => implode('/', array(
@@ -424,7 +425,8 @@ function _os2web_sbsys_aarhus_mm_import_meeting_agenda_item($meeting, SimpleXMLE
   }
 
   if (!empty($non_participants)) {
-    // Add members that did not participate in the bullet discussion as a last bullet point.
+    // Add members that did not participate in the bullet discussion as a last
+    // bullet point.
     $item['bullets'][] = array(
       'title' => 'Afbud / Fraværende',
       'body' => $non_participants,
@@ -644,7 +646,9 @@ function _os2web_sbsys_aarhus_generate_crc_id($string) {
 }
 
 /**
- * This function generates numeric Number field, from Item ID string by first 2 chars.
+ * This function generates numeric Number field.
+ *
+ * Uses Item ID string by first 2 chars.
  *
  * @param string $string
  *   Item ID string.

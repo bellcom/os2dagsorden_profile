@@ -3,13 +3,14 @@
 /**
  * OS2Dagsorden access helper module tests.
  *
- * This file includes the defined tests for the OS2Dagsorden access helper module.
+ * This file includes the defined tests for the OS2Dagsorden access helper
+ * module.
  *
  * Test of os2dagsorden_access_helper_print function.
  */
 
 /**
- * Implements of Os2dagsordenAccessHelperPrintSpeakerPaperWebTestCase class.
+ * Os2dagsordenAccessHelperPrintSpeakerPaperWebTestCase class.
  */
 class Os2dagsordenAccessHelperPrintSpeakerPaperWebTestCase extends Os2dagsordenAccessHelperTest {
 
@@ -39,7 +40,10 @@ class Os2dagsordenAccessHelperPrintSpeakerPaperWebTestCase extends Os2dagsordenA
   }
 
   /**
-   * Text of other speaker paper (same user) is not present on the page for authorized user.
+   * TestOs2dagsordenAccessHelperPrintSpeakerPaper2.
+   *
+   * Text of other speaker paper (same user) is not present on the page for
+   * authorized user.
    */
   public function testOs2dagsordenAccessHelperPrintSpeakerPaper2() {
     $this->drupalGet('print/bullet-point/' . $this->bp1->nid . '/speaker-paper/' . $this->sp1->nid . '/print');
@@ -53,7 +57,10 @@ class Os2dagsordenAccessHelperPrintSpeakerPaperWebTestCase extends Os2dagsordenA
   }
 
   /**
-   * Text of other speaker paper (different user) is not present on the page for authorized user.
+   * TestOs2dagsordenAccessHelperPrintSpeakerPaper3.
+   *
+   * Text of other speaker paper (different user) is not present on the page for
+   * authorized user.
    */
   public function testOs2dagsordenAccessHelperPrintSpeakerPaper3() {
     $this->drupalGet('print/bullet-point/' . $this->bp1->nid . '/speaker-paper/' . $this->sp1->nid . '/print');

@@ -13,7 +13,8 @@ Dependencies
 
 Configuration
 -----------
-Configuration of the ESDH provider can be accessed at [admin/config/os2web/esdh_provider]
+Configuration of the ESDH provider can be accessed at
+[admin/config/os2web/esdh_provider]
 
 Installation
 -----------

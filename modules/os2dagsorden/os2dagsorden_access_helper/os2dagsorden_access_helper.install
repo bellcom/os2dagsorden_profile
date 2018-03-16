@@ -15,10 +15,11 @@
  */
 
 /**
- * Creates a table in the database that will the sent email messages by access helper module. The messages are sent to the interested members, when the status of a specific meeting changes.
+ * Implements hook_schema().
  *
- * @return mixed
- *   Created schema.
+ * Creates a table in the database that will the sent email messages by access
+ * helper module. The messages are sent to the interested members, when
+ * the status of a specific meeting changes.
  */
 function os2dagsorden_access_helper_schema() {
   $schema['os2dagsorden_notification_emails'] = array(

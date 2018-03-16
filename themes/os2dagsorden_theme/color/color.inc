@@ -17,7 +17,7 @@ $info['fields'] = array(
   'color-branding-secondary' => t('Secondary Branding color'),
   'color-branding-primary' => t('Primary Branding color'),
   'color-background-primary' => t('Primary background color'),
-  'color-background-secondary' => t('Secondary background color')
+  'color-background-secondary' => t('Secondary background color'),
 );
 
 // Color schemes for the site.
@@ -33,7 +33,7 @@ $info['schemes'] = array(
       'color-branding-secondary' => '#ae477d',
       'color-branding-primary' => '#9c1a5e',
       'color-background-primary' => '#f7f1f1',
-      'color-background-secondary' => '#e3d6d6'
+      'color-background-secondary' => '#e3d6d6',
     ),
     // Scheme title.
   ),
@@ -46,7 +46,7 @@ $info['schemes'] = array(
       'color-branding-secondary' => '#ae477d',
       'color-branding-primary' => '#9c1a5e',
       'color-background-primary' => '#f7f1f1',
-      'color-background-secondary' => '#e3d6d6'
+      'color-background-secondary' => '#e3d6d6',
     ),
     // Define the default scheme.
   ),
@@ -60,7 +60,7 @@ $info['schemes'] = array(
       'color-branding-secondary' => '#2d8bc0',
       'color-branding-primary' => '#2c8abe',
       'color-background-primary' => '#fbfcfd',
-      'color-background-secondary' => '#f2f4fb'
+      'color-background-secondary' => '#f2f4fb',
     ),
   ),
 );

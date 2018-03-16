@@ -5,8 +5,8 @@
  * Implements a field for displaying ESDH Cases directly.
  */
 
-define('ACADRE_CM_ACCESS_OPEN_CASE', '3');
-define('ACADRE_CM_ACCESS_OPEN_DOCUMENT', '3');
+define('OS2WEB_ESDH_FIELD_ACADRE_CM_ACCESS_OPEN_CASE', '3');
+define('OS2WEB_ESDH_FIELD_ACADRE_CM_ACCESS_OPEN_DOCUMENT', '3');
 
 /* Field information hooks */
 
@@ -308,7 +308,7 @@ function _os2web_esdh_field_case_access($caseid) {
   }
   $access_grant = array(
     'accesscode' => 'KK',
-    'restricted' => ACADRE_CM_ACCESS_OPEN_CASE,
+    'restricted' => OS2WEB_ESDH_FIELD_ACADRE_CM_ACCESS_OPEN_CASE,
   );
   $access = array(
     'accesscode' => $case['access_code'],
@@ -330,7 +330,7 @@ function _os2web_esdh_field_doc_access($docid) {
   $doc = os2web_esdh_provider_invoke('cm', 'get_document', $docid);
   $access_grant = array(
     'accesscode' => 'KK',
-    'publication' => ACADRE_CM_ACCESS_OPEN_DOCUMENT,
+    'publication' => OS2WEB_ESDH_FIELD_ACADRE_CM_ACCESS_OPEN_DOCUMENT,
     'lockstatus' => TRUE,
   );
   $access = array(

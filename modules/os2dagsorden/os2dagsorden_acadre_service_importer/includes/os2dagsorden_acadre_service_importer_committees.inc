@@ -6,7 +6,9 @@
  */
 
 /**
- * Helper function. Processes the committees xml. Delegates to create committees.
+ * Helper function.
+ *
+ * Processes the committees xml. Delegates to create committees.
  *
  * @param mixed $xml_file
  *   Xml file.

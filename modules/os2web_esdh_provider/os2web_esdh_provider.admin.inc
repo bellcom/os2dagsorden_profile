@@ -2,7 +2,7 @@
 
 /**
  * @file
- * This file implements administration menus and functionality for the provider module.
+ * Implements administration menus and functionality for os2web_esdh_provider.
  */
 
 /**

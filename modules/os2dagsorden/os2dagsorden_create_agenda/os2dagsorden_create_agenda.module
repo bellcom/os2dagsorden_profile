@@ -20,10 +20,7 @@ require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2
 require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2dagsorden_create_agenda_bpa.inc';
 
 /**
- * Implementation of hook_menu.
- *
- * @return mixed
- *   List of links.
+ * Implements hook_menu().
  */
 function os2dagsorden_create_agenda_menu() {
   $items = array();

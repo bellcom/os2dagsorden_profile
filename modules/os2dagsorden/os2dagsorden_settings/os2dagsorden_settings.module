@@ -17,10 +17,7 @@
 include_once 'os2dagsorden_settings.features.inc';
 
 /**
- * Implementation of hook_menu()
- *
- * @return mixed
- *   Array - list of links.
+ * Implements hook_menu().
  */
 function os2dagsorden_settings_menu() {
   $items['admin/config/os2dagsorden'] = array(
@@ -77,7 +74,9 @@ function os2dagsorden_settings_menu() {
 }
 
 /**
- * Exports all settings to a single file. Useful when settings need to be copied to another installation.
+ * Exports all settings to a single file.
+ *
+ * Useful when settings need to be copied to another installation.
  */
 function os2dagsorden_settings_export_to_file() {
   header("Content-type: text/plain");
@@ -156,8 +155,8 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_clean_image_tags'] = variable_get('os2dagsorden_clean_image_tags', TRUE);
 
   if (module_exists('os2web_pdf_conversion_manager')) {
-    $setting_array['os2dagsorden_file_import']['os2web_copied_filetype'] = variable_get('os2web_copied_filetype', OS2WEB_COPIED_FILETYPE);
-    $setting_array['os2dagsorden_file_import']['os2web_convertion_dir'] = variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR);
+    $setting_array['os2dagsorden_file_import']['os2web_copied_filetype'] = variable_get('os2web_copied_filetype', OS2WEB_PDF_CONVERSION_MANAGER_COPIED_FILETYPE);
+    $setting_array['os2dagsorden_file_import']['os2web_convertion_dir'] = variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR);
   }
 
   if (module_exists('os2dagsorden_pdf2htmlex')) {
@@ -278,12 +277,9 @@ function os2dagsorden_settings_committee_autocomplete_callback($string = '') {
 }
 
 /**
- * Implement hook_views_pre_render().
+ * Implements hook_views_pre_render().
  *
  * Alters the view title (block titles) - by using the values from the settings.
- *
- * @param object &$view
- *   The view object.
  */
 function os2dagsorden_settings_views_pre_render(&$view) {
   if ($view->name == 'user_committee') {
@@ -297,13 +293,6 @@ function os2dagsorden_settings_views_pre_render(&$view) {
  * Implements hook_views_pre_view().
  *
  * Alters various texts - by using the values from the settings.
- *
- * @param object $view
- *   The view object.
- * @param string &$display_id
- *   The current display ID.
- * @param mixed &$args
- *   The array of arguments.
  */
 function os2dagsorden_settings_views_pre_view(&$view, &$display_id, &$args) {
   if ($view->name == 'seneste_8_m_der_i_de_st_ende_politiske_udvalg_') {
@@ -373,7 +362,9 @@ function os2dagsorden_settings_views_pre_view(&$view, &$display_id, &$args) {
 }
 
 /**
- * Helper function, which creates ini file based on the provided associative array.
+ * Helper function.
+ *
+ * Which creates ini file based on the provided associative array.
  *
  * @param mixed $assoc_arr
  *   The associative array.
@@ -425,14 +416,8 @@ function os2dagsorden_settings_write_ini_file($assoc_arr, $has_sections = FALSE)
 /**
  * Implements hook_form_alter().
  *
- * Does various modifications to the custom forms based on the os2dagsorden settings state.
- *
- * @param mixed $form
- *   The settings form.
- * @param mixed $form_state
- *   The state of form.
- * @param string $form_id
- *   The ID of the form.
+ * Does various modifications to the custom forms based on the os2dagsorden
+ * settings state.
  */
 function os2dagsorden_settings_form_alter(&$form, &$form_state, $form_id) {
   if ($form['#id'] == 'views-exposed-form-meetings-search-page') {
@@ -474,7 +459,9 @@ function os2dagsorden_settings_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Form submit function that adds/removes quick guide file from/to file usage table.
+ * Form submit.
+ *
+ * Function that adds/removes quick guide file from/to file usage table.
  *
  * @param mixed $form
  *   The settings form.
@@ -508,11 +495,6 @@ function os2dagsorden_settings_guide_file_lock($form, &$form_state) {
  * Implements hook_block_view_alter().
  *
  * Alters various texts - by using the values from the settings.
- *
- * @param mixed $data
- *   The data array.
- * @param mixed $block
- *   The block object.
  */
 function os2dagsorden_settings_block_view_alter(&$data, $block) {
   switch ($block->delta) {
@@ -581,7 +563,9 @@ function os2dagsorden_settings_get_active_committees() {
 }
 
 /**
- * Helper functions that returns the subid of the committees that are set to be imported.
+ * Helper functions.
+ *
+ * That returns the subid of the committees that are set to be imported.
  *
  * @return mixed
  *   The subid of the committees that are set to be imported.
@@ -626,7 +610,7 @@ function os2dagsorden_settings_get_quide_link() {
 /**
  * Implements custom submit function for theme settings form.
  *
- * @param mixed $element
+ * @param mixed $form
  *   The form element.
  * @param mixed $form_state
  *   The state of form.

@@ -5,10 +5,10 @@
  * This module implements SBSYS ESDH backend for use in os2web.
  */
 
-define('MM_IMPORT_DIR', 'public://edoc_middelfart');
-define('MM_DEFAULT_APPROVED', 'Hennys testudvalg');
-define('MM_DEFAULT_BANNED_CHAR', '&#xC;');
-define('MM_DEFAULT_BANNED_REGEX', '/&#x.*;/');
+define('OS2WEB_EDOC_MIDDELFART_ESDH_MM_IMPORT_DIR', 'public://edoc_middelfart');
+define('OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_APPROVED', 'Hennys testudvalg');
+define('OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_BANNED_CHAR', '&#xC;');
+define('OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_BANNED_REGEX', '/&#x.*;/');
 
 /**
  * Implements hook_ctools_plugin_directory().
@@ -39,7 +39,7 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#type' => 'textfield',
     '#title' => 'Sti til edoc publish folder.',
     '#description' => 'Dette er stien hvor ESDH publisere .XML filer til.',
-    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_mm_path', MM_IMPORT_DIR),
+    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_mm_path', OS2WEB_EDOC_MIDDELFART_ESDH_MM_IMPORT_DIR),
   );
   $form['meetings']['os2web_edoc_middelfart_esdh_mm_is_abs'] = array(
     '#type' => 'checkbox',
@@ -68,13 +68,13 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#type' => 'textarea',
     '#title' => 'Godkendte Udvalg',
     '#description' => 'Komma sepereret liste over udvalgs-id der er godkendt til publisering.',
-    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_approved_committees', MM_DEFAULT_APPROVED),
+    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_approved_committees', OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_APPROVED),
   );
   $form['meetings']['os2web_edoc_middelfart_esdh_import_closed_agenda'] = array(
     '#type' => 'checkbox',
     '#title' => 'Import closed agenda',
     '#maxlength' => 200,
-    '#description' => t('This decides if the closed agenda bullet points\' content will be imported.'),
+    '#description' => t("This decides if the closed agenda bullet points' content will be imported."),
     '#default_value' => variable_get('os2web_edoc_middelfart_esdh_import_closed_agenda', FALSE),
   );
   $form['meetings']['os2web_edoc_middelfart_esdh_banned_activate_regex'] = array(
@@ -89,7 +89,7 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#title' => 'Ikke standard XML tegn der skal fjernes ved import (CSV)',
     '#maxlength' => 200,
     '#description' => 'Komma sepereret liste over ikke standard tegn der skal fjernes ved import.',
-    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_banned_special_char', MM_DEFAULT_BANNED_CHAR),
+    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_banned_special_char', OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_BANNED_CHAR),
     '#states' => array(
       'invisible' => array(
         ':input[name="os2web_edoc_middelfart_esdh_banned_activate_regex"]' => array('checked' => TRUE),
@@ -101,7 +101,7 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#title' => 'Ikke standard XML tegn der skal fjernes ved import (regex)',
     '#maxlength' => 200,
     '#description' => 'Regular expression over ikke standard tegn der skal fjernes ved import.',
-    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_banned_special_regex', MM_DEFAULT_BANNED_REGEX),
+    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_banned_special_regex', OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_BANNED_REGEX),
     '#states' => array(
       'invisible' => array(
         ':input[name="os2web_edoc_middelfart_esdh_banned_activate_regex"]' => array('checked' => FALSE),
@@ -119,7 +119,7 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#title' => t('Source of bullet content'),
     '#options' => array('xml' => t('Use XML'), 'pdf' => t('Use PDF')),
     '#description' => t('This decides whether the bullet information will be imported from XML or PDF files.') . '<br/>' .
-      t('Please note, that if PDF option is used server should have <b>pdf2htmlEX</b> installed and <b>os2dagsorden_pdf2htmlex</b> module activated.'),
+    t('Please note, that if PDF option is used server should have <b>pdf2htmlEX</b> installed and <b>os2dagsorden_pdf2htmlex</b> module activated.'),
     '#default_value' => variable_get('os2web_edoc_middelfart_esdh_bullet_source', 'xml'),
   );
   $form['meetings']['os2web_edoc_middelfart_esdh_empty_bullet_title'] = array(

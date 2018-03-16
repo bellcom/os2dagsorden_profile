@@ -6,11 +6,14 @@
  */
 
 /**
- * Function that generates a PDF version of meeting agenda with or without PDF attachments.
+ * Function that generates a PDF version of meeting agenda.
+ *
+ * Can generate with or without PDF attachments.
  *
  * Internally uses mPDF library to compose a PDF file.
  *
- * In the end of the function uses print_pdf_dispose_content to return the file with correct headers.
+ * In the end of the function uses print_pdf_dispose_content to return the file
+ * with correct headers.
  *
  * @param int $meeting_id
  *   Meeting ID.

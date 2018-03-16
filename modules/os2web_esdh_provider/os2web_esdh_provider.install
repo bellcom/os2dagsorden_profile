@@ -69,7 +69,9 @@ function os2web_esdh_provider_update_7001() {
 }
 
 /**
- * Drops the existing db table and creates a new one (table has been completely remade.
+ * Drops the existing db table.
+ *
+ * And creates a new one (table has been completely remade.
  */
 function os2web_esdh_provider_update_7002() {
   $schema = os2web_esdh_provider_schema();

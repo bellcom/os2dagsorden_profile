@@ -11,22 +11,21 @@
  * @author Stanislav Kutasevits <stan@bellcom.dk>
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
  *
- * This file is empty by default because the base theme chain (Alpha & Omega) provides
- * all the basic functionality. However, in case you wish to customize the output that Drupal
- * generates through Alpha & Omega this file is a good place to do so.
+ * This file is empty by default because the base theme chain (Alpha & Omega)
+ * provides all the basic functionality. However, in case you wish to customize
+ * the output that Drupal generates through Alpha & Omega this file is a good
+ * place to do so.
  *
- * Alpha comes with a neat solution for keeping this file as clean as possible while the code
- * for your subtheme grows. Please read the README.txt in the /preprocess and /process subfolders
- * for more information on this topic.
+ * Alpha comes with a neat solution for keeping this file as clean as possible
+ * while the code for your subtheme grows. Please read the README.txt in the
+ * /preprocess and /process subfolders for more information on this topic.
  */
 
 /**
- * Implementation of hook_preprocess_page.
+ * Implements hook_preprocess_page().
  *
- * Adds needed JS behaviour, loads the notes/speaker paper indicators, makes the security log entries.
- *
- * @param mixed $variables
- *   Array.
+ * Adds needed JS behaviour, loads the notes/speaker paper indicators, makes the
+ * security log entries.
  */
 function os2dagsorden_classic_theme_preprocess_page(&$variables) {
   drupal_add_library('system', 'ui.draggable');
@@ -48,9 +47,6 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
   os2dagsorden_classic_theme_hide_menu_on_pages();
 
   drupal_add_js('add_indicator_help_text();', 'inline');
-  // DAGS-298 enabling print for iPad
-  // drupal_add_js('hide_print_buttons();', 'inline');
-  // drupal_add_js('resize_listener();', 'inline');.
   if (variable_get('os2dagsorden_show_search_block_title', 'true') === 'false') {
     drupal_add_js('hide_search_block_title()', 'inline');
   }
@@ -92,8 +88,6 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
 
       // Adding annotation.
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
-      // drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch-no-add.min.js');
-      // drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.min.js');.
       $your_passed_info = array('create_note' => 'test');
       drupal_add_js(array('your_module_name' => $your_passed_info), 'setting');
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch-syddjurs.min.js');
@@ -163,7 +157,8 @@ function os2dagsorden_classic_theme_breadcrumb($variables) {
 /**
  * Implementation of theming the calendar title.
  *
- * Change the format of navigation title in calendar day view to be [weekday], [day]. [month] [year].
+ * Change the format of navigation title in calendar day view to be [weekday],
+ * [day]. [month] [year].
  *
  * @param mixed $params
  *   Params.
@@ -202,7 +197,7 @@ function os2dagsorden_classic_theme_date_nav_title($params) {
     case 'week':
       $format = !empty($format) ? $format : (empty($date_info->mini) ? 'F j, Y' : 'F j');
       $title = t('Week of @date', array(
-        '@date' => date_format_date($date_info->min_date, 'custom', $format)
+        '@date' => date_format_date($date_info->min_date, 'custom', $format),
       ));
       $date_arg = $date_info->year . '-W' . date_pad($date_info->week);
       break;

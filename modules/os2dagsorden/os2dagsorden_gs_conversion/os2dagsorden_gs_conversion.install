@@ -6,10 +6,7 @@
  */
 
 /**
- * Creates a table in the database that will controll the workflow of the module.
- *
- * @return mixed
- *   Created schema.
+ * Implements hook_schema().
  */
 function os2dagsorden_gs_conversion_schema() {
   $schema['os2dagsorden_gs_conversion_files'] = array(

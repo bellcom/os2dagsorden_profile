@@ -191,7 +191,8 @@ function os2dagsorden_create_agenda_bpa_delete_ajax($form, $form_state) {
 /**
  * Saves the bullet point.
  *
- * Either by creating new or modifying the existing calls os2dagsorden_create_agenda_add_bullet_point_to_meeting.
+ * Either by creating new or modifying the existing calls
+ * os2dagsorden_create_agenda_add_bullet_point_to_meeting.
  *
  * @param mixed $form
  *   The form.
@@ -280,7 +281,10 @@ function os2dagsorden_create_agenda_remove_bpa_from_bullet_point($bullet_point_i
 }
 
 /**
- * Helper functions, bullet point form submit. Calls saving and controls the form rebuild (page switching) - returning back to meeting view.
+ * Helper function.
+ *
+ * Bullet point form submit. Calls saving and controls the form rebuild (page
+ * switching) - returning back to meeting view.
  *
  * @param mixed $form
  *   The form.
@@ -297,7 +301,8 @@ function os2dagsorden_create_agenda_bullet_point_submit($form, &$form_state) {
 /**
  * Helper functions, bullet point attachment form submit.
  *
- * Calls saving and controls the form rebuild (page switching) redirecting to bullet point attachment creation/editing page.
+ * Calls saving and controls the form rebuild (page switching) redirecting to
+ * bullet point attachment creation/editing page.
  *
  * @param mixed $form
  *   The form.

@@ -13,15 +13,12 @@
  * @link http://bellcom.dk
  */
 
-define('OS2WEB_CONVERTION_DIR', 'public://os2convert');
-define('OS2WEB_COPIED_FILETYPE', 'doc,docx,xls,xlsx');
-define('MIN_SOFFICE_VERSION', '4.3.3.2');
+define('OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR', 'public://os2convert');
+define('OS2WEB_PDF_CONVERSION_MANAGER_COPIED_FILETYPE', 'doc,docx,xls,xlsx');
+define('OS2WEB_PDF_CONVERSION_MANAGER_MIN_SOFFICE_VERSION', '4.3.3.2');
 
 /**
- * Implements hook_menu()
- *
- * @return array
- *   List of menu items.
+ * Implements hook_menu().
  */
 function os2web_pdf_conversion_manager_menu() {
   $items = array();
@@ -57,7 +54,9 @@ function os2web_pdf_conversion_manager_file_manager() {
 }
 
 /**
- * Callback function to remove outdated entries from os2web_pdf_conversion_manager_files.
+ * Callback function.
+ *
+ * Removes outdated entries from os2web_pdf_conversion_manager_files.
  */
 function os2web_pdf_conversion_manager_remove_outdated() {
   $result = db_select('os2web_pdf_conversion_manager_files', 'c')
@@ -66,8 +65,8 @@ function os2web_pdf_conversion_manager_remove_outdated() {
     ->execute();
 
   while ($record = $result->fetchAssoc()) {
-    drupal_set_message(print_r(variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR) . '/' . $record['tmp_filename'], 1));
-    unlink(variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR) . '/' . $record['tmp_filename']);
+    drupal_set_message(print_r(variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR) . '/' . $record['tmp_filename'], 1));
+    unlink(variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR) . '/' . $record['tmp_filename']);
   }
 
   db_delete('os2web_pdf_conversion_manager_files')
@@ -139,7 +138,8 @@ function os2web_pdf_convertion_manager_setting_page() {
  *   Generated system settings forms.
  */
 function os2web_pdf_conversion_manager_pdf_converter_form($form, $form_state) {
-  // Avoiding duplication of settings. If os2dagsorden_settings module is present and enabled - the settings will be presented there.
+  // Avoiding duplication of settings. If os2dagsorden_settings module is
+  // present and enabled - the settings will be presented there.
   $form['os2dagsorden_file_import'] = array(
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
@@ -158,14 +158,14 @@ function os2web_pdf_conversion_manager_pdf_converter_form($form, $form_state) {
       '#title' => t('Type of files to be converted when importing:'),
       '#maxlength' => 200,
       '#description' => t('Comma-separated list of file types. Example: xls,doc,docx,xlsx'),
-      '#default_value' => variable_get('os2web_copied_filetype', OS2WEB_COPIED_FILETYPE),
+      '#default_value' => variable_get('os2web_copied_filetype', OS2WEB_PDF_CONVERSION_MANAGER_COPIED_FILETYPE),
     );
     $form['os2dagsorden_file_import']['os2web_convertion_dir'] = array(
       '#type' => 'textfield',
       '#title' => t('Directory to send the files for converting:'),
       '#maxlength' => 200,
       '#description' => t('This is the path where files copy for converting'),
-      '#default_value' => variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR),
+      '#default_value' => variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR),
     );
   }
   $form['os2dagsorden_file_import'][] = array(
@@ -179,15 +179,7 @@ function os2web_pdf_conversion_manager_pdf_converter_form($form, $form_state) {
 }
 
 /**
- * Implements hook_cronapi.
- *
- * @param string $op
- *   Operation.
- * @param mixed $job
- *   Job.
- *
- * @return mixed
- *   Cron api array.
+ * Implements hook_cronapi().
  */
 function os2web_pdf_conversion_manager_cronapi($op, $job = NULL) {
   switch ($op) {
@@ -197,19 +189,25 @@ function os2web_pdf_conversion_manager_cronapi($op, $job = NULL) {
 }
 
 /**
- * Cron implementation.
+ * Implements hook_cron().
  *
- * Additionally, there should also be a cron job, which checks the mentioned directory to see if some of the files there have been conveted to pdf.
- * For example, if there is file "name1.doc" and "name1.pdf", it means that the file is converted to pdf.
- * In this case: pdf file should be copied into the initial directory, where the original .doc file is.
- * Reference to the file in file_managed table is updated from .doc version to .pdf version.
+ * Additionally, there should also be a cron job, which checks the mentioned
+ * directory to see if some of the files there have been conveted to pdf.
+ * For example, if there is file "name1.doc" and "name1.pdf", it means that the
+ * file is converted to pdf.
+ *
+ * In this case: pdf file should be copied into the initial directory, where the
+ * original .doc file is.
+ * Reference to the file in file_managed table is updated from .doc version to
+ * .pdf version.
+ *
  * both files (.doc and .pdf) are deleted from the convertion directory.
- * Also calls function to update meeting status. *
+ * Also calls function to update meeting status.
  */
 function os2web_pdf_conversion_manager_cron() {
-  $convertion_dir_path = drupal_realpath(variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR));
+  $convertion_dir_path = drupal_realpath(variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR));
   if (file_exists($convertion_dir_path) === FALSE) {
-    watchdog('file convertion management:', 'Folder %uri is not created', array('%uri' => variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR)), WATCHDOG_WARNING);
+    watchdog('file convertion management:', 'Folder %uri is not created', array('%uri' => variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR)), WATCHDOG_WARNING);
     return;
   }
   _os2web_pdf_conversion_manager_manage_msg($convertion_dir_path);
@@ -324,9 +322,6 @@ function _os2web_pdf_conversion_manager_manage_pdf($convertion_dir_path) {
       ->condition('tmp_filename', $original_filename)
       ->execute();
     while ($d_file = $result->fetchAssoc()) {
-      $original_path_parts = pathinfo($d_file['uri']);
-      // $dest = drupal_realpath($original_path_parts['dirname'] ). '/' . $original_path_parts['filename'] . '.pdf';.
-      $uri = $original_path_parts['dirname'] . '/' . $original_path_parts['filename'] . '.pdf';
       if (_os2web_pdf_conversion_manager_update_managed_file($d_file['fid'], $d_file['uri'], $convertion_dir_path . "/" . $file_arr['pdf'])) {
         if (module_exists('os2dagsorden_pdf2htmlex')) {
           os2dagsorden_pdf2htmlex_schedule_if_bpa($d_file['fid']);
@@ -358,23 +353,25 @@ function _os2web_pdf_conversion_manager_manage_pdf($convertion_dir_path) {
 /**
  * Copies the file to conversion directory.
  *
- * Also schedules the file conversion by adding entiry into os2web_pdf_conversion_manager_files table.
+ * Also schedules the file conversion by adding entry into
+ * os2web_pdf_conversion_manager_files table.
  *
  * @param int $fid
  *   File ID.
  */
 function _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($fid) {
-  $convertion_dir_path = drupal_realpath(variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR));
+  $convertion_dir_path = drupal_realpath(variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR));
   if (file_exists($convertion_dir_path) === FALSE) {
-    watchdog('os2web pdf conversion manager:', 'Folder %uri is not created', array('%uri' => variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR)), WATCHDOG_WARNING);
+    watchdog('os2web pdf conversion manager:', 'Folder %uri is not created', array('%uri' => variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR)), WATCHDOG_WARNING);
     return;
   }
   $file = file_load($fid);
   $filename = $file->uri;
   $filename_parts = pathinfo($filename);
-  // Tmp_file name is needed to avoid rewriting the files from different meetings, which might have the same name.
+  // Tmp_file name is needed to avoid rewriting the files from different
+  // meetings, which might have the same name.
   $tmp_filename = md5(md5_file(drupal_realpath($filename)) . $filename_parts['basename']) . '.' . $filename_parts['extension'];
-  $type_arr = explode(',', variable_get('os2web_copied_filetype', OS2WEB_COPIED_FILETYPE));
+  $type_arr = explode(',', variable_get('os2web_copied_filetype', OS2WEB_PDF_CONVERSION_MANAGER_COPIED_FILETYPE));
   $pdf_path = $filename_parts['dirname'] . '/' . $filename_parts['filename'] . '.PDF';
 
   if (_os2web_pdf_conversion_manager_similar_file_exists(drupal_realpath($pdf_path))) {
@@ -411,7 +408,9 @@ function _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($fid) {
 }
 
 /**
- * Check if the file with similar name (case insensitive) exists in the provided location.
+ * Check if the file with similar name exists in the provided location.
+ *
+ * Search is case insensitive.
  *
  * @param string $filename
  *   Name of file.
@@ -551,7 +550,9 @@ function _os2web_pdf_conversion_manager_update_managed_file($fid, $original_file
 }
 
 /**
- * Function that uploads the converted file to drupal and updates the corresponding fields to use the new file.
+ * Function that uploads the converted file to drupal.
+ *
+ * And updates the corresponding fields to use the new file.
  *
  * @param int $fid
  *   File ID.
@@ -752,10 +753,8 @@ function _os2web_pdf_conversion_manager_set_status_published_plus($node) {
 /**
  * Hook to file delete.
  *
- * Deletes the temporary file scheduled for the conversion and deletes corresponding entry in the table.
- *
- * @param object $file
- *   File object.
+ * Deletes the temporary file scheduled for the conversion and deletes
+ * corresponding entry in the table.
  */
 function os2web_pdf_conversion_manager_file_delete($file) {
   $result = db_select('os2web_pdf_conversion_manager_files', 'o')
@@ -763,7 +762,7 @@ function os2web_pdf_conversion_manager_file_delete($file) {
     ->condition('fid', $file->fid)
     ->execute()
     ->fetchField();
-  file_unmanaged_delete(variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR) . '/' . $result);
+  file_unmanaged_delete(variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR) . '/' . $result);
 
   db_delete('os2web_pdf_conversion_manager_files')
     ->condition('fid', $file->fid)

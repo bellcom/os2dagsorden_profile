@@ -14,19 +14,16 @@
  */
 
 // Default zoom for convertion.
-define('DEFAULT_PDF_HTML_ZOOM', 1.25);
+define('OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_ZOOM', 1.25);
 // Default zoom for convertion.
-define('DEFAULT_TEMP_DIR', variable_get('file_temporary_path', '/tmp/'));
+define('OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_TEMP_DIR', variable_get('file_temporary_path', '/tmp/'));
 // Number of files to handle at once.
-define('DEFAULT_PDF_HTML_TRANS_LIMIT', 500);
+define('OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_TRANS_LIMIT', 500);
 // Min pdf2htmlex version.
-define('MIN_PDF2HTMLEX_VERSION', '0.6');
+define('OS2DAGSORDEN_PDF2HTMLEX_MIN_PDF2HTMLEX_VERSION', '0.6');
 
 /**
  * Implements hook_menu().
- *
- * @return array
- *   Items.
  */
 function os2dagsorden_pdf2htmlex_menu() {
   $items = array();
@@ -131,7 +128,7 @@ function os2dagsorden_pdf2htmlex_report() {
 }
 
 /**
- * Starts the convertsion and prints the debug info, userful for quick debugging.
+ * Starts the conversion and prints the debug info, userful for quick debugging.
  *
  * @return string
  *   Debug info.
@@ -140,20 +137,6 @@ function os2dagsorden_pdf2htmlex_do_convert() {
   global $_os2dagsorden_pdf2htmlex_debug_info;
   os2dagsorden_pdf2htmlex_cron();
   return '<div><textarea cols="150" rows=50>' . print_r($_os2dagsorden_pdf2htmlex_debug_info, 1) . '</textarea>';
-
-  // @CODEREVIEW: Delete unused code!
-  // Reschedule all
-  // $nodes = entity_load('node', FALSE, array('type' => 'os2web_meetings_bullet_attach'));
-  // foreach ($nodes as $node){
-  // if (!empty($node->field_os2web_meetings_bpa_file)){
-  // print_r($node->nid . ' ' . $node->field_os2web_meetings_bpa_file['und'][0]['fid']);
-  // $file = file_load($node->field_os2web_meetings_bpa_file['und'][0]['fid']);
-  // if (strcmp($file->filemime,'application/pdf') == 0){
-  // os2dagsorden_pdf2htmlex_schedule($node->field_os2web_meetings_bpa_file['und'][0]['fid'], $node->nid);
-  // print_r("<br/>");
-  // }
-  // }
-  // }.
 }
 
 /**
@@ -189,15 +172,7 @@ function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
 }
 
 /**
- * Implement hook_cronapi.
- *
- * @param string $op
- *   Operation.
- * @param mixed $job
- *   Job.
- *
- * @return mixed
- *   Cron api array.
+ * Implements hook_cronapi().
  */
 function os2dagsorden_pdf2htmlex_cronapi($op, $job = NULL) {
   switch ($op) {
@@ -209,11 +184,13 @@ function os2dagsorden_pdf2htmlex_cronapi($op, $job = NULL) {
 }
 
 /**
- * Cron implementation.
+ * Implements hook_cron().
  *
- * Goes through the entries in database table, converts the new records, also updates the destination node with the html taken from converted file.
+ * Goes through the entries in database table, converts the new records, also
+ * updates the destination node with the html taken from converted file.
  *
- * When node is updated, the database entry progress field is changed to Complete.
+ * When node is updated, the database entry progress field is changed to
+ * Complete.
  *
  * Also calls function to update meeting status.
  */
@@ -224,7 +201,7 @@ function os2dagsorden_pdf2htmlex_cron() {
   $query = db_select('os2dagsorden_pdf2htmlex_files', 'f');
   $query->fields('f', array('fid', 'did'))
     ->isNull('f.progress')
-    ->range(0, DEFAULT_PDF_HTML_TRANS_LIMIT);
+    ->range(0, OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_TRANS_LIMIT);
   $result = $query->execute();
 
   while ($record = $result->fetchAssoc()) {
@@ -235,7 +212,7 @@ function os2dagsorden_pdf2htmlex_cron() {
   $query = db_select('os2dagsorden_pdf2htmlex_files', 'f');
   $query->fields('f')
     ->condition('progress', 'Converted')
-    ->range(0, DEFAULT_PDF_HTML_TRANS_LIMIT);
+    ->range(0, OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_TRANS_LIMIT);
   $result = $query->execute();
 
   while ($record = $result->fetchAssoc()) {
@@ -378,7 +355,8 @@ function _os2dagsorden_pdf2htmlex_improve_html($data) {
 /**
  * Call to console pdf2htmlEX programm ro convert PDF to html.
  *
- * Updates the record progress to Converted on success, and file_not_found is the file is missing.
+ * Updates the record progress to Converted on success, and file_not_found is
+ * the file is missing.
  *
  * @param int $fid
  *   File id.
@@ -398,7 +376,8 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
 
   // If Ghostscript convertsion is enabled, check that the file is optimized.
   if (module_exists('os2dagsorden_gs_conversion')) {
-    // Do to try pdf->html conversion on this file if Ghostscript has not done it's part.
+    // Do to try pdf->html conversion on this file if Ghostscript has not done
+    // it's part.
     if (!os2dagsorden_gs_conversion_is_file_converted($fid)) {
       return;
     }
@@ -427,13 +406,12 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
 
     // Check if already convered.
     if (!file_exists($path)) {
-      // One has to know the exact locale of the system, otherwise uncomment the lines.
+      // One has to know the exact locale of the system, otherwise uncomment the
+      // lines.
       setlocale(LC_CTYPE, "en_DK.UTF-8");
       $shell_file_path_real = escapeshellarg($file_path_real);
       $shell_dest_dir_real = escapeshellarg($dest_dir_real);
-      // $shell_file_path_real = "'" . str_replace("'", "'\''", $file_path_real) . "'";
-      // $shell_dest_dir_real = "'" . str_replace("'", "\'", $dest_dir_real) . "'";.
-      shell_exec(variable_get('os2dagsorden_pdf2htmlex_path') . ' ' . $shell_file_path_real . '  --dest-dir ' . $shell_dest_dir_real . ' --zoom ' . DEFAULT_PDF_HTML_ZOOM . ' 2>&1');
+      shell_exec(variable_get('os2dagsorden_pdf2htmlex_path') . ' ' . $shell_file_path_real . '  --dest-dir ' . $shell_dest_dir_real . ' --zoom ' . OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_ZOOM . ' 2>&1');
 
       // Successful conversion?
       if (file_exists($path)) {
@@ -485,11 +463,14 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
 }
 
 /**
- * Changes the status of the parent meeting of the given bullet point attachment to Dagsorden+/Referat+.
+ * Changes the status of the parent meeting.
  *
- * If all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
- *
- * Does that by checking if all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
+ * Changes the status of the parent meeting of the given bullet point attachment
+ * to Dagsorden+/Referat+.
+ * If all of the attachments of all of the corresponding bullet points of that
+ * meeting are converted to HTML.
+ * Does that by checking if all of the attachments of all of the corresponding
+ * bullet points of that meeting are converted to HTML.
  *
  * @param string $node
  *   Bullet points attachment.

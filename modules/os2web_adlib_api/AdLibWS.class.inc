@@ -32,7 +32,8 @@ class AdLibWS {
     curl_exec($handle);
     $http_code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
     curl_close($handle);
-    // Since this is just a heuristic, we allow access denied (401) for further check.
+    // Since this is just a heuristic, we allow access denied (401) for further
+    // check.
     return in_array($http_code, array(200, 401));
   }
 
@@ -61,7 +62,6 @@ class AdLibWS {
       }
       try {
         $this->client = new SoapClient($url, $options);
-        // error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Created SOAP client.");.
       }
       catch (Exception $exc) {
         watchdog('adlib_api', 'Error creating AdLib client, message: %var', array('%var' => $exc->getMessage()), WATCHDOG_ERROR);
@@ -245,10 +245,8 @@ class AdLibWS {
       $return->status = 'Not Available';
     }
     elseif ($return->status === 'Pending') {
-      // error_log("ConnectorStatus is " . $return->result->CurrentJobStatus['ConnectorStatus']);.
     }
     else {
-      // error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Looked up status for job: " . $id . " Status: " . $return->status);.
     }
     return $return;
   }

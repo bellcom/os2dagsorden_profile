@@ -14,14 +14,11 @@
  */
 
 module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.common');
-define('IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad'));
-define('ANNOTATOR_PAGES_PER_VIEW', (IS_IPAD) ? 3 : 5);
+define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad'));
+define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? 3 : 5);
 
 /**
- * Implementation of hook_menu().
- *
- * @return array
- *   Array of links.
+ * Implements hook_menu().
  */
 function os2dagsorden_annotator_menu() {
   $items = array();
@@ -112,7 +109,8 @@ function os2dagsorden_annotator_menu() {
 /**
  * Implementation create note endpoint.
  *
- * Creates a note, saves it in the database and redirects to the read endpoint in order to update a note with generated ID.
+ * Creates a note, saves it in the database and redirects to the read endpoint
+ * in order to update a note with generated ID.
  */
 function _os2dagsorden_annotator_create() {
   global $user;
@@ -281,9 +279,13 @@ function _os2dagsorden_annotator_search() {
 }
 
 /**
- * Dummy function, in order to make annotate not throw the exception, when using Touch Plugin on Desktop device.
+ * Dummy function.
  *
- * For some undiscovered reasons, annotator is making request to /annotator/update url, and throws an error if that url does not exist.
+ * Dummy function, in order to make annotate not throw the exception, when
+ * using Touch Plugin on Desktop device.
+ *
+ * For some undiscovered reasons, annotator is making request to
+ * /annotator/update url, and throws an error if that url does not exist.
  */
 function _os2dagsorden_annotator_dummy() {
   print(json_encode(array()));
@@ -298,8 +300,6 @@ function _os2dagsorden_annotator_dummy() {
  *   ID of the bullet point.
  * @param int $bilag_id
  *   ID of the attachment (bilag)
- *
- *   calls the function, that checks if a user is allowed to see a specific bullet point.
  *
  * @return bool
  *   TRUE or FALSE
@@ -388,7 +388,7 @@ HTML;
 
     // Preparing the pager.
     $pageStart = intval($_GET['page']) + 1;
-    $pageEnd = intval($_GET['page']) + ANNOTATOR_PAGES_PER_VIEW;
+    $pageEnd = intval($_GET['page']) + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
 
     // Bilag has converter to HTML version of file, getting the text out of it.
     if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
@@ -454,7 +454,10 @@ HTML;
 }
 
 /**
- * Serves the raw (html) version of the first page of the attachment. Is used to load the attachment AJAX-way.
+ * Raw version of the first page.
+ *
+ * Serves the raw (html) version of the first page of the attachment. Is used to
+ * load the attachment AJAX-way.
  *
  * @param int $meeting_id
  *   ID of the meeting.
@@ -512,16 +515,16 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
     $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment-light/' . $bilag_id;
   }
 
-  if ($page - ANNOTATOR_PAGES_PER_VIEW >= 0) {
-    $prev_page_link = $current_bilag_url . '?page=' . ($page - ANNOTATOR_PAGES_PER_VIEW);
+  if ($page - OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW >= 0) {
+    $prev_page_link = $current_bilag_url . '?page=' . ($page - OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW);
   }
-  elseif ($page - ANNOTATOR_PAGES_PER_VIEW < 0 && $page > 0) {
+  elseif ($page - OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < 0 && $page > 0) {
     // Go to the first page.
     $prev_page_link = $current_bilag_url;
   }
 
   if ($page + 5 <= $pageLimit) {
-    $next_page_link = $current_bilag_url . '?page=' . ($page + ANNOTATOR_PAGES_PER_VIEW);
+    $next_page_link = $current_bilag_url . '?page=' . ($page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW);
   }
 
   $pager = '<div class="item-list clearfix annotator-pager">
@@ -552,7 +555,8 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
  *   ID of the attachment (bilag).
  *
  * @return string
- *   The html code for print version of the specific attachment with annotating option.
+ *   The html code for print version of the specific attachment with annotating
+ *   option.
  */
 function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bilag_id) {
   $bilag = node_load($bilag_id);
@@ -777,7 +781,10 @@ function _os2dagsorden_compare_xpath($path1, $path2) {
 }
 
 /**
- * Appends the right index number to a word/set of words, that has a annotation attached.
+ * Appends the index.
+ *
+ * Appends the right index number to a word/set of words,
+ * that has a annotation attached.
  *
  * @param string $body
  *   The entire text of the attachment.
@@ -834,9 +841,10 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
 
     $to_return .= ' <b>' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i>';
     if (!empty($link)) {
-      if (intval($page_nr) > ANNOTATOR_PAGES_PER_VIEW) {
+      if (intval($page_nr) > OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) {
         // If pages per view is 5, then the page number will be 5, 10, 15 etc.
-        $link .= '?page=' . intval($page_nr / ANNOTATOR_PAGES_PER_VIEW) * ANNOTATOR_PAGES_PER_VIEW;
+        $link .= '?page=' . intval($page_nr /
+            OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
       }
 
       global $base_url;

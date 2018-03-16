@@ -25,7 +25,9 @@ function os2web_sbsys_esdh_mm_test($stuff) {
 }
 
 /**
- * Returns a list of meeting_ids for import. In our case a list of uri's of xml files.
+ * Returns a list of meeting_ids for import.
+ *
+ * In our case a list of uri's of xml files.
  *
  * @return array
  *   List of URIs
@@ -37,7 +39,7 @@ function os2web_sbsys_esdh_mm_get_import_list() {
    * as parsed from the dir name of the manifest.
    */
   $uris = array();
-  foreach (file_scan_directory(variable_get('os2web_sbsys_esdh_mm_path', MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
+  foreach (file_scan_directory(variable_get('os2web_sbsys_esdh_mm_path', OS2WEB_SBSYS_ESDH_MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
     $pub_id = (int) str_replace('Publication', '', $xml_file->name);
     $uris[] = array('id' => $pub_id, 'uri' => $xml_file->uri);
   }
@@ -102,15 +104,11 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
 
       $committee = $manifest->xpath("Agendas/Agenda/Committee/@ID");
       $committee_group_id = $manifest->xpath("Agendas/Agenda/Committee/CommitteeGroup/@ID");
-      // $committee_name = $manifest->xpath("Agendas/Agenda/Committee/Name");.
       $committee_name = $manifest->xpath("Agendas/Agenda/Committee/Name");
       $meeting_uri = $manifest->xpath("/Publication/OutputFileName");
       $meeting_data = $manifest->xpath("/Publication/Agendas/Agenda/Meeting");
-      // $meeting_public = $manifest->xpath("/Publication/Agendas/Agenda/NewItemsIsPublic");.
       $sys_id = $manifest->xpath("Agendas/Agenda/@ID");
       $xml_id = $manifest->xpath("Agendas/Agenda/Meeting/@ID");
-      // $meeting_name = $manifest->xpath("/Publication/Agendas/Agenda/Name");
-      // $meeting_name = (string) $meeting_name[0];.
       $acadre_version = $manifest->xpath("/Publication/GeneratorSettings/@ID");
       $members = $manifest->xpath("Agendas/Agenda/Meeting/Members/MeetingMember");
       $meeting_type = $manifest->xpath('/Publication/PublicationTypeAsValue');
@@ -159,7 +157,8 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
       $participants = array();
       $participants_cancellation = array();
       foreach ($members as $member) {
-        // Changed by skifter@bellcom.dk 01.08.2013 - to handle "no show" members and messages for "no shoW".
+        // Changed by skifter@bellcom.dk 01.08.2013 - to handle "no show"
+        // members and messages for "no show".
         if (!empty($member->ParticipationNote)) {
           $member->ParticipationNote = ", " . $member->ParticipationNote;
         }
@@ -167,7 +166,8 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
         if ($member->ParticipationStatusAsValue == '1' || $member->ParticipationStatusAsValue == '4') {
           $participants[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
         }
-        // Changed by stan@bellcom.dk 19.09.2013 - to consider participants with "Ikke bestemt" status as actual participants.
+        // Changed by stan@bellcom.dk 19.09.2013 - to consider participants with
+        // "Ikke bestemt" status as actual participants.
         else {
           if ($member->ParticipationStatusAsText == 'NotDecided' || $member->ParticipationStatusAsValue == '0') {
             $participants[] = (string) $member->Name . $member->ParticipationNote;
@@ -228,7 +228,8 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
           $imported['publish'] = TRUE;
           $imported['meeting_sub_id'] = $sys_id;
           // stan@bellcom.dk - 17.03.2016
-          // forcing the agenda to be considered as closed, otherwise the closed BP will not be imported.
+          // forcing the agenda to be considered as closed, otherwise the closed
+          // BP will not be imported.
           $imported['agenda_access'] = 'Lukket';
           $meetings[] = $imported;
         }
@@ -255,7 +256,7 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
  */
 function _os2web_sbsys_esdh_mm_import_meeting_agenda(&$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
-  $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_esdh_approved_committees', MM_DEFAULT_APPROVED)));
+  $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_esdh_approved_committees', OS2WEB_SBSYS_ESDH_MM_DEFAULT_APPROVED)));
   if ($meeting['committee_id'] == '' || !in_array($meeting['committee_id'], $publish_committee)) {
     watchdog('SBsys MM', 'Ignored agenda from "%committee" .', array('%committee' => $meeting['committee_id']));
     return FALSE;
@@ -327,7 +328,6 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLEle
   $item = array(
     'id' => $xml_item['number'],
     'sysid' => (string) $xml['ID'],
-    // 'title' => 'Punkt ' . $xml_item['number'] . ' ' . $xml_item['name'],06.10 stan@bellcom.dk commented to support multiple agendas.
     'title' => 'Punkt ' . $meeting['current_item_nr'] . ' ' . $xml_item['name'],
     'case_nr' => $xml_case_id,
     'access' => $xml_item['document_type'],
@@ -409,7 +409,6 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLEle
     foreach ($enclosures->Enclosure as $enclosure) {
       $enclosure_item['filename_in'] = (string) "Enclosures/" . $enclosure->InstantiationFileName;
       $enclosure_item['access'] = (string) $enclosure->PublishingType;
-      // If (strlen($enclosure_item['filename_in']) > 0 && $enclosure_item['access'] === 'SKAL PUBLICERES') {.
       if (strlen($enclosure_item['filename_in']) > 0) {
         $item['enclosures'][] = array(
           'uri' => implode('/', array(
@@ -435,7 +434,8 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLEle
   }
 
   if (!empty($non_participants)) {
-    // Add members that did not participate in the bullet discussion as a last bullet point.
+    // Add members that did not participate in the bullet discussion as a last
+    // bullet point.
     $item['bullets'][] = array(
       'title' => 'Afbud / Fraværende',
       'body' => $non_participants,

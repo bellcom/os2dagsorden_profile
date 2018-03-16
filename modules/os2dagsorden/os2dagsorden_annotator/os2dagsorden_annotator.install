@@ -6,10 +6,7 @@
  */
 
 /**
- * Implement hook_schema.
- *
- * @return mixed
- *   Schema array.
+ * Implements hook_schema().
  */
 function os2dagsorden_annotator_schema() {
   $schema['os2dagsorden_annotator_notes'] = array(

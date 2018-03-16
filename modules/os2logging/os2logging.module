@@ -11,7 +11,7 @@ use Monolog\Processor\WebProcessor;
 use Monolog\Logger;
 
 /**
- * Implements HOOK_menu()
+ * Implements hook_menu().
  */
 function os2logging_menu() {
   $items = array();
@@ -39,10 +39,7 @@ function os2logging_menu() {
 }
 
 /**
- * Implements hook_monolog_channel_info.
- *
- * @return mixed
- *   Monolog log channel.
+ * Implements hook_monolog_channel_info().
  */
 function os2logging_monolog_channel_info() {
   $channels = array();
@@ -57,7 +54,7 @@ function os2logging_monolog_channel_info() {
 }
 
 /**
- * Implements HOOK_node_load()
+ * Implements hook_node_load().
  */
 function os2logging_node_load($nodes, $types) {
   global $user;
@@ -149,14 +146,6 @@ function _os2logging_node_type_chosen($node_type) {
 
 /**
  * Implements hook_help().
- *
- * @param string $path
- *   The menu path.
- * @param mixed $arg
- *   Array with arguments.
- *
- * @return string
- *   String containing the help text.
  */
 function os2logging_help($path, $arg) {
   switch ($path) {
@@ -236,7 +225,9 @@ function os2logging_watchdog(array $log_entry) {
 }
 
 /**
- * Ensure that required subsystems and modules are loaded if watchdog messages are logged prior to a full Drupal bootstrap.
+ * Ensure that required subsystems and modules are loaded.
+ *
+ * If watchdog messages are logged prior to a full Drupal bootstrap.
  *
  * @see _drupal_bootstrap_full()
  * @see http://drupal.org/node/1997462

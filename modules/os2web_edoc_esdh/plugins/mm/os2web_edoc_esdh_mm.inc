@@ -25,7 +25,9 @@ function os2web_edoc_esdh_mm_test($stuff) {
 }
 
 /**
- * Returns a list of meeting_ids for import. In our case a list of uri's of xml files.
+ * Returns a list of meeting_ids for import.
+ *
+ * In our case a list of uri's of xml files.
  *
  * @return array
  *   List of URIs
@@ -37,7 +39,7 @@ function os2web_edoc_esdh_mm_get_import_list() {
    * as parsed from the dir name of the manifest.
    */
   $uris = array();
-  foreach (file_scan_directory(variable_get('os2web_edoc_esdh_mm_path', MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
+  foreach (file_scan_directory(variable_get('os2web_edoc_esdh_mm_path', OS2WEB_EDOC_ESDH_MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
     $committee = NULL;
     $meeting_date = NULL;
 
@@ -202,7 +204,8 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
       }
     }
     else {
-      // Error logging to watchdog if the XML failde to parse. Check if all illegal characters are in the remove list.
+      // Error logging to watchdog if the XML failde to parse. Check if all
+      // illegal characters are in the remove list.
       watchdog('eDoc MM', 'Failed to parse XML in %file during import.', array('%file' => $file), WATCHDOG_WARNING);
     }
   }
@@ -222,7 +225,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
  */
 function _os2web_edoc_esdh_mm_import_meeting_agenda(&$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
-  $publish_committee = array_map('trim', explode(',', variable_get('os2web_edoc_esdh_approved_committees', MM_DEFAULT_APPROVED)));
+  $publish_committee = array_map('trim', explode(',', variable_get('os2web_edoc_esdh_approved_committees', OS2WEB_EDOC_ESDH_MM_DEFAULT_APPROVED)));
   if ($meeting['committee'] == '' || !in_array($meeting['committee'], $publish_committee)) {
     watchdog('eDoc MM', 'Ignored agenda from "%committee" .', array('%committee' => $meeting['committee']));
     return FALSE;
@@ -360,7 +363,8 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElem
       }
     }
     else {
-      // Skipping content and importing just one PDF with all attachment gathered there.
+      // Skipping content and importing just one PDF with all attachment
+      // gathered there.
       $item['enclosures'][] = array(
         'uri' => implode('/', array(
           trim($meeting['uri'], variable_get('os2web_edoc_esdh_mm_is_abs', FALSE) ? "" : "/"),
@@ -517,16 +521,11 @@ function _os2web_edoc_esdh_mm_order_addenums($drush = FALSE) {
 
         // Save time by only updating what is needed.
         if ($addenum_to != $primary->nid) {
-          // error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $primary = ' . print_r($primary->nid, 1));
-          // error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $addenum_to = ' . print_r($addenum_to, 1));.
           $node->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
           node_save($node);
         }
       }
       else {
-        // error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-        // error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: wanted to delete $node->nid");
-        // node_delete($node->nid);.
       }
       // Remove node from final nids_with_addendums.
       unset($nids_with_addendums[$node->nid]);
@@ -578,7 +577,7 @@ function _os2web_edoc_esdh_generate_meeting_id($meeting_date, $committee) {
 }
 
 /**
- * This function generates the ID for bullet point, when it is missing in the XML.
+ * This function generates the ID for bullet point, if it is missing in the XML.
  *
  * @param string $committee
  *   The committee ID.

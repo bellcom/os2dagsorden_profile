@@ -14,7 +14,9 @@
  */
 
 /**
- * Add to the form the field both used for simple and full agenda meeting creation.
+ * Add to the form the field.
+ *
+ * Used both for simple and full agenda meeting creation.
  *
  * @param mixed $form
  *   The form which should be modified.
@@ -129,7 +131,9 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
 }
 
 /**
- * Fill the general fields of the form with the values from meeting. Both used for simple and full agenda meeting creation.
+ * Fill the general fields of the form with the values from meeting.
+ *
+ * Both used for simple and full agenda meeting creation.
  *
  * @param mixed $form
  *   The form which should be filled.
@@ -184,7 +188,10 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
 }
 
 /**
- * Populates the meeting node (either new or existing depending on the content) with the information taken from the form.
+ * Populates the meeting node.
+ *
+ * Either new or existing depending on the content with the information taken
+ * from the form.
  *
  * @param mixed $form
  *   The form where information is taken from.

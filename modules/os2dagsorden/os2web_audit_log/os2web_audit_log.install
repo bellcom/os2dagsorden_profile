@@ -9,10 +9,9 @@
  */
 
 /**
- * Creates a table in the database that will controll the workflow of the module.
+ * Implements hook_schema().
  *
- * @return mixed
- *   Created schema.
+ * Creates a table in the database that will control the workflow of the module.
  */
 function os2web_audit_log_schema() {
   $schema['os2web_audit_log'] = array(

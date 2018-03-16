@@ -10,9 +10,6 @@ include_once DRUPAL_ROOT . '/includes/install.inc';
 
 /**
  * Implements hook_menu().
- *
- * @return mixed
- *   List of links.
  */
 function os2dagsorden_updatedb_menu() {
   $items['admin/updatedb'] = array(
@@ -138,8 +135,7 @@ function os2dagsorden_updatedb_check($form, &$form_state) {
   $output .= '</ul>';
 
   if (!empty($list)) {
-
-    drupal_set_message(t('Avaliable updates') . ': <br /> ' . $output, 'status');
+    drupal_set_message(t('Available updates:') . ' <br /> ' . $output, 'status');
   }
   else {
     drupal_set_message(t('All OS2dagsorden module DB updated.'), 'status');

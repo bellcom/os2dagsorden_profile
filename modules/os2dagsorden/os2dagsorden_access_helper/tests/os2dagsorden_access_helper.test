@@ -3,7 +3,8 @@
 /**
  * OS2Dagsorden access helper module tests.
  *
- * This file includes the defined tests for the OS2Dagsorden access helper module.
+ * This file includes the defined tests for the OS2Dagsorden access helper
+ * module.
  */
 
 /**
@@ -147,7 +148,10 @@ class Os2dagsordenAccessHelperTest extends TaxonomyWebTestCase {
   }
 
   /**
-   * Fixes the environment, as it was before test function call. Serves to make any test function atomic and independent.
+   * Environment fix.
+   *
+   * Fixes the environment, as it was before test function call. Serves to make
+   * any test function atomic and independent.
    */
   public function fixSetUp() {
     if ($this->loggedInUser !== $this->user1) {

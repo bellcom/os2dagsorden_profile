@@ -8,9 +8,11 @@
  *
  * @category OS2Dagsorden
  * @package OS2Dagsorden_Annotator
- *  The annotator module help functions, which might be used by another modules or views.
+ *  The annotator module help functions, which might be used by another modules
+ *  or views.
  * @author Stanislav Kutasevits <stan@bellcom.dk>
- * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License,
+ *  version 2
  * @link http://bellcom.dk
  */
 

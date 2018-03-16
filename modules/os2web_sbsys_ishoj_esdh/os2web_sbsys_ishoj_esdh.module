@@ -5,9 +5,9 @@
  * This module implements SBSYS ESDH backend for use in os2web.
  */
 
-define('MM_IMPORT_DIR', 'public://sbsys_ishoj');
-define('MM_DEFAULT_APPROVED', '11');
-define('MM_DEFAULT_BANNED_CHAR', '&#xC;');
+define('OS2WEB_SBSYS_ISHOJ_ESDH_MM_IMPORT_DIR', 'public://sbsys_ishoj');
+define('OS2WEB_SBSYS_ISHOJ_ESDH_MM_DEFAULT_APPROVED', '11');
+define('OS2WEB_SBSYS_ISHOJ_ESDH_MM_DEFAULT_BANNED_CHAR', '&#xC;');
 
 /**
  * Implements hook_ctools_plugin_directory().
@@ -38,20 +38,20 @@ function os2web_sbsys_ishoj_esdh_form_os2web_settings_settings_form_alter(&$form
     '#type' => 'textfield',
     '#title' => 'Sti til sbsys publish folder.',
     '#description' => 'Dette er stien hvor ESDH publisere .XML filer til.',
-    '#default_value' => variable_get('os2web_sbsys_ishoj_esdh_mm_path', MM_IMPORT_DIR),
+    '#default_value' => variable_get('os2web_sbsys_ishoj_esdh_mm_path', OS2WEB_SBSYS_ISHOJ_ESDH_MM_IMPORT_DIR),
   );
   $form['meetings']['os2web_sbsys_ishoj_esdh_approved_committees'] = array(
     '#type' => 'textarea',
     '#title' => 'Godkendte Udvalg',
     '#description' => 'Komma sepereret liste over udvalgs-id der er godkendt til publisering.',
-    '#default_value' => variable_get('os2web_sbsys_ishoj_esdh_approved_committees', MM_DEFAULT_APPROVED),
+    '#default_value' => variable_get('os2web_sbsys_ishoj_esdh_approved_committees', OS2WEB_SBSYS_ISHOJ_ESDH_MM_DEFAULT_APPROVED),
   );
   $form['meetings']['os2web_sbsys_ishoj_esdh_banned_special_char'] = array(
     '#type' => 'textfield',
     '#title' => 'Ikke standard XML tegn der skal fjernes ved import',
     '#maxlength' => 200,
     '#description' => 'Komma sepereret liste over ikke standard tegn der skal fjernes ved import.',
-    '#default_value' => variable_get('os2web_sbsys_ishoj_esdh_banned_special_char', MM_DEFAULT_BANNED_CHAR),
+    '#default_value' => variable_get('os2web_sbsys_ishoj_esdh_banned_special_char', OS2WEB_SBSYS_ISHOJ_ESDH_MM_DEFAULT_BANNED_CHAR),
   );
   $form['meetings']['os2web_meetings_import_closed_agenda'] = array(
     '#type' => 'checkbox',

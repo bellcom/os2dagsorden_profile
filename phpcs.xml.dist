@@ -10,7 +10,7 @@
   <exclude-pattern>modules/patched/*</exclude-pattern>
 
   <exclude-pattern>modules/os2web_adlib_api/simple_html_dom.php</exclude-pattern>
-  <exclude-pattern>modules/os2dagsorden/os2dagsorden_annotator/lib/touch-plugin/annotator.touch.css</exclude-pattern>
+  <exclude-pattern>modules/os2dagsorden/os2dagsorden_annotator/lib/*</exclude-pattern>
   <exclude-pattern>modules/os2intra_simplesaml/modules/drupal_nemid_login/lib/*</exclude-pattern>
   <exclude-pattern>themes/os2dagsorden_theme/css/pagescroller.skins.css</exclude-pattern>
 

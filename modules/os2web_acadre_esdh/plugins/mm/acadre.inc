@@ -737,7 +737,7 @@ function _os2web_acadre_esdh_pdf_file_path($path, $name) {
 }
 
 /**
- * Improve the body HTML by stripping long URLs and substituting img references,.
+ * Improve the body HTML by stripping long URLs and substituting img references.
  *
  * @param string $data
  *   HTML string.
@@ -813,7 +813,9 @@ function _acadre_esdh_mm_improve_body_html($data) {
 }
 
 /**
- * Removed the empty tags (tags having no content, or nbsp) from the provided text.
+ * Removed the empty tags  from the provided text.
+ *
+ * Tags having no content, or nbsp.
  *
  * @param string $data
  *   HTML string.

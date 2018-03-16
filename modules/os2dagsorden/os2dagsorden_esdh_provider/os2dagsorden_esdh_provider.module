@@ -85,7 +85,9 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
 }
 
 /**
- * Adds the subid to the committee term, if this subid has not been added there before.
+ * Adds the subid to the committee term.
+ *
+ * Only if this subid has not been added there before.
  *
  * @param object $committee_term
  *   Committee term object.
@@ -138,7 +140,8 @@ function os2dagsorden_esdh_provider_find_sofd_meeting($committee, $meeting_start
     ->propertyCondition('type', 'os2web_meetings_meeting')
     ->fieldCondition('field_os2web_meetings_date', 'value', $meeting_start_date_0000, '>=')
     ->fieldCondition('field_os2web_meetings_date', 'value', $meeting_start_date_2359, '<=')
-      // No meeting system ID's - avoiding overlapping meetings of same committee on the same date.
+      // No meeting system ID's - avoiding overlapping meetings of same
+      // committee on the same date.
     ->fieldCondition('field_os2web_meetings_system_id', 'value', '0', '=')
     ->fieldCondition('field_os2web_meetings_committee', 'tid', $committee->tid, '=');
   $result = $query->execute();
@@ -188,7 +191,9 @@ function os2dagsorden_esdh_provider_node_delete($node) {
 }
 
 /**
- * Appends word "Tillægsdagsorden" to the bullet title if bullet is of type additional dagsorden.
+ * Appends word "Tillægsdagsorden" to the bullet title.
+ *
+ * Only if bullet is of type additional dagsorden.
  *
  * @param object $node
  *   The node object.
@@ -206,7 +211,9 @@ function os2dagsorden_esdh_provider_handle_additional_bullet($node, $is_addition
 }
 
 /**
- * Appends word "Tillægsdagsorden" to the meeting title if meeting is of type additional dagsorden.
+ * Appends word "Tillægsdagsorden" to the meeting title.
+ *
+ * Only if meeting is of type additional dagsorden.
  *
  * @param object $node
  *   The node object.
@@ -219,7 +226,6 @@ function os2dagsorden_esdh_provider_handle_additional_bullet($node, $is_addition
 function os2dagsorden_esdh_provider_handle_additional_meeting($node, $agenda_name) {
   if (stripos($agenda_name, 'tillæg') !== FALSE) {
     $node->title = 'Tillægsdagsorden: ' . $node->title;
-    // $node->title = $agenda_name . ' ' . $node->title;.
   }
   return $node;
 }
@@ -235,7 +241,9 @@ function os2dagsorden_esdh_provider_import_closed_attachment() {
 }
 
 /**
- * Assigned meeting's category based on the list of committees provided in the settings.
+ * Assignes meeting's category.
+ *
+ * Based on the list of committees provided in the settings.
  *
  * @param object $node
  *   The node object.
@@ -286,7 +294,9 @@ function os2dagsorden_esdh_provider_find_corresponding_bullet($title, $sys_id, $
 }
 
 /**
- * Returns the corresponding attachment if exists, bases on the name and content.
+ * Returns the corresponding attachment if exists.
+ *
+ * Bases on the name and content.
  *
  * @param mixed $bullet_entity
  *   The bullet point entity.
@@ -359,11 +369,14 @@ function os2dagsorden_esdh_provider_find_bullet_by_sysid($sysid) {
 }
 
 /**
- * This function will try to find an equal bullet point in the additional (tillaægs) agendas.
+ * Finding equal bullet point.
  *
- * If the bullet point is found, it is then reassigned to a new meeting and removed from the previous meeting.
- *
- * Bullet point related information references (e.g. user notes) are also updated.
+ * This function will try to find an equal bullet point in the additional
+ * (tillaægs) agendas.
+ * If the bullet point is found, it is then reassigned to a new meeting and
+ * removed from the previous meeting.
+ * Bullet point related information references (e.g. user notes) are also
+ * updated.
  *
  * @param int $bullet_sysid
  *   The bullet point sysID.
@@ -414,8 +427,9 @@ function os2dagsorden_esdh_provider_find_and_reassign_additional_agenda_bullet($
 }
 
 /**
- * Remaps the notes from attachments that are going to be deleted to the new attachments.
+ * Remaps the notes from attachments.
  *
+ * Notes that are going to be deleted to the new attachments.
  * That is useful when the attachments are going to be substituted.
  *
  * @param mixed $attachments_to_delete_nids

@@ -33,7 +33,10 @@ function _os2dagsorden_speaker_paper_is_message_sent($uid, $nid) {
 }
 
 /**
- * Sends the message to a user that the following speaker paper is now shared with him.
+ * Sends the message.
+ *
+ * Sends the message to a user that the following speaker paper is now
+ * shared with him.
  *
  * @param int $uid
  *   The user ID.
@@ -124,7 +127,9 @@ function _os2dagsorden_speaker_paper_send_message($uid, $node) {
 }
 
 /**
- * Functions that retus the uids of all the users that are part of the speaker paper group with that tid.
+ * Functions that returns the uids of all the users.
+ *
+ * That are part of the speaker paper group with that tid.
  *
  * @param int $tid
  *   The speaker paper group tid.

@@ -91,7 +91,10 @@ function os2web_print_send_to_friend_print_bullet_point_attachments($bullet_poin
 }
 
 /**
- * Creates a form that allows to send the content of the bullet point to an email addess.
+ * Creates a form.
+ *
+ * Creates a form that allows to send the content of the bullet point to an
+ * email addess.
  *
  * @param int $meeting_id
  *   Meeting id.
@@ -110,9 +113,9 @@ function os2web_print_send_to_friend_send_to_friend_form($meeting_id, $bullet_po
   }
   $html = t('Udfyld felterne herunder og tryk "Send", når du vil sende beskeden.');
   $html .= '<form id="send_to_friend_form">';
-  $html .= '<label>' . t('Dit navn') . ':</label><input type="text" name="name" />';
-  $html .= '<label>' . t('Besked') . ':</label><textarea name="message"></textarea>';
-  $html .= '<label>' . t('Modtagers email') . ':</label><input type="text" name="email" id="field_send_to_friend_email" />';
+  $html .= '<label>' . t('Dit navn:') . '</label><input type="text" name="name" />';
+  $html .= '<label>' . t('Besked:') . '</label><textarea name="message"></textarea>';
+  $html .= '<label>' . t('Modtagers email:') . '</label><input type="text" name="email" id="field_send_to_friend_email" />';
   $html .= '<input type="hidden" name="base_url" id="field_base_url" value="' . $GLOBALS['base_url'] . '" />';
   $html .= '<input type="hidden" name="meeting_id" id="field_meeting_id" value="' . $meeting_id . '" />';
   $html .= '<input type="hidden" name="bullet_point_id" id="field_bullet_point_id" value="' . $bullet_point_id . '" />';
@@ -170,18 +173,10 @@ function os2web_print_send_to_friend_send_to_friend($meeting_id, $bullet_point_i
         'text' => check_plain(trim($_POST['message'])),
       ));
   }
-  // watchdog('Send to friend', 'Bullet point %title (%uri) was send to %to', array( '%title' => $subject, '%uri' => $bullet_point_uri, '%to' => $to_email), WATCHDOG_INFO);.
 }
 
 /**
  * Implements hook_mail().
- *
- * @param string $key
- *   Mail key.
- * @param mixed $message
- *   Message array.
- * @param mixed $params
- *   Parameters array.
  */
 function os2web_print_send_to_friend_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];

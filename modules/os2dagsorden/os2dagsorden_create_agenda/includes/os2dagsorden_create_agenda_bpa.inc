@@ -129,7 +129,8 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
 /**
  * Custom validation of bullet point attachment form.
  *
- * Validates that only one of the option is chosen  - either file is uploaded or body of the bullet point attachmet is filled.
+ * Validates that only one of the option is chosen  - either file is uploaded or
+ * body of the bullet point attachmet is filled.
  *
  * @param mixed $form
  *   The form.
@@ -147,9 +148,10 @@ function os2dagsorden_create_agenda_bpa_validate($form, &$form_state) {
 }
 
 /**
- * Saves the bullet point attachment - either by creating new or modifying the existing.
+ * Saves the bullet point attachment.
  *
- * Performs call to os2dagsorden_create_agenda_add_bpa_to_bullet_point.
+ * Either by creating new or modifying the existing. Performs call to
+ * os2dagsorden_create_agenda_add_bpa_to_bullet_point.
  *
  * @param mixed $form
  *   The form.
@@ -212,7 +214,9 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
 }
 
 /**
- * Adds the bullet points attachment to the bullet point, if it has not been added before.
+ * Adds the bullet points attachment to the bullet point.
+ *
+ * If it has not been added before.
  *
  * @param int $bullet_point_id
  *   ID of the bullet point.
@@ -238,7 +242,8 @@ function os2dagsorden_create_agenda_add_bpa_to_bullet_point($bullet_point_id, $b
 /**
  * Helper functions, bullet point attachment form submit.
  *
- * Calls os2dagsorden_create_agenda_save_bpa returns to the previous page of multiform (bullet point creation/modification).
+ * Calls os2dagsorden_create_agenda_save_bpa returns to the previous page of
+ * multiform (bullet point creation/modification).
  *
  * @param mixed $form
  *   The form to be created.
@@ -253,7 +258,10 @@ function os2dagsorden_create_agenda_bpa_submit($form, &$form_state) {
 }
 
 /**
- * Helper functions, returns to the previous page of multiform (bullet point creation/modification).
+ * Helper functions.
+ *
+ * Returns to the previous page of multiform (bullet point creation/
+ * modification).
  *
  * @param mixed $form
  *   The form to be created.

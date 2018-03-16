@@ -52,7 +52,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#type' => 'item',
     '#weight' => -9,
     '#title' => t('OS2dagsorden - opdatering version'),
-    '#markup' => '<div class="text"><table><tr><td style = "width:17%">' . t('DB opdatering version') . ':' . ' </td><td> <b>  ' . variable_get('os2dagsorden_version_no') . '</b></td>' . $link . '</tr></table></div>',
+    '#markup' => '<div class="text"><table><tr><td style = "width:17%">' . t('DB opdatering version:') . ' </td><td> <b> ' . variable_get('os2dagsorden_version_no') . '</b></td>' . $link . '</tr></table></div>',
   );
   $form['os2dagsorden_settings_file_fieldset'] = array(
     '#type' => 'fieldset',
@@ -76,7 +76,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
 
   if ($settings_file) {
     $form['os2dagsorden_settings_file_fieldset'][] = array(
-      '#markup' => '<p>' . t('File in use: ') . (($settings_file) ? $settings_file->filename : 'none') . '</p>',
+      '#markup' => '<p>' . t('File in use:') . ' ' . (($settings_file) ? $settings_file->filename : 'none') . '</p>',
     );
   }
 
@@ -202,13 +202,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable PDF download whitelist'),
-    '#description' => t('This decides whether PDF download for meeting and attachments is allowed only to whitelisted IP\'s'),
+    '#description' => t("This decides whether PDF download for meeting and attachments is allowed only to whitelisted IP's"),
     '#default_value' => variable_get('os2dagsorden_pdf_download_whitelist_enabled', FALSE),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist'] = array(
     '#type' => 'textfield',
     '#title' => t('PDF download whitelist'),
-    '#description' => t('Provide list of IP\'s, to which PDF download is visible. Partial matches are also possible<br>E.g. 192.168.1.1, or 192.168.1'),
+    '#description' => t("Provide list of IP's, to which PDF download is visible. Partial matches are also possible<br>E.g. 192.168.1.1, or 192.168.1"),
     '#default_value' => variable_get('os2dagsorden_pdf_download_whitelist', FALSE),
     '#states' => array(
       'visible' => array(
@@ -349,7 +349,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_show_case_bullet_point'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show cases under Case bullet point'),
-    '#description' => t('This decides whether all Cases/Sager grouped under Cases bullet point '),
+    '#description' => t('This decides whether all Cases/Sager grouped under Cases bullet point'),
     '#default_value' => variable_get('os2dagsorden_show_case_bullet_point', FALSE),
   );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr'] = array(
@@ -491,19 +491,6 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#collapsed' => TRUE,
     '#title' => t('Meeting in unpublished state notification'),
   );
-  // @CODEREVIEW: Delete unused code.
-  /*$form['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meetings_unpublished_status'] = array(
-  '#type' => 'checkbox',
-  '#title' => t('Meeting in unpublished status'),
-  '#description' => t('Meetings are to be imported in an unpublished status.'),
-  '#default_value' => variable_get('os2dagsorden_meetings_unpublished_status', ''),
-  );
-  $form['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_emails'] = array(
-  '#type' => 'textfield',
-  '#title' => t('To'),
-  '#description' => ('Add emails'),
-  '#default_value' => variable_get('os2dagsorden_meeting_unpublished_state_emails', ''),
-  );*/
   $form['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Subject'),
@@ -630,7 +617,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#title' => t('Select a committee which meeting will be available in <b>Budget</b> menu link'),
     '#description' => t('This decides committee will update the meeting link in Budget menu link in the side panel'),
     '#options' => $options_committee,
-    '#empty_option' => t('- None - '),
+    '#empty_option' => '- ' . t('None') . ' -',
     '#default_value' => variable_get('os2dagsorden_budget_committee', FALSE),
   );
 
@@ -684,7 +671,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_follows_committee_send_notification'] = array(
     '#type' => 'checkbox',
-    '#title' => t('User that are just Follow the committee are getting notifications '),
+    '#title' => t('User that are just Follow the committee are getting notifications'),
     '#description' => t('Decide whether user that are just Follow the committee are getting notifications about new messages appeared on that committee.'),
     '#default_value' => variable_get('os2dagsorden_follows_committee_send_notification', FALSE),
   );
@@ -735,14 +722,14 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_tab_tag'] = array(
     '#type' => 'textfield',
-    '#title' => t('Replace  multiple &amp;nbsp; tags with: '),
+    '#title' => t('Replace  multiple &amp;nbsp; tags with:'),
     '#maxlength' => 250,
     '#default_value' => variable_get('os2dagsorden_tab_tag', '&nbsp;'),
     '#description' => t('Tag what should be put into the document instead of multiple &amp;nbsp; tags'),
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_url_strip_count'] = array(
     '#type' => 'textfield',
-    '#title' => t('Link (a href) limit: '),
+    '#title' => t('Link (a href) limit:'),
     '#maxlength' => 250,
     '#default_value' => variable_get('os2dagsorden_url_strip_count', '20'),
     '#description' => t('Specify a max limit in chars, which a link can have. If the link has more than specified, then link text is trimmed and ... is added.'),
@@ -767,14 +754,14 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#title' => t('Type of files to be converted when importing:'),
       '#maxlength' => 200,
       '#description' => t('Comma-separated list of file types. Example: xls,doc,docx,xlsx'),
-      '#default_value' => variable_get('os2web_copied_filetype', OS2WEB_COPIED_FILETYPE),
+      '#default_value' => variable_get('os2web_copied_filetype', OS2WEB_PDF_CONVERSION_MANAGER_COPIED_FILETYPE),
     );
     $form['os2dagsorden_file_import']['os2web_convertion_dir'] = array(
       '#type' => 'textfield',
       '#title' => t('Directory to send the files for converting:'),
       '#maxlength' => 200,
       '#description' => t('This is the path where files copy for converting'),
-      '#default_value' => variable_get('os2web_convertion_dir', OS2WEB_CONVERTION_DIR),
+      '#default_value' => variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR),
       '#element_validate' => array('_os2dagsorden_os2web_convertion_dir_validate'),
     );
   }
@@ -847,14 +834,6 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#options' => array('pol' => t('Political'), 'org' => t('Organisation')),
     '#default_value' => variable_get('os2dagsorden_user_default_meeting_category', 'pol'),
   );
-  // @CODEREVIEW: Delete unused code.
-  /*  $form['os2dagsorden_political_organizational_settings']['os2dagsorden_default_meeting_cateroty'] = array(
-  '#type' => 'radios',
-  '#title' => t('Default meeting category'),
-  '#default_value' => variable_get('os2dagsorden_default_meeting_cateroty','pol'),
-  '#options' =>  array('pol' => t('Political'), 'org' => t('Organisation')),
-  '#description' => t('This decides whether a default meeting category'),
-  );*/
 
   if (module_exists('ultimate_cron')) {
     // Cron frequencies.
@@ -997,48 +976,14 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('os2dagsorden_acadre_service_meetings_url'),
       '#title' => t('Meeting (planned meetings) view url:'),
       '#maxlength' => 256,
-      // '#element_validate' => array('_os2dagsorden_url_responce_validate'),.
     );
     $form['os2dagsorden_acadre_service_importer_placeholder']['os2dagsorden_acadre_service_committees_url'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2dagsorden_acadre_service_committees_url'),
       '#title' => t('Committees url:'),
       '#maxlength' => 256,
-      // '#element_validate' => array('_os2dagsorden_url_responce_validate'),.
     );
   }
-
-  // @CODEREVIEW: Delete unused code.
-  // Allowed committees
-  /*$form['os2dagsorden_committees_list_placeholder'] = array(
-  '#type' => 'fieldset',
-  '#collapsible' => TRUE,
-  '#collapsed' => TRUE,
-  '#title' => t('Committees positive list'),
-  );
-  $form['os2dagsorden_committees_list_placeholder']['os2dagsorden_committees_positive_list_as_import_list'] = array(
-  '#type' => 'checkbox',
-  '#title' => t('Use this list during import'),
-  '#default_value' => variable_get('os2dagsorden_committees_positive_list_as_import_list', false),
-  '#description' => t('If checkbox is clicked, this is the list that will be used during meetings import'),
-  );
-  $committees = taxonomy_get_tree($vid);
-  $options_committee = array();
-  foreach ($committees as $committee){
-  $committee_full = taxonomy_term_load($committee->tid);
-  $ids = '';
-  foreach($committee_full->field_os2web_meetings_com_subid['und'] as $id){
-  $ids .= ' ' . $id['value'] . ',';
-  }
-  if (!empty($ids)) $ids = substr($ids, 0, -1);
-  $options_committee[$committee->tid] = $committee->name . ' [ID:' . $ids . ']';
-  }
-  $form['os2dagsorden_committees_list_placeholder']['os2dagsorden_committees_positive_list'] = array(
-  '#type' => 'checkboxes',
-  '#options' => $options_committee,
-  '#title' => t('Select committees to be in positive list'),
-  '#default_value' => variable_get('os2dagsorden_committees_positive_list'),
-  );*/
 
   $form['os2dagsorden_help_text_placeholder'] = array(
     '#type' => 'fieldset',
@@ -1260,12 +1205,6 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir'),
     '#title' => t('Nyt talepapir'),
   );
-  /*
-  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_make_note'] = array(
-  '#type' => 'textfield',
-  '#default_value' => variable_get('os2dagsorden_title_meeting_make_note', 'Lav note'),
-  '#title' => t('Lav note'),
-  );*/
   // Upload quide PDF file.
   $form['upload_guide'] = array(
     '#type' => 'fieldset',
@@ -1314,7 +1253,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
 }
 
 /**
- * Implements hook_theme_settings.
+ * Implements hook_theme_settings().
  */
 function os2dagsorden_settings_theme_settings() {
   $theme = variable_get('theme_default');
@@ -1322,7 +1261,9 @@ function os2dagsorden_settings_theme_settings() {
 }
 
 /**
- * Validates pdf2htmlEX installation by checking if which commands returns anything.
+ * Validates pdf2htmlEX installation.
+ *
+ * By checking if which commands returns anything.
  *
  * @param mixed $element
  *   The form element.
@@ -1375,9 +1316,11 @@ function _os2dagsorden_url_responce_validate($element, &$form_state) {
 }
 
 /**
- * Checks that files for SOFD are presen.
+ * Checks that files for SOFD are present.
  *
- * File paths are: "public://acadre_views/V_web_MeetingGroups.xml", "public://acadre_views/V_web_AcadreGroups.xml", "public://acadre_views/V_web_Meetings.xml",.
+ * File paths are: "public://acadre_views/V_web_MeetingGroups.xml",
+ * "public://acadre_views/V_web_AcadreGroups.xml",
+ * "public://acadre_views/V_web_Meetings.xml".
  *
  * @param mixed $element
  *   The form element.
@@ -1452,7 +1395,10 @@ function _os2dagsorden_os2web_convertion_dir_validate($element, &$form_state) {
 }
 
 /**
- * Hook to system for submit. Stores the frequencies of the cronjob if they are different from the default provided by ultimate cron module.
+ * Implements cron_job_submit().
+ *
+ * Stores the frequencies of the cronjob if they are different from the default
+ * provided by ultimate cron module.
  *
  * @param mixed $form
  *   The settings form.

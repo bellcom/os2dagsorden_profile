@@ -14,10 +14,7 @@
  */
 
 /**
- * Implementation of hook_menu().
- *
- * @return mixed
- *   Array of links.
+ * Implements hook_menu().
  */
 function os2dagsorden_ical_meetings_export_menu() {
   $items = array();
@@ -50,7 +47,8 @@ function os2dagsorden_ical_meetings_export_menu() {
  * Serves the meetings in iCal format for the month period.
  *
  * @param string $date
- *   The period from which the meetings should be returned. Date comes in yyyy-mm format.
+ *   The period from which the meetings should be returned. Date comes in
+ *   yyyy-mm format.
  */
 function _os2dagsorden_ical_meetings_export_month_callback($date) {
   // @CODEREVIEW: Consider using `strptime` to parse the date.
@@ -83,7 +81,8 @@ function _os2dagsorden_ical_meetings_export_month_callback($date) {
  * Serves the meetings in iCal format for the day period.
  *
  * @param string $date
- *   The period from which the meetings should be returned. Date come in yyyy-mm-dd format.
+ *   The period from which the meetings should be returned. Date come in
+ *    yyyy-mm-dd format.
  */
 function _os2dagsorden_ical_meetings_export_day_callback($date) {
   // @CODEREVIEW: See comments on _os2dagsorden_ical_meetings_export_month_callback.

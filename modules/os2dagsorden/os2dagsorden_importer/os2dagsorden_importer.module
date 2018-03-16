@@ -13,13 +13,10 @@
  * @link http://bellcom.dk
  */
 
-define('DEFAULT_ACADRE_VIEWS_IMPORT_DIR', 'public://acadre_views');
+define('OS2DAGSORDEN_IMPORTER_DEFAULT_ACADRE_DIR', 'public://acadre_views');
 
 /**
- * Implementation of hook_menu().
- *
- * @return array
- *   Array of links.
+ * Implements hook_menu().
  */
 function os2dagsorden_importer_menu() {
   $items = array();
@@ -66,7 +63,7 @@ function _os2dagsorden_importer_form() {
 }
 
 /**
- * Implemented hook_submit.
+ * Implements hook_submit().
  */
 function _os2dagsorden_importer_form_submit(&$form_state, $form) {
   os2dagsorden_importer_import_user_committees_improved();
@@ -84,7 +81,7 @@ function os2dagsorden_importer_sync() {
 }
 
 /**
- * Implementation of hook_cronapi().
+ * Implements hook_cronapi().
  */
 function os2dagsorden_importer_cronapi($op, $job = NULL) {
   switch ($op) {
@@ -94,7 +91,7 @@ function os2dagsorden_importer_cronapi($op, $job = NULL) {
 }
 
 /**
- * Implementation of hook_cron().
+ * Implements hook_cron().
  *
  * Fires all imports.
  */
@@ -106,9 +103,11 @@ function os2dagsorden_importer_cron() {
 }
 
 /**
- * Imports the user committees (user roles: member of, follows, follows+) from the remotely located xml view.
+ * Imports the user committees.
  *
- * Delete user committees(user roles: member of, follows, follows+), that are not found in the SOFD system any longer.
+ * User roles: member of, follows, follows+, from the remotely located xml view.
+ * Delete user committees(user roles: member of, follows, follows+), that are
+ * not found in the SOFD system any longer.
  */
 function os2dagsorden_importer_import_user_committees_improved() {
   $userCommittees = os2dagsorden_importer_load_user_committees_from_xml();
@@ -116,7 +115,9 @@ function os2dagsorden_importer_import_user_committees_improved() {
 }
 
 /**
- * Imports the user committees (user roles: member of, follows, follows+) from the remotely located xml view.
+ * Imports the user committees.
+ *
+ * User roles: member of, follows, follows+ from the remotely located xml view.
  */
 function os2dagsorden_importer_import_user_committees() {
   $userCommittees = os2dagsorden_importer_load_user_committees_from_xml();
@@ -124,9 +125,10 @@ function os2dagsorden_importer_import_user_committees() {
 }
 
 /**
- * Reads and returns the data from a local XML file, or loads it from a remote location.
+ * Reads and returns the data from a local XML file.
  *
- * Optionally uses the proxy details from the settings.
+ * Or loads it from a remote location. Optionally uses the proxy details from
+ * the settings.
  *
  * @return bool|SimpleXMLElement
  *   XML object with meetings.
@@ -152,7 +154,7 @@ function os2dagsorden_importer_load_user_committees_from_xml() {
     }
   }
   else {
-    $userCommittees = simplexml_load_file(DEFAULT_ACADRE_VIEWS_IMPORT_DIR . '/V_web_MeetingGroups.xml');
+    $userCommittees = simplexml_load_file(OS2DAGSORDEN_IMPORTER_DEFAULT_ACADRE_DIR . '/V_web_MeetingGroups.xml');
   }
   return $userCommittees;
 }
@@ -181,7 +183,7 @@ function os2dagsorden_importer_import_committees() {
     }
   }
   else {
-    $acadreGroups = simplexml_load_file(DEFAULT_ACADRE_VIEWS_IMPORT_DIR . '/V_web_AcadreGroups.xml');
+    $acadreGroups = simplexml_load_file(OS2DAGSORDEN_IMPORTER_DEFAULT_ACADRE_DIR . '/V_web_AcadreGroups.xml');
   }
   _os2dagsorden_importer_process_committees($acadreGroups);
 }
@@ -209,7 +211,7 @@ function os2dagsorden_importer_import_meetings() {
     }
   }
   else {
-    $meetings = simplexml_load_file(DEFAULT_ACADRE_VIEWS_IMPORT_DIR . '/V_web_Meetings.xml');
+    $meetings = simplexml_load_file(OS2DAGSORDEN_IMPORTER_DEFAULT_ACADRE_DIR . '/V_web_Meetings.xml');
   }
   _os2dagsorden_importer_process_meetings($meetings);
 }
@@ -217,7 +219,8 @@ function os2dagsorden_importer_import_meetings() {
 /**
  * Wrapper function to processing user committees.
  *
- * If the XML file is provided internally calls _os2dagsorden_importer_process_user_committees_update.
+ * If the XML file is provided internally calls
+ * _os2dagsorden_importer_process_user_committees_update.
  *
  * @param mixed $xml_file
  *   XML file object.
@@ -229,9 +232,11 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
 }
 
 /**
- * Function to processing user commitees.
+ * Function to processing user committees.
  *
- * If the file is provided internally calls _os2dagsorden_importer_process_user_committees_update and os2dagsorden_importer_process_user_committees_delete.
+ * If the file is provided internally calls
+ * _os2dagsorden_importer_process_user_committees_update and
+ * os2dagsorden_importer_process_user_committees_delete.
  *
  * @param mixed $xml_file
  *   XML file object.
@@ -437,7 +442,8 @@ function _os2dagsorden_importer_process_user_committees_update($xml_file) {
 /**
  * Helper function. Processes the user committees xml file.
  *
- * Checks all the SOFD rights and delete those, that are not found in the SOFD system any longer.
+ * Checks all the SOFD rights and delete those, that are not found in the SOFD
+ * system any longer.
  *
  * @param mixed $xml_file
  *   XML file.
@@ -956,7 +962,8 @@ function _os2dagsorden_importer_process_committees($xml_file) {
 /**
  * Helper function. Processes the meetings xml.
  *
- * Delegates to create meeings, unpublish meetings, create committee function based on controllers.
+ * Delegates to create meeings, unpublish meetings, create committee function
+ * based on controllers.
  *
  * @param mixed $xml_file
  *   XML file.
@@ -1025,7 +1032,8 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     $nids = array_keys($result['node']);
     $node = reset(entity_load('node', $nids));
   }
-  // If fails, trying to get meeting from date and committee combination. Assuming this is unique.
+  // If fails, trying to get meeting from date and committee combination.
+  // Assuming this is unique.
   else {
     // Getting meeting.
     $meeting_start_date_0000 = date('Y-m-d 00:00:00', strtotime($xml_data['meeting_start_date']));
@@ -1069,7 +1077,8 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     if ($xml_data['cancelled'] == 1 && strcmp($node->field_os2web_meetings_type[$node->language][0]['value'], 'Aflyst') != 0) {
       $node->field_os2web_meetings_type['und'][0]['value'] = "Aflyst";
     }
-    // If meeting is changed, but is not marked as changed then mark is as changed.
+    // If meeting is changed, but is not marked as changed then mark is as
+    // changed.
     elseif ($xml_data['changed'] == 1 && strcmp($node->field_os2web_meetings_type[$node->language][0]['value'], 'Planlagt') == 0) {
       $node->field_os2web_meetings_type['und'][0]['value'] = "Ændret";
     }
@@ -1143,13 +1152,16 @@ function _os2dagsorden_importer_unpublish_meeting($xml_data) {
 }
 
 /**
- * Checks if the provided URL is exists and accessible by checking the http requires headers.
+ * Checks if the provided URL is exists and accessible.
+ *
+ * By checking the http requires headers.
  *
  * @param string $url
  *   Web-service URL.
  *
  * @return bool
- *   If http request will return >= 200 and 300, URL is considered as valid and TRUE is returned. Otherwise FALSE.
+ *   If http request will return >= 200 and 300, URL is considered as valid and
+ *   TRUE is returned. Otherwise FALSE.
  */
 function _os2dagsorden_importer_webservice_url_exists($url = NULL) {
   if ($url == NULL) {

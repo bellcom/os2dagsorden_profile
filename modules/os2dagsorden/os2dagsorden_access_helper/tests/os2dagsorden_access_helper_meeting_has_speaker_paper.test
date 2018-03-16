@@ -3,13 +3,14 @@
 /**
  * OS2Dagsorden access helper module tests.
  *
- * This file includes the defined tests for the OS2Dagsorden access helper module.
+ * This file includes the defined tests for the OS2Dagsorden access helper
+ * module.
  *
  * Test of os2dagsorden_access_helper_meeting_has_speaker_paper function.
  */
 
 /**
- * Implements of Os2dagsordenAccessHelperMeetingHasSpeakerPaperWebTestCase class.
+ * Os2dagsordenAccessHelperMeetingHasSpeakerPaperWebTestCase class.
  */
 class Os2dagsordenAccessHelperMeetingHasSpeakerPaperWebTestCase extends Os2dagsordenAccessHelperTest {
 

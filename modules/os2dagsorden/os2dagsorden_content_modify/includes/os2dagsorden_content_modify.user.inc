@@ -6,9 +6,13 @@
  */
 
 /**
- * Generates user edit form and (if uid is not null) loads and sets the parameters.
+ * User edit form.
  *
- * Depending on the user rights form is either limited (with no right) of full (with administer os2web right).
+ * Generates user edit form and (if uid is not null) loads and sets the
+ * parameters.
+ *
+ * Depending on the user rights form is either limited (with no right) of full
+ * (with administer os2web right).
  *
  * @param mixed $form
  *   The form.
@@ -78,9 +82,9 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
     '#access' => (user_access('administer users')),
     '#type' => 'checkboxes',
     '#options' => array(
-      'os2dagsorden limited' => t('OS2Dagsorden limited') . '<i>' . t(' (Kan kun tilgå udvalg man er medlem af)') . '</i>',
-      'administrator+' => t('Administrator+') . '<i>' . t(' (adgang til redigering af udvalg og brugere)') . '</i>',
-      'administrator++' => t('Administrator++') . '<i>' . t(' (rettigheder til al konfiguration og alle settings)') . '</i>',
+      'os2dagsorden limited' => t('OS2Dagsorden limited') . '<i> ' . t('(Kan kun tilgå udvalg man er medlem af)') . '</i>',
+      'administrator+' => t('Administrator+') . '<i> ' . t('(adgang til redigering af udvalg og brugere)') . '</i>',
+      'administrator++' => t('Administrator++') . '<i> ' . t('(rettigheder til al konfiguration og alle settings)') . '</i>',
     ),
     '#title' => '<b>' . t('Brugerroller') . '</b>',
     '#description' => t('Hvilke roller tilsættes til brugeren'),
@@ -115,12 +119,15 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
 }
 
 /**
- * Fils forms with drag and drop controls for manipulating users committees (member of/follows/follows+/follows++ and all committees).
+ * Fills forms with drag and drop controls for manipulating users committees.
  *
- * If uids is not null, the drag and drops controls will be prefilled with right values.
+ * Member of/follows/follows+/follows++ and all committees.
  *
- * In case uids contains more than one id (batch edit), then only the committees shared amount
- * all users will be prefilled into the boxes.
+ * If uids is not null, the drag and drops controls will be prefilled with right
+ * values.
+ *
+ * In case uids contains more than one id (batch edit), then only the committees
+ * shared amount all users will be prefilled into the boxes.
  *
  * @param mixed $form
  *   The form.
@@ -148,7 +155,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   );
   $form['follows_div'] = array(
     '#type' => 'item',
-    '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note">Notifikationer på mail:</div>',
+    '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note">' . t('Notifikationer på mail:') . '</div>',
     '#markup' => '',
   );
   $form['follows_hidden'] = array(
@@ -352,7 +359,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     $com_list .= "</ul>";
     $form['available_committee'] = array(
       '#type' => 'item',
-      '#prefix' => "<div class='available_committee'><label>" . t('Available committee') . ":</label>",
+      '#prefix' => "<div class='available_committee'><label>" . t('Available committee:') . "</label>",
       '#markup' => $com_list,
       '#suffix' => '</div>',
     );
@@ -363,7 +370,9 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
 }
 
 /**
- * Prefills the form with the user information, loads everything except the committees preferences.
+ * Prefills the form with the user information.
+ *
+ * Loads everything except the committees preferences.
  *
  * @param mixed $form
  *   The form.

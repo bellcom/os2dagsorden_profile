@@ -13,15 +13,11 @@
  * @link http://bellcom.dk
  */
 
-// define('DEFAULT_ACADRE_VIEWS_IMPORT_DIR', 'public://acadre_views');.
 module_load_include('inc', 'os2dagsorden_acadre_service_importer', '/includes/os2dagsorden_acadre_service_importer_committees');
 module_load_include('inc', 'os2dagsorden_acadre_service_importer', '/includes/os2dagsorden_acadre_service_importer_meetings');
 
 /**
- * Implementation of hook_menu().
- *
- * @return mixed
- *   Array of links.
+ * Implements hook_menu().
  */
 function os2dagsorden_acadre_service_importer_menu() {
   $items = array();

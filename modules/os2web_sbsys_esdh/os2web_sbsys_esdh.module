@@ -7,10 +7,10 @@
 
 include_once 'os2web_sbsys_esdh.features.inc';
 
-define('MM_IMPORT_DIR', 'public://sbsys');
-define('MM_DEFAULT_APPROVED', '11');
-define('MM_DEFAULT_BANNED_CHAR', '&#xC;');
-define('MM_DEFAULT_BANNED_REGEX', '/&#x.*;/');
+define('OS2WEB_SBSYS_ESDH_MM_IMPORT_DIR', 'public://sbsys');
+define('OS2WEB_SBSYS_ESDH_MM_DEFAULT_APPROVED', '11');
+define('OS2WEB_SBSYS_ESDH_MM_DEFAULT_BANNED_CHAR', '&#xC;');
+define('OS2WEB_SBSYS_ESDH_MM_DEFAULT_BANNED_REGEX', '/&#x.*;/');
 
 /**
  * Implements hook_ctools_plugin_directory().
@@ -41,13 +41,13 @@ function os2web_sbsys_esdh_form_os2web_settings_settings_form_alter(&$form, &$fo
     '#type' => 'textfield',
     '#title' => 'Sti til sbsys publish folder.',
     '#description' => 'Dette er stien hvor ESDH publisere .XML filer til.',
-    '#default_value' => variable_get('os2web_sbsys_esdh_mm_path', MM_IMPORT_DIR),
+    '#default_value' => variable_get('os2web_sbsys_esdh_mm_path', OS2WEB_SBSYS_ESDH_MM_IMPORT_DIR),
   );
   $form['meetings']['os2web_sbsys_esdh_approved_committees'] = array(
     '#type' => 'textarea',
     '#title' => 'Godkendte Udvalg',
     '#description' => 'Komma sepereret liste over udvalgs-id der er godkendt til publisering.',
-    '#default_value' => variable_get('os2web_sbsys_esdh_approved_committees', MM_DEFAULT_APPROVED),
+    '#default_value' => variable_get('os2web_sbsys_esdh_approved_committees', OS2WEB_SBSYS_ESDH_MM_DEFAULT_APPROVED),
   );
   $form['meetings']['os2web_sbsys_esdh_banned_activate_regex'] = array(
     '#type' => 'checkbox',
@@ -61,7 +61,7 @@ function os2web_sbsys_esdh_form_os2web_settings_settings_form_alter(&$form, &$fo
     '#title' => 'Ikke standard XML tegn der skal fjernes ved import (CSV)',
     '#maxlength' => 200,
     '#description' => 'Komma sepereret liste over ikke standard tegn der skal fjernes ved import.',
-    '#default_value' => variable_get('os2web_sbsys_esdh_banned_special_char', MM_DEFAULT_BANNED_CHAR),
+    '#default_value' => variable_get('os2web_sbsys_esdh_banned_special_char', OS2WEB_SBSYS_ESDH_MM_DEFAULT_BANNED_CHAR),
     '#states' => array(
       'invisible' => array(
         ':input[name="os2web_sbsys_esdh_banned_activate_regex"]' => array('checked' => TRUE),
@@ -74,7 +74,7 @@ function os2web_sbsys_esdh_form_os2web_settings_settings_form_alter(&$form, &$fo
     '#title' => 'Ikke standard XML tegn der skal fjernes ved import (regex)',
     '#maxlength' => 200,
     '#description' => 'Regular expression over ikke standard tegn der skal fjernes ved import.',
-    '#default_value' => variable_get('os2web_sbsys_esdh_banned_special_regex', MM_DEFAULT_BANNED_REGEX),
+    '#default_value' => variable_get('os2web_sbsys_esdh_banned_special_regex', OS2WEB_SBSYS_ESDH_MM_DEFAULT_BANNED_REGEX),
     '#states' => array(
       'invisible' => array(
         ':input[name="os2web_sbsys_esdh_banned_activate_regex"]' => array('checked' => FALSE),

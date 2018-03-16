@@ -8,10 +8,7 @@
  */
 
 /**
- * Implementation of hook_menu.
- *
- * @return array
- *   List of links.
+ * Implements hook_menu().
  */
 function os2dagsorden_admin_suite_menu() {
   $items = array();
@@ -280,7 +277,8 @@ function os2dagsorden_admin_suite_update_meetings_sysid() {
         $nids = array_keys($result['node']);
         $node = reset(entity_load('node', $nids));
       }
-      // If fails, trying to get meeting from date and committe combination. Assuming this is unique.
+      // If fails, trying to get meeting from date and committe combination.
+      // Assuming this is unique.
       else {
         // Getting committee tid.
         $vid = db_select('taxonomy_vocabulary', 'tv')->fields('tv', array('vid'))->condition('machine_name', 'os2web_meetings_tax_committee')->execute()->fetchField();
@@ -317,9 +315,7 @@ function os2dagsorden_admin_suite_update_meetings_sysid() {
           print_r("<br/>");
         }
       }
-      // If (!empty($node->field_meeting_sysid['und'][0]))//break if already filled
-      // continue;
-      // setting sysid.
+      // Setting sysid.
       $node->field_meeting_sysid['und'][0]['value'] = $meeting_version['meeting_id'];
 
       $contains_acadre_version = FALSE;
@@ -443,7 +439,6 @@ function os2dagsorden_admin_suite_delete_converted_files() {
         $file_name = explode(".", $not_pdf_file);
         // Case insensitive array_contains.
         if (preg_grep("/^" . $file_name[0] . "/i", $pdf_files)) {
-          // $files_to_delete[] = $acadre_dir . '/' . $dir . '/' . $not_pdf_file;.
           $files_to_delete[] = $not_pdf_file;
         }
       }
@@ -468,7 +463,9 @@ function os2dagsorden_admin_suite_delete_converted_files() {
 }
 
 /**
- * Deletes the extra files from the acadre directory, which are copied together with the new acadre version but are never used.
+ * Deletes the extra files from the acadre directory.
+ *
+ * Which are copied together with the new acadre version but are never used.
  */
 function os2dagsorden_admin_suite_delete_extra_files() {
   $to_delete = array();
@@ -538,7 +535,7 @@ function os2dagsorden_admin_suite_delete_extra_files() {
 }
 
 /**
- * Deletes the files from acadre dir (not xml or pdf) that are not used by dagsorden.
+ * Deletes files from acadre dir (not xml/pdf) that are not used by dagsorden.
  */
 function os2dagsorden_admin_suite_delete_unused_files() {
   // $acadre_dir =  drupal_realpath("private://");.
@@ -556,7 +553,6 @@ function os2dagsorden_admin_suite_delete_unused_files() {
           continue;
         }
 
-        // && !preg_match("/\.html$/i",$file) && !preg_match("/\.pdf$/i",$file)){//not xml, pdf or html.
         if (!preg_match("/\.xml$/i", $file)) {
           $not_pdf_files[] = $file;
         }
@@ -628,7 +624,9 @@ function os2dagsorden_admin_suite_force_meeting_description_converting() {
 }
 
 /**
- * Updates the meeting statuses to dagsorden/dagsorden+, referat/referat+ also sets the right acadre id to the meeting.
+ * Updates the meeting statuses to dagsorden/dagsorden+, referat/referat+.
+ *
+ * Also sets the right acadre id to the meeting.
  */
 function os2dagsorden_admin_suite_update_meeting_status() {
   $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
@@ -652,7 +650,8 @@ function os2dagsorden_admin_suite_update_meeting_status() {
       $nids = array_keys($result['node']);
       $node = reset(entity_load('node', $nids));
     }
-    // If fails, trying to get meeting from date and committe combination. Assuming this is unique.
+    // If fails, trying to get meeting from date and committe combination.
+    // Assuming this is unique.
     else {
       // Getting committee tid.
       $vid = db_select('taxonomy_vocabulary', 'tv')->fields('tv', array('vid'))->condition('machine_name', 'os2web_meetings_tax_committee')->execute()->fetchField();
@@ -721,7 +720,9 @@ function os2dagsorden_admin_suite_update_meeting_status() {
 }
 
 /**
- * Sets the bullet point number from the bullet point title, assuming that title is "Punkt [number] ...].
+ * Sets the bullet point number from the bullet point title.
+ *
+ * Assuming that title is "Punkt [number] ...].
  */
 function os2dagsorden_admin_suite_set_bullet_point_number() {
   $query = new EntityFieldQuery();
@@ -765,7 +766,8 @@ function os2dagsorden_admin_suite_set_bullet_point_number() {
 /**
  * Updates the all the files (and the notes they are attached to.
  *
- * Either meeting or bullet point attachment) which have url set as 'public://acadre/Files_...' to 'private:///Files...'.
+ * Either meeting or bullet point attachment) which have url set as
+ * 'public://acadre/Files_...' to 'private:///Files...'.
  */
 function os2dagsorden_admin_suite_update_files_path() {
   $files = entity_load('file');
@@ -872,7 +874,7 @@ function os2dagsorden_admin_suite_check_dblog() {
 function os2dagsorden_admin_suite_add_meeting_files() {
   drupal_load('module', 'os2web_esdh_provider');
   module_load_include('inc', 'os2web_esdh_provider', 'os2web_esdh_provider.mmapi');
-  foreach (file_scan_directory(variable_get('os2web_sbsys_esdh_mm_path', MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
+  foreach (file_scan_directory(variable_get('os2web_sbsys_esdh_mm_path', OS2WEB_SBSYS_ESDH_MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
     $agenda['pub_id'] = (int) str_replace('Publication', '', $xml_file->name);
     $agenda['uri'] = $xml_file->uri;
     $agenda['pdf_uri'] = dirname($agenda['uri']) . "/Publication" . $agenda['pub_id'] . ".pdf";
@@ -968,7 +970,6 @@ function os2dasorden_admin_suite_reschedule_file_adlib() {
  */
 function os2dasorden_admin_suite_just_code() {
   $node = node_load(2804);
-  dpm($node->field_os2web_meetings_bpa_body['und'][0]['safe_value']);
   return 'here';
 
 }

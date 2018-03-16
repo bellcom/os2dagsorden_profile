@@ -18,10 +18,7 @@ module_load_include('inc', 'os2web_print_send_to_friend', '/includes/os2web_prin
 module_load_include('inc', 'os2web_print_send_to_friend', '/handlers/database');
 
 /**
- * Implementation of hook_menu().
- *
- * @return mixed
- *   Array of links.
+ * Implements hook_menu().
  */
 function os2web_print_send_to_friend_menu() {
   $items = array();
@@ -95,9 +92,6 @@ function os2web_print_send_to_friend_monolog_channel_info() {
 
 /**
  * Implements hook_monolog_handler_info().
- *
- * @return mixed
- *   Handlers array.
  */
 function os2web_print_send_to_friend_monolog_handler_info() {
   $handlers = array();

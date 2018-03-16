@@ -2,7 +2,9 @@
 
 /**
  * @file
- * This file implements the importing functions of the MM functionality and depends on a plugin to do the actual filereads.
+ * This file implements the importing functions of the MM functionality.
+ *
+ * Depends on a plugin to do the actual filereads.
  */
 
 module_load_include('inc', 'os2web_esdh_provider', 'includes/os2web_esdh_provider.queue');
@@ -230,7 +232,6 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       watchdog('acadre MM', '[XML_ID: !id] No node was found, creating a new node', array('!id' => $_os2web_esdh_provider_processing_meeting_id), WATCHDOG_DEBUG);
       $node = new stdClass();
     }
-    // $unpublished_status = variable_get('os2dagsorden_meetings_unpublished_status');.
     $node->type = "os2web_meetings_meeting";
     $node->language = LANGUAGE_NONE;
     $node->uid = 1;
@@ -282,9 +283,6 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       ), WATCHDOG_DEBUG);
     }
 
-    // If field has a format, you need to define it. Here we define a default
-    // filtered_html format for a body field.
-    // $node->field_os2web_meetings_abbr[LANGUAGE_NONE][0]['format'] = 'filtered_html';
     // The date.
     $node->field_os2web_meetings_date[LANGUAGE_NONE][0]['value'] = $meeting['meeting_date_start'];
     $node->field_os2web_meetings_date[LANGUAGE_NONE][0]['value2'] = $meeting['meeting_date_finish'];
@@ -620,7 +618,8 @@ function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
         $node->field_os2web_meetings_bul_pers[LANGUAGE_NONE][0]['value'] = 1;
       }
 
-      // Allowing overriding of the content only if the agenda == lukket or person.
+      // Allowing overriding of the content only if the agenda == lukket or
+      // person.
       if (module_exists('os2dagsorden_esdh_provider')
         && ($_os2web_esdh_provider_processing_meeting_access == 'Lukket' || $_os2web_esdh_provider_processing_meeting_access == 'Person')
       ) {
@@ -907,7 +906,9 @@ function _os2web_esdh_provider_import_file($file_meta) {
 }
 
 /**
- * This function is a handler for item bullets. Groups all items and deletes the items which are to be replaced.
+ * This function is a handler for item bullets.
+ *
+ * Groups all items and deletes the items which are to be replaced.
  *
  * @param mixed $node
  *   Item node.
@@ -954,7 +955,8 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
               '!list' => print_r($attachments_to_delete, TRUE),
             ), WATCHDOG_DEBUG);
 
-          // If any of the attachment had attached notes, we try to save the notes.
+          // If any of the attachment had attached notes, we try to save the
+          // notes.
           os2dagsorden_esdh_provider_reassign_notes($attachments_to_delete, $bullet_nids);
 
           node_delete_multiple($attachments_to_delete);
@@ -979,7 +981,6 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
             '!sysid' => $_os2web_esdh_provider_processing_bp,
             '!file' => $file->uri,
           ), WATCHDOG_DEBUG);
-        // $node->field_os2web_meetings_enclosures[LANGUAGE_NONE][] = (array) $file;.
         if (module_exists('os2dagsorden_esdh_provider')) {
           $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = os2dagsorden_esdh_provider_process_enclosure($enclosure, $file);
         }
@@ -1243,7 +1244,8 @@ function _os2web_esdh_provider_import_output($id = NULL, $nids = NULL) {
 /**
  * Sends a mail to the importer's email.
  *
- * It only sends an email if the email is entered, and it is not cron which which is calling it.
+ * It only sends an email if the email is entered, and it is not cron which
+ * which is calling it.
  *
  * @param string $message
  *   The message to send.
@@ -1260,13 +1262,14 @@ function _os2web_esdh_provider_send_statusmail($message, $is_error = FALSE) {
     // Set up the mail body.
     $mail_body = t('MM Import') . "\n";
     if ($is_error) {
-      $mail_body .= t('Status') . ": " . t('Error') . "\n";
+      $mail_body .= t('Status:') . " " . t('Error') . "\n";
     }
     else {
-      $mail_body .= t('Status') . ": " . t('Success') . "\n";
+      $mail_body .= t('Status:') . " " . t('Success') . "\n";
     }
-    $mail_body .= t('Time spend') . ": " . number_format(timer_read('mm_import') / 1000, 2) . "sec.\n";
-    $mail_body .= t('Messages') . ":\n\n !message\n";
+    $mail_body .= t('Time spend:') . " " . number_format(timer_read('mm_import') / 1000, 2) . "sec.\n";
+    $mail_body .= t('Messages:');
+    $mail_body .= "\n\n !message\n";
 
     $from = variable_get('site_mail', '');
     $my_module = 'os2web_esdh_provider';
@@ -1311,7 +1314,9 @@ function _os2web_esdh_provider_bpa_body_format() {
 }
 
 /**
- * Clears the cache for all views (if the os2dagsorden_clear_cache_active is TRUE).
+ * Clears the cache for all views.
+ *
+ * If the os2dagsorden_clear_cache_active is TRUE.
  */
 function os2web_esdh_provider_clear_cache($success, $results, $operations) {
   if ($success) {

@@ -5,8 +5,8 @@
  * Implements API to convert files to PDF or HTML through AdLib.
  */
 
-define('ADLIB_TEST_FID', FALSE);
-define('ADLIB_HTML_IMG_FOLDER', 'public://bpimg/');
+define('OS2WEB_ADLIB_API_TEST_FID', FALSE);
+define('OS2WEB_ADLIB_API_IMG_FOLDER', 'public://bpimg/');
 
 /**
  * Implements hook_menu().
@@ -289,7 +289,6 @@ function os2web_adlib_api_status() {
   $html .= '<h2>Active jobs (first 50)</h2>';
   $html .= 'jobs total: ' . $count->count;
   $html .= theme('table', array('header' => $head, 'rows' => $rows));
-  // $html .= l('Delete all', 'admin/config/os2web/adlibstatus', array('query' => array('delete' => 'all')));.
   $html .= ' - ' . l(t('Run processing'), 'admin/config/os2web/adlibstatus', array('query' => array('process' => TRUE)));
   if (variable_get('os2dagsorden_clear_cache_active')) {
     if ($clear_cache_frequency = variable_get('os2dagsorden_clear_cache_frequency')) {
@@ -313,35 +312,10 @@ function os2web_adlib_api_status() {
  */
 function os2web_adlib_api_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-  // $fid = 32303;
-  // $nid = 840980;
-  // os2web_adlib_api_file_delete($fid);
-  // db_delete('os2web_adlib_api_doc_files')->condition('fid', $fid)->execute();
-  // os2web_adlib_api_convert_to_pdf($fid);
-  // os2web_adlib_api_convert_to_html($fid, $nid);
-  // _os2web_adlib_api_process_pdf();
-  // sleep(5);
-  // _os2web_adlib_api_process_pdf();
-  // $file = db_select('os2web_adlib_api_doc_files', 'df')->fields('df')->condition('fid', $fid)->execute()->fetchObject();
-  // $adlib = _os2web_adlib_api_get_instance();
-  // $call = array();
-  // $call[] = explode('\\',$adlib->addJobFolder());
-  // $call[] = $adlib->deleteJobFolder($call[0][1]);
-  // $call = $adlib->getJobStatus($file->job_id);
-  // $call= file_load(ADLIB_TEST_FID);
-  // $call = node_load($nid,NULL,TRUE);.
 }
 
 /**
- * Implement hook_cronapi().
- *
- * @param string $op
- *   Operation.
- * @param mixed $job
- *   Job.
- *
- * @return mixed
- *   Cron api array. *
+ * Implements hook_cronapi().
  */
 function os2web_adlib_api_cronapi($op, $job = NULL) {
   switch ($op) {
@@ -417,7 +391,6 @@ function os2web_adlib_api_convert_to_html($fid, $nid) {
     return TRUE;
   }
   else {
-    // error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already in queue, aborting.");.
     return FALSE;
   }
 }
@@ -466,7 +439,7 @@ function os2web_adlib_api_convert_to_pdf($fid, $docref = NULL) {
         ->condition('jobtype', 0)
         ->execute();
       drupal_write_record('os2web_adlib_api_doc_files', $record);
-      if (ADLIB_TEST_FID) {
+      if (OS2WEB_ADLIB_API_TEST_FID) {
         error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File queued for processing.");
       }
       return TRUE;
@@ -480,7 +453,6 @@ function os2web_adlib_api_convert_to_pdf($fid, $docref = NULL) {
     }
   }
   else {
-    // error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already PDF.");.
     watchdog('adlib_api', 'Filetype not approved %file (fid: %fid).', array(
       '%fid' => $fid,
       '%file' => $file->filename,
@@ -608,7 +580,8 @@ function _os2web_adlib_api_process_fid($file) {
  */
 function _os2web_adlib_api_process_file($file) {
   if (in_array($file->job_id, array('Complete', 'Requeue'))) {
-    // We should not get here, but if we do, these posts would be deleted if we do not return here.
+    // We should not get here, but if we do, these posts would be deleted if we
+    // do not return here.
     return;
   }
   $adlib = _os2web_adlib_api_get_instance();
@@ -759,7 +732,7 @@ function _os2web_adlib_api_process_file($file) {
  * @access: protected
  */
 function _os2web_adlib_api_process_html($data, $base_url) {
-  $base_dir = ADLIB_HTML_IMG_FOLDER;
+  $base_dir = OS2WEB_ADLIB_API_IMG_FOLDER;
   if (!file_prepare_directory($base_dir, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
     watchdog('adlib_api', 'Cannot get write permission for the AdLib image store folder.', NULL, WATCHDOG_ERROR);
     return;
@@ -794,7 +767,8 @@ function _os2web_adlib_api_process_html($data, $base_url) {
   }
   $data = (string) $html;
 
-  // Clean up the html, since AdLib sometimes return less-than-valid html and hence can cause PDO exceptions.
+  // Clean up the html, since AdLib sometimes return less-than-valid html and
+  // hence can cause PDO exceptions.
   if (!function_exists('tidy_repair_string')) {
     watchdog('adlib_api', 'Tidy API not found! Cannot process HTML.', NULL, WATCHDOG_ERROR);
   }

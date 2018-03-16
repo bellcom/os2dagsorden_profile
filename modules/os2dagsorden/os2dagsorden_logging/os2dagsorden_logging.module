@@ -45,9 +45,6 @@ function os2dagsorden_logging_menu() {
  * Implements hook_watchdog().
  *
  * Makes sure that watchdog commands end up rerouted to monolog.
- *
- * @param array $log_entry
- *   The log entry array.
  */
 function os2dagsorden_logging_watchdog(array $log_entry) {
   try {
@@ -82,7 +79,9 @@ function os2dagsorden_logging_watchdog(array $log_entry) {
 }
 
 /**
- * Ensure that required subsystems and modules are loaded if watchdog messages are logged prior to a full Drupal bootstrap.
+ * Ensure that required subsystems and modules are loaded.
+ *
+ * If watchdog messages are logged prior to a full Drupal bootstrap.
  *
  * @see _drupal_bootstrap_full()
  * @see http://drupal.org/node/1997462
@@ -160,8 +159,9 @@ function os2dagsorden_logging_map_severity_level($level) {
 }
 
 /**
- * Deletes entries from the database table os2web_print_send_to_friend_log, which are older than the certain number of days.
+ * Deletes entries from the database table os2web_print_send_to_friend_log.
  *
+ * Only those that are older than the certain number of days.
  * By default - 100 days.
  */
 function os2dagsorden_logging_database_log_clear() {
@@ -174,7 +174,7 @@ function os2dagsorden_logging_database_log_clear() {
 }
 
 /**
- * Implement hook_cron().
+ * Implements hook_cron().
  */
 function os2dagsorden_logging_cron() {
   os2dagsorden_logging_database_log_clear();
@@ -182,14 +182,6 @@ function os2dagsorden_logging_cron() {
 
 /**
  * Implements hook_cronapi().
- *
- * @param string $op
- *   Operation.
- * @param mixed $job
- *   Job.
- *
- * @return mixed
- *   Cron api array.
  */
 function os2dagsorden_logging_cronapi($op, $job = NULL) {
   switch ($op) {

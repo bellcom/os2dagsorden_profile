@@ -6,7 +6,8 @@
  *
  * Implements pluginable interface for accessing ESDH systems.
  *
- * All plugins should be implemented in a seperate provider module which implements the ctools api.
+ * All plugins should be implemented in a seperate provider module which
+ * implements the ctools api.
  *
  * Look to acadre_esdh for example.
  */
@@ -579,7 +580,9 @@ function os2web_esdh_provider_default_bullet() {
 }
 
 /**
- * Checks ESDH Meeting import status, ESDH case/document backend check, AdLib PDF Conversion.
+ * Checks statuses.
+ *
+ * ESDH Meeting import status, ESDH case/document backend, AdLib PDF Conversion.
  *
  * @param mixed $checks
  *   Checks array.
@@ -762,8 +765,9 @@ function os2web_esdh_provider_watchdog(array $log_entry) {
 function _os2web_esdh_provider_send_fatalerrormail($message) {
   // Set up the mail body.
   $mail_body = t('MM Import') . "\n";
-  $mail_body .= t('Time spend') . ": " . number_format(timer_read('mm_import') / 1000, 2) . "sec.\n";
-  $mail_body .= t('Messages') . ":\n\n !message\n";
+  $mail_body .= t('Time spend:') . " " . number_format(timer_read('mm_import') / 1000, 2) . "sec.\n";
+  $mail_body .= t('Messages:');
+  $mail_body .= "\n\n !message\n";
 
   $from = variable_get('site_mail', '');
   $my_module = 'os2web_esdh_provider';

@@ -6,7 +6,11 @@
  */
 
 /**
- * Helper function. Processes the meetings xml. Delegates to create meeings, unpublish meetings, create committee function based on controllers.
+ * Helper function.
+ *
+ * Processes the meetings xml.
+ * Delegates to create meeings, unpublish meetings, create committee function
+ * based on controllers.
  *
  * @param mixed $xml_file
  *   Xml file.
@@ -64,7 +68,8 @@ function _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $tid) {
     $node = reset(entity_load('node', $nids));
   }
 
-  // Changing params only if status is Planlagt, which is either a freshly created meeting or the one importerted before - we don't care.
+  // Changing params only if status is Planlagt, which is either a freshly
+  // created meeting or the one importerted before - we don't care.
   // It's safe to update those values.
   if ($node->field_os2web_meetings_type[$node->language][0]['value'] == 'Planlagt') {
     $node->title = $xml_data['title'];
@@ -115,7 +120,9 @@ function _os2dagsorden_acadre_service_importer_unpublish_meeting($xml_data) {
 }
 
 /**
- * Helper function. Finds the location term based on the name, if none found new term is created.
+ * Helper function.
+ *
+ * Finds the location term based on the name, if none found new term is created.
  *
  * @param string $location
  *   Name of the location.

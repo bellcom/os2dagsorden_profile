@@ -25,7 +25,9 @@ function os2web_sbsys_ishoj_esdh_mm_test($stuff) {
 }
 
 /**
- * Returns a list of meeting_ids for import. In our case a list of uri's of xml files.
+ * Returns a list of meeting_ids for import.
+ *
+ * In our case a list of uri's of xml files.
  *
  * @return array
  *   List of URIs
@@ -38,7 +40,7 @@ function os2web_sbsys_ishoj_esdh_mm_get_import_list() {
    */
   $uris = array();
 
-  $dir = variable_get('os2web_sbsys_ishoj_esdh_mm_path', MM_IMPORT_DIR);
+  $dir = variable_get('os2web_sbsys_ishoj_esdh_mm_path', OS2WEB_SBSYS_ISHOJ_ESDH_MM_IMPORT_DIR);
 
   foreach (file_scan_directory($dir, '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
     // Skip preview.xml files.
@@ -100,16 +102,9 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
     }
     if (is_object($manifest)) {
       $committee = $manifest->xpath("Møde/@UdvalgID");
-      // $committee_group_id = $manifest->xpath("Agendas/Agenda/Committee/CommitteeGroup/@ID");.
       $committee_name = $manifest->xpath("Møde/@Udvalg");
-      // $meeting_uri = $manifest->xpath("/Publication/OutputFileName");
-      // $meeting_data = $manifest->xpath("/Publication/Agendas/Agenda/Meeting");
-      // $meeting_public = $manifest->xpath("@Åben");.
       $meeting_id = $manifest->xpath("Møde/@MødeID");
       $sys_id = $manifest->xpath("@DagsordenID");
-      // $meeting_name = $manifest->xpath("/Publication/Agendas/Agenda/Name");
-      // $acadre_version = $manifest->xpath("/Publication/GeneratorSettings/@ID");
-      // $members = $manifest->xpath("Agendas/Agenda/Meeting/Members/MeetingMember");.
       $meeting_type = $manifest->xpath('@Dagsordentype');
       $meeting_date_when_date = $manifest->xpath("Møde/@Mødedato");
       $meeting_date_when_time = $manifest->xpath("Møde/@Mødetid");
@@ -117,21 +112,15 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
       $additional_agenda = $manifest->xpath("@Tillægsdagsorden");
 
       $committee = (string) $committee[0]['UdvalgID'];
-      // $committee_group_id = (string) $committee_group_id[0][ID];.
       $committee_name = (string) $committee_name[0];
       $sys_id = (string) $sys_id[0];
       $meeting_id = (string) $meeting_id[0]['MødeID'];
-      // $meeting_public = (string) $meeting_public[0];.
       $meeting_type = (string) $meeting_type[0];
       $additional_agenda = (string) $additional_agenda[0];
 
       $meeting_date_when = $meeting_date_when_date[0]['Mødedato'] . ' ' . $meeting_date_when_time[0]['Mødetid'];
-      // $meeting_date_until = $meeting_data[0]->Until;.
       $meeting_where = (string) $meeting_where[0]['Mødested'][0];
       $meeting_name = $committee_name;
-      // $meeting_uri = (string) $meeting_uri[0];
-      // $acadre_version = (string) $acadre_version[0][ID];
-      // $directory_name = dirname($real_path);
       $folder_uri = str_replace(basename($file), '', $file);
 
       $full_doc = array(
@@ -140,7 +129,7 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
       );
 
       // Check if the committee is allowed to publish.
-      $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_ishoj_esdh_approved_committees', MM_DEFAULT_APPROVED)));
+      $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_ishoj_esdh_approved_committees', OS2WEB_SBSYS_ISHOJ_ESDH_MM_DEFAULT_APPROVED)));
       if ($committee == '' || !in_array($committee, $publish_committee)) {
         watchdog('SBsys MM', 'Ignored agenda from "%committee" .', array('%committee' => $committee));
         return FALSE;
@@ -179,24 +168,6 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
       // date_timezone_set($date_obj, timezone_open('UTC'));.
       $meeting_date_when = date_format($date_obj, 'Y-m-d H:i');
 
-      // Members
-      // foreach ($members as $member){
-      // Changed by skifter@bellcom.dk 01.08.2013 - to handle "no show" members and messages for "no shoW"
-      // if (!empty($member->ParticipationNote)) {
-      // $member->ParticipationNote = ", " . $member->ParticipationNote;
-      // }
-      //
-      // if ($member->ParticipationStatusAsValue == '1' || $member->ParticipationStatusAsValue == '4') {
-      // $participants[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
-      // }
-      // Changed by stan@bellcom.dk 19.09.2013 - to consider participants with "Ikke bestemt" status as actual participants
-      // else if($member->ParticipationStatusAsText == 'NotDecided' || $member->ParticipationStatusAsValue == '0'){
-      // $participants[] = (string) $member->Name . $member->ParticipationNote;
-      // }
-      // else {
-      // $participants_cancellation[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
-      // }
-      // }.
       $meeting = array(
         'system_id' => $sys_id,
         'meeting_id' => $meeting_id,
@@ -234,16 +205,10 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
         else {
           foreach ($agenda_instance->xpath("Dagsordenpunkt") as $items_child) {
             $meeting_agendas[] = $items_child;
-            // $toDom = dom_import_simplexml($meeting_agendas[0]);
-            // $fromDom = dom_import_simplexml($items_child);
-            // $toDom->appendChild($toDom->ownerDocument->importNode($meeting_agendas, true));.
           }
         }
       }
 
-      // $meeting_pdf = $manifest->xpath('/Meeting/MeetingAgendaTypes/MeetingAgendaType/PDFDocument');
-      // $meeting['pdf'] = (string) $meeting_pdf[0];
-      // $meeting['state'] = (string) $meeting_state[0];.
       if (empty($meeting_agendas)) {
         watchdog('SBsys MM', 'Empty list of import items in %file.', array('%file' => $file), WATCHDOG_WARNING);
       }
@@ -253,7 +218,6 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
         $imported['publish'] = TRUE;
         $meetings[] = $imported;
       }
-      // }.
     }
     else {
       watchdog('SBsys MM', 'Failed to parse XML in %file during import.', array('%file' => $file), WATCHDOG_WARNING);

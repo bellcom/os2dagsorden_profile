@@ -4,17 +4,15 @@
  * @file
  * Os2dagsorden content modify module.
  *
- * A module that allows to manually add/edit the content like user positions, committee etc.
+ * A module that allows to manually add/edit the content like user positions,
+ * committee etc.
  */
 
 module_load_include('inc', 'os2dagsorden_content_modify', '/includes/os2dagsorden_content_modify.user');
 module_load_include('inc', 'os2dagsorden_content_modify', '/includes/os2dagsorden_content_modify.user.batch');
 
 /**
- * Implementation of hook_menu.
- *
- * @return array
- *   List of links.
+ * Implements hook_menu().
  */
 function os2dagsorden_content_modify_menu() {
   $items = array();
@@ -132,7 +130,8 @@ function _os2dagsorden_content_modify_user_edit_redirect($accounts) {
 /**
  * Calls form for user simple edit.
  *
- * If user has no administer os2web rights, he will be allowed only to edit his own profile.
+ * If user has no administer os2web rights, he will be allowed only to edit his
+ * own profile.
  *
  * @param int $uid
  *   ID of the user to modify.

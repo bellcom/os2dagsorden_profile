@@ -102,11 +102,6 @@ function os2dagsorden_create_agenda_save_meeting_simple($form, $form_state) {
  */
 function os2dagsorden_create_agenda_meeting_simple_submit($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_meeting_simple($form, $form_state);
-  $start_date = $form_state['input']['start_date']['date'];
-  $start_date = date_create_from_format("d/m/Y", $start_date);
 
-  /*
-   * $form_state['redirect'] = 'calendar-field-date/month/' . $start_date->format('Y') . '-' . $start_date->format('m');
-   */
   $form_state['redirect'] = 'meeting/' . $node->nid;
 }
