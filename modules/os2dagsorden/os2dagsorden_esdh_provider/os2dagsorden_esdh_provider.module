@@ -101,7 +101,7 @@ function os2dagsorden_esdh_provider_committee_add_subid($committee_term, $sub_id
   $contains = FALSE;
   if (isset($committee_term->field_os2web_meetings_com_subid['und'])) {
     foreach ($committee_term->field_os2web_meetings_com_subid['und'] as $id_raw) {
-      if (intval($id_raw['value']) == intval($sub_id)) {
+      if (intval($id_raw['value']) === intval($sub_id)) {
         $contains = TRUE;
         break;
       }
@@ -283,10 +283,10 @@ function os2dagsorden_esdh_provider_assign_meeting_category($node, $committee_su
 function os2dagsorden_esdh_provider_find_corresponding_bullet($title, $sys_id, $bullet_nids) {
   foreach ($bullet_nids as $bullet_nid) {
     $bullet = node_load($bullet_nid['target_id']);
-    if (strcasecmp($title, $bullet->title) == 0) {
+    if (strcasecmp($title, $bullet->title) === 0) {
       return $bullet;
     }
-    elseif (strcasecmp($sys_id, $bullet->field_os2web_bullet_point_id['und'][0]['value']) == 0) {
+    elseif (strcasecmp($sys_id, $bullet->field_os2web_bullet_point_id['und'][0]['value']) === 0) {
       return $bullet;
     }
   }
@@ -309,8 +309,8 @@ function os2dagsorden_esdh_provider_find_corresponding_bullet($title, $sys_id, $
 function os2dagsorden_esdh_provider_find_corresponding_attachment($bullet_entity, $attachment_nids) {
   foreach ($attachment_nids as $attachment_nid) {
     $attachment = node_load($attachment_nid['target_id']);
-    if (strcasecmp($bullet_entity['title'], $attachment->title) == 0
-      && strcasecmp($bullet_entity['body'], $attachment->field_os2web_meetings_bpa_body[$attachment->language][0]['value']) == 0) {
+    if (strcasecmp($bullet_entity['title'], $attachment->title) === 0
+      && strcasecmp($bullet_entity['body'], $attachment->field_os2web_meetings_bpa_body[$attachment->language][0]['value']) === 0) {
       return $attachment;
     }
   }
@@ -408,7 +408,7 @@ function os2dagsorden_esdh_provider_find_and_reassign_additional_agenda_bullet($
       // Remove bullet from prev. meeting.
       if (!empty($add_bullet_meeting->field_os2web_meetings_bullets['und'])) {
         foreach ($add_bullet_meeting->field_os2web_meetings_bullets['und'] as $ref_bullet_point_number => $ref_bullet_point) {
-          if (intval($add_bullet_nid) == intval($ref_bullet_point['target_id'])) {
+          if (intval($add_bullet_nid) === intval($ref_bullet_point['target_id'])) {
             unset($add_bullet_meeting->field_os2web_meetings_bullets['und'][$ref_bullet_point_number]);
             node_save($add_bullet_meeting);
             break;
@@ -445,7 +445,7 @@ function os2dagsorden_esdh_provider_reassign_notes($attachments_to_delete_nids, 
     if (os2dagsorden_annotator_get_notes_by_attachment_id($del_nid)) {
       // Finding the corresponding bullet point from the existing attachments.
       foreach ($existing_attachments as $exist_nid => $exist_node) {
-        if (strcasecmp($del_node->title, $exist_node->title) == 0) {
+        if (strcasecmp($del_node->title, $exist_node->title) === 0) {
           os2dagsorden_annotator_update_notes_attachment($del_nid, $exist_nid);
 
           // Remove from stack, as we won't need it anymore.

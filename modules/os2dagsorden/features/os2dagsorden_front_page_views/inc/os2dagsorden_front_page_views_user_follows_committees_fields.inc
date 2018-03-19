@@ -49,7 +49,7 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
   }
   $order_list = os2dagsorden_content_modify_asort($output_list);
   foreach ($order_list as $key => $term) {
-    if ($term['tid'] == $output_list[$term['tid']]['tid']) {
+    if ($term['tid'] === $output_list[$term['tid']]['tid']) {
       $term['field'] = $output_list[$term['tid']]['fleld'];
       $order_list[$key] = $term;
     }
@@ -63,10 +63,10 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
       else {
         $link = $com_term->name;
       }
-      if ($com['field'] == 'c_plus') {
+      if ($com['field'] === 'c_plus') {
         $link .= '<b>++</b>';
       }
-      elseif ($com['field'] == 'c_pp') {
+      elseif ($com['field'] === 'c_pp') {
         $link .= '<b>++</b>';
       }
       print '<a href="/meetings-search?field_os2web_meetings_committee_tid_depth=' . $com['tid'] . '&from_date=&to_date">' . $link . '</a></br>';

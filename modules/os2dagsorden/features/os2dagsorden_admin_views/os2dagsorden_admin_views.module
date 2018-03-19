@@ -49,7 +49,7 @@ function os2dagsorden_admin_views_menu() {
  *   Access true of false.
  */
 function os2dagsorden_admin_views_committee_import_access_callback($term_name) {
-  if (user_access('administer os2web') && $term_name == 'os2web_meetings_tax_committee') {
+  if (user_access('administer os2web') && $term_name === 'os2web_meetings_tax_committee') {
     return TRUE;
   }
   return FALSE;
@@ -66,7 +66,7 @@ function os2dagsorden_admin_views_committee_import_access_callback($term_name) {
  *   ID of the form.
  */
 function os2dagsorden_admin_views_form_taxonomy_overview_terms_alter(&$form, &$form_state, $form_id) {
-  if ($form['#vocabulary']->machine_name == 'os2web_meetings_tax_committee') {
+  if ($form['#vocabulary']->machine_name === 'os2web_meetings_tax_committee') {
     array_unshift($form['#submit'], 'os2dagsorden_admin_views_submit_taxonomy');
     array_unshift($form['#theme'], 'os2dagsorden_admin_views_taxonomy_overview_terms');
   }
@@ -83,7 +83,7 @@ function os2dagsorden_admin_views_form_taxonomy_overview_terms_alter(&$form, &$f
  *   ID of the form.
  */
 function os2dagsorden_admin_views_form_alter(&$form, $form_state, $form_id) {
-  if ($form['#id'] == 'views-exposed-form-os2dagsorden-users-view-system-1') {
+  if ($form['#id'] === 'views-exposed-form-os2dagsorden-users-view-system-1') {
     drupal_add_js(drupal_get_path('module', 'os2dagsorden_admin_views') . '/js/os2dagsorden_admin_views_users.js');
 
     $terms = os2dagsorden_settings_get_active_committees();
@@ -124,18 +124,18 @@ function os2dagsorden_admin_views_form_alter(&$form, $form_state, $form_id) {
  */
 function os2dagsorden_admin_views_query_alter(&$view, &$query) {
   if (isset($view->alterMetaData['view'])) {
-    if ($view->alterMetaData['view']->name == 'os2dagsorden_users_view') {
+    if ($view->alterMetaData['view']->name === 'os2dagsorden_users_view') {
       if (isset($_POST['commitee']) && $_POST['commitee'] != 'All') {
-        if ($_POST['field_user_committee_tid'] == 'All') {
+        if ($_POST['field_user_committee_tid'] === 'All') {
           $view->leftjoin('field_data_field_user_committee', 'u_com', 'uid = u_com.entity_id');
         }
-        if ($_POST['field_follows_committee_tid'] == 'All') {
+        if ($_POST['field_follows_committee_tid'] === 'All') {
           $view->leftjoin('field_data_field_follows_committee', 'u_fc', 'uid = u_fc.entity_id');
         }
-        if ($_POST['field_follows_committee_plus_tid'] == 'All') {
+        if ($_POST['field_follows_committee_plus_tid'] === 'All') {
           $view->leftjoin('field_data_field_follows_committee_plus', 'u_fcp', 'uid = u_fcp.entity_id');
         }
-        if ($_POST['field_follows_committee_pp_tid'] == 'All') {
+        if ($_POST['field_follows_committee_pp_tid'] === 'All') {
           $view->leftjoin('field_data_field_follows_committee_pp', 'u_fcpp', 'uid = u_fcpp.entity_id');
         }
         $view->where('(field_user_committee_tid = ' . $_POST['commitee'] . ') '
@@ -169,7 +169,7 @@ function _os2dagsorden_admin_views_array_push_after($src, $in, $pos) {
   else {
     foreach ($src as $k => $v) {
       $r[$k] = $v;
-      if ($k == $pos) {
+      if ($k === $pos) {
         $r = array_merge($r, $in);
       }
     }
@@ -276,10 +276,10 @@ function theme_os2dagsorden_admin_views_taxonomy_overview_terms($variables) {
     }
 
     if ($row_position !== 0 && $row_position !== count($rows) - 1) {
-      if ($row_position == $back_step - 1 || $row_position == $page_entries - $forward_step - 1) {
+      if ($row_position === $back_step - 1 || $row_position === $page_entries - $forward_step - 1) {
         $rows[$key]['class'][] = 'taxonomy-term-divider-top';
       }
-      elseif ($row_position == $back_step || $row_position == $page_entries - $forward_step) {
+      elseif ($row_position === $back_step || $row_position === $page_entries - $forward_step) {
         $rows[$key]['class'][] = 'taxonomy-term-divider-bottom';
       }
     }
@@ -398,7 +398,7 @@ function os2dagsorden_admin_views_remove_subid($committee_term, $sub_id) {
   $contains = FALSE;
   if (isset($committee_term->field_os2web_meetings_com_subid['und'])) {
     foreach ($committee_term->field_os2web_meetings_com_subid['und'] as $key => $id_raw) {
-      if (intval($id_raw['value']) == intval($sub_id)) {
+      if (intval($id_raw['value']) === intval($sub_id)) {
         unset($committee_term->field_os2web_meetings_com_subid['und'][$key]);
         taxonomy_term_save($committee_term);
         break;
@@ -570,24 +570,24 @@ function _os2dagsorden_admin_views_create_committee_term($xml_data, $vid, $weigh
  */
 function _os2dagsorden_admin_views_sort_terms($a, $b) {
   if (isset($_GET['order'])) {
-    if ($_GET['order'] == t('Name')) {
-      if ($_GET['sort'] == 'asc') {
+    if ($_GET['order'] === t('Name')) {
+      if ($_GET['sort'] === 'asc') {
         return strcasecmp($a['name'], $b['name']);
       }
       else {
         return strcasecmp($b['name'], $a['name']);
       }
     }
-    elseif ($_GET['order'] == t('Active')) {
-      if ($_GET['sort'] == 'asc') {
+    elseif ($_GET['order'] === t('Active')) {
+      if ($_GET['sort'] === 'asc') {
         return strcasecmp($a['field_os2web_meetings_com_active']['und'][0]['value'], $b['field_os2web_meetings_com_active']['und'][0]['value']);
       }
       else {
         return strcasecmp($b['field_os2web_meetings_com_active']['und'][0]['value'], $a['field_os2web_meetings_com_active']['und'][0]['value']);
       }
     }
-    elseif ($_GET['order'] == t('Import')) {
-      if ($_GET['sort'] == 'asc') {
+    elseif ($_GET['order'] === t('Import')) {
+      if ($_GET['sort'] === 'asc') {
         return strcasecmp($a['field_os2web_meetings_com_import']['und'][0]['value'], $b['field_os2web_meetings_com_import']['und'][0]['value']);
       }
       else {
@@ -750,7 +750,7 @@ function os2dagsorden_admin_views_unpublished_meetings_form($form, $form_state) 
 function os2dagsorden_admin_views_unpublished_meetings_form_submit($form, &$form_state) {
   $meetings = $form_state['input']['meetings'];
   $action = $form_state['input']['action'];
-  if ($action == 'node_publish_action') {
+  if ($action === 'node_publish_action') {
     $batch = array(
       'title' => 'Meetings publish',
       'operations' => array(),
@@ -791,7 +791,7 @@ function _os2dagsorden_admin_views_meeting_publish($nid) {
  *   User committees or FALSE if not committees found.
  */
 function _os2dagsorden_admin_views_get_committees_user_is_admin($uid, $meeting_type) {
-  if ($meeting_type == 'dagsorden') {
+  if ($meeting_type === 'dagsorden') {
     $query = db_select('field_data_field_os2web_meetings_com_dag_ad', 'd')
       ->fields('d', array('entity_id'))
       ->condition('d.field_os2web_meetings_com_dag_ad_uid ', $uid, '=');

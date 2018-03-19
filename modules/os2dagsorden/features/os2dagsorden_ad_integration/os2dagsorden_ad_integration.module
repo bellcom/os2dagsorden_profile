@@ -101,7 +101,7 @@ function os2dagsorden_ad_integration_cron() {
  * Callback to start user import. Syncs the user information, as well as creates the custom user groups, such as speaper paper user groups.
  */
 function os2dagsorden_ad_integration_do_user_sync() {
-  if (variable_get('os2dagsorden_ad_integration_user_sync_attr', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_filter', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_dn_str', '') == '') {
+  if (variable_get('os2dagsorden_ad_integration_user_sync_attr', '') === '' || variable_get('os2dagsorden_ad_integration_user_sync_filter', '') === '' || variable_get('os2dagsorden_ad_integration_user_sync_dn_str', '') === '') {
     watchdog('LDAP_user_sync', 'LDAP user sync query options missing. ', WATCHDOG_ERROR);
 
     return;
@@ -178,7 +178,7 @@ function os2dagsorden_ad_integration_do_user_sync() {
  * Callback to start user synch. Deactivates the users that have to be deactivated.
  */
 function os2dagsorden_ad_integration_do_user_inactive_sync() {
-  if (variable_get('os2dagsorden_ad_integration_user_sync_attr', '') == '' || variable_get('os2dagsorden_ad_integration_user_sync_filter', '') == '' || variable_get('os2dagsorden_ad_integration_user_inactive_sync_dn_str', '') == '') {
+  if (variable_get('os2dagsorden_ad_integration_user_sync_attr', '') === '' || variable_get('os2dagsorden_ad_integration_user_sync_filter', '') === '' || variable_get('os2dagsorden_ad_integration_user_inactive_sync_dn_str', '') === '') {
     watchdog('LDAP_user_sync', 'LDAP user sync query options missing. ', WATCHDOG_ERROR);
 
     return;

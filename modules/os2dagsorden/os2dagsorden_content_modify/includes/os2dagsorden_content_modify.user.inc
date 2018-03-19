@@ -134,7 +134,7 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
  *   Array of uid.
  */
 function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uids) {
-  $single_or_batch_class = (count($uids) == 1) ? 'single' : 'batch';
+  $single_or_batch_class = (count($uids) === 1) ? 'single' : 'batch';
 
   $form[] = array(
     '#markup' => "<div class=\"select-committee {$single_or_batch_class}\">",
@@ -286,7 +286,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     // Printing member of.
     $content = "<ul id='member_of' class='droptrue'>";
     foreach ($shared_member_of as $tid => $count) {
-      if ($count == count($uids)) {
+      if ($count === count($uids)) {
         $form['member_of_hidden']['#value'] .= $tid . ',';
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox'></li>";
       }
@@ -297,17 +297,17 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     // Printing follows.
     $content = "<ul id='follows' class='droptrue'>";
     foreach ($shared_follows as $tid => $count) {
-      if ($count == count($uids)) {
+      if ($count === count($uids)) {
         $form['follows_hidden']['#value'] .= $tid . ',';
 
         // Setting correct follows subscribed marker.
         $subscribed_class = 'can-subscribe';
-        if (count($uids) == $shared_follows_subscribed[$tid]) {
+        if (count($uids) === $shared_follows_subscribed[$tid]) {
           $subscribed_class .= ' subscribed';
           $form['follows_subscribed_hidden']['#value'] .= $tid . ',';
           $check_id = $tid;
         }
-        if ($check_id == $tid) {
+        if ($check_id === $tid) {
           $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows' checked='checked' ></li>";
         }
         else {
@@ -321,7 +321,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     // Printing follows plus.
     $content = "<ul id='follows_plus' class='droptrue'>";
     foreach ($shared_follows_plus as $tid => $count) {
-      if ($count == count($uids)) {
+      if ($count === count($uids)) {
         $form['follows_plus_hidden']['#value'] .= $tid . ',';
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox'></li>";
       }
@@ -332,7 +332,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     // Printing follows plus plus.
     $content = "<ul id='follows_plus_plus' class='droptrue'>";
     foreach ($shared_follows_plus_plus as $tid => $count) {
-      if ($count == count($uids)) {
+      if ($count === count($uids)) {
         $form['follows_plus_plus_hidden']['#value'] .= $tid . ',';
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox'></li>";
       }

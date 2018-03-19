@@ -16,7 +16,7 @@ define('OS2WEB_ACADRE_ESDH_ACADRE_MM_DEFAULT_APPROVED', '62,59,64,53,54,56,57,63
  */
 function os2web_acadre_esdh_ctools_plugin_directory($module, $plugin) {
   $enabled_plugins = variable_get('os2web_acadre_esdh_enabled_plugins', drupal_map_assoc(array_keys(os2web_esdh_provider_ctools_plugin_type())));
-  if ($module == 'os2web_esdh_provider' && $enabled_plugins[$plugin]) {
+  if ($module === 'os2web_esdh_provider' && $enabled_plugins[$plugin]) {
     return "plugins/$plugin";
   }
 }
@@ -27,7 +27,7 @@ function os2web_acadre_esdh_ctools_plugin_directory($module, $plugin) {
  * Add configuration to the settings form.
  */
 function os2web_acadre_esdh_form_os2web_settings_settings_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == "os2web_settings_settings_form") {
+  if ($form_id === "os2web_settings_settings_form") {
     array_unshift($form['#submit'], 'os2web_acadre_esdh_form_os2web_settings_settings_form_submit');
   }
   // MM configuration.

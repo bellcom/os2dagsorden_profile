@@ -130,7 +130,7 @@ class AdLibWS {
     else {
       $message_xpath = $result->xpath('//@Message');
       $msg = (string) array_pop($message_xpath);
-      if ($msg == '') {
+      if ($msg === '') {
         $msg = 'Unknown reason.';
       }
       error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Failed to add job. Reason: " . $msg);
@@ -322,7 +322,7 @@ class AdLibWS {
       'XmlStream' => $payload,
     ))->AddJobFilesAsStreamResult;
     $status = (string) simplexml_load_string($result)->System['Status'];
-    if (strcmp($status, 'Success') == 0) {
+    if (strcmp($status, 'Success') === 0) {
       error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Uploaded file: " . $filename);
       return array(
         'basefolder' => $folder,

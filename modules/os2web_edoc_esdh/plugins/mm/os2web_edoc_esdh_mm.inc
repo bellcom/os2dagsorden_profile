@@ -156,7 +156,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
         $meeting_date = date_format($date_obj, 'Y-m-d H:i');
 
         // Changing the meeting state to match ESDH Provider module.
-        if ($meeting_type == "Referat endeligt godkendt") {
+        if ($meeting_type === "Referat endeligt godkendt") {
           $meeting_type = "Referat";
         }
         else {
@@ -223,7 +223,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 function _os2web_edoc_esdh_mm_import_meeting_agenda(&$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
   $publish_committee = array_map('trim', explode(',', variable_get('os2web_edoc_esdh_approved_committees', OS2WEB_EDOC_ESDH_MM_DEFAULT_APPROVED)));
-  if ($meeting['committee'] == '' || !in_array($meeting['committee'], $publish_committee)) {
+  if ($meeting['committee'] === '' || !in_array($meeting['committee'], $publish_committee)) {
     watchdog('eDoc MM', 'Ignored agenda from "%committee" .', array('%committee' => $meeting['committee']));
     return FALSE;
   }
@@ -274,7 +274,7 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElem
   $xml_item['document_type'] = (string) $xml_item_document->PublishingType;
   $xml_item['agenda_type'] = (string) $meeting->AgendaType;
   $xml_item['documentid'] = (string) $xml_item_document['documentid'];
-  if (empty($xml_item['documentid']) || $xml_item['documentid'] == '') {
+  if (empty($xml_item['documentid']) || $xml_item['documentid'] === '') {
     $pdf_name = explode('.', $xml_item['pdf']);
     $xml_item['documentid'] = $pdf_name[0];
   }
@@ -307,7 +307,7 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElem
   }
 
   if ($item['access'] !== 'Lukket' || variable_get('os2web_edoc_esdh_import_closed_agenda', FALSE)) {
-    if (variable_get('os2web_edoc_esdh_bullet_source', 'xml') == 'xml') {
+    if (variable_get('os2web_edoc_esdh_bullet_source', 'xml') === 'xml') {
       // Process item body.
       if (!empty($xml_item['full_text'])) {
         $item['bullets'][] = array(
@@ -343,14 +343,13 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElem
         $enclosure_item = array();
         $enclosure_item['filename_in'] = (string) $bullet_xml->PDFDocument;
         $enclosure_item['access'] = (string) $bullet_xml->PublishingType;
-        if (strlen($enclosure_item['filename_in']) > 0 && $enclosure_item['access'] == 'SKAL PUBLICERES') {
+        if (strlen($enclosure_item['filename_in']) > 0 && $enclosure_item['access'] === 'SKAL PUBLICERES') {
           $item['enclosures'][] = array(
             'uri' => implode('/', array(
               trim($meeting['uri'], "/"),
               $xml_item['pdf'],
             )),
             'title' => trim((string) $bullet_xml->Title),
-            // 'sysid' => 'bilag_' . $bullet_id,.
             'sysid' => $bullet_id,
             'access' => TRUE,
             'filetype' => '.pdf',
@@ -381,7 +380,7 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElem
         $enclosure_item = array();
         $enclosure_item['filename_in'] = (string) $bullet_xml->PDFDocument;
         $enclosure_item['access'] = (string) $bullet_xml->PublishingType;
-        if (strlen($enclosure_item['filename_in']) > 0 && $enclosure_item['access'] == 'SKAL PUBLICERES') {
+        if (strlen($enclosure_item['filename_in']) > 0 && $enclosure_item['access'] === 'SKAL PUBLICERES') {
           $item['enclosures'][] = array(
             'uri' => implode('/', array(
               trim($meeting['uri'], variable_get('os2web_edoc_esdh_mm_is_abs', FALSE) ? "" : "/"),
@@ -417,7 +416,7 @@ function _os2web_edoc_esdh_similar_file_exists($filename) {
   }
   $lcase_filename = strtolower($filename);
   foreach (glob(dirname($filename) . '/*') as $file) {
-    if (strtolower($file) == $lcase_filename) {
+    if (strtolower($file) === $lcase_filename) {
       return $file;
     }
   }

@@ -216,7 +216,7 @@ function _drupal_nemid_login_verify() {
         '%error_message' => $errorcodes[$response]['description'],
       ));
 
-      if (arg(0) == 'nemid' && arg(1) == 'verify') {
+      if (arg(0) === 'nemid' && arg(1) === 'verify') {
         drupal_goto('<front>');
       }
     }
@@ -308,11 +308,11 @@ function _drupal_nemid_login_admin() {
         '#required' => TRUE,
       );
 
-      if ($field['type'] == 'radios') {
+      if ($field['type'] === 'radios') {
         $form[$variablePrefix . $mode][$variablePrefix . $fieldKey . '_' . $mode]['#options'] = $field['options'];
       }
 
-      if ($field['type'] == 'password') {
+      if ($field['type'] === 'password') {
         $form[$variablePrefix . $mode][$variablePrefix . $fieldKey . '_' . $mode]['#attributes'] = array('value' => variable_get($variablePrefix . $fieldKey . '_' . $mode, NULL));
       }
     }
@@ -344,7 +344,7 @@ function _drupal_nemid_login_get_config_object() {
   );
   $replace = array("\n", "", "");
 
-  if ($mode == 'live') {
+  if ($mode === 'live') {
     $server = 'https://pidws.certifikat.dk/pid_serviceprovider_server/pidxml/';
   }
   else {

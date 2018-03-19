@@ -557,7 +557,7 @@ function _os2dagsorden_importer_update_meeting_category($user, $category) {
   if (isset($user->field_user_meetings_category['und'])) {
     foreach ($user->field_user_meetings_category['und'] as $user_category) {
       // Already has this category.
-      if (strcasecmp($user_category['value'], $category) == 0) {
+      if (strcasecmp($user_category['value'], $category) === 0) {
         return $user;
       }
     }
@@ -675,7 +675,7 @@ function _os2dagsorden_importer_create_committee($xml_data) {
 
     $import_committees = explode(',', variable_get('os2web_meetings_approved_committee'));
     foreach ($import_committees as $imp_com) {
-      if (intval($imp_com) == intval($xml_data['acadre_id'])) {
+      if (intval($imp_com) === intval($xml_data['acadre_id'])) {
         $can_be_imported = TRUE;
         break;
       }
@@ -684,7 +684,7 @@ function _os2dagsorden_importer_create_committee($xml_data) {
     $contains = FALSE;
     if (isset($term->field_os2web_meetings_com_subid['und'])) {
       foreach ($term->field_os2web_meetings_com_subid['und'] as $id_raw) {
-        if (intval($id_raw['value']) == intval($xml_data['acadre_id'])) {
+        if (intval($id_raw['value']) === intval($xml_data['acadre_id'])) {
           $contains = TRUE;
           break;
         }
@@ -716,7 +716,7 @@ function _os2dagsorden_importer_add_committee_to_user($tid, $user) {
   $user_is_part_of_committee = FALSE;
   if (isset($user->field_user_committee['und'])) {
     foreach ($user->field_user_committee['und'] as $committee_id) {
-      if ($tid == $committee_id['tid']) {
+      if ($tid === $committee_id['tid']) {
         $user_is_part_of_committee = TRUE;
       }
     }
@@ -773,7 +773,7 @@ function _os2dagsorden_importer_add_user_follows_committee($tid, $user) {
   $user_follows_committee = FALSE;
   if (isset($user->field_follows_committee['und'])) {
     foreach ($user->field_follows_committee['und'] as $committee_id) {
-      if ($tid == $committee_id['tid']) {
+      if ($tid === $committee_id['tid']) {
         $user_follows_committee = TRUE;
       }
     }
@@ -828,7 +828,7 @@ function _os2dagsorden_importer_add_user_follows_committee_plus($tid, $user) {
   $user_follows_committee_plus = FALSE;
   if (isset($user->field_follows_committee_plus['und'])) {
     foreach ($user->field_follows_committee_plus['und'] as $committee_id) {
-      if ($tid == $committee_id['tid']) {
+      if ($tid === $committee_id['tid']) {
         $user_follows_committee_plus = TRUE;
       }
     }
@@ -883,7 +883,7 @@ function _os2dagsorden_importer_add_user_follows_committee_plus_plus($tid, $user
   $user_follows_committee_plus_plus = FALSE;
   if (isset($user->field_follows_committee_pp['und'])) {
     foreach ($user->field_follows_committee_pp['und'] as $committee_id) {
-      if ($tid == $committee_id['tid']) {
+      if ($tid === $committee_id['tid']) {
         $user_follows_committee_plus_plus = TRUE;
       }
     }
@@ -1161,7 +1161,7 @@ function _os2dagsorden_importer_unpublish_meeting($xml_data) {
  *   TRUE is returned. Otherwise FALSE.
  */
 function _os2dagsorden_importer_webservice_url_exists($url = NULL) {
-  if ($url == NULL) {
+  if ($url === NULL) {
     return FALSE;
   }
   $ch = curl_init($url);

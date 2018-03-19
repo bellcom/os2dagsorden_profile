@@ -58,7 +58,7 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
 
         $isPublished = $manifest->xpath('/Root/edoc:Notification/edoc:Publish');
         $isPublished = (string) array_shift($isPublished);
-        $isPublished = (strcmp($isPublished, 'true') == 0) ? TRUE : FALSE;
+        $isPublished = (strcmp($isPublished, 'true') === 0) ? TRUE : FALSE;
 
         // Skipping if the last modified date is smaller, meaning older file
         // in this way we get only the newest agendas.
@@ -166,7 +166,7 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
 
           $meeting_type_xpath = $agenda_manifest->xpath('/Root/edoc:OutputTypeEnumName');
           $meeting_type = (string) array_shift($meeting_type_xpath);
-          if (strcasecmp($meeting_type, 'Minute') == 0) {
+          if (strcasecmp($meeting_type, 'Minute') === 0) {
             $meeting_type = 'Referat';
           }
           else {
@@ -216,7 +216,7 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           foreach ($meeting_participants as $meeting_participant) {
             $participate_xpath = $meeting_participant->xpath("edoc:Participate");
             $name_xpath = $meeting_participant->xpath("edoc:Name");
-            if ((string) array_shift($participate_xpath) == 'true') {
+            if ((string) array_shift($participate_xpath) === 'true') {
               $meeting['participants'][] = (string) array_shift($name_xpath);
             }
             else {
@@ -263,7 +263,7 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
 function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda(&$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
   $publish_committee = array_map('trim', explode(',', variable_get('os2web_edoc_middelfart_esdh_approved_committees', OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_APPROVED)));
-  if ($meeting['committee'] == '' || !in_array($meeting['committee'], $publish_committee)) {
+  if ($meeting['committee'] === '' || !in_array($meeting['committee'], $publish_committee)) {
     watchdog('eDoc MM', 'Ignored agenda from "%committee" .', array('%committee' => $meeting['committee']));
     return FALSE;
   }
@@ -395,7 +395,7 @@ function _os2web_edoc_middelfart_esdh_similar_file_exists($filename) {
   }
   $lcase_filename = strtolower($filename);
   foreach (glob(dirname($filename) . '/*') as $file) {
-    if (strtolower($file) == $lcase_filename) {
+    if (strtolower($file) === $lcase_filename) {
       return $file;
     }
   }

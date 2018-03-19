@@ -18,7 +18,7 @@ function os2dagsorden_logging_requirements($phase) {
     $profile_info = (monolog_profile_load($info['default profile']));
     if (isset($profile_info->options['handlers']) && is_array($profile_info->options['handlers'])) {
       foreach ($profile_info->options['handlers'] as $handler_name => $options) {
-        if ($handler_name == 'rotating_file_handler') {
+        if ($handler_name === 'rotating_file_handler') {
           $requirements['os2dagsorden_logging_log_dir_' . $channel_name] = array(
             'title' => $t('OS2Dagsorden Logging'),
             'value' => $t('Log file directory'),

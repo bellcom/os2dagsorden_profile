@@ -37,7 +37,7 @@
 <?php
 
 if (!isset($_SESSION['nemid_login']['errors'])) {
-  if (arg(0) == 'node' && is_numeric(arg(1))) {
+  if (arg(0) === 'node' && is_numeric(arg(1))) {
     $nid = arg(1);
   }
 
@@ -50,7 +50,7 @@ if (!isset($_SESSION['nemid_login']['errors'])) {
 
     if (isset($nid) && is_numeric($nid)) {
       $node = node_load($nid);
-      if ($node->type == 'webform') {
+      if ($node->type === 'webform') {
         echo url('node/' . $nid);
       }
     }

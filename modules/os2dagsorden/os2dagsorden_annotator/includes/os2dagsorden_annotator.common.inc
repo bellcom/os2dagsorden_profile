@@ -236,15 +236,15 @@ function os2dagsorden_annotator_update_notes_attachment($old_attachment_nid, $ne
  */
 function _os2dagsorden_annotator_find_path($domNode, $first_word, $current_path = '') {
   foreach ($domNode->childNodes as $node) {
-    if ($node->nodeName == 'style') {
+    if ($node->nodeName === 'style') {
       continue;
     }
-    if ($node->nodeType == XML_ELEMENT_NODE) {
+    if ($node->nodeType === XML_ELEMENT_NODE) {
       if ($node->hasChildNodes()) {
         return _os2dagsorden_annotator_find_path($node, $first_word, $current_path . '/' . $node->nodeName);
       }
     }
-    elseif ($node->nodeType == XML_TEXT_NODE) {
+    elseif ($node->nodeType === XML_TEXT_NODE) {
 
       $text = strip_tags($node->nodeValue);
       $text = utf8_decode($text);

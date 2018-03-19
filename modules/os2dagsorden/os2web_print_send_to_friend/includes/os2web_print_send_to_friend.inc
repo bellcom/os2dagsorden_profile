@@ -17,7 +17,7 @@ function os2web_print_send_to_friend_print_bullet_point($meeting_id, $bullet_poi
   module_load_include('inc', 'os2dagsorden_meeting_views', 'os2dagsorden_meeting_views_common_fields');
   $bullet_point = node_load($bullet_point_id);
 
-  if (strcmp($bullet_point->type, 'os2web_meetings_bullet') == 0) {
+  if (strcmp($bullet_point->type, 'os2web_meetings_bullet') === 0) {
     if (variable_get('os2dagsorden_print_pdf_show_commitee', FALSE) && $show_commitee) {
       $meeting = node_load($meeting_id);
       $date = field_get_items('node', $meeting, 'field_os2web_meetings_date');
@@ -65,7 +65,7 @@ function os2web_print_send_to_friend_print_bullet_point($meeting_id, $bullet_poi
  */
 function os2web_print_send_to_friend_print_bullet_point_attachments($bullet_point_id) {
   $bullet_point = node_load($bullet_point_id);
-  if (strcmp($bullet_point->type, 'os2web_meetings_bullet') == 0) {
+  if (strcmp($bullet_point->type, 'os2web_meetings_bullet') === 0) {
     $attachments = array();
     if ($bullet_point->field_os2web_meetings_attach['und']) {
       foreach ($bullet_point->field_os2web_meetings_attach['und'] as $attachment_id) {

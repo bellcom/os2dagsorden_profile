@@ -65,14 +65,14 @@ function os2dagsorden_simplesaml_settings_form_submit($form, &$form_state) {
  */
 function os2dagsorden_simplesaml_boot() {
   // Do not run this from CLI.
-  if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid == 0) {
+  if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid === 0) {
     $custom_ips = explode(',', variable_get('os2dagsorden_simplesaml_redirected_ips'));
     isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $remote_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] : $remote_ip = ip_address();
 
     foreach ($custom_ips as $custom_ip) {
       // If we the client request is from one of the IP's, login using
       // SimpleSAMLphp; otherwise use normal login.
-      if ($remote_ip == $custom_ip || empty($custom_ip)) {
+      if ($remote_ip === $custom_ip || empty($custom_ip)) {
         if (!in_array($_GET['q'], array('saml_login', 'user/logout', 'logout'))) {
           require_once DRUPAL_ROOT . '/includes/common.inc';
           require_once DRUPAL_ROOT . '/includes/path.inc';

@@ -75,7 +75,7 @@ function os2dagsorden_pdf2htmlex_requirements($phase) {
     'title' => $t('OS2Dagsorden pdf2htmlEX'),
   );
   $pdf2htmlex_version = array_shift($version);
-  if (version_compare($pdf2htmlex_version, OS2DAGSORDEN_PDF2HTMLEX_MIN_PDF2HTMLEX_VERSION) == -1) {
+  if (version_compare($pdf2htmlex_version, OS2DAGSORDEN_PDF2HTMLEX_MIN_PDF2HTMLEX_VERSION) === -1) {
     $requirements['os2dagsorden_pdf2htmlex_app']['severity'] = REQUIREMENT_ERROR;
     $requirements['os2dagsorden_pdf2htmlex_app']['description'] = t('Update pdf2htmlex version up to %req_ver or higher', array('%req_ver' => OS2DAGSORDEN_PDF2HTMLEX_MIN_PDF2HTMLEX_VERSION));
   }

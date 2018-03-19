@@ -18,7 +18,7 @@ define('OS2WEB_SBSYS_ESDH_MM_DEFAULT_BANNED_REGEX', '/&#x.*;/');
  * Register as provider of esdh plugins.
  */
 function os2web_sbsys_esdh_ctools_plugin_directory($module, $plugin) {
-  if ($module == 'os2web_esdh_provider') {
+  if ($module === 'os2web_esdh_provider') {
     return "plugins/$plugin";
   }
 }

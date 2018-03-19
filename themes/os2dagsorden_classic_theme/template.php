@@ -53,7 +53,7 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
   $view = views_get_page_view();
   if (!empty($view)) {
     global $base_path;
-    if ($view->name == 'meeting_details') {
+    if ($view->name === 'meeting_details') {
       // Adding expand/collapse behaviour to meeting details view.
       $os2dagsorden_expand_all_bullets = variable_get('os2dagsorden_expand_all_bullets', FALSE) ? TRUE : 'false';
       $expand_attachment = variable_get('os2dagsorden_expand_attachment', TRUE);
@@ -70,7 +70,7 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
       drupal_add_js(drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/js/jquery.pagescroller.js');
       drupal_add_js('addPagescroller();', 'inline');
     }
-    if ($view->name == 'meeting_details' || $view->name == 'speaking_paper') {
+    if ($view->name === 'meeting_details' || $view->name === 'speaking_paper') {
 
       // Adding has notes indicator to attachment.
       $annotations = os2dagsorden_annotator_get_notes_by_meeting_id(arg(1));
@@ -97,18 +97,18 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
       drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
     }
-    if ($view->name == 'speaking_paper') {
+    if ($view->name === 'speaking_paper') {
       // Adding expand/collapse behaviour bullet point details view.
       drupal_add_js('bullet_point_details_init("' . $base_path . '?q=", ' . variable_get('os2dagsorden_expand_attachment', TRUE) . ', ' . variable_get('os2dagsorden_expand_attachment_onload', 'false') . ')', 'inline');
       drupal_add_js('open_all_bilag_case_bullet_points(' . variable_get('os2dagsorden_expand_bilags', "true") . ',' . variable_get('os2dagsorden_expand_cases', "false") . ')', 'inline');
 
     }
-    if (variable_get('os2dagsorden_show_massive_expand_collapse_button', 'true') === 'false' && ($view->name == 'speaking_paper' || $view->name == 'meeting_details')) {
+    if (variable_get('os2dagsorden_show_massive_expand_collapse_button', 'true') === 'false' && ($view->name === 'speaking_paper' || $view->name === 'meeting_details')) {
       drupal_add_js('hide_massive_expand_collapse_button();', 'inline');
     }
   }
   else {
-    if ($variables['page']['content']['content']['content']['system_main']['content']['#attributes']['class'][1] == 'node-os2web_meetings_spaper-form') {
+    if ($variables['page']['content']['content']['content']['system_main']['content']['#attributes']['class'][1] === 'node-os2web_meetings_spaper-form') {
       // In "creating speaker paper"
       // hide extra fields.
       drupal_add_js("jQuery(document).ready(function(){jQuery('.form-item-field-os2web-meetings-sp-bullet-und-0-target-id').hide();});", "inline");
@@ -235,10 +235,10 @@ function os2dagsorden_classic_theme_calendar_time_row_heading($vars) {
     $format_hour = str_replace(array('a', 'A'), '', date_limit_format($format, $limit));
     $format_ampm = strstr($format, 'a') ? 'a' : (strstr($format, 'A') ? 'A' : '');
   }
-  if ($start_time == '00:00:00' && $next_start_time == '23:59:59') {
+  if ($start_time === '00:00:00' && $next_start_time === '23:59:59') {
     $hour = t('All times');
   }
-  elseif ($start_time == '00:00:00') {
+  elseif ($start_time === '00:00:00') {
     $date = date_create($curday_date . ' ' . $next_start_time);
     $hour = t('Before @time', array('@time' => date_format($date, $format_hour)));
   }

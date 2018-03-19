@@ -9,7 +9,7 @@
  * Implements hook_field_schema().
  */
 function os2web_esdh_field_field_schema($field) {
-  if ($field['type'] == 'os2web_esdh_field_case_ident') {
+  if ($field['type'] === 'os2web_esdh_field_case_ident') {
     return array(
       'columns' => array(
         'os2web_esdh_field_case_ident' => array(
@@ -21,7 +21,7 @@ function os2web_esdh_field_field_schema($field) {
       ),
     );
   }
-  if ($field['type'] == 'os2web_esdh_field_doc_ident') {
+  if ($field['type'] === 'os2web_esdh_field_doc_ident') {
     return array(
       'columns' => array(
         'os2web_esdh_field_doc_ident' => array(

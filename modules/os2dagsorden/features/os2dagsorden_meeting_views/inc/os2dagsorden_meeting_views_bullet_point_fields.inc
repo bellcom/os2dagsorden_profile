@@ -179,7 +179,7 @@ function os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content(
       // If is bilag.
       if (!empty($attachment->field_os2web_meetings_bpa_file['und'])) {
         // Saving bilags to the end.
-        if ($attachment->field_os2web_meetings_bpa_type['und'][0]['value'] == 'Sager') {
+        if ($attachment->field_os2web_meetings_bpa_type['und'][0]['value'] === 'Sager') {
           $cases[] = $attachment;
         }
         else {

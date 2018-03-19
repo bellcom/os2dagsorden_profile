@@ -85,7 +85,7 @@ function os2dagsorden_pdf2htmlex_report() {
     ->execute()
     ->fetchAllAssoc('fid');
 
-  if ($result == FALSE) {
+  if ($result === FALSE) {
     $content['pdf2htmlex-novalues'] = array(
       '#type' => 'markup',
       '#markup' => t('No files to convert.'),
@@ -107,7 +107,7 @@ function os2dagsorden_pdf2htmlex_report() {
     foreach ($result as $row) {
       global $base_path;
       $row->did = '<a href="' . $base_path . 'node/' . $row->did . '">' . $row->did . '</a>';
-      if ($row->progress == "") {
+      if ($row->progress === "") {
         $row->progress = "Scheduled";
       }
       $r = (array) $row;
@@ -313,7 +313,7 @@ function _os2dagsorden_pdf2htmlex_calc_page_amount($html) {
   $nodes = $finder->query('//div[@id="pdf-main"]/div');
 
   // pdf2html newer version (~ v0.10)
-  if ($nodes->length == 0) {
+  if ($nodes->length === 0) {
     $nodes = $finder->query('//div[@id="page-container"]/div');
   }
 
@@ -500,10 +500,10 @@ function _os2dagsorden_pdf2htmlex_set_status_published_plus($node) {
 
       if ($meeting) {
         if (os2dagsorden_access_helper_meeting_fully_converted($meeting)) {
-          if (strcmp($meeting->field_os2web_meetings_type['und'][0]['value'], 'Dagsorden') == 0) {
+          if (strcmp($meeting->field_os2web_meetings_type['und'][0]['value'], 'Dagsorden') === 0) {
             $meeting->field_os2web_meetings_type['und'][0]['value'] = "Dagsorden_plus";
           }
-          elseif (strcmp($meeting->field_os2web_meetings_type['und'][0]['value'], 'Referat') == 0) {
+          elseif (strcmp($meeting->field_os2web_meetings_type['und'][0]['value'], 'Referat') === 0) {
             $meeting->field_os2web_meetings_type['und'][0]['value'] = "Referat_plus";
           }
           node_submit($meeting);
@@ -543,7 +543,7 @@ function os2dagsorden_pdf2htmlex_print_first_page($html, $meeting_id, $bullet_po
   $nodes = $finder->query('//div[@id="pdf-main"]/div');
 
   // pdf2html newer version (~ v0.10)
-  if ($nodes->length == 0) {
+  if ($nodes->length === 0) {
     $nodes = $finder->query('//div[@id="page-container"]/div');
   }
 
@@ -604,7 +604,7 @@ function os2dagsorden_pdf2htmlex_hide_unused_pages($html, $startPage, $endPage) 
   $nodes = $finder->query('//div[@id="pdf-main"]/div');
 
   // pdf2html newer version (~ v0.10)
-  if ($nodes->length == 0) {
+  if ($nodes->length === 0) {
     $nodes = $finder->query('//div[@id="page-container"]/div');
   }
 

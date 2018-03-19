@@ -169,7 +169,7 @@ function os2intra_simplesaml_init() {
   // Do not run this from CLI.
   // Only proceed if user is NOT logged in and is NOT using drush uli for admin
   // user.
-  if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
+  if (php_sapi_name() !== 'cli' && $GLOBALS['user']->uid === 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
     $custom_ips = explode(',', variable_get('os2intra_simplesaml_redirected_ips'));
     $remote_ip = ip_address();
 

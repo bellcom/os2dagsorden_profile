@@ -20,7 +20,7 @@ function os2web_esdh_provider_requirements($phase) {
       $status--;
     }
   }
-  if ($status == 0) {
+  if ($status === 0) {
     $value = $t('Fully supported.');
     $severity = REQUIREMENT_OK;
     $desc = $t('All ESDH plugins seems to be working as intended. <a href="admin/config/os2web/esdh_provider">Status</a>');

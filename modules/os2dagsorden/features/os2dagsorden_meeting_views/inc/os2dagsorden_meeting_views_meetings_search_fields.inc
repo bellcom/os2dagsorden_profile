@@ -68,7 +68,7 @@ function os2dagsorden_meeting_views_meetings_search_fields_bp_id($meta_data) {
     $bpa_token_pos_e = $bpa_token_pos_s + strlen('[bpa]');
 
     // Is in bullet point.
-    if ($bullet_point_token_pos_s == $search_token_pos_e) {
+    if ($bullet_point_token_pos_s === $search_token_pos_e) {
       $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e + 1, $bpa_token_pos_s - $bullet_point_token_pos_e - 2);
       if ($bullet_point_id) {
         print("/bullet-point/" . $bullet_point_id);
@@ -102,7 +102,7 @@ function os2dagsorden_meeting_views_meetings_search_fields_bpa_id($meta_data) {
     $bpa_token_pos_e = $bpa_token_pos_s + strlen('[bpa]');
 
     // Is in bullet point.
-    if ($bullet_point_token_pos_s == $search_token_pos_e) {
+    if ($bullet_point_token_pos_s === $search_token_pos_e) {
       $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e + 1, $bpa_token_pos_s - $bullet_point_token_pos_e - 2);
       $bullet_point = node_load($bullet_point_id);
 
@@ -199,7 +199,7 @@ function os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data)
     $bpa_token_pos_e = $bpa_token_pos_s + strlen('[bpa]');
 
     // Is in bullet point.
-    if ($bullet_point_token_pos_s == $search_token_pos_e) {
+    if ($bullet_point_token_pos_s === $search_token_pos_e) {
       $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e + 1, $bpa_token_pos_s - $bullet_point_token_pos_e - 2);
       $bullet_point = node_load($bullet_point_id);
 

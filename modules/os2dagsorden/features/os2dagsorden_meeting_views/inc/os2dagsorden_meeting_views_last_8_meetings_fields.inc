@@ -24,7 +24,7 @@ function os2dagsorden_meeting_views_last_8_meetings_block_all_meetings_access() 
     return FALSE;
   }
 
-  if (variable_get('os2dagsorden_latest_meetings_view_mode', 'all') == 'all') {
+  if (variable_get('os2dagsorden_latest_meetings_view_mode', 'all') === 'all') {
     return TRUE;
   }
   // Check if 'Mine' display returns no results - if that is the case, return 'All' display anyways.
@@ -48,7 +48,7 @@ function os2dagsorden_meeting_views_last_8_meetings_block_my_meetings_access() {
   if (!os2dagsorden_access_helper_get_user()) {
     return FALSE;
   }
-  if (variable_get('os2dagsorden_latest_meetings_view_mode', 'all') == 'mine') {
+  if (variable_get('os2dagsorden_latest_meetings_view_mode', 'all') === 'mine') {
     return TRUE;
   }
   else {
@@ -75,7 +75,7 @@ function os2dagsorden_meeting_views_last_8_meetings_block_my_meetings_filter($me
   // Check if user meeting committee in 'member of'.
   if (isset($full_user->field_user_committee['und'])) {
     foreach ($full_user->field_user_committee['und'] as $com) {
-      if ($meeting_committee_tid == $com['tid']) {
+      if ($meeting_committee_tid === $com['tid']) {
         return FALSE;
       }
     }
@@ -83,7 +83,7 @@ function os2dagsorden_meeting_views_last_8_meetings_block_my_meetings_filter($me
   // Check if user meeting committee in 'follows'.
   if (isset($full_user->field_follows_committee['und'])) {
     foreach ($full_user->field_follows_committee['und'] as $com) {
-      if ($meeting_committee_tid == $com['tid']) {
+      if ($meeting_committee_tid === $com['tid']) {
         return FALSE;
       }
     }
@@ -91,7 +91,7 @@ function os2dagsorden_meeting_views_last_8_meetings_block_my_meetings_filter($me
   // Check if user meeting committee in 'follows plus'.
   if (isset($full_user->field_follows_committee_plus['und'])) {
     foreach ($full_user->field_follows_committee_plus['und'] as $com) {
-      if ($meeting_committee_tid == $com['tid']) {
+      if ($meeting_committee_tid === $com['tid']) {
         return FALSE;
       }
     }
@@ -100,7 +100,7 @@ function os2dagsorden_meeting_views_last_8_meetings_block_my_meetings_filter($me
   // Check if user meeting committee in 'follows plus plus'.
   if (isset($full_user->field_follows_committee_pp['und'])) {
     foreach ($full_user->field_follows_committee_pp['und'] as $com) {
-      if ($meeting_committee_tid == $com['tid']) {
+      if ($meeting_committee_tid === $com['tid']) {
         return FALSE;
       }
     }

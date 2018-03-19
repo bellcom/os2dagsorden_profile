@@ -82,7 +82,7 @@ function os2dagsorden_updatedb_setting_form($form, $form_state) {
  *   List of updates.
  */
 function os2dagsorden_updatedb_check($form, &$form_state) {
-  if ($form_state['values']['os2dagsorden_update_version'] == 'no version') {
+  if ($form_state['values']['os2dagsorden_update_version'] === 'no version') {
     form_set_error('os2dagsorden_update_version', t('OS2dagsorden update version : no version defined.'));
   }
   $version_no = '';
@@ -116,7 +116,7 @@ function os2dagsorden_updatedb_check($form, &$form_state) {
   foreach ($modules as $name => $module) {
     $pending = array();
     $contrib = os2dagsorden_updatedb_get_module_type($name);
-    if ($contrib == 'contrib') {
+    if ($contrib === 'contrib') {
       continue;
     }
     if (isset($module['pending'])) {
@@ -156,7 +156,7 @@ function os2dagsorden_updatedb_check($form, &$form_state) {
  *   The settings form.
  */
 function os2dagsorden_updatedb_run($form, &$form_state) {
-  if ($form_state['values']['os2dagsorden_update_version'] == 'no version') {
+  if ($form_state['values']['os2dagsorden_update_version'] === 'no version') {
     form_set_error('os2dagsorden_update_version', t('OS2dagsorden update version : no version defined.'));
   }
   $list = os2dagsorden_updatedb_check($form, $form_state);

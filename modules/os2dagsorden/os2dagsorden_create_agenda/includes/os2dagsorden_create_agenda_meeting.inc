@@ -25,10 +25,10 @@
   *   The created form.
   */
 function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
-  if (!empty($form_state['page_num']) && $form_state['page_num'] == 2) {
+  if (!empty($form_state['page_num']) && $form_state['page_num'] === 2) {
     return os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_point_id);
   }
-  elseif (!empty($form_state['page_num']) && $form_state['page_num'] == 3) {
+  elseif (!empty($form_state['page_num']) && $form_state['page_num'] === 3) {
     return os2dagsorden_create_agenda_bpa($form, $form_state);
   }
   $form_state['page_num'] = 1;
@@ -371,7 +371,7 @@ function os2dagsorden_create_agenda_remove_bullet_point_from_meeting($meeting_id
   if (field_get_items('node', $meeting, 'field_os2web_meetings_bullets')) {
     $bullet_points = field_get_items('node', $meeting, 'field_os2web_meetings_bullets');
     foreach ($bullet_points as $key => $bp) {
-      if ($bp['target_id'] == $bullet_point_id) {
+      if ($bp['target_id'] === $bullet_point_id) {
         unset($meeting->field_os2web_meetings_bullets['und'][$key]);
       }
     }

@@ -107,7 +107,7 @@ function _os2dagsorden_print_meetings_form($form, &$form_state) {
       '#type' => 'submit',
       '#submit' => array('_os2dagsorden_print_meetings_form_submit_1_half'),
       '#value' => t('FØRSTE HALVÅR') . ' ' . date('Y'),
-      '#attributes' => ($from_month == 1 ? array('class' => array('button-active')) : ''),
+      '#attributes' => ($from_month === 1 ? array('class' => array('button-active')) : ''),
     );
 
     $form[] = array(
@@ -118,7 +118,7 @@ function _os2dagsorden_print_meetings_form($form, &$form_state) {
       '#type' => 'submit',
       '#submit' => array('_os2dagsorden_print_meetings_form_submit_2_half'),
       '#value' => t('ANDET HALVÅR') . ' ' . date('Y'),
-      '#attributes' => ($from_month == 7 ? array('class' => array('button-active')) : ''),
+      '#attributes' => ($from_month === 7 ? array('class' => array('button-active')) : ''),
     );
 
     $form[] = array(
@@ -384,7 +384,7 @@ function _os2dagsorden_print_meetings_mark_weekend_gray($month, $day) {
  *   String with added/not added week number.
  */
 function _os2dagsorden_print_meetings_mark_week_start($month, $day) {
-  if (date('N', mktime(0, 0, 0, $month, $day, date('Y'))) == 1) {
+  if (date('N', mktime(0, 0, 0, $month, $day, date('Y'))) === 1) {
     return '<td class="inside number">' . date('W', mktime(0, 0, 0, $month, $day, date('Y'))) . '</td>';
   }
   else {

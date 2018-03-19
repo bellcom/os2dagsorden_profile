@@ -467,7 +467,7 @@ HTML;
  */
 function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_id) {
   $bilag = node_load($bilag_id);
-  if (strcmp($bilag->type, 'os2web_meetings_bullet_attach') == 0) {
+  if (strcmp($bilag->type, 'os2web_meetings_bullet_attach') === 0) {
     // Is an actual bilag.
     if (!empty($bilag->field_os2web_meetings_bpa_file['und'][0]['uri'])) {
       if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
@@ -559,7 +559,7 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
  */
 function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bilag_id) {
   $bilag = node_load($bilag_id);
-  if (strcmp($bilag->type, 'os2web_meetings_bullet_attach') == 0) {
+  if (strcmp($bilag->type, 'os2web_meetings_bullet_attach') === 0) {
     // Getting annotations from storage.
     $annotations = os2dagsorden_annotator_get_notes_by_attachment_id($bilag_id);
 
@@ -585,10 +585,10 @@ function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bila
         for ($i = 1; $i < count($annotations); $i++) {
           $location = _os2dagsorden_compare_xpath($annotations[$i]->ranges[0]->start, $annotations[$first_note_ind]->ranges[0]->start);
 
-          if ($location == -1) {
+          if ($location === -1) {
             $first_note_ind = $i;
           }
-          elseif ($location == 0 && $annotations[$i]->ranges[0]->startOffset < $annotations[$first_note_ind]->ranges[0]->startOffset) {
+          elseif ($location === 0 && $annotations[$i]->ranges[0]->startOffset < $annotations[$first_note_ind]->ranges[0]->startOffset) {
             $first_note_ind = $i;
           }
         }

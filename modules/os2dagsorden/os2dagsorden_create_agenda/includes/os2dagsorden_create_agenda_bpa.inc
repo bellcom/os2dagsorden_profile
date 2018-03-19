@@ -228,7 +228,7 @@ function os2dagsorden_create_agenda_add_bpa_to_bullet_point($bullet_point_id, $b
   if (field_get_items('node', $bullet_point, 'field_os2web_meetings_attach')) {
     $bpas = field_get_items('node', $bullet_point, 'field_os2web_meetings_attach');
     foreach ($bpas as $bpa) {
-      if ($bpa['target_id'] == $bpa_id) {
+      if ($bpa['target_id'] === $bpa_id) {
         // No need to readd.
         return;
       }

@@ -342,14 +342,14 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     // Adding description.
     if (!empty($meeting['full_doc'])) {
       if (FALSE !== ($file = _os2web_esdh_provider_import_file($meeting['full_doc']))) {
-        if (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Lukket') == 0) {
+        if (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Lukket') === 0) {
           $node->field_os2web_meetings_full_doc_c[$node->language][0] = (array) $file;
           watchdog('acadre MM', '[XML_ID: !id] Meetings closed description: !uri ', array(
             '!id' => $_os2web_esdh_provider_processing_meeting_id,
             '!uri' => $file->uri,
           ), WATCHDOG_DEBUG);
         }
-        elseif (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Person') == 0) {
+        elseif (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Person') === 0) {
           $node->field_os2web_meetings_full_doc_p[$node->language][0] = (array) $file;
           watchdog('acadre MM', '[XML_ID: !id] Meetings personal description: !uri ', array(
             '!id' => $_os2web_esdh_provider_processing_meeting_id,
@@ -369,14 +369,14 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     // Adding full doc with attachments.
     if (!empty($meeting['full_doc_with_attachments'])) {
       if (FALSE !== ($file = _os2web_esdh_provider_import_file($meeting['full_doc_with_attachments']))) {
-        if (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Lukket') == 0) {
+        if (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Lukket') === 0) {
           $node->field_os2web_meetings_att_doc_c[$node->language][0] = (array) $file;
           watchdog('acadre MM', '[XML_ID: !id] Meetings closed full doc with attachments: !uri ', array(
             '!id' => $_os2web_esdh_provider_processing_meeting_id,
             '!uri' => $file->uri,
           ), WATCHDOG_DEBUG);
         }
-        elseif (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Person') == 0) {
+        elseif (isset($meeting['agenda_access']) && strcmp($meeting['agenda_access'], 'Person') === 0) {
           $node->field_os2web_meetings_att_doc_p[$node->language][0] = (array) $file;
           watchdog('acadre MM', '[XML_ID: !id] Meetings personal full doc with attachments: !uri ', array(
             '!id' => $_os2web_esdh_provider_processing_meeting_id,
@@ -452,7 +452,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     node_save($node);
     $nid = $node->nid;
     // If unpublished.
-    if ($node->status == 0) {
+    if ($node->status === 0) {
       global $base_url;
       $committee_id = $node->field_os2web_meetings_committee['und'][0]['tid'];
       $status = $node->field_os2web_meetings_type['und'][0]['value'];
@@ -461,7 +461,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
         $cName = taxonomy_term_load($committee_id)->name;
         $mName = check_plain($node->title);
         $mDate = format_date(strtotime($node->field_os2web_meetings_date['und'][0]['value']), 'short');
-        $published_item = (strcasecmp($status, 'Dagsorden') == 0) ? 'en dagsorden' : 'et referat';
+        $published_item = (strcasecmp($status, 'Dagsorden') === 0) ? 'en dagsorden' : 'et referat';
         $meeting_url = $base_url . '/meeting/' . $node->nid;
         $mLink = '<a href="' . $meeting_url . '">' . $meeting_url . '</a>';
 
@@ -615,10 +615,10 @@ function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
         $node->field_os2web_meetings_bul_pers[LANGUAGE_NONE][0]['value'] = 1;
       }
 
-      // Allowing overriding of the content only if the agenda == lukket or
+      // Allowing overriding of the content only if the agenda === lukket or
       // person.
       if (module_exists('os2dagsorden_esdh_provider')
-        && ($_os2web_esdh_provider_processing_meeting_access == 'Lukket' || $_os2web_esdh_provider_processing_meeting_access == 'Person')
+        && ($_os2web_esdh_provider_processing_meeting_access === 'Lukket' || $_os2web_esdh_provider_processing_meeting_access === 'Person')
       ) {
         $node = _os2web_esdh_import_handle_bullets($node, $item);
       }
@@ -1172,7 +1172,7 @@ function _os2web_esdh_provider_similar_file_exists($filename) {
   $files = glob($dir . '/*');
   $lcase_filename = strtolower($filename);
   foreach ($files as $file) {
-    if (strtolower($file) == $lcase_filename) {
+    if (strtolower($file) === $lcase_filename) {
       return $file;
     }
   }
@@ -1387,7 +1387,7 @@ function _os2web_esdh_provider_remove_img_tags($data) {
 
     $file_headers = @get_headers(array_pop($imgage));
 
-    if ($file_headers === FALSE or $file_headers[0] == 'HTTP/1.0 404 Not Found') {
+    if ($file_headers === FALSE or $file_headers[0] === 'HTTP/1.0 404 Not Found') {
       $data = str_replace($imgTags[0][$i], "", $data);
     }
   }
@@ -1410,7 +1410,7 @@ function _os2web_esdh_provider_strip_tags($str, $tags) {
   $content = '';
   if (!is_array($tags)) {
     $tags = (strpos($str, '>') !== FALSE ? explode('>', str_replace('<', '', $tags)) : array($tags));
-    if (end($tags) == '') {
+    if (end($tags) === '') {
       array_pop($tags);
     }
   }
@@ -1457,7 +1457,7 @@ function _os2web_esdh_provider_get_meeting_publish_status($tid) {
 function _os2web_esdh_provider_meeting_unpublished_state_emails($tid, $meeting_type) {
   $emails = array();
   $term = taxonomy_term_load($tid);
-  if (strcasecmp($meeting_type, 'Dagsorden') == 0) {
+  if (strcasecmp($meeting_type, 'Dagsorden') === 0) {
     $committee_admin = $term->field_os2web_meetings_com_dag_ad;
   }
   else {

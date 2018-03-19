@@ -240,13 +240,13 @@ function _os2web_sbsys_aarhus_mm_import_meeting_agenda(&$meeting, SimpleXMLEleme
   $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_aarhus_approved_committees', OS2WEB_SBSYS_AARHUS_MM_DEFAULT_APPROVED)));
   $publish_committee = array_map('_os2web_sbsys_aarhus_generate_crc_id', $publish_committee);
 
-  if ($meeting['committee_id'] == '' || !in_array($meeting['committee_id'], $publish_committee)) {
+  if ($meeting['committee_id'] === '' || !in_array($meeting['committee_id'], $publish_committee)) {
     watchdog('SBsys MM', 'Ignored agenda from "%committee" .', array('%committee' => $meeting['committee_id']));
     return FALSE;
   }
 
   // Check meeting status.
-  if ($meeting['type'] == 'Klade') {
+  if ($meeting['type'] === 'Klade') {
     watchdog('SBsys MM', 'Ignored DRAFT: Meeting %id is of type %type.', array(
       '%id' => $meeting['system_id'],
       '%type' => $meeting['type'],
@@ -451,7 +451,7 @@ function _os2web_sbsys_aarhus_similar_file_exists($filename) {
   }
   $lcase_filename = strtolower($filename);
   foreach (glob(dirname($filename) . '/*') as $file) {
-    if (strtolower($file) == $lcase_filename) {
+    if (strtolower($file) === $lcase_filename) {
       return $file;
     }
   }

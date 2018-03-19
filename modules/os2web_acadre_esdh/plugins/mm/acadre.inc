@@ -198,13 +198,13 @@ function _os2web_acadre_esdh_import_meeting($info) {
     // Checking if meeting is in approved committees list.
     $is_meeting_approved = TRUE;
     if (variable_get('os2dagsorden_committees_positive_list_as_import_list', FALSE) && module_exists('os2dagsorden_settings')) {
-      if ($committee == '' || !in_array($committee_id, os2dagsorden_settings_get_import_committees_sub_id())) {
+      if ($committee === '' || !in_array($committee_id, os2dagsorden_settings_get_import_committees_sub_id())) {
         $is_meeting_approved = FALSE;
       }
     }
     else {
       $publish_committee = array_map('trim', explode(',', variable_get('os2web_meetings_approved_committee', ACADRE_MM_DEFAULT_APPROVED)));
-      if ($committee == '' || !in_array($committee_id, $publish_committee)) {
+      if ($committee === '' || !in_array($committee_id, $publish_committee)) {
         $is_meeting_approved = FALSE;
       }
     }
@@ -408,7 +408,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
         if (strlen($filename_in) > 0) {
           $filetype = _get_value_from_xml($case_file->xpath("fields/field[@name='DocumentExtension']"));
           $folder_path = variable_get('os2web_meetings_path', ACADRE_MM_IMPORT_DIR) . $info['filesfolder'];
-          if (strcasecmp($filetype, 'MSG') == 0) {
+          if (strcasecmp($filetype, 'MSG') === 0) {
             // E.g. [...]/1709477.MSG_attachments.
             $attachments_folder_path = $folder_path . '/' . $filename_in . '_attachments';
             $real_path = drupal_realpath($attachments_folder_path);
@@ -423,7 +423,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
                     'title' => 'Email:' . _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
                     'filetype' => '.PDF',
                     'type' => 'Sager',
-                    'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) == 'Åben'),
+                    'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
                   );
                 }
               }
@@ -437,7 +437,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
                   'title' => 'Email:' . _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
                   'filetype' => "." . _get_value_from_xml($case_file->xpath("fields/field[@name='DocumentExtension']")),
                   'type' => 'Sager',
-                  'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) == 'Åben'),
+                  'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
                 );
               }
             }
@@ -449,7 +449,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
               'title' => _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
               'filetype' => "." . _get_value_from_xml($case_file->xpath("fields/field[@name='DocumentExtension']")),
               'type' => 'Sager',
-              'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) == 'Åben'),
+              'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
             );
           }
         }
@@ -462,7 +462,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
         $filetype = _get_value_from_xml($enclosure->xpath("fields/field[@name='EnclosureFileType']"));
         $folder_path = variable_get('os2web_meetings_path', ACADRE_MM_IMPORT_DIR) . $info['filesfolder'];
 
-        if (strcasecmp($filetype, '.msg') == 0) {
+        if (strcasecmp($filetype, '.msg') === 0) {
           // E.g. [...]/1709477.MSG_attachments.
           $attachments_folder_path = $folder_path . '/' . $filename_in . '_attachments';
 
@@ -478,7 +478,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
                   'title' => 'Email:' . _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
                   'filetype' => '.PDF',
                   'type' => 'Bilag',
-                  'access' => ACADRE_MM_ACCESS_OPEN == _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
+                  'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
                 );
               }
             }
@@ -493,7 +493,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
                 'title' => 'Email:' . _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
                 'filetype' => _get_value_from_xml($enclosure->xpath("fields/field[@name='EnclosureFileType']")),
                 'type' => 'Bilag',
-                'access' => ACADRE_MM_ACCESS_OPEN == _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
+                'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
               );
             }
           }
@@ -507,7 +507,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
             'title' => _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
             'filetype' => _get_value_from_xml($enclosure->xpath("fields/field[@name='EnclosureFileType']")),
             'type' => 'Bilag',
-            'access' => ACADRE_MM_ACCESS_OPEN == _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
+            'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
           );
         }
       }
@@ -563,7 +563,7 @@ function _os2web_acadre_esdh_similar_file_exists($filename) {
 
   $lcase_filename = strtolower($filename);
   foreach (glob(dirname($filename) . '/*') as $file) {
-    if (strtolower($file) == $lcase_filename) {
+    if (strtolower($file) === $lcase_filename) {
       return $file;
     }
   }
@@ -842,10 +842,10 @@ function _acadre_esdh_mm_remove_empty_tags($data) {
  *   Converted value.
  */
 function _get_value_from_xml($xml_raw, $convert_to = 'string') {
-  if ($convert_to == 'string') {
+  if ($convert_to === 'string') {
     return trim((string) array_shift($xml_raw));
   }
-  elseif ($convert_to == 'int') {
+  elseif ($convert_to === 'int') {
     return (int) array_shift($xml_raw);
   }
 }

@@ -50,7 +50,7 @@ function os2web_rules_rules_action_drupal_message($account) {
       $user_is_part_of_committee = FALSE;
       if (isset($user->field_user_committee['und'])) {
         foreach ($user->field_user_committee['und'] as $committee_id) {
-          if ($tid == $committee_id['tid']) {
+          if ($tid === $committee_id['tid']) {
             $user_is_part_of_committee = TRUE;
           }
         }

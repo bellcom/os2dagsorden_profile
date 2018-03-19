@@ -128,7 +128,7 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
 
       // Check if the committee is allowed to publish.
       $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_ishoj_esdh_approved_committees', OS2WEB_SBSYS_ISHOJ_ESDH_MM_DEFAULT_APPROVED)));
-      if ($committee == '' || !in_array($committee, $publish_committee)) {
+      if ($committee === '' || !in_array($committee, $publish_committee)) {
         watchdog('SBsys MM', 'Ignored agenda from "%committee" .', array('%committee' => $committee));
         return FALSE;
       }

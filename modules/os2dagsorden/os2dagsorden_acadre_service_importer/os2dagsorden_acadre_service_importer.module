@@ -80,8 +80,7 @@ function os2dagsorden_acadre_service_importer_import_meetings() {
  * Check if webservice URL is available.
  */
 function _os2dagsorden_acadre_service_importer_webservice_url_exists($url = NULL) {
-  // @CODEREVIEW: Use === for comparison.
-  if ($url == NULL) {
+  if ($url === NULL) {
     return FALSE;
   }
   $ch = curl_init($url);

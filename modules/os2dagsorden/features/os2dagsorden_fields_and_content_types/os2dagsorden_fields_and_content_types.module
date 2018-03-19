@@ -76,7 +76,7 @@ function os2dagsorden_fields_and_content_types_meeting_search_metadata($entity, 
  */
 function os2dagsorden_fields_and_content_types_form_alter(&$form, &$form_state, $form_id) {
   // We want this on a specific node type.
-  if ($form_id == 'os2web_meetings_spaper_node_form') {
+  if ($form_id === 'os2web_meetings_spaper_node_form') {
     $form['#after_build'][] = 'os2dagsorden_fields_and_content_types_meeting_spaper_node_form_after_build';
   }
 }

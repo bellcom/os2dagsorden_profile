@@ -13,7 +13,7 @@ define('OS2DAGSORDEN_GS_CONVERSION_DEFAULT_CONVERSION_LIMIT', 500);
  * Schedules a PDF file for conversion if its PDF version is not 1.4.
  */
 function os2dagsorden_gs_conversion_file_insert($file) {
-  if ($file->fid && $file->filemime == 'application/pdf') {
+  if ($file->fid && $file->filemime === 'application/pdf') {
     $pdf_version = os2dagsorden_gs_conversion_get_pdf_version($file->uri);
     $status = NULL;
 
@@ -35,7 +35,7 @@ function os2dagsorden_gs_conversion_file_insert($file) {
  * Schedules a PDF file for conversion if its PDF version is not 1.4.
  */
 function os2dagsorden_gs_conversion_file_update($file) {
-  if ($file->fid && $file->filemime == 'application/pdf') {
+  if ($file->fid && $file->filemime === 'application/pdf') {
     $result = db_select('os2dagsorden_gs_conversion_files', 'o')
       ->fields('o')
       ->condition('fid', $file->fid)
@@ -163,7 +163,7 @@ function os2dagsorden_gs_conversion_convert_single($fid, $uri) {
 
   // Successful conversion?
   $new_pdf_version = os2dagsorden_gs_conversion_get_pdf_version($file_path_converted);
-  if (strcasecmp($new_pdf_version, '1.4') == 0) {
+  if (strcasecmp($new_pdf_version, '1.4') === 0) {
     // Removing original file.
     unlink($file_path_real);
     // Renaming new file.
@@ -232,5 +232,5 @@ function os2dagsorden_gs_conversion_is_file_converted($fid) {
     ->execute()
     ->fetchField();
 
-  return (strcasecmp($status, 'Completed') == 0);
+  return (strcasecmp($status, 'Completed') === 0);
 }

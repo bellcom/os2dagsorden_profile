@@ -74,7 +74,7 @@ function os2dagsorden_acadre_service_importer_create_committee($xml_data, $vid) 
 
   // See if we need to enable term or its parent.
   // @CODEREVIEW: $xml_data is declared as having type "mixed", but is (used) as an array.
-  if ($xml_data['state'] == 'Aktivt' && $xml_data['active'] == 'true') {
+  if ($xml_data['state'] === 'Aktivt' && $xml_data['active'] === 'true') {
     $parents = taxonomy_get_parents($term->tid);
     if (empty($parents)) {
       $term->field_os2web_meetings_com_active['und'][0]['value'] = 1;

@@ -230,7 +230,7 @@ function os2dagsorden_annotator_notes_migrate_import($form, &$form_state) {
  *   The SimpleXMLElement.
  */
 function os2dagsorden_annotator_notes_migrate_create_xml($data, $rootNodeName = 'data', $xml = NULL) {
-  if ($xml == NULL) {
+  if ($xml === NULL) {
     $xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><$rootNodeName />");
   }
   foreach ($data as $meeting_id => $meeting) {

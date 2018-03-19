@@ -162,7 +162,7 @@ function os2dasorden_admin_suite_add_committee_to_users() {
       $contains = FALSE;
       if (isset($user->field_follows_committee_pp['und'])) {
         foreach ($user->field_follows_committee_pp['und'] as $com) {
-          if ($committee_to_add == $com['tid']) {
+          if ($committee_to_add === $com['tid']) {
             $contains = TRUE;
           }
         }
@@ -553,7 +553,7 @@ function os2dagsorden_admin_suite_delete_unused_files() {
       $files_to_delete = array();
       foreach ($not_pdf_files as $not_pdf_file) {
         $result = db_query("SELECT COUNT(*) FROM file_managed WHERE filename ='" . mysql_real_escape_string($not_pdf_file) . "'")->fetchField();
-        if ($result == 0 && !is_numeric(substr(basename($not_pdf_file), 0, 1))) {
+        if ($result === 0 && !is_numeric(substr(basename($not_pdf_file), 0, 1))) {
           $files_to_delete[] = $not_pdf_file;
         }
       }
@@ -670,7 +670,7 @@ function os2dagsorden_admin_suite_update_meeting_status() {
     $node->field_meeting_acadre_id[LANGUAGE_NONE][0]['value'] = $meeting['id'];
 
     // Is dagsorden.
-    if (strcmp($type, 'Dagsorden') == 0) {
+    if (strcmp($type, 'Dagsorden') === 0) {
       // Everything is converted.
       if (os2dagsorden_access_helper_meeting_fully_converted($node)) {
         os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
@@ -895,10 +895,10 @@ function os2dagsorden_admin_suite_update_meetings_type() {
   $nodes = entity_load('node', FALSE, array('type' => 'os2web_meetings_meeting'));
   foreach ($nodes as $node) {
     if (os2dagsorden_access_helper_meeting_fully_converted($node)) {
-      if (strcmp($node->field_os2web_meetings_type['und'][0]['value'], 'Dagsorden') == 0) {
+      if (strcmp($node->field_os2web_meetings_type['und'][0]['value'], 'Dagsorden') === 0) {
         $node->field_os2web_meetings_type['und'][0]['value'] = "Dagsorden_plus";
       }
-      elseif (strcmp($node->field_os2web_meetings_type['und'][0]['value'], 'Referat') == 0) {
+      elseif (strcmp($node->field_os2web_meetings_type['und'][0]['value'], 'Referat') === 0) {
         $node->field_os2web_meetings_type['und'][0]['value'] = "Referat_plus";
       }
       node_submit($node);

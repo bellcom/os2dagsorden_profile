@@ -21,7 +21,7 @@ function os2web_print_send_to_friend_requirements($phase) {
       'description' => t('SMTP module is not exists'),
     );
   }
-  elseif (variable_get('smtp_on', '0') == 0) {
+  elseif (variable_get('smtp_on', '0') === 0) {
     $requirements['os2web_print_send_to_friend_smtp_module_active'] = array(
       'title' => $t('OS2Web Print or Send to Friend'),
       'value' => $t('SMTP module'),

@@ -281,7 +281,7 @@ function theme_os2web_esdh_document($vars) {
       _os2web_esdh_field_add_to_cron($docid);
     }
   }
-  if (count($rows) == 0) {
+  if (count($rows) === 0) {
     if (isset($vars['iscase'])) {
       $html .= '<p>' . t('This case contains no public documents.') . '</p>';
     }
@@ -449,7 +449,7 @@ function os2web_esdh_field_cron() {
   // Get documents which needs updating and put them in a queue.
   $queue = DrupalQueue::get('os2web_esdh_field_cm_doc_queue');
 
-  if ($queue->numberOfItems() == 0) {
+  if ($queue->numberOfItems() === 0) {
     $query = db_select('os2web_esdh_field_cm_documents', 'd')
       ->fields('d')
       ->condition('job_info', 'update')

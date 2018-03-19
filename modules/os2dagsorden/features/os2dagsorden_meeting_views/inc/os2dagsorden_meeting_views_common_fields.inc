@@ -192,7 +192,7 @@ function os2dagsorden_meeting_views_common_filter_in_my_list($tid) {
   // Is part of the committee.
   if (!empty($user->field_user_committee)) {
     foreach ($user->field_user_committee['und'] as $user_committee_id) {
-      if ($tid == $user_committee_id['tid']) {
+      if ($tid === $user_committee_id['tid']) {
         return FALSE;
       }
     }
@@ -201,7 +201,7 @@ function os2dagsorden_meeting_views_common_filter_in_my_list($tid) {
   // Follows committee.
   if (!empty($user->field_follows_committee)) {
     foreach ($user->field_follows_committee['und'] as $user_committee_id) {
-      if ($tid == $user_committee_id['tid']) {
+      if ($tid === $user_committee_id['tid']) {
         return FALSE;
       }
     }
@@ -210,7 +210,7 @@ function os2dagsorden_meeting_views_common_filter_in_my_list($tid) {
   // Follows committee PLUS.
   if (!empty($user->field_follows_committee_plus)) {
     foreach ($user->field_follows_committee_plus['und'] as $user_committee_id) {
-      if ($tid == $user_committee_id['tid']) {
+      if ($tid === $user_committee_id['tid']) {
         return FALSE;
       }
     }
@@ -219,7 +219,7 @@ function os2dagsorden_meeting_views_common_filter_in_my_list($tid) {
   // Follow committee PLUS PLUS.
   if (!empty($user->field_follows_committee_pp)) {
     foreach ($user->field_follows_committee_pp['und'] as $user_committee_id) {
-      if ($tid == $user_committee_id['tid']) {
+      if ($tid === $user_committee_id['tid']) {
         return FALSE;
       }
     }

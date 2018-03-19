@@ -59,7 +59,7 @@ function os2dagsorden_meetings_calendar_view_fields_filter_by_meeting_category($
   $meeting_category = $committee->field_os2web_meetings_com_cat['und'][0]['value'];
   if (isset($user_loaded->field_user_meetings_category['und'])) {
     foreach ($user_loaded->field_user_meetings_category['und'] as $user_category) {
-      if (strcasecmp($user_category['value'], $meeting_category) == 0) {
+      if (strcasecmp($user_category['value'], $meeting_category) === 0) {
         return FALSE;
       }
     }

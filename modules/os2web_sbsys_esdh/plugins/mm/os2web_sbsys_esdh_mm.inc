@@ -167,7 +167,7 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
         // Changed by stan@bellcom.dk 19.09.2013 - to consider participants with
         // "Ikke bestemt" status as actual participants.
         else {
-          if ($member->ParticipationStatusAsText == 'NotDecided' || $member->ParticipationStatusAsValue == '0') {
+          if ($member->ParticipationStatusAsText === 'NotDecided' || $member->ParticipationStatusAsValue == '0') {
             $participants[] = (string) $member->Name . $member->ParticipationNote;
           }
           else {
@@ -253,13 +253,13 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
 function _os2web_sbsys_esdh_mm_import_meeting_agenda(&$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
   $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_esdh_approved_committees', OS2WEB_SBSYS_ESDH_MM_DEFAULT_APPROVED)));
-  if ($meeting['committee_id'] == '' || !in_array($meeting['committee_id'], $publish_committee)) {
+  if ($meeting['committee_id'] === '' || !in_array($meeting['committee_id'], $publish_committee)) {
     watchdog('SBsys MM', 'Ignored agenda from "%committee" .', array('%committee' => $meeting['committee_id']));
     return FALSE;
   }
 
   // Check meeting status.
-  if ($meeting['type'] == 'Klade') {
+  if ($meeting['type'] === 'Klade') {
     watchdog('SBsys MM', 'Ignored DRAFT: Meeting %id is of type %type.', array(
       '%id' => $meeting['system_id'],
       '%type' => $meeting['type'],
@@ -456,7 +456,7 @@ function _os2web_sbsys_esdh_similar_file_exists($filename) {
   }
   $lcase_filename = strtolower($filename);
   foreach (glob(dirname($filename) . '/*') as $file) {
-    if (strtolower($file) == $lcase_filename) {
+    if (strtolower($file) === $lcase_filename) {
       return $file;
     }
   }

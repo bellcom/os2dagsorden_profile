@@ -25,7 +25,7 @@ function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
   if ($nid) {
     $status = IMPORT_STATUS_IMPORTED;
   }
-  if (empty($agenda['publish']) || $agenda['publish'] == 0) {
+  if (empty($agenda['publish']) || $agenda['publish'] === 0) {
     $status = IMPORT_STATUS_IGNORED;
   }
 
@@ -43,7 +43,7 @@ function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
         'meeting_xml_changed' => ($manifest_real_path !== FALSE) ? filemtime($manifest_real_path) : NULL,
         'agenda_xml' => $agenda['agenda_xml'],
         'agenda_xmlid' => $agenda['agenda_xmlid'],
-        'agenda_access' => ($agenda['agenda_access'] == 'Lukket') ? 0 : 1,
+        'agenda_access' => ($agenda['agenda_access'] === 'Lukket') ? 0 : 1,
         'agenda_publish' => ($agenda['publish']) ? 1 : 0,
         'agenda_type' => $agenda['type'],
         'agenda_xml_changed' => ($agenda_real_path !== FALSE) ? filemtime($agenda_real_path) : NULL,
@@ -67,7 +67,7 @@ function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
         'agenda_sysid' => $agenda['meeting_sub_id'],
         'agenda_xml' => $agenda['agenda_xml'],
         'agenda_xmlid' => $agenda['agenda_xmlid'],
-        'agenda_access' => ($agenda['agenda_access'] == 'Lukket') ? 0 : 1,
+        'agenda_access' => ($agenda['agenda_access'] === 'Lukket') ? 0 : 1,
         'agenda_publish' => ($agenda['publish']) ? 1 : 0,
         'agenda_type' => $agenda['type'],
         'agenda_xml_changed' => ($agenda_real_path !== FALSE) ? filemtime($agenda_real_path) : NULL,

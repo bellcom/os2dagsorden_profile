@@ -260,7 +260,7 @@ function os2web_adlib_api_status() {
     foreach ($statuslist as $status) {
       $rows[] = array(
         $status->ServerDetail['ServerName'],
-        ($status->ServerDetail['Enabled'] == 'True' ? 'E' : 'Not e') . 'nabled - ' . $status->ServerInfo['Status'],
+        ($status->ServerDetail['Enabled'] === 'True' ? 'E' : 'Not e') . 'nabled - ' . $status->ServerInfo['Status'],
         $status->ServerInfo['JobCount'],
       );
     }
@@ -331,7 +331,7 @@ function os2web_adlib_api_cron() {
 
   // Add set up queue for adlib requeueing.
   $queue = DrupalQueue::get('os2web_adlib_reprocess');
-  if ($queue->numberOfItems() == 0) {
+  if ($queue->numberOfItems() === 0) {
     $items = _os2web_adlib_api_bulletpoint_nid();
     $chunk_size = max(min((int) sqrt(count($items)), 25), 1);
     $items = array_chunk($items, $chunk_size);
@@ -503,7 +503,7 @@ function _os2web_adlib_api_do_processing() {
   //
   // Disable auto queue of missing files.
   $queue = DrupalQueue::get('os2web_adlib_process');
-  if ($queue->numberOfItems() == 0) {
+  if ($queue->numberOfItems() === 0) {
     $items = db_select('os2web_adlib_api_doc_files', 'f')
       ->fields('f')
       ->condition(db_or()->condition('job_id', 'Complete', '!=')->isNull('job_id'))
@@ -541,10 +541,10 @@ function _os2web_adlib_api_process_fid($file) {
     lock_wait(__FUNCTION__ . $file->fid, 15);
     return _os2web_adlib_api_process_fid($file);
   }
-  if ($file->job_id == NULL || $file->job_id == 'Requeue') {
+  if ($file->job_id === NULL || $file->job_id === 'Requeue') {
     _os2web_adlib_api_queue_file($file);
   }
-  elseif ($file->job_id != 'Complete') {
+  elseif ($file->job_id !== 'Complete') {
     _os2web_adlib_api_process_file($file);
     if (variable_get('os2dagsorden_clear_cache_active')) {
       if ($clear_cache_frequency = variable_get('os2dagsorden_clear_cache_frequency')) {
@@ -582,8 +582,8 @@ function _os2web_adlib_api_process_file($file) {
       os2web_adlib_api_destroy_job($file->job_id);
 
       $fdata = file_load($file->fid);
-      if (!drupal_realpath($fdata->uri) || !file_exists(drupal_realpath($fdata->uri)) || file_uri_scheme($fdata->uri) == '' || $fdata->filemime == 'application/pdf') {
-        if ($fdata->filemime == 'application/pdf') {
+      if (!drupal_realpath($fdata->uri) || !file_exists(drupal_realpath($fdata->uri)) || file_uri_scheme($fdata->uri) === '' || $fdata->filemime === 'application/pdf') {
+        if ($fdata->filemime === 'application/pdf') {
 
           $record = array(
             'fid' => $fdata->fid,

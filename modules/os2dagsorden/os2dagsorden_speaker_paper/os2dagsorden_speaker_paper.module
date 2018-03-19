@@ -136,7 +136,7 @@ function os2dagsorden_speaker_paper_form_os2dagsorden_settings_settings_form_alt
  * Multiple modifications to speaper paper create/edit form.
  */
 function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'os2web_meetings_spaper_node_form') {
+  if ($form_id === 'os2web_meetings_spaper_node_form') {
     // Setting title.
     drupal_set_title(t('Create speaker paper'));
 

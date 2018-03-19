@@ -27,7 +27,7 @@ function _os2dagsorden_acadre_service_importer_process_meetings($xml_file) {
       'active' => $row->Active,
     );
 
-    if ($xml_data['active'] == 'true') {
+    if ($xml_data['active'] === 'true') {
       $term = _os2dagsorden_access_helper_get_committee_by_subid_and_name($xml_data['committee_id']);
       if (isset($term)) {
         _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $term->tid);
@@ -71,7 +71,7 @@ function _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $tid) {
   // Changing params only if status is Planlagt, which is either a freshly
   // created meeting or the one importerted before - we don't care.
   // It's safe to update those values.
-  if ($node->field_os2web_meetings_type[$node->language][0]['value'] == 'Planlagt') {
+  if ($node->field_os2web_meetings_type[$node->language][0]['value'] === 'Planlagt') {
     $node->title = $xml_data['title'];
     $node->field_os2web_meetings_id[$node->language][0]['value'] = $xml_data['meeting_id'];
     $node->field_os2web_meetings_abbr[$node->language][0]['value'] = $xml_data['title'];
@@ -112,7 +112,7 @@ function _os2dagsorden_acadre_service_importer_unpublish_meeting($xml_data) {
     $nids = array_keys($result['node']);
     $node = reset(entity_load('node', $nids));
 
-    if ($node->status == NODE_PUBLISHED) {
+    if ($node->status === NODE_PUBLISHED) {
       node_unpublish_action($node);
       node_save($node);
     }

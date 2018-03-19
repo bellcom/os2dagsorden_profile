@@ -76,7 +76,7 @@ function _os2web_qbrick_get_movie_id($nid) {
   $url = $search_url . rawurlencode($committee . ' ' . $date);
   $xml = simplexml_load_file($url);
   $movie_id = (string) ($xml->media->item['id']);
-  if (strlen($movie_id) == 8) {
+  if (strlen($movie_id) === 8) {
     return $movie_id;
   }
   else {

@@ -180,7 +180,7 @@ function os2web_audit_log_overview_page_form($form, $form_state) {
 
     $or = NULL;
     while ($user = $users->fetchAssoc()) {
-      if ($or == NULL) {
+      if ($or === NULL) {
         $or = db_or();
       }
       $or->condition('uid', $user['uid'], '=');
@@ -217,7 +217,7 @@ function os2web_audit_log_overview_page_form($form, $form_state) {
 
     $or = NULL;
     while ($node = $nodes->fetchAssoc()) {
-      if ($or == NULL) {
+      if ($or === NULL) {
         $or = db_or();
       }
       $or->condition('nid', $node['nid'], '=');

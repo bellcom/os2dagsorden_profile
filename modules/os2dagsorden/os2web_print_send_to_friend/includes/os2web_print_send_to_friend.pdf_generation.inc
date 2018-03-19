@@ -45,7 +45,7 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
 
   require_once DRUPAL_ROOT . '/' . $pdf_tool[1];
 
-  $format = ($page_orientation == "landscape") ? $paper_size . "-L" : $paper_size;
+  $format = ($page_orientation === "landscape") ? $paper_size . "-L" : $paper_size;
 
   // Set document information.
   $mpdf = new mPDF('UTF-8', $format);
@@ -67,7 +67,7 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
     for ($i = 0; $i < count($meeting->field_os2web_meetings_bullets['und']); $i++) {
       $bp_id = $meeting->field_os2web_meetings_bullets['und'][$i]['target_id'];
 
-      $is_last_bp = ($i == count($meeting->field_os2web_meetings_bullets['und']) - 1);
+      $is_last_bp = ($i === count($meeting->field_os2web_meetings_bullets['und']) - 1);
 
       if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id)) {
         $mpdf = os2web_print_send_to_friend_generate_pdf_bullet_point($bp_id, $mpdf, $is_last_bp, $with_attachments);
@@ -145,7 +145,7 @@ function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting,
 function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id, $mpdf, $is_last_bp, $with_attachments = TRUE) {
   $bullet_point = node_load($bullet_point_id);
 
-  if (strcmp($bullet_point->type, 'os2web_meetings_bullet') == 0) {
+  if (strcmp($bullet_point->type, 'os2web_meetings_bullet') === 0) {
     $mpdf->WriteHtml('<h2>' . $bullet_point->title . '</h2>');
 
     // Eliminating duplicates in bullet points attachments.
@@ -176,7 +176,7 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
       elseif ($with_attachments && $attachment->field_os2web_meetings_bpa_file['und'][0]['fid']) {
         $uri = $attachment->field_os2web_meetings_bpa_file['und'][0]['uri'];
         // Quick check without file loading if the file is PDF.
-        if (strcasecmp(pathinfo($uri, PATHINFO_EXTENSION), 'pdf') == 0) {
+        if (strcasecmp(pathinfo($uri, PATHINFO_EXTENSION), 'pdf') === 0) {
           if (file_exists($uri)) {
             try {
               // Import file and include it into the output.

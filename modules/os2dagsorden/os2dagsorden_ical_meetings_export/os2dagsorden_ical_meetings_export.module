@@ -133,7 +133,7 @@ function _os2dagsorden_ical_meetings_export_month_period_callback($from_month, $
   $nids = array_keys($result['node']);
   $meetings = node_load_multiple($nids);
 
-  $cal_name = ($from_month == 1) ? '1. halvårskalender' : '2. halvårskalender';
+  $cal_name = ($from_month === 1) ? '1. halvårskalender' : '2. halvårskalender';
 
   _os2dagsorden_ical_meetings_export_make_ical($meetings, $cal_name);
 }

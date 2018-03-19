@@ -63,7 +63,7 @@ class AcadrePWS {
     if (!$this->client) {
       $url = variable_get('os2web_pws_url');
       $url = trim($url);
-      if ($url == '') {
+      if ($url === '') {
         drupal_set_message(t('Error, no endpoint url set for v4soap.'), 'error');
       }
       else {
@@ -99,7 +99,7 @@ class AcadrePWS {
     if (!$this->client6) {
       $url = variable_get('os2web_pws_url_v6');
       $url = trim($url);
-      if ($url == '') {
+      if ($url === '') {
         drupal_set_message(t('Error, no endpoint url set for v6.'), 'error');
       }
       else {
@@ -132,7 +132,7 @@ class AcadrePWS {
     if (!$this->clientSearch) {
       $url = variable_get('os2web_pws_url_search');
       $url = trim($url);
-      if ($url == '') {
+      if ($url === '') {
         drupal_set_message(t('Error, no endpoint url set for document search searvice.'), 'error');
       }
       else {

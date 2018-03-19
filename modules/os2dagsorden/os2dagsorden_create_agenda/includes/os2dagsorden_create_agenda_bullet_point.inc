@@ -246,7 +246,7 @@ function os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bu
   if (field_get_items('node', $meeting, 'field_os2web_meetings_bullets')) {
     $bullet_points = field_get_items('node', $meeting, 'field_os2web_meetings_bullets');
     foreach ($bullet_points as $bp) {
-      if ($bp['target_id'] == $bullet_point_id) {
+      if ($bp['target_id'] === $bullet_point_id) {
         // No need to readd.
         return;
       }
@@ -270,7 +270,7 @@ function os2dagsorden_create_agenda_remove_bpa_from_bullet_point($bullet_point_i
   if (field_get_items('node', $bullet_point, 'field_os2web_meetings_attach')) {
     $bpas = field_get_items('node', $bullet_point, 'field_os2web_meetings_attach');
     foreach ($bpas as $key => $bpa) {
-      if ($bpa['target_id'] == $bpa_id) {
+      if ($bpa['target_id'] === $bpa_id) {
         unset($bullet_point->field_os2web_meetings_attach['und'][$key]);
       }
     }
