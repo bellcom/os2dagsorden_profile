@@ -8,6 +8,8 @@
 define('ADLIB_JOBTYPE_PDF', 0);
 define('ADLIB_JOBTYPE_HTML', 1);
 define('ADLIB_DISABLED', !variable_get('os2web_adlib_api_allowed_ip_host', 0));
+define('ADLIB_BASE_PATH', variable_get('os2web_adlib_api_base_path', 'C:\\InetPub\\wwwroot\\'));
+define('ADLIB_DEFAULT_BASE_URL', variable_get('os2web_adlib_api_base_url', 'http://10.1.1.180/'));
 
 
 /**
@@ -18,9 +20,7 @@ define('ADLIB_DISABLED', !variable_get('os2web_adlib_api_allowed_ip_host', 0));
 class AdLibWS {
 
   protected $client;
-  // @CODEREVIEW: This path and url should not be hard-coded.
-  protected static $basePath = 'C:\\InetPub\\wwwroot\\';
-  protected static $baseUrl = 'http://10.1.1.180/';
+  protected static $baseUrl = ADLIB_DEFAULT_BASE_URL;
 
   /**
    * Heuristic to validate url availability.
@@ -115,9 +115,9 @@ class AdLibWS {
 </JOBS>';
     $job_ticket = format_string($job_ticket, array(
       '!infile' => $this->safeFilename($file_info['filename']),
-      '!infolder' => self::$basePath . $file_info['in_folder'],
+      '!infolder' => ADLIB_BASE_PATH . $file_info['in_folder'],
       '!outfile' => $this->safeFilename($file_info['out_filename']),
-      '!outfolder' => self::$basePath . $file_info['out_folder'],
+      '!outfolder' => ADLIB_BASE_PATH . $file_info['out_folder'],
       '!jobtype' => ($type == ADLIB_JOBTYPE_HTML ? 'HTML' : 'PDF'),
     ));
     $result = simplexml_load_string($this->client->addJob(array(

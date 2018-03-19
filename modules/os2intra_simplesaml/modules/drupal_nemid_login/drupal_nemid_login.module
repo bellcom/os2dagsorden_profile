@@ -360,7 +360,5 @@ function _drupal_nemid_login_get_config_object() {
   $config->serviceid = variable_get($variablePrefix . 'serviceid_' . $mode);
   $config->certificateandkey = variable_get($variablePrefix . 'certificateandkey_' . $mode);
   $config->nonceprefix = 'nemid-test-';
-  // Previous settings, don't delete:
-  // $config->certificateandkey_str = variable_get($variablePrefix.'certificate_'.$mode) . variable_get($variablePrefix.'private_key_'.$mode);
   return $config;
 }

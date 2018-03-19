@@ -1,9 +1,12 @@
 <?php
-// @CODEREVIEW: How this script used?
 
 /**
  * @file
  * Os2dagsorden_gs_conversion_resave_all_pdf.
+ *
+ * Script usage:
+ * cd os2dagsorden_profile/modules/os2dagsorden/os2dagsorden_gs_conversion
+ * drush scr os2dagsorden_gs_conversion_resave_all_pdf.php.
  *
  * @author: Stanislav Kutasevits, stan@bellcom.dk
  */

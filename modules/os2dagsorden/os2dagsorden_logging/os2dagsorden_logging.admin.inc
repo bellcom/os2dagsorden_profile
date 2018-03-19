@@ -17,8 +17,7 @@
  *   Settings form.
  */
 function os2dagsorden_logging_settings_settings_form($form, $form_state) {
-  // @CODEREVIEW: What's this ($type_array)?
-  $type_array;
+  $type_array = array();
   $query = db_select('watchdog', 'w')->fields('w', array('type'))->distinct()->orderBy('type', 'ASC');
   $result = $query->execute();
   foreach ($result as $res) {

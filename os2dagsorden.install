@@ -54,8 +54,7 @@ function os2dagsorden_revert_all_features() {
  */
 function os2dagsorden_configure_choose($form, &$form_state) {
   $avaiable_plugins = array(
-    // @CODEREVIEW: Why not use the empty string ('') as "No value" key?
-    0 => '-',
+    0 => t('None'),
     'os2web_acadre_esdh' => 'Acadre',
     'os2web_edoc_esdh' => 'eDoc',
     'os2web_sbsys_esdh' => 'SBSYS',

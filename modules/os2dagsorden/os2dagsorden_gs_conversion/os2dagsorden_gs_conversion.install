@@ -48,3 +48,31 @@ function os2dagsorden_gs_conversion_schema() {
   );
   return $schema;
 }
+
+/**
+ * Implements hook_requirements().
+ */
+function os2dagsorden_gs_conversion_requirements($phase) {
+  if ($phase !== 'runtime') {
+    return array();
+  }
+  $t = get_t();
+
+  $exec = shell_exec(variable_get('os2dagsorden_gs_conversion_gs_path') . ' --version 2>&1');
+  preg_match('/(\d+\.)(\d+)(\.d+)?(\.d+)?/', $exec, $version);
+  $requirements['os2dagsorden_gs_conversion'] = array(
+    'title' => $t('OS2Dagsorden GhostScript conversion'),
+  );
+  $gs_version = array_shift($version);
+
+  if ($gs_version) {
+    $requirements['os2dagsorden_gs_conversion']['severity'] = REQUIREMENT_OK;
+    $requirements['os2dagsorden_gs_conversion']['value'] = t('GhostScript is present on the server, version %ver', array('%ver' => $gs_version));
+  }
+  else {
+    $requirements['os2dagsorden_gs_conversion']['severity'] = REQUIREMENT_ERROR;
+    $requirements['os2dagsorden_gs_conversion']['description'] = t('GhostScript is not found');
+  }
+
+  return $requirements;
+}

@@ -266,7 +266,7 @@ function os2dagsorden_classic_theme_calendar_time_row_heading($vars) {
  *   Form state.
  */
 function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
-  if ($form['#id'] == 'views-exposed-form-meetings-search-page') {
+  if ($form['#id'] === 'views-exposed-form-meetings-search-page') {
     $form['from_date']['value']['#date_format'] = 'd-m-Y';
     $form['to_date']['value']['#date_format'] = 'd-m-Y';
 
@@ -291,7 +291,7 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
     }
   }
   else {
-    if ($form['#id'] == 'user-login-form') {
+    if ($form['#id'] === 'user-login-form') {
       $form['name']['#description'] = "";
       $form['pass']['#description'] = "";
       $form['links']['#markup'] = "";
@@ -377,7 +377,7 @@ function os2dagsorden_classic_theme_hide_menu_on_pages() {
     $pages = variable_get('os2dagsorden_collapse_menu_touch_pages', 'meetings/print');
     $pages = explode(PHP_EOL, $pages);
     foreach ($pages as $page) {
-      if (strcmp($page, current_path()) == 0) {
+      if (strcmp($page, current_path()) === 0) {
         drupal_add_js('hide_side_menu(false);', 'inline');
         return;
       }

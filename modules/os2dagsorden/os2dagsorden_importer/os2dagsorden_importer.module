@@ -1071,13 +1071,13 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     }
 
     // If meeting is to be cancelled, but is not cancelled yet, then cancell it.
-    if ($xml_data['cancelled'] == 1 && strcmp($node->field_os2web_meetings_type[$node->language][0]['value'], 'Aflyst') != 0) {
-      $node->field_os2web_meetings_type['und'][0]['value'] = "Aflyst";
+    if ($xml_data['cancelled'] == 1 && strcmp($node->field_os2web_meetings_type[$node->language][0]['value'], OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_CANCELLED) != 0) {
+      $node->field_os2web_meetings_type['und'][0]['value'] = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_CANCELLED;
     }
     // If meeting is changed, but is not marked as changed then mark is as
     // changed.
-    elseif ($xml_data['changed'] == 1 && strcmp($node->field_os2web_meetings_type[$node->language][0]['value'], 'Planlagt') == 0) {
-      $node->field_os2web_meetings_type['und'][0]['value'] = "Ændret";
+    elseif ($xml_data['changed'] == 1 && strcmp($node->field_os2web_meetings_type[$node->language][0]['value'], OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED) == 0) {
+      $node->field_os2web_meetings_type['und'][0]['value'] = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_CHANGED;
     }
 
     node_submit($node);
@@ -1114,13 +1114,13 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
   $node->field_os2web_meetings_committee[$node->language][0]['tid'] = $tid;
 
   if ($xml_data['cancelled'] == 1) {
-    $node->field_os2web_meetings_type['und'][0]['value'] = "Aflyst";
+    $node->field_os2web_meetings_type['und'][0]['value'] = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_CANCELLED;
   }
   elseif ($xml_data['changed'] == 1) {
-    $node->field_os2web_meetings_type['und'][0]['value'] = "Ændret";
+    $node->field_os2web_meetings_type['und'][0]['value'] = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_CHANGED;
   }
   else {
-    $node->field_os2web_meetings_type['und'][0]['value'] = "Planlagt";
+    $node->field_os2web_meetings_type['und'][0]['value'] = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED;
   }
 
   node_submit($node);
@@ -1171,11 +1171,6 @@ function _os2dagsorden_importer_webservice_url_exists($url = NULL) {
   $data = curl_exec($ch);
   $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
   curl_close($ch);
-  // @CODEREVIEW: Rewrite to return … ? … : …;
-  if ($httpcode >= 200 && $httpcode < 300) {
-    return TRUE;
-  }
-  else {
-    return FALSE;
-  }
+
+  return $httpcode >= 200 && $httpcode < 300;
 }

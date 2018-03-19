@@ -694,20 +694,20 @@ function os2dagsorden_admin_views_unpublished_meetings_form($form, $form_state) 
   $query->join('field_data_field_os2web_meetings_type', 't', 't.entity_id=n.nid');
   if ($referat_committes && $dagsorden_committes) {
     $dagsorden_meetings = db_and()->condition('field_os2web_meetings_committee_tid', $dagsorden_committes, 'IN')
-      ->condition('field_os2web_meetings_type_value', array('Dagsorden', 'Dagsorden_plus'), 'IN');
+      ->condition('field_os2web_meetings_type_value', array(OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN_PLUS), 'IN');
     $referat_meetings = db_and()->condition('field_os2web_meetings_committee_tid', $referat_committes, 'IN')
-      ->condition('field_os2web_meetings_type_value', array('Referat', 'Referat_plus'), 'IN');
+      ->condition('field_os2web_meetings_type_value', array(OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT_PLUS), 'IN');
     $full_condition = db_or()->condition($referat_meetings)->condition($dagsorden_meetings);
   }
   else {
     if ($dagsorden_committes) {
       $full_condition = db_and()->condition('field_os2web_meetings_committee_tid', $dagsorden_committes, 'IN')
-        ->condition('field_os2web_meetings_type_value', array('Dagsorden', 'Dagsorden_plus'), 'IN');
+        ->condition('field_os2web_meetings_type_value', array(OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN_PLUS), 'IN');
     }
     else {
       if ($referat_committes) {
         $full_condition = db_and()->condition('field_os2web_meetings_committee_tid', $referat_committes, 'IN')
-          ->condition('field_os2web_meetings_type_value', array('Referat', 'Referat_plus'), 'IN');
+          ->condition('field_os2web_meetings_type_value', array(OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT_PLUS), 'IN');
       }
     }
   }

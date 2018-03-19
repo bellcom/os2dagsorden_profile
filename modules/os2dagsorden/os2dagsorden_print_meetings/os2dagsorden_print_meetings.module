@@ -198,19 +198,18 @@ function _os2dagsorden_print_meetings_form_submit_2_half($form, &$form_state) {
  *   Generated HTML table.
  */
 function _os2dagsorden_print_meetings_get_table($from_month, $to_month) {
-  $user = os2dagsorden_access_helper_get_user();
+  $to_month_max_days = cal_days_in_month(CAL_GREGORIAN, $to_month, date('Y'));
 
   // Selecting the node of type meetings.
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
-  // Getting published meetings only.
+    // Getting published meetings only.
     ->propertyCondition('status', 1)
     ->propertyCondition('type', array('os2web_meetings_meeting'))
-  // Selecting meetings from the from_month.
+    // Selecting meetings from the from_month.
     ->fieldCondition('field_os2web_meetings_date', 'value', date('Y') . '-' . $from_month . '-01 00:00:00', '>=')
-  // Selecting meetings up to the to_month.
-  // @CODEREVIEW: Not all months have 31 days!
-    ->fieldCondition('field_os2web_meetings_date', 'value', date('Y') . '-' . $to_month . '-31 23:59:59', '<=')
+    // Selecting meetings up to the to_month.
+    ->fieldCondition('field_os2web_meetings_date', 'value', date('Y') . '-' . $to_month . '-' . $to_month_max_days . ' 23:59:59', '<=')
     ->fieldOrderBy('field_os2web_meetings_date', 'value', 'ASC');
   $result = $query->execute();
 
@@ -384,7 +383,7 @@ function _os2dagsorden_print_meetings_mark_weekend_gray($month, $day) {
  *   String with added/not added week number.
  */
 function _os2dagsorden_print_meetings_mark_week_start($month, $day) {
-  if (date('N', mktime(0, 0, 0, $month, $day, date('Y'))) === 1) {
+  if (date('N', mktime(0, 0, 0, $month, $day, date('Y'))) === "1") {
     return '<td class="inside number">' . date('W', mktime(0, 0, 0, $month, $day, date('Y'))) . '</td>';
   }
   else {

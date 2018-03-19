@@ -90,12 +90,6 @@ function _os2dagsorden_acadre_service_importer_webservice_url_exists($url = NULL
   $data = curl_exec($ch);
   $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
   curl_close($ch);
-  // @CODEREVIEW: Should be written as
-  // @CODEREVIEW: return $httpcode >= 200 && $httpcode < 300;
-  if ($httpcode >= 200 && $httpcode < 300) {
-    return TRUE;
-  }
-  else {
-    return FALSE;
-  }
+
+  return $httpcode >= 200 && $httpcode < 300;
 }

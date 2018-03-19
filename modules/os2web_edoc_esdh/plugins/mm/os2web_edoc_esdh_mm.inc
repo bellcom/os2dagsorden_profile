@@ -157,10 +157,10 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 
         // Changing the meeting state to match ESDH Provider module.
         if ($meeting_type === "Referat endeligt godkendt") {
-          $meeting_type = "Referat";
+          $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT;
         }
         else {
-          $meeting_type = "Dagsorden";
+          $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN;
         }
 
         // Saving the meeting data in ESDH Provider format.

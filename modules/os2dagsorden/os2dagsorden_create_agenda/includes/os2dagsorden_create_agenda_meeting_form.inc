@@ -43,14 +43,14 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#title' => t('Status:'),
     '#required' => TRUE,
     '#options' => array(
-      'Planlagt' => t('Planlagt'),
-      'Ændret' => t('Ændret'),
-      'Aflyst' => t('Aflyst'),
-      'Referat' => t('Referat'),
-      'Dagsorden' => t('Dagsorden'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED => t('Planlagt'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_CHANGED => t('Ændret'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_CANCELLED => t('Aflyst'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT => t('Referat'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN => t('Dagsorden'),
     ),
     '#multiple' => FALSE,
-    '#default_value' => 'Planlagt',
+    '#default_value' => OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED,
   );
   $form['hex_color'] = array(
     '#type' => 'jquery_colorpicker',

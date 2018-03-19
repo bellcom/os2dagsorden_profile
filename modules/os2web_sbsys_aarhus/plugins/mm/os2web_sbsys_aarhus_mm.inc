@@ -124,7 +124,7 @@ function os2web_sbsys_aarhus_mm_import_meeting($meeting) {
       $members = $manifest->xpath("Agendas/Agenda/Meeting/Members/MeetingMember");
 
       // Type is not set in XML - always use Dagsorden.
-      $meeting_type = 'Dagsorden';
+      $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN;
 
       $committee_name = (string) $committee_name[0];
       $meeting_date_when = $meeting_data[0]->When;
@@ -380,7 +380,7 @@ function _os2web_sbsys_aarhus_mm_import_meeting_agenda_item($meeting, SimpleXMLE
     if ($history['body'] !== '') {
       // If this is a Referat, put the history in before the beslutning element.
       // Else just put in the buttom of the list.
-      if ($meeting['type'] === 'Referat') {
+      if ($meeting['type'] === OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT) {
         foreach ($item['bullets'] as $key => $bullet) {
           if ($bullet['title'] === 'Beslutning') {
             array_splice($item['bullets'], $key, 0, array($history));

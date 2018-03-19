@@ -167,10 +167,10 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           $meeting_type_xpath = $agenda_manifest->xpath('/Root/edoc:OutputTypeEnumName');
           $meeting_type = (string) array_shift($meeting_type_xpath);
           if (strcasecmp($meeting_type, 'Minute') === 0) {
-            $meeting_type = 'Referat';
+            $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT;
           }
           else {
-            $meeting_type = 'Dagsorden';
+            $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN;
           }
 
           $agenda_access = 'Lukket';

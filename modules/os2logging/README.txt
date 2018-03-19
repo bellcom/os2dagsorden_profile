@@ -37,3 +37,6 @@ $my_module_name = basename(__FILE__, '.module');
 
 3) On monolog setup page '/admin/config/development/monolog/profile' add a new profile. Profile name is you module name.
 4) Add a handlers to you profile.
+
+5) Example usage:
+watchdog('mytype', 'TEST', NULL, WATCHDOG_INFO, NULL);.

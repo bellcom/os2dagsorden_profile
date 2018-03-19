@@ -15,7 +15,6 @@
  */
 
 define('ACADRE_MM_IMPORT_DIR', 'private://');
-// @CODEREVIEW: Shouldn't this be a configurable site setting?
 define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
 
 /**
@@ -34,8 +33,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
 
   $info_path = drupal_get_path('profile', 'os2dagsorden') . '/os2dagsorden.info';
   $info = drupal_parse_info_file($info_path);
-  // @CODEREVIEW: Double quotes (") should be single quotes (').
-  $version = (isset($info["version"])) ? $info["version"] : 'no version';
+  $version = (isset($info['version'])) ? $info['version'] : 'no version';
 
   $form['os2dagsorden_version_text'] = array(
     '#type' => 'item',
@@ -785,6 +783,21 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('pdf2html_rendering_path', ''),
       '#description' => t('Relative path for HTML files to be rendered by os2dagsorden_pdf2htmlEX module. If empty, the path with the original PDF files will be used.<br/><b>Important!</b> You will need to create the path yourself.'),
       '#element_validate' => array('_os2dagsorden_pdf2html_rendering_path_validate'),
+    );
+  }
+
+  if (module_exists('os2dagsorden_gs_conversion')) {
+    $form['os2dagsorden_gs_conversion_settings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('GhostScript (GS) converter settings'),
+    );
+    $form['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_gs_path'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Path to GhostScript (GS)'),
+      '#description' => t('Local path to GhostScript (GS)'),
+      '#default_value' => variable_get('os2dagsorden_gs_conversion_gs_path', ""),
     );
   }
 
@@ -1567,6 +1580,10 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     if (module_exists('os2dagsorden_pdf2htmlex')) {
       variable_set('os2dagsorden_pdf2htmlex_path', $setting_array['os2dagsorden_pdf2htmlex_settings']['os2dagsorden_pdf2htmlex_path']);
       variable_set('pdf2html_rendering_path', $setting_array['os2dagsorden_pdf2htmlex_settings']['pdf2html_rendering_path']);
+    }
+
+    if (module_exists('os2dagsorden_gs_conversion')) {
+      variable_set('os2dagsorden_gs_conversion_gs_path', $setting_array['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_gs_path']);
     }
 
     variable_set('os2dagsorden_show_meeting_category', $setting_array['os2dagsorden_political_organizational_settings']['os2dagsorden_show_meeting_category']);

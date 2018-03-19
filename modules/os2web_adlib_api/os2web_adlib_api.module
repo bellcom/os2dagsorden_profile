@@ -59,6 +59,19 @@ function os2web_adlib_api_form_os2web_settings_settings_form_alter(&$form, &$for
     '#title' => 'Enable AdLib conversion from this site!',
     '#default_value' => variable_get('os2web_adlib_api_allowed_ip_host', 0),
   );
+
+  $form['os2web_adlib_api_config_group']['os2web_adlib_api_base_path'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Adlib service base path',
+    '#default_value' => variable_get('os2web_adlib_api_base_path', 'C:\\InetPub\\wwwroot\\'),
+  );
+
+  $form['os2web_adlib_api_config_group']['os2web_adlib_api_base_url'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Adlib service base URL',
+    '#default_value' => variable_get('os2web_adlib_api_base_url', 'http://10.1.1.180/'),
+  );
+
 }
 
 /**

@@ -118,11 +118,11 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
           break;
 
         case '1':
-          $meeting_type = 'Dagsorden';
+          $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN;
           break;
 
         case '2':
-          $meeting_type = 'Referat';
+          $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT;
           break;
       }
 
@@ -385,7 +385,7 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLEle
     if ($history['body'] !== '') {
       // If this is a Referat, put the history in before the beslutning element.
       // Else just put in the buttom of the list.
-      if ($meeting['type'] === 'Referat') {
+      if ($meeting['type'] === OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT) {
         foreach ($item['bullets'] as $key => $bullet) {
           if ($bullet['title'] === 'Beslutning') {
             array_splice($item['bullets'], $key, 0, array($history));

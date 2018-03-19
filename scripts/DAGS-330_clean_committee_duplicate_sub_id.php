@@ -1,12 +1,10 @@
 <?php
-// @CODEREVIEW: How are we supposed to use this script?
-// @CODEREVIEW: Could it be a Drush command?
 
 /**
  * https://os2web.atlassian.net/browse/DAGS-330
  * @author: Stanislav Kutasevits, stan@bellcom.dk
  *
- * This script will loop through all of the committeers taxonomy terms and remove the duplicates in field: field_os2web_meetings_com_subid
+ * This script will loop through all of the committees taxonomy terms and remove the duplicates in field: field_os2web_meetings_com_subid
  *
  * Example,
  *
@@ -15,6 +13,10 @@
  *
  * term after running script:
  * Afsluttede Børnefagligt Forum, field_os2web_meetings_com_subid: [1,2,50]
+ *
+ * Script usage:
+ * cd os2dagsorden_profile/scripts
+ * drush scr DAGS-330_clean_committee_duplicate_sub_id.php
  **/
 $time_start = microtime(TRUE);
 print('==========================' . PHP_EOL);

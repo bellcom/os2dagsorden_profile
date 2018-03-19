@@ -187,9 +187,9 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
           $reason = 'MM_REPUBLISH_SUBVERSION';
         }
       }
-      elseif ($meeting['type'] === 'Referat' &&
-        ($node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Dagsorden' ||
-          $node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Dagsorden_plus')
+      elseif ($meeting['type'] === OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT &&
+        ($node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN ||
+          $node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN_PLUS)
       ) {
         // Republish if current meeting is of type Referat.
         // This means that the one already exist is a Dagsorden.

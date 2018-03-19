@@ -10,10 +10,10 @@
  *
  * Processes the committees xml. Delegates to create committees.
  *
- * @param mixed $xml_file
- *   Xml file.
+ * @param array $committees_rows
+ *   Array of committees.
  */
-function _os2dagsorden_acadre_service_importer_process_committees($xml_file) {
+function _os2dagsorden_acadre_service_importer_process_committees(array $committees_rows) {
   $vid = db_select('taxonomy_vocabulary', 'tv')
     ->fields('tv', array('vid'))
     ->condition('machine_name', 'os2web_meetings_tax_committee')
@@ -27,8 +27,7 @@ function _os2dagsorden_acadre_service_importer_process_committees($xml_file) {
     taxonomy_term_save($term);
   }
 
-  // @CODEREVIEW: Is $xml_file always an array (or iterable)? If so, use "array" as type in @param and give it a better name (it's not a file).
-  foreach ($xml_file as $row) {
+  foreach ($committees_rows as $row) {
     $xml_data = array(
       'sub_id' => (string) $row->Id,
       'committee_name' => (string) $row->Name,
@@ -44,13 +43,13 @@ function _os2dagsorden_acadre_service_importer_process_committees($xml_file) {
 /**
  * Helper function. Creates/updates the committee.
  *
- * @param mixed $xml_data
+ * @param array $xml_data
  *   Xml data.
  *
  * @return int
  *   The id of created/updated entry.
  */
-function os2dagsorden_acadre_service_importer_create_committee($xml_data, $vid) {
+function os2dagsorden_acadre_service_importer_create_committee(array $xml_data, $vid) {
   // Getting committee by sub ID.
   $term = _os2dagsorden_access_helper_get_committee_by_subid_and_name($xml_data['sub_id'], $xml_data['committee_name']);
 
@@ -73,7 +72,6 @@ function os2dagsorden_acadre_service_importer_create_committee($xml_data, $vid) 
   }
 
   // See if we need to enable term or its parent.
-  // @CODEREVIEW: $xml_data is declared as having type "mixed", but is (used) as an array.
   if ($xml_data['state'] === 'Aktivt' && $xml_data['active'] === 'true') {
     $parents = taxonomy_get_parents($term->tid);
     if (empty($parents)) {

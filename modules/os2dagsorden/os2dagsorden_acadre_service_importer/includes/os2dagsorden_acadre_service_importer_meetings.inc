@@ -59,8 +59,7 @@ function _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $tid) {
     $node->type = "os2web_meetings_meeting";
     $node->language = LANGUAGE_NONE;
     node_object_prepare($node);
-    // @CODEREVIEW: Consider using a constant rather than the string 'Planlagt'
-    $node->field_os2web_meetings_type[$node->language][0]['value'] = 'Planlagt';
+    $node->field_os2web_meetings_type[$node->language][0]['value'] = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED;
     // Meeting found, loading existing one.
   }
   else {
@@ -71,7 +70,7 @@ function _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $tid) {
   // Changing params only if status is Planlagt, which is either a freshly
   // created meeting or the one importerted before - we don't care.
   // It's safe to update those values.
-  if ($node->field_os2web_meetings_type[$node->language][0]['value'] === 'Planlagt') {
+  if ($node->field_os2web_meetings_type[$node->language][0]['value'] === OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED) {
     $node->title = $xml_data['title'];
     $node->field_os2web_meetings_id[$node->language][0]['value'] = $xml_data['meeting_id'];
     $node->field_os2web_meetings_abbr[$node->language][0]['value'] = $xml_data['title'];

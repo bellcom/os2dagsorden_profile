@@ -305,7 +305,7 @@ function _os2web_acadre_esdh_import_meeting($info) {
     // Type:
     switch ($info['type']) {
       case 1:
-        $meeting['type'] = 'Dagsorden';
+        $meeting['type'] = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN;
         break;
 
       case 2:

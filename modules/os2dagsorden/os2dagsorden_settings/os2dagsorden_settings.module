@@ -164,6 +164,10 @@ function os2dagsorden_settings_export_to_file() {
     $setting_array['os2dagsorden_pdf2htmlex_settings']['pdf2html_rendering_path'] = variable_get('pdf2html_rendering_path', '');
   }
 
+  if (module_exists('os2dagsorden_gs_conversion')) {
+    $setting_array['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_gs_path'] = variable_get('os2dagsorden_gs_conversion_gs_path', "");
+  }
+
   $setting_array['os2dagsorden_political_organizational_settings']['os2dagsorden_show_meeting_category'] = variable_get('os2dagsorden_show_meeting_category');
   $setting_array['os2dagsorden_political_organizational_settings']['os2dagsorden_user_default_meeting_category'] = variable_get('os2dagsorden_user_default_meeting_category', 'pol');
 
@@ -228,7 +232,6 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name'] = variable_get('os2dagsorden_meeting_view_calendar_short_name');
 
   print os2dagsorden_settings_write_ini_file($setting_array, TRUE);
-  print $content;
 }
 
 /**
