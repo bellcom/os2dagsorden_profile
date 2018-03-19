@@ -310,16 +310,24 @@ function os2dagsorden_access_helper_node_save($node) {
 
       if ($send_notification && $days_since_meeting_date < variable_get('os2dagsorden_send_timespan_of_notification', 10)) {
         // Send the email to involved people
+        $uids = array();
+
+        // Premeeting member of.
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'user')
+          ->fieldCondition('field_user_premeeting_committee', 'tid', $committee_id, '=');
+        $result = $query->execute();
+        if (isset($result['user'])) {
+          $uids = array_keys($result['user']);
+        }
+
         // medlem.
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'user')
           ->fieldCondition('field_user_committee', 'tid', $committee_id, '=');
         $result = $query->execute();
-
-        $uids = array();
-
         if (isset($result['user'])) {
-          $uids = array_keys($result['user']);
+          $uids = array_merge($uids, array_keys($result['user']));
         }
 
         // follow++.
