@@ -149,14 +149,12 @@ function os2dasorden_admin_suite_add_committee_to_users() {
     ->execute();
   $users = user_load_multiple(array_keys($result['user']));
 
-  // $add_to_user = array("cksi", "jmhr", "ldkl", "anmc", "pst",	"joth");.
   $add_to_user = array("crb", "casc", "clst", "gepe", "hlbc", "hdl", "idva", "lsej", "lec", "lkda", "loal", "lost", "mb", "mkbd", "nnbs",
     "pib", "siro", "ski", "sole", "susp", "trsj", "vrt", "ahrjc", "capo", "giso", "havh", "jrst", "jp", "llv", "mico", "rjen", "aj", "anlt", "birth",
     "doaje", "jda", "jvh", "juel", "kbau", "lrl", "liwh", "lispb", "ld", "msv", "npth", "nmp", "pisk", "sibr", "stsa", "trmd", "toh", "anej", "bci",
     "bd", "bab", "bsl", "biwn", "cfj", "iso", "kbn", "krb", "krvj", "lehen", "malth", "nidj", "kal", "kbay",
   );
 
-  // $committees_to_add = array(558, 560, 559);.
   $committee_to_add = 558;
 
   foreach ($users as $user) {
@@ -248,7 +246,6 @@ function os2dagsorden_admin_suite_user_remove_org_meetings_category() {
     }
     if ($changed) {
       print("CHANGED");
-      // user_save($user);
     }
     else {
       print("NOT CHANGED");
@@ -264,7 +261,6 @@ function os2dagsorden_admin_suite_user_remove_org_meetings_category() {
 function os2dagsorden_admin_suite_update_meetings_sysid() {
   $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
   foreach ($meetings as $meeting_id) {
-    // print_r($meeting_id);
     $meeting_versions = os2web_esdh_provider_invoke('mm', 'import_meeting', $meeting_id);
     foreach ($meeting_versions as $meeting_version) {
       // Trying to get meeting from id.
@@ -322,9 +318,7 @@ function os2dagsorden_admin_suite_update_meetings_sysid() {
       // Updating acadre versions.
       if (isset($node->field_meeting_acadre_version['und'])) {
         foreach ($node->field_meeting_acadre_version['und'] as $field) {
-          // print_r($field);
-          // print_r($meeting_version['acadre_version']);
-          if (strcmp($field['value'], $meeting_version['acadre_version']) == 0) {
+          if (strcmp($field['value'], $meeting_version['acadre_version']) === 0) {
             $contains_acadre_version = TRUE;
             break;
           }
@@ -337,7 +331,6 @@ function os2dagsorden_admin_suite_update_meetings_sysid() {
 
       print_r("Found nid: " . $node->nid);
       print_r("<br/>");
-      // print_r($node);
       print_r("<br/>");
 
       node_save($node);
@@ -371,7 +364,6 @@ function os2dagsorden_admin_suite_resaved_all_meetings() {
       $meeting->field_os2web_meetings_committee['und'][0]['tid'] = $new_com_id;
       print('<br/>NEW COM ID: ');
       print($meeting->field_os2web_meetings_committee['und'][0]['tid']);
-      // node_save($meeting);
     }
   }
 
@@ -573,22 +565,7 @@ function os2dagsorden_admin_suite_delete_unused_files() {
           unlink($acadre_dir . '/' . $dir . '/' . $file);
         }
       }
-      /*
-
-      print_r('not pdf files: ');
-      print_r($not_pdf_files);
-      print_r("<br/>");
-      print_r('pdf files: ');
-      print_r($pdf_files);
-      print_r("<br/>");
-      print_r('to be deleted: ');
-      print_r($files_to_delete);
-      print_r("<br/>");
-      print_r("<br/>");
-      print_r("<br/>");
-       */
     }
-    // If ($count>=100) return;.
   }
 }
 
@@ -728,7 +705,6 @@ function os2dagsorden_admin_suite_set_bullet_point_number() {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
     ->propertyCondition('type', array('os2web_meetings_bullet'))
-        // ->fieldCondition('field_os2web_meetings_bul_case', 'value', '')
     ->range(0, 1000);
 
   $result = $query->execute();
@@ -748,7 +724,6 @@ function os2dagsorden_admin_suite_set_bullet_point_number() {
         $cut = mb_substr($title, $pos_of_1_brac + 1, $pos_of_2_brac - $pos_of_1_brac - 1);
         print(' CUT: ' . $cut);
         print("<br/>");
-        // , mb_strpos($cut,' '));.
         $case_nr = mb_substr($cut, 0);
         print('CASE NR: ' . $case_nr);
         print("<br/>");
@@ -943,8 +918,6 @@ function os2dasorden_admin_suite_reschedule_file_adlib() {
   $query->entityCondition('entity_type', 'node')
     ->propertyCondition('type', array('os2web_meetings_bullet_attach'))
     ->fieldCondition('field_os2web_meetings_bpa_file', 'fid', '', '!=');
-  // ->fieldCondition('field_os2web_meetings_bpa_html', 'fid', NULL)
-  // ->range(0,2000);.
   $result = $query->execute();
 
   if (isset($result['node'])) {
@@ -957,7 +930,6 @@ function os2dasorden_admin_suite_reschedule_file_adlib() {
           print("<br/>");
           print($file->filemime . ' ' . $file->fid . ' ' . $bullet->nid);
           if ($file->fid) {
-            // os2web_adlib_api_convert_to_pdf($file->fid);.
           }
         }
       }

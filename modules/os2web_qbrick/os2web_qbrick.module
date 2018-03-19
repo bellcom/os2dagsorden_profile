@@ -73,9 +73,6 @@ function _os2web_qbrick_get_movie_id($nid) {
   $committee = taxonomy_term_load($node->field_os2web_meetings_committee[$node->language][0]['tid']);
   $committee = _os2web_qbrick_safedk($committee->name);
   $date = format_date(strtotime($node->field_os2web_meetings_date[$node->language][0]['value']), 'custom', 'dmY', $node->field_os2web_meetings_date[$node->language][0]['timezone']);
-  // $html.=$committee . ' ' . $date;
-  // $html.='
-  // ' . print_r($node, 1);.
   $url = $search_url . rawurlencode($committee . ' ' . $date);
   $xml = simplexml_load_file($url);
   $movie_id = (string) ($xml->media->item['id']);

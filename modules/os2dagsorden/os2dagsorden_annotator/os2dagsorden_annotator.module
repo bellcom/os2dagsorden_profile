@@ -242,7 +242,6 @@ function _os2dagsorden_annotator_search() {
     ->condition('uid', $user->uid, '=')
     ->condition('bilag_id', $_GET['bilag_id'], '=')
     ->condition('bullet_point_id', $_GET['bullet_point_id'], '=')
-  // ->condition('meeting_id', $meeting_id,'=')
     ->condition($meeting_nid_or)
     ->execute();
 
@@ -654,7 +653,6 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
 
   // Help icon.
   $html = '<div class="node">';
-  // . '<div class="help-button" aria-label=""></div>'.
   $html .= '<div id="content" class="view-content">';
 
   $potential_meetings = os2dagsorden_access_helper_get_meeting_and_tillaegs_meetings($meeting_id);

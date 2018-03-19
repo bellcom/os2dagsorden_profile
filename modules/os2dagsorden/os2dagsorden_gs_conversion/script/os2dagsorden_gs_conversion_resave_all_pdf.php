@@ -22,7 +22,6 @@ foreach ($result as $file) {
   file_save($file);
 }
 
-// os2dagsorden_gs_conversion_convert();
 print('==========================' . PHP_EOL);
 print('Finished os2dagsorden_gs_conversion_resave_all_pdf.php' . PHP_EOL);
 print('Total execution time: ' . (microtime(TRUE) - $time_start) . ' seconds' . PHP_EOL);

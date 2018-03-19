@@ -117,7 +117,6 @@ function os2dagsorden_statistics_user_statistics_by_year($year = NULL) {
   $rows = array();
 
   foreach ($result as $key => $row) {
-    // $row->login_timestamp = date('d-m-Y H:i:s', $row->timestamp);.
     $rows[$key]['uid'] = $row->uid;
     $rows[$key]['name'] = $row->name;
     $rows[$key]["login_timestamp"] = date('d-m-Y H:i:s', $row->login_timestamp);
@@ -200,7 +199,6 @@ function os2dagsorden_statistics_content_statistics_by_year($year = NULL) {
   $rows = array();
 
   foreach ($result as $key => $row) {
-    // $row->login_timestamp = date('d-m-Y H:i:s', $row->timestamp);.
     $rows[$key]['title'] = l($row->title, '/node/' . $row->nid);
     $rows[$key]['created'] = date('d-m-Y H:i:s', $row->created);
     $rows[$key]["changed"] = date('d-m-Y H:i:s', $row->changed);
@@ -257,7 +255,6 @@ function os2dagsorden_statistics_content_views_search_form($form, $form_state) {
   drupal_add_css(drupal_get_path('module', 'os2dagsorden_statistics') . '/css/os2dagsorden_statistics.css');
   drupal_set_title(t('Udvidet statistik på brug af OS2dagsorden'));
   $headers = array(
-    // array('data' => t('')),.
     'Title' => array('data' => t('Title')),
     'Committee' => array('data' => t('Committee'), 'field' => 'name'),
     'Views' => array(
@@ -341,7 +338,6 @@ function os2dagsorden_statistics_content_views_search_form($form, $form_state) {
     $options[$key] = array(
       'Title' => l($title, $row->url),
       'Committee' => $row->name,
-     // "Date" => date('d-m-Y H:i:s', $row->timestamp)
       'Views' => l($row->views_count, $link),
     );
   }

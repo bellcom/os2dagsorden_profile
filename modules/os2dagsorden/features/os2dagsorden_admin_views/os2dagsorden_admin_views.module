@@ -233,7 +233,6 @@ function theme_os2dagsorden_admin_views_taxonomy_overview_terms($variables) {
       $term = & $form[$key];
       $term_full = taxonomy_term_load($term['#term']['tid']);
       $term_full->key = $key;
-      // print_r($term_full);
       if (isset($my_terms_list[$term['#term']['parent']])) {
         $my_terms_list[$term['#term']['parent']]['children'][$term['#term']['tid']] = (array) $term_full;
       }
@@ -506,7 +505,6 @@ function os2dagsorden_admin_views_import_committes_from_file($form, &$form_state
       }
       $term = _os2dagsorden_admin_views_create_committee_term($committee, $vid, $weight);
       $weight++;
-      // var_dump($term);
       if (isset($committee->ArrayOfChildrenCommittee->Committee)) {
         $child_weight = 0;
         foreach ($committee->ArrayOfChildrenCommittee->Committee as $child_committee) {

@@ -161,7 +161,6 @@ function os2dagsorden_updatedb_run($form, &$form_state) {
   }
   $list = os2dagsorden_updatedb_check($form, $form_state);
   if (!empty($list)) {
-    // dsm($list);
     foreach ($list as $module_name => $item) {
       module_load_include('module', $module_name);
 
@@ -226,41 +225,3 @@ function os2dagsorden_updatedb_update_7210() {
     ->execute();
 
 }
-
-/**
- * Test - setting os2dagsorden version to 2.20.
- *
- * Function os2dagsorden_updatedb_update_7220() {
- * $num_updated = db_update('variable')
- * ->fields(array(
- * 'value' => serialize(2.20),
- * ))
- * ->condition('name', 'os2dagsorden_version_no', '=')
- * ->execute();
- *
- * }
- * /**
- * Test - setting os2dagsorden version to 2.30.
- *
- * function os2dagsorden_updatedb_update_7230() {
- * $num_updated = db_update('variable')
- * ->fields(array(
- * 'value' => serialize(2.30),
- * ))
- * ->condition('name', 'os2dagsorden_version_no', '=')
- * ->execute();
- *
- * }
- *
- * /**
- * Test - setting os2dagsorden version to 3.34.
- *
- * function os2dagsorden_updatedb_update_7334() {
- * $num_updated = db_update('variable') // Table name no longer needs {}
- * ->fields(array(
- * 'value' => serialize(3.34),
- * ))
- * ->condition('name', 'os2dagsorden_version_no', '=')
- * ->execute();
- *
-}*/

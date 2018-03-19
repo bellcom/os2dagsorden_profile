@@ -233,7 +233,6 @@ function _os2web_acadre_esdh_import_meeting($info) {
       'publication_id' => _get_value_from_xml($xml->xpath("//table[@name='agenda']/fields/field[@name='sysid']")),
       'creation_date' => strtotime(_get_value_from_xml($xml->xpath("//table[@name='agenda']/fields/field[@name='producedate']"))),
       'description' => $description,
-      // _get_value_from_xml($xml->xpath("//table[@name='agenda']/fields/field[@name='name']")),.
       'meeting_date_start' => _get_value_from_xml($xml->xpath("//table[@name='meeting']/fields/field[@name='date']")),
       'meeting_date_finish' => _get_value_from_xml($xml->xpath("//table[@name='meeting']/fields/field[@name='finish']")),
       'committee' => $committee,
@@ -373,7 +372,6 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
   $name = _get_value_from_xml($xml->xpath("fields/field[@name='name']"));
   $access = _get_value_from_xml($xml->xpath("fields/field[@name='accessname']"));
   $case = _get_value_from_xml($xml->xpath("fields/field[@name='caseno']"));
-  // $case_id = _get_value_from_xml($xml->xpath("table/table/fields/field[@name='sysid']"));.
   $sysid = _get_value_from_xml($xml->xpath("fields/field[@name='sysid']"), 'int');
   $comname = _get_value_from_xml($xml->xpath("fields/field[@name='comname']"));
 
@@ -675,14 +673,11 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
         if ($addendum_to != $primary->nid) {
           $node->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
           node_save($node);
-          // $node_to_access = node_load($node->nid);
-          // node_access_acquire_grants($node_to_access);
         }
       }
       else {
         error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
         error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: wanted to delete $node->nid");
-        // node_delete($node->nid);.
       }
       // Remove node from final nids_with_addendums.
       unset($nids_with_addendums[$node->nid]);

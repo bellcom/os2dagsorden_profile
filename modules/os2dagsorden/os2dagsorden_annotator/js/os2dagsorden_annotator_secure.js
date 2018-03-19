@@ -1,8 +1,6 @@
 function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter) {
   jQuery(document).ready(function() {
-          	//"use strict";
 		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Touch', {
-			//force: location.search.indexOf('force') > -1,
 			force: 1,
 			useHighlighter: location.search.indexOf('highlighter') > -1
 		});
@@ -41,7 +39,6 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
                 '</div>'
             );
             jQuery('body .annotator-touch-controls.dummy-controls').click(function(e) {
-                //console.log('clicked');
                 e.preventDefault();
                 if (jQuery("#ToolTipDiv2").css('display') != 'block') {
                   jQuery("#ToolTipDiv2").html("Marker tekst og klik herefter på Lav note").fadeIn(400);

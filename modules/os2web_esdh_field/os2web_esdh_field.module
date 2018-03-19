@@ -165,7 +165,6 @@ function os2web_esdh_field_field_formatter_view($entity_type, $entity, $field, $
         if ($item['os2web_esdh_field_case_ident']) {
           $cases = array();
           $ids = explode(',', $item['os2web_esdh_field_case_ident']);
-          // error_log("Var: \$ids = " . print_r($ids, 1));.
           foreach ($ids as $id) {
             $cases[] = trim($id);
           }

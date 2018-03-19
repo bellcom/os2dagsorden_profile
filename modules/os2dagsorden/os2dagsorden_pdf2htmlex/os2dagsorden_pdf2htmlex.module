@@ -153,7 +153,6 @@ function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
       ->fields(array(
         'fid' => $fid,
         'did' => $did,
-      // 'created_filepath' => $file_path,.
         'filename' => NULL,
         'progress' => NULL,
       ))
@@ -237,7 +236,6 @@ function os2dagsorden_pdf2htmlex_cron() {
     $filename = array_pop($file_path_real);
     $acadre_dir = array_pop($file_path_real);
 
-    // $path = 'private://' . $acadre_dir . '/' . $filename ;.
     $path = $record['created_filepath'];
 
     // Is set.

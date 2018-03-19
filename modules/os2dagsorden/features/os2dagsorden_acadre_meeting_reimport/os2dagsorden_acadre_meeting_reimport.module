@@ -123,6 +123,5 @@ function os2dagsorden_acadre_meeting_reimport_import_finished($success, $results
   }
   else {
     drupal_set_message('Error has occured during meeting reimport, please contact site administrator');
-    // $error_operation = reset($operations);
   }
 }

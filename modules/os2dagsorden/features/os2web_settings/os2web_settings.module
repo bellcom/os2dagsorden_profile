@@ -72,7 +72,6 @@ function os2web_settings_start_form_submit(&$form, &$form_state) {
     'finished' => 'os2web_settings_langfix_finished',
   );
   foreach ($fields as $field) {
-    // $batch['operations'][] = array('os2web_settings_langfix_process', array('revision', $field));.
     $batch['operations'][] = array('os2web_settings_langfix_process',
       array('data', $field),
     );

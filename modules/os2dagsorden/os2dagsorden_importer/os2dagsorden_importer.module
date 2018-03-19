@@ -74,8 +74,6 @@ function _os2dagsorden_importer_form_submit(&$form_state, $form) {
  * Link fallback. Fires all the imports.
  */
 function os2dagsorden_importer_sync() {
-  // os2dagsorden_importer_import_user_committees_improved();
-  // os2dagsorden_importer_import_user_committees();
   os2dagsorden_importer_import_committees();
   os2dagsorden_importer_import_meetings();
 }
@@ -464,7 +462,6 @@ function _os2dagsorden_importer_process_user_committees_delete($xml_file) {
 
     // User MemberOf Committee.
     $result = $xml_file->xpath('//Row[MemberInitials="' . $user->name . '"]');
-    // var_dump($result);
     foreach ($result as $xml_data) {
       $userSystemID[] = (int) array_shift($xml_data->xpath('SystemID'));
       $com_term = _os2dagsorden_importer_get_committee_by_id((int) array_shift($xml_data->xpath('GroupID')));

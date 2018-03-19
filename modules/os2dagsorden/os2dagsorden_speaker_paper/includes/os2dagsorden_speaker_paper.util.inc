@@ -112,8 +112,6 @@ function _os2dagsorden_speaker_paper_send_message($uid, $node) {
   );
   $system = drupal_mail_system("os2dagsorden_speaker_paper", "");
 
-  // The format function must be called before calling the mail function.
-  // $message = $system->format($message);
   $system->mail($message);
 
   // Setting the database entry about sent email.

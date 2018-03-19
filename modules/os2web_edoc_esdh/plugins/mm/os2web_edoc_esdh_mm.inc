@@ -127,8 +127,6 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
         // Collecting agenda data.
         $committee_xpath = $manifest->xpath("/Meeting/Committee");
         $committee = (string) array_shift($committee_xpath);
-        // $ref_state_xpath = $manifest->xpath("/Meeting/MeetingState");
-        // $ref_state = (string) array_shift($ref_state_xpath);
         $meeting_date_xpath = $manifest->xpath("/Meeting/MeetingDate");
         $meeting_date = (string) array_shift($meeting_date_xpath);
         // Generated meeting_id.
@@ -149,8 +147,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
           $agenda_access = 'Åben';
         }
 
-        // Collecting agenda items
-        // $manifest->xpath("/Meeting/MeetingAgendaTypes/MeetingAgendaType/MeetingAgendaItems");.
+        // Collecting agenda items.
         $meeting_agendas_items = $meeting_agenda->xpath('MeetingAgendaItems');
 
         // Fix dates.
@@ -371,7 +368,6 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElem
           $xml_item['pdf'],
         )),
         'title' => variable_get('os2web_edoc_esdh_empty_bullet_title', 'Indhold') . "_" . $xml_item['number'],
-        // 'sysid' => 'bilag_' . $xml_item['documentid'],.
         'sysid' => $xml_item['documentid'],
         'access' => TRUE,
         'filetype' => '.pdf',
@@ -392,7 +388,6 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLElem
               $enclosure_item['filename_in'],
             )),
             'title' => trim((string) $bullet_xml->Title),
-                // 'sysid' => 'bilag_' . $bullet_id,.
             'sysid' => $bullet_id,
             'access' => TRUE,
             'filetype' => '.pdf',
@@ -453,7 +448,6 @@ function _os2web_edoc_esdh_mm_order_addenums($drush = FALSE) {
     return;
   }
   $nodes = $nodes_result['node'];
-  // error_log(print_r($nodes, 1));
   // Load necessary fields into the node object.
   $fields = field_info_instances('node', 'meeting');
   field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_addendum']['field_id']));

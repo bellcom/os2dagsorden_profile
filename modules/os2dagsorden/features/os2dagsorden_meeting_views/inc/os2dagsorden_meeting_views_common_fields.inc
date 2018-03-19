@@ -99,7 +99,6 @@ function os2dagsorden_meeting_views_common_meeting_title_listed($data) {
   $committee = taxonomy_term_load($data->_field_data['nid']['entity']->field_os2web_meetings_committee['und'][0]['tid']);
   // If (variable_get('os2dagsorden_use_abbr', TRUE) && isset($data->_field_data['nid']['entity']->field_os2web_meetings_abbr['und']) && !empty($data->_field_data['nid']['entity']->field_os2web_meetings_abbr['und'][0]['value']))
   if (variable_get('os2dagsorden_use_abbr', TRUE) && isset($committee->field_os2web_meetings_com_shname['und']) && !empty($committee->field_os2web_meetings_com_shname['und'][0]['value'])) {
-    // $data->_field_data['nid']['entity']->field_os2web_meetings_abbr['und'][0]['value'];.
     $title = $committee->field_os2web_meetings_com_shname['und'][0]['value'];
   }
   else {

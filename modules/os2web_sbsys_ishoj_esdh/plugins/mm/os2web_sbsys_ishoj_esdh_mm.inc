@@ -65,7 +65,6 @@ function os2web_sbsys_ishoj_esdh_mm_get_import_list() {
  *   The string sanitised.
  */
 function utf8_for_xml($string) {
-  // $replace_me = "&#xC;";.
   $replace_me = variable_get('os2web_sbsys_ishoj_esdh_banned_special_char');
   $str_new = str_replace($replace_me, "", $string);
   return $str_new;
@@ -90,7 +89,6 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
   if ($real_path !== FALSE && is_file($real_path)) {
     libxml_use_internal_errors(TRUE);
     $manifest = simplexml_load_string(utf8_for_xml(file_get_contents($real_path)), 'SimpleXMLElement', LIBXML_NOCDATA);
-    // print_r($manifest);
     libxml_clear_errors();
     libxml_use_internal_errors(FALSE);
 
@@ -212,7 +210,6 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
       if (empty($meeting_agendas)) {
         watchdog('SBsys MM', 'Empty list of import items in %file.', array('%file' => $file), WATCHDOG_WARNING);
       }
-      // Foreach ($meeting_agendas as $meeting_agenda) {.
       $imported = _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda($meeting, $meeting_agendas);
       if (is_array($imported)) {
         $imported['publish'] = TRUE;
@@ -271,7 +268,6 @@ function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda_item($meeting, Simple
   $xml_item = array();
   $xml_item['id'] = (string) $xml->attributes()->DagsordenpunktID;
   $xml_item['number'] = (string) $xml->attributes()->Nummer;
-  // $xml_item['pdf'] = (string) $xml->PDFDocument;.
   $xml_item_document = $xml->Bilagsliste;
   $xml_item_bullet = $xml->Indhold;
   $xml_item['name'] = (string) $xml->attributes()->Nummer . '. ' . $xml->Overskrift;
@@ -299,7 +295,6 @@ function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda_item($meeting, Simple
       $item['bullets'][] = array(
         'title' => (string) $title,
         'body' => (string) $body,
-        // 'sysid' => (string) $bullet_xml['ID'],.
       );
     }
 
@@ -419,7 +414,6 @@ function _os2web_sbsys_ishoj_esdh_mm_order_addenums($drush = FALSE) {
       else {
         error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
         error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: wanted to delete $node->nid");
-        // node_delete($node->nid);.
       }
       // Remove node from final nids_with_addendums.
       unset($nids_with_addendums[$node->nid]);

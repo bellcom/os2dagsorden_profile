@@ -231,8 +231,6 @@ function os2web_adlib_api_status() {
     drupal_goto('admin/config/os2web/adlibstatus');
   }
   if (isset($_GET['process'])) {
-    // _os2web_adlib_api_do_processing();
-    // drupal_goto('admin/config/os2web/adlibstatus');
     // Add set up queue for adlib processing.
     $batch = array(
       'operations' => array(),
@@ -362,13 +360,6 @@ function os2web_adlib_api_cron_queue_info() {
 }
 
 /**
- * Implements hook_init().
- */
-function os2web_adlib_api_init() {
-  // _os2web_adlib_api_process_pdf(1);.
-}
-
-/**
  * Converts a fid to html and injects into nid body field.
  *
  * @param int $fid
@@ -419,7 +410,6 @@ function os2web_adlib_api_convert_to_pdf($fid, $docref = NULL) {
       '%fid' => $fid,
       '%file' => $file->filename,
     ), WATCHDOG_WARNING);
-    // file_delete($file);
     return FALSE;
   }
   if (_os2web_adlib_api_is_filetype_approved($fid)) {

@@ -235,8 +235,6 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     $node->type = "os2web_meetings_meeting";
     $node->language = LANGUAGE_NONE;
     $node->uid = 1;
-    // If unpublished
-    // if ($unpublished_status == 1)
     node_object_prepare($node);
     if (strlen($meeting['title']) >= 255) {
       $node->title = mb_substr($meeting['title'], 0, 250) . '...';
@@ -456,7 +454,6 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     // If unpublished.
     if ($node->status == 0) {
       global $base_url;
-      // variable_get('os2dagsorden_meeting_unpublished_state_emails', '');.
       $committee_id = $node->field_os2web_meetings_committee['und'][0]['tid'];
       $status = $node->field_os2web_meetings_type['und'][0]['value'];
       $target_email = _os2web_esdh_provider_meeting_unpublished_state_emails($committee_id, $status);
@@ -889,8 +886,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
     _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($file->fid);
   }
 
-  // Schedule for PDF conversion
-  // $convert = FALSE; // DEBUG.
+  // Schedule for PDF conversion.
   if ($convert && module_exists('os2web_adlib_api')) {
     drupal_load('module', 'os2web_adlib_api');
     os2web_adlib_api_convert_to_pdf($file->fid);
@@ -1144,15 +1140,10 @@ function _os2web_esdh_provider_sanetize_filename($filename) {
     $filename = transliteration_clean_filename($filename);
   }
   else {
-    // Replace whitespace.
-    // $filename = str_replace(' ', '_', $filename);
     // Remove remaining unsafe characters.
-    // $filename = preg_replace('![^0-9A-Za-z_.- ]!', '', $filename);.
     $filename = preg_replace('![/"]!', '-', $filename);
     // Remove multiple consecutive non-alphabetical characters.
     $filename = preg_replace('/(_)_+|(\.)\.+|(-)-+/', '\\1\\2\\3', $filename);
-    // Force lowercase to prevent issues on case-insensitive file systems.
-    // $filename = strtolower($filename);
   }
   $pi = pathinfo($filename);
   if (isset($pi['extension'])) {

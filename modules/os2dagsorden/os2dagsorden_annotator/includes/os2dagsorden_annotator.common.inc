@@ -122,7 +122,6 @@ function os2dagsorden_annotator_get_notes_by_meeting_id($meeting_id) {
       $note_arr->id = $record['id'];
       $note_arr->bilag_id = $record['bilag_id'];
       $note_arr->bullet_point_id = $record['bullet_point_id'];
-      // $record['meeting_id'];.
       $note_arr->meeting_id = $meeting_id;
 
       $note_arr->user = $user->name;
@@ -190,7 +189,6 @@ function os2dagsorden_annotator_update_notes_attachment($old_attachment_nid, $ne
       $doc->loadHTML($bpa_body);
       $path = _os2dagsorden_annotator_find_path($doc, $first_word);
       $path = str_replace('/html/body/', '/div/', $path);
-      // $path = str_replace('/','\/',$path);
       // ranges.
       $text = strip_tags($bpa_body);
       $text = trim($text);

@@ -21,8 +21,6 @@ const IMPORT_STATUS_DELETED = "Deleted";
  *   Agenda array.
  */
 function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
-  // drupal_set_message("MANIFEST: " . print_r($manifest,1));
-  // drupal_set_message("AGENDA: " . print_r($agenda,1));.
   $status = IMPORT_STATUS_SCHEDULED;
   if ($nid) {
     $status = IMPORT_STATUS_IMPORTED;

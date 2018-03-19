@@ -178,7 +178,6 @@ function os2web_sbsys_aarhus_mm_import_meeting($meeting) {
         'participants_cancellation' => $participants_cancellation,
       );
 
-      // var_dump($meeting);
       /* stan@bellcom.dk 06.10 - importing multiple agendas */
       $meeting_agendas = array();
       foreach ($manifest->xpath("/Publication/Agendas/Agenda") as $agenda_instance) {
@@ -354,7 +353,6 @@ function _os2web_sbsys_aarhus_mm_import_meeting_agenda_item($meeting, SimpleXMLE
       $body = _os2web_sbsys_aarhus_mm_improve_html((string) $bullet_xml->Content, $meeting['uri'] . 'Images/');
       $item['bullets'][] = array(
         'title' => !empty($bullet_xml->Caption) ? (string) $bullet_xml->Caption : 'Indhold',
-      // (string) $bullet_xml->Content,.
         'body' => $body,
         'sysid' => (string) $bullet_xml['ID'],
         'images' => $images,
@@ -559,7 +557,6 @@ function _os2web_sbsys_aarhus_mm_order_addenums($drush = FALSE) {
       else {
         error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
         error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: wanted to delete $node->nid");
-        // node_delete($node->nid);.
       }
       // Remove node from final nids_with_addendums.
       unset($nids_with_addendums[$node->nid]);

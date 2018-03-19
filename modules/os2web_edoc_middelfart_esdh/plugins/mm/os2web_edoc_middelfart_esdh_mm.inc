@@ -207,8 +207,6 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
             'meeting_type' => $meeting_type,
             'type' => $meeting_type,
             'meeting_state' => $meeting_type,
-            // 'meeting_pdf' => $meeting_pdf,
-            // 'acadre_version' => $acadre_version,.
             'agenda_xml' => $agenda_real_path,
             'agenda_access' => $agenda_access,
           );
@@ -309,8 +307,6 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
   $neutralTitle_xpath = $xml->xpath('edoc:HandlingItem/edoc:NeutralTitle');
   $xml_item['name'] = (string) array_shift($neutralTitle_xpath);
 
-  // $xml_item['document_type'] = (string) $xml_item_document->PublishingType;
-  // $xml_item['agenda_type'] = (string) $meeting->AgendaType;.
   $identifier_xpath = $xml->xpath('edoc:HandlingItem/edoc:Identifier');
   $xml_item['documentid'] = (string) array_shift($identifier_xpath);
   $accessIsPublic_xpath = $xml->xpath('edoc:AccessIsPublic');
@@ -334,13 +330,6 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
     'access' => $xml_item['access'],
     'bullets' => array(),
     'enclosures' => array(),
-  // 'doc' => array(
-  // 'uri' => implode('/', array(
-  // trim($meeting['uri'], "/"),
-  // $xml_item['pdf']
-  // )),
-  // 'title' => $xml_item['name'],
-  // ),.
   );
 
   if ($item['access'] !== 'Lukket' || variable_get('os2web_edoc_middelfart_esdh_import_closed_agenda', FALSE)) {
@@ -437,7 +426,6 @@ function _os2web_edoc_middelfart_esdh_mm_order_addenums($drush = FALSE) {
     return;
   }
   $nodes = $nodes_result['node'];
-  // error_log(print_r($nodes, 1));
   // Load necessary fields into the node object.
   $fields = field_info_instances('node', 'meeting');
   field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_addendum']['field_id']));

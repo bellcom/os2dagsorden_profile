@@ -46,7 +46,6 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
   );
 
   $form['calendar_pref'] = array(
-    // '#access' => user_access('administer os2web', $full_user),.
     '#type' => 'checkboxes',
     '#field_prefix' => t('Which types of meetings should user see in the calendar'),
     '#options' => array(
