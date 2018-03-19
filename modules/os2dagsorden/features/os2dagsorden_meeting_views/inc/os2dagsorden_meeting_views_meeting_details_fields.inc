@@ -47,7 +47,8 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   $meeting_id = $q[1];
 
   // User has no access to agenda.
-  if (!os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id)) {
+  $meeting = node_load($meeting_id);
+  if (!node_access('view', $meeting)) {
     return;
   }
 
@@ -67,7 +68,6 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
 
   if (os2dagsorden_access_helper_check_pdf_download_enabled()) {
     // Closed version - if not empty.
-    $meeting = node_load($meeting_id);
     $user_can_see_personal_agendas = os2dagsorden_access_helper_check_user_can_see_personal_agenda($meeting->nid);
     $user_can_see_closed_agendas = os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid);
 
@@ -433,7 +433,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_print_all_speaker_pap
 }
 
 /**
- * Wrapper for os2dagsorden_access_helper_check_user_can_see_meeting_agenda.
+ * Wrapper for node_access.
  *
  * @return bool
  *   If user has access to agenda.
@@ -443,7 +443,8 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
   $q = explode('/', $q);
   $meeting_id = $q[1];
 
-  return os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id);
+  $meeting = node_load($meeting_id);
+  return node_access('view', $meeting);
 }
 
 /**

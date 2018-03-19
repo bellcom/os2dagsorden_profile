@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_fields_and_content_types.features.field_base.inc
@@ -20,6 +19,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
       0 => 'node',
     ),
     'field_name' => 'body',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -213,6 +215,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_os2web_meetings_sp_shar_gr',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -441,6 +446,37 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'text',
+  );
+
+  // Exported field_base: 'field_user_premeeting_committee'.
+  $field_bases['field_user_premeeting_committee'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_user_premeeting_committee',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'taxonomy',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'os2web_meetings_tax_committee',
+          'parent' => 0,
+          'depth' => '',
+        ),
+      ),
+      'options_list_callback' => 'content_taxonomy_allowed_values',
+    ),
+    'translatable' => 0,
+    'type' => 'taxonomy_term_reference',
   );
 
   // Exported field_base: 'field_user_sp_groups'.

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_fields_and_content_types.features.field_instance.inc
@@ -275,7 +274,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 5,
+      'weight' => 8,
     ),
   );
 
@@ -319,7 +318,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 6,
+      'weight' => 9,
     ),
   );
 
@@ -363,7 +362,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 9,
+      'weight' => 13,
     ),
   );
 
@@ -410,7 +409,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 7,
+      'weight' => 10,
     ),
   );
 
@@ -458,7 +457,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -502,7 +501,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 3,
+      'weight' => 6,
     ),
   );
 
@@ -546,7 +545,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 12,
+      'weight' => 16,
     ),
   );
 
@@ -656,7 +655,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 10,
+      'weight' => 15,
     ),
   );
 
@@ -707,7 +706,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 8,
+      'weight' => 12,
     ),
   );
 
@@ -758,6 +757,43 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_user_premeeting_committee'.
+  $field_instances['user-user-field_user_premeeting_committee'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 20,
+      ),
+      'os2dagsorden_users_select' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_premeeting_committee',
+    'label' => 'Premeeting committee',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_user_sp_groups'.
   $field_instances['user-user-field_user_sp_groups'] = array(
     'bundle' => 'user',
@@ -791,7 +827,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 13,
+      'weight' => 17,
     ),
   );
 
@@ -810,6 +846,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('Is part of Committee');
   t('Meeting category');
   t('Organization');
+  t('Premeeting committee');
   t('Rediger tekst');
   t('Ref Bullet point');
   t('Speaker paper groups');

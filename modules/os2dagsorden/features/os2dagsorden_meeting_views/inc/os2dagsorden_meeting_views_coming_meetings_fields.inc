@@ -84,3 +84,16 @@ function os2dagsorden_meeting_views_coming_meetings_fields_meeting_location($mee
 function os2dagsorden_meeting_views_coming_meetings_filter_in_my_list($tid) {
   return os2dagsorden_meeting_views_common_filter_in_my_list($tid);
 }
+
+/**
+ * Filter function to show only relevant meetings.
+ *
+ * @param int $meeting_id
+ *   Nid of the meeting.
+ *
+ * @return bool
+ *   False is user has access, true if user does not have access.
+ */
+function os2dagsorden_meeting_views_coming_meetings_filter_meeting($meeting_id) {
+  return os2dagsorden_meeting_views_common_filter_meeting($meeting_id);
+}

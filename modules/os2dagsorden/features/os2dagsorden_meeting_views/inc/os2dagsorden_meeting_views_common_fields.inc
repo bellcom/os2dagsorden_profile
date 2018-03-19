@@ -185,46 +185,48 @@ function os2dagsorden_meeting_views_common_bullet_point_has_sp($bp_id) {
  *   True is missing, false is present.
  */
 function os2dagsorden_meeting_views_common_filter_in_my_list($tid) {
-  $user = os2dagsorden_access_helper_get_user();
   // Checking user rights.
   if (!os2dagsorden_access_helper_check_user_can_see_meeting('', $tid)) {
     return TRUE;
   }
+  // Is part of the premeeting in committee.
+  if (in_array($tid, os2dagsorden_access_helper_get_user_premeeting_member_of_committees())) {
+    return FALSE;
+  }
+
   // Is part of the committee.
-  if (!empty($user->field_user_committee)) {
-    foreach ($user->field_user_committee['und'] as $user_committee_id) {
-      if ($tid == $user_committee_id['tid']) {
-        return FALSE;
-      }
-    }
+  if (in_array($tid, os2dagsorden_access_helper_get_user_member_of_committees())) {
+    return FALSE;
   }
 
   // Follows committee.
-  if (!empty($user->field_follows_committee)) {
-    foreach ($user->field_follows_committee['und'] as $user_committee_id) {
-      if ($tid == $user_committee_id['tid']) {
-        return FALSE;
-      }
-    }
+  if (in_array($tid, os2dagsorden_access_helper_get_user_follow_committees())) {
+    return FALSE;
   }
 
   // Follows committee PLUS.
-  if (!empty($user->field_follows_committee_plus)) {
-    foreach ($user->field_follows_committee_plus['und'] as $user_committee_id) {
-      if ($tid == $user_committee_id['tid']) {
-        return FALSE;
-      }
-    }
+  if (in_array($tid, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
+    return FALSE;
   }
 
   // Follow committee PLUS PLUS.
-  if (!empty($user->field_follows_committee_pp)) {
-    foreach ($user->field_follows_committee_pp['und'] as $user_committee_id) {
-      if ($tid == $user_committee_id['tid']) {
-        return FALSE;
-      }
-    }
+  if (in_array($tid, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+    return FALSE;
   }
 
   return TRUE;
+}
+
+/**
+ * Decides whether user has view access to the following node.
+ *
+ * @param int $meeting_id
+ *   Id of the meeting.
+ *
+ * @return bool
+ *   False is user has access, true if user does not have access.
+ */
+function os2dagsorden_meeting_views_common_filter_meeting($meeting_id) {
+  $meeting = node_load($meeting_id);
+  return !node_access('view', $meeting);
 }

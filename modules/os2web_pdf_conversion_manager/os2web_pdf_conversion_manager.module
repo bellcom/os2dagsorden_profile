@@ -736,7 +736,10 @@ function _os2web_pdf_conversion_manager_set_status_published_plus($node) {
       $meeting = reset(entity_load('node', $nids));
 
       if (os2dagsorden_access_helper_meeting_fully_converted($meeting)) {
-        if (strcmp($meeting->field_os2web_meetings_type['und'][0]['value'], 'Dagsorden') == 0) {
+        if (strcmp($meeting->field_os2web_meetings_type['und'][0]['value'], 'Premeeting') == 0) {
+          $meeting->field_os2web_meetings_type['und'][0]['value'] = "Premeeting_plus";
+        }
+        elseif (strcmp($meeting->field_os2web_meetings_type['und'][0]['value'], 'Dagsorden') == 0) {
           $meeting->field_os2web_meetings_type['und'][0]['value'] = "Dagsorden_plus";
         }
         elseif (strcmp($meeting->field_os2web_meetings_type['und'][0]['value'], 'Referat') == 0) {

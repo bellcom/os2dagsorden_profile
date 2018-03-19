@@ -624,7 +624,7 @@ function os2dagsorden_settings_get_quide_link() {
 /**
  * Implements custom submit function for theme settings form.
  *
- * @param mixed $element
+ * @param mixed $form
  *   The form element.
  * @param mixed $form_state
  *   The state of form.

@@ -303,8 +303,17 @@ function _os2web_acadre_esdh_import_meeting($info) {
       );
     }
 
-    // Type:
+    // Getting type.
+    // If agenda_name is Formoøde, it means we are dealing with Premeeting.
+    if ($meeting['agenda_name'] == 'Formøde') {
+      $info['type'] = 0;
+    }
+
     switch ($info['type']) {
+      case 0:
+        $meeting['type'] = 'Premeeting';
+        break;
+
       case 1:
         $meeting['type'] = 'Dagsorden';
         break;

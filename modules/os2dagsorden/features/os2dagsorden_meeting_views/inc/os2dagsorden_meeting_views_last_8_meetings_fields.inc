@@ -201,3 +201,16 @@ function os2dagsorden_meeting_views_last_8_meetings_filter_in_my_list($tid) {
 function os2dagsorden_meeting_views_last_8_meetings_all_meetings_filter_in_my_list($tid) {
   return !os2dagsorden_access_helper_check_user_can_see_meeting(NULL, $tid);
 }
+
+/**
+ * Decides whether user has view access to the following node.
+ *
+ * @param int $meeting_id
+ *   Id of the meeting.
+ *
+ * @return bool
+ *   False is user has access, true if user does not have access.
+ */
+function os2dagsorden_meeting_views_last_8_meetings_filter_meeting($meeting_id) {
+  return os2dagsorden_meeting_views_common_filter_meeting($meeting_id);
+}
