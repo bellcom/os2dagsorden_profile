@@ -43,7 +43,7 @@ function os2dagsorden_token_login_init() {
   if ($_SESSION['token_login']) {
     $allowed_paths = variable_get('os2dagsorden_token_login_allowed_paths', '<front>');
     $current_path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
-    if (!drupal_match_path($current_path, $allowed_paths)) {
+    if ($current_path !== 'logout' && !drupal_match_path($current_path, $allowed_paths)) {
       drupal_goto('<front>');
     }
   }
