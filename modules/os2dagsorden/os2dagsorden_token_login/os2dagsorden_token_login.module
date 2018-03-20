@@ -33,7 +33,7 @@ function os2dagsorden_token_login_init() {
           user_login_submit(array(), $form_state);
           // Saving a flag that this user logged in via token.
           $_SESSION['token_login'] = TRUE;
-          return TRUE;
+          drupal_goto('<front>');
         }
       }
     }
