@@ -227,6 +227,9 @@ function os2dagsorden_settings_export_to_file() {
 
   $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name'] = variable_get('os2dagsorden_meeting_view_calendar_short_name');
 
+  $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_ip_whitelist'] = variable_get('os2dagsorden_token_login_ip_whitelist');
+  $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_allowed_paths'] = variable_get('os2dagsorden_token_login_allowed_paths', '<front>');
+
   print os2dagsorden_settings_write_ini_file($setting_array, TRUE);
   print $content;
 }

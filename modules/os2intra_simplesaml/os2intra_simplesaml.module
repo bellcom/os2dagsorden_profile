@@ -186,32 +186,47 @@ function os2intra_simplesaml_user_login(&$edit, $account) {
  */
 function os2intra_simplesaml_init() {
   // Do not run this from CLI.
-  // Only proceed if user is NOT logged in and is NOT using drush uli for admin user.
+  // Only proceed if user is NOT logged in and is NOT using drush uli for admin.
   if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
-    $custom_ips = explode(',', variable_get('os2intra_simplesaml_redirected_ips'));
-    $remote_ip = ip_address();
-
     if (variable_get('os2intra_simplesaml_simplesaml_enable')) {
-      foreach ($custom_ips as $custom_ip) {
-        // If we the client request is from one of the IP's, login using SimpleSAMLphp; otherwise use nemid login.
-        // If check for only parts of the ip address.
+      $simplesaml_redirect = FALSE;
+      $redirected_ips = variable_get('os2intra_simplesaml_redirected_ips');
+
+      if (empty($redirected_ips)) {
+        // No redirect IPs set, then redirect for all IPs.
+        $simplesaml_redirect = TRUE;
+      }
+      else {
+        $custom_ips = explode(',', $redirected_ips);
+        $remote_ip = ip_address();
+
+        // If the client request is from one of the IP's, login using
+        // SimpleSAMLphp; otherwise use nemid login.
+        //
+        // Check performed on parts of the ip address.
         // This makes it possible to add only the beginning of the IP range.
-        // F.ex. 192.168 will allow all ip adresses including 192.168 as part of the io.
-        if (strpos($remote_ip, $custom_ip) !== FALSE) {
-          if (!in_array($_GET['q'], array(
-            'saml_login',
-            'user/logout',
-            'user/login',
-            'logout',
-          ))
-          ) {
-            if (module_exists('simplesamlphp_auth')) {
-              // Loading the Simplesamlphp autoloader.
-              require_once variable_get('simplesamlphp_auth_installdir') . '/lib/_autoload.php';
-              $as = new SimpleSAML_Auth_Simple(variable_get('simplesamlphp_auth_authsource'));
-              $as->requireAuth();
-            }
+        // F.ex. 192.168 will allow all ip addresses including 192.168 as part
+        // of the it.
+        foreach ($custom_ips as $custom_ip) {
+          if (strpos($remote_ip, $custom_ip) !== FALSE) {
+            $simplesaml_redirect = TRUE;
+            break;
           }
+        }
+      }
+
+      if ($simplesaml_redirect && module_exists('simplesamlphp_auth')) {
+        $non_redirect_paths = array(
+          'saml_login',
+          'user/logout',
+          'user/login',
+          'logout',
+        );
+        if (!in_array($_GET['q'], $non_redirect_paths)) {
+          // Loading the Simplesamlphp autoloader.
+          require_once variable_get('simplesamlphp_auth_installdir') . '/lib/_autoload.php';
+          $as = new SimpleSAML_Auth_Simple(variable_get('simplesamlphp_auth_authsource'));
+          $as->requireAuth();
         }
       }
     }

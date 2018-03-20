@@ -659,6 +659,46 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_user_login_token'.
+  $field_instances['user-user-field_user_login_token'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 21,
+      ),
+      'os2dagsorden_users_select' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_login_token',
+    'label' => 'Login token',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 18,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_user_meetings_category'.
   $field_instances['user-user-field_user_meetings_category'] = array(
     'bundle' => 'user',
@@ -844,6 +884,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('Full name');
   t('ID');
   t('Is part of Committee');
+  t('Login token');
   t('Meeting category');
   t('Organization');
   t('Premeeting committee');
