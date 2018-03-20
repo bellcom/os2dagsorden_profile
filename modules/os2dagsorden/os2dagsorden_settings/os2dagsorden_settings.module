@@ -189,7 +189,8 @@ function os2dagsorden_settings_export_to_file() {
     $setting_array['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_v_acadregroups_url'] = variable_get('os2dagsorden_pws_v_acadregroups_url');
   }
 
-  // @CODEREVIEW: Shoudn't the default texts (e.g. "Her vises de kommende 5 møder i …") be translatable?
+  // The text below are not translatable because those values are already
+  // changeable by the settings in os2dagsorden_settings.admin.inc.
   $setting_array['os2dagsorden_help_text_placeholder']['os2dagsorden_upcoming_meetings_help_text'] = variable_get('os2dagsorden_upcoming_meetings_help_text', 'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til Dagsorden eller Dagsorden+.');
   $setting_array['os2dagsorden_help_text_placeholder']['os2dagsorden_meetings_search_help_text'] = variable_get('os2dagsorden_meetings_search_help_text', 'Her vises de møder der indeholdt møder, punkter eller bilag der matchede dine søgekriterier. Søgeresultatet vises på mødeniveau i listen.');
   $setting_array['os2dagsorden_help_text_placeholder']['os2dagsorden_meetings_search_block_help_text'] = variable_get('os2dagsorden_meetings_search_block_help_text', 'Her kan der søges i dagsordenspunkters tekst og i bilagenes fritekst, hvis sidstnævnte er konverteret til html. Søgning kan filtreres via dato, udvalg og søgeord.');

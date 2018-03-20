@@ -197,7 +197,8 @@ function os2dagsorden_gs_conversion_convert_single($fid, $uri) {
  *   The PDF version.
  */
 function os2dagsorden_gs_conversion_get_pdf_version($uri) {
-  // @CODEREVIEW: Why is the locale set here?
+  // There was multiple problem with accessing files with Danish chars on some
+  // servers. Adding this line removes those problems
   setlocale(LC_CTYPE, "en_DK.UTF-8");
   $file_path_real = drupal_realpath($uri);
   $shell_file_path_real = escapeshellarg($file_path_real);
