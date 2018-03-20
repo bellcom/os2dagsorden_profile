@@ -405,8 +405,7 @@ table .bullet-point-print-link-container {
 .attachment-text thead,
 .attachment-text tr,
 .attachment-text th,
-.attachment-text td
-
-border: 1px solid black;
+.attachment-text td {
+  border: 1px solid black;
 }
 /* ---------------------------- Meeting details attachment text END ---------------------------- */
