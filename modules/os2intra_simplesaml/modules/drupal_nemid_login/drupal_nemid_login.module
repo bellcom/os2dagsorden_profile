@@ -207,7 +207,7 @@ function _drupal_nemid_login_verify() {
     $response = base64_decode($_POST['response']);
 
     if (isset($errorcodes[$response])) {
-      drupal_set_message(t($errorcodes[$response]['description']), 'error');
+      drupal_set_message(t($errorcodes[$response]['description']), 'error'); // @codingStandardsIgnoreLine
       $_SESSION['nemid_login'] = array();
       $_SESSION['nemid_login']['errors'] = $errorcodes[$response];
 
