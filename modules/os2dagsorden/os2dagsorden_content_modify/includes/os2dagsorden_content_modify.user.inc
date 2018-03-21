@@ -86,6 +86,18 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
     '#description' => t('Hvilke roller tilsættes til brugeren'),
   );
 
+  if (module_exists('os2dagsorden_token_login')) {
+    $form['token_login'] = array(
+      '#access' => (user_access('administer users')),
+      '#type' => 'textfield',
+      '#title' => t('Token login value:'),
+      '#size' => 60,
+      '#maxlength' => 128,
+      '#description' => t('This is the token that can be used instead of the username/password combinations.'),
+    );
+  }
+
+
   if (!user_access('administer os2web')) {
     $form['user_roles']['administrator++']['#disabled'] = TRUE;
   }
@@ -454,6 +466,11 @@ function _os2dagsorden_conten_modify_load_user_fields(&$form, $uid) {
     $form['calendar_pref']['#default_value'] = $selection;
   }
 
+  if (field_get_items('user', $user, 'field_user_login_token')) {
+    $token_login_field = array_pop(field_get_items('user', $user, 'field_user_login_token'));
+    $form['token_login']['#default_value'] = $token_login_field['value'];
+  }
+
   $form['user_roles']['#default_value'] = $user->roles;
 }
 
@@ -571,6 +588,9 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
         }
       }
     }
+
+    // User to token field.
+    $user->field_user_login_token['und'][0]['value'] = $token_login;
 
     // os2dagsorden limited role.
     $user_roles_saved = $user->roles;
