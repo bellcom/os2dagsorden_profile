@@ -100,7 +100,6 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
     );
   }
 
-
   if (!user_access('administer os2web')) {
     $form['user_roles']['administrator++']['#disabled'] = TRUE;
   }

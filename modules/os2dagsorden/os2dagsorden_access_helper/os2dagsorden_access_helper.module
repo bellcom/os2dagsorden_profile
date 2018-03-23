@@ -309,7 +309,7 @@ function os2dagsorden_access_helper_node_save($node) {
       $days_since_meeting_date = (time() - strtotime($node->field_os2web_meetings_date['und'][0]['value'])) / 60 / 60 / 24;
 
       if ($send_notification && $days_since_meeting_date < variable_get('os2dagsorden_send_timespan_of_notification', 10)) {
-        // Send the email to involved people
+        // Send the email to involved people.
         $uids = array();
 
         // Premeeting member of.

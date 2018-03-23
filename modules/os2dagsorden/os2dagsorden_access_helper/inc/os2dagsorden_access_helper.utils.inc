@@ -258,7 +258,6 @@ function os2dagsorden_access_helper_get_user_sp_groups($uid = NULL) {
   return $tids;
 }
 
-
 /**
  * Checks if the bullet point is actually part of the meeting (or any of its additional meetings).
  *
@@ -696,7 +695,6 @@ function _os2dagsorden_access_helper_check_user_is_committee_admin($meeting_type
   }
   return FALSE;
 }
-
 
 /**
  * Checks if the PDF download is available on this installation for user with that IP address.

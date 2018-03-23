@@ -64,7 +64,6 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
     return FALSE;
   }
 
-
   if (is_object($meeting)) {
     $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
 
