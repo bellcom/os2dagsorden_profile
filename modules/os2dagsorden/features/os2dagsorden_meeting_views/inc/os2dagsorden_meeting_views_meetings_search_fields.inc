@@ -256,3 +256,16 @@ function os2dagsorden_meeting_views_meetings_search_fields_status($meeting_id) {
     print $options['settings']['allowed_values'][$meeting_type[0]['value']];
   }
 }
+
+/**
+ * Filter function to show only relevant meetings.
+ *
+ * @param int $meeting_id
+ *   Nid of the meeting.
+ *
+ * @return bool
+ *   False is user has access, true if user does not have access.
+ */
+function os2dagsorden_meeting_views_meetings_search_filter_meeting($meeting_id) {
+  return os2dagsorden_meeting_views_common_filter_meeting($meeting_id);
+}

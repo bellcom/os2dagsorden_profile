@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_fields_and_content_types.features.inc

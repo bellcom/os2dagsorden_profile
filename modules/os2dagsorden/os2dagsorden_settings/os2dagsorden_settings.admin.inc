@@ -1257,6 +1257,29 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether a committee short name will used instead of meeting name in the calendar view'),
     '#default_value' => variable_get('os2dagsorden_meeting_view_calendar_short_name', FALSE),
   );
+
+  // Token login settings.
+  if (module_exists('os2dagsorden_token_login')) {
+    $form['os2dagsorden_token_login_settings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('Token login settings'),
+    );
+    $form['os2dagsorden_token_login_settings']['os2dagsorden_token_login_ip_whitelist'] = array(
+      '#type' => 'textfield',
+      '#title' => t('IP whitelist'),
+      '#description' => t('Comma separated list of IP that can login via the token login. Partial IPs can be used'),
+      '#default_value' => variable_get('os2dagsorden_token_login_ip_whitelist'),
+    );
+    $form['os2dagsorden_token_login_settings']['os2dagsorden_token_login_allowed_paths'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Allowed paths'),
+      '#description' => t('List paths that can be accessed after logging in with token. Each path must be on single line. Leave empty to not restrict any paths.'),
+      '#default_value' => variable_get('os2dagsorden_token_login_allowed_paths', '<front>'),
+    );
+  }
+
   // Sort items alphabetically.
   ksort($form);
   return system_settings_form($form);
@@ -1647,5 +1670,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_title_meeting_new_speaker_paper', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper']);
 
     variable_set('os2dagsorden_meeting_view_calendar_short_name', $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name']);
+
+    variable_set('os2dagsorden_token_login_ip_whitelist', $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_ip_whitelist']);
+    variable_set('os2dagsorden_token_login_allowed_paths', $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_allowed_paths']);
   }
 }

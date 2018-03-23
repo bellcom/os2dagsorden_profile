@@ -77,7 +77,8 @@ function os2dagsorden_meetings_calendar_view_fields_filter_by_meeting_category($
  *   True if filtered out, false otherwise.
  */
 function os2dagsorden_meetings_calendar_view_fields_filter_for_os2dagsorden_limited($meeting_id) {
-  return !os2dagsorden_access_helper_check_user_can_see_meeting($meeting_id);
+  $meeting = node_load($meeting_id);
+  return !node_access('view', $meeting);
 }
 
 /**

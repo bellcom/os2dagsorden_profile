@@ -18,6 +18,17 @@ function os2dagsorden_front_page_views_user_follows_committees_help_text() {
 function os2dagsorden_front_page_views_user_follows_committees_fields_print_committees() {
   $full_user = os2dagsorden_access_helper_get_user();
   $output_list = array();
+
+  if (isset($full_user->field_user_premeeting_committee['und'])) {
+    $term_list = $full_user->field_user_premeeting_committee['und'];
+    foreach ($term_list as $com) {
+      $output_list[$com['tid']] = array(
+        'tid' => $com['tid'],
+        'fleld' => 'c_premeeting',
+      );
+    }
+  }
+
   if (isset($full_user->field_follows_committee_pp['und'])) {
     $term_list = $full_user->field_follows_committee_pp['und'];
     foreach ($term_list as $com) {
@@ -63,8 +74,11 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
       else {
         $link = $com_term->name;
       }
-      if ($com['field'] === 'c_plus') {
-        $link .= '<b>++</b>';
+      if ($com['field'] == 'c_premeeting') {
+        $link = '[' . t('Formøde') . '] ' . $link;
+      }
+      elseif ($com['field'] == 'c_plus') {
+        $link .= '<b>+</b>';
       }
       elseif ($com['field'] === 'c_pp') {
         $link .= '<b>++</b>';

@@ -89,6 +89,18 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
     '#description' => t('Hvilke roller tilsættes til brugeren'),
   );
 
+  if (module_exists('os2dagsorden_token_login')) {
+    $form['token_login'] = array(
+      '#access' => (user_access('administer users')),
+      '#type' => 'textfield',
+      '#title' => t('Token login value:'),
+      '#size' => 60,
+      '#maxlength' => 128,
+      '#description' => t('This is the token that can be used instead of the username/password combinations.'),
+    );
+  }
+
+
   if (!user_access('administer os2web')) {
     $form['user_roles']['administrator++']['#disabled'] = TRUE;
   }
@@ -140,6 +152,18 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     '#markup' => "<div class=\"select-committee {$single_or_batch_class}\">",
   );
 
+  $form['premeeting_member_of_div'] = array(
+    '#access' => user_access('administer users'),
+    '#type' => 'item',
+    '#prefix' => '<label>' . t('Premeeting of:') . '</label>',
+    '#markup' => '',
+  );
+  $form['premeeting_member_of_hidden'] = array(
+    '#type' => 'hidden',
+    '#attributes' => array(
+      'id' => 'premeeting_member_of_hidden',
+    ),
+  );
   $form['member_of_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
@@ -217,6 +241,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
       }
       $com_select[$com_term->tid] = $term_name;
     }
+    $shared_premeeting_member_of = array();
     $shared_member_of = array();
     $shared_follows = array();
     $shared_follows_subscribed = array();
@@ -224,6 +249,18 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     $shared_follows_plus_plus = array();
     foreach ($uids as $uid) {
       $user = user_load($uid);
+
+      // Premeeting member of.
+      if (field_get_items('user', $user, 'field_user_premeeting_committee')) {
+        $user_premeeting_member_of_field = field_get_items('user', $user, 'field_user_premeeting_committee');
+        $user_premeeting_member_of_field = os2dagsorden_content_modify_asort($user_premeeting_member_of_field);
+        foreach ($user_premeeting_member_of_field as $premeeting_member_of) {
+          if (isset($com_select[$premeeting_member_of['tid']])) {
+            $shared_premeeting_member_of[$premeeting_member_of['tid']]++;
+            $shared_all_user_committee[$premeeting_member_of['tid']]++;
+          }
+        }
+      }
 
       // Member of.
       if (field_get_items('user', $user, 'field_user_committee')) {
@@ -282,6 +319,17 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
         }
       }
     }
+
+    // Printing premeeting member of.
+    $content = "<ul id='premeeting_member_of' class='droptrue'>";
+    foreach ($shared_premeeting_member_of as $tid => $count) {
+      if ($count == count($uids)) {
+        $form['premeeting_member_of_hidden']['#value'] .= $tid . ',';
+        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox'></li>";
+      }
+    }
+    $content .= '</ul>';
+    $form['premeeting_member_of_div']['#markup'] = $content;
 
     // Printing member of.
     $content = "<ul id='member_of' class='droptrue'>";
@@ -426,6 +474,11 @@ function _os2dagsorden_conten_modify_load_user_fields(&$form, $uid) {
     $form['calendar_pref']['#default_value'] = $selection;
   }
 
+  if (field_get_items('user', $user, 'field_user_login_token')) {
+    $token_login_field = array_pop(field_get_items('user', $user, 'field_user_login_token'));
+    $form['token_login']['#default_value'] = $token_login_field['value'];
+  }
+
   $form['user_roles']['#default_value'] = $user->roles;
 }
 
@@ -445,6 +498,7 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
 
   $follows = explode(',', $follows_hidden);
   $follows_subscribed = explode(',', $follows_subscribed_hidden);
+  $premeeting_member_of = explode(',', $premeeting_member_of_hidden);
   $member_of = explode(',', $member_of_hidden);
   $follows_plus = explode(',', $follows_plus_hidden);
   $follows_plus_plus = explode(',', $follows_plus_plus_hidden);
@@ -504,6 +558,15 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
     foreach ($forbidden_cat as $f_cat) {
       $user->field_user_forrbidden_categories['und'][]['value'] = $f_cat;
     }
+    // Unsetting premeeting committees.
+    $user->field_user_premeeting_committee['und'] = array();
+    if ($premeeting_member_of) {
+      foreach ($premeeting_member_of as $tid) {
+        if (!empty($tid)) {
+          $user->field_user_premeeting_committee['und'][]['tid'] = $tid;
+        }
+      }
+    }
     // Unsetting committees.
     $user->field_user_committee['und'] = array();
     if ($member_of) {
@@ -533,6 +596,9 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
         }
       }
     }
+
+    // User to token field.
+    $user->field_user_login_token['und'][0]['value'] = $token_login;
 
     // os2dagsorden limited role.
     $user_roles_saved = $user->roles;

@@ -118,8 +118,7 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#type' => 'radios',
     '#title' => t('Source of bullet content'),
     '#options' => array('xml' => t('Use XML'), 'pdf' => t('Use PDF')),
-    '#description' => t('This decides whether the bullet information will be imported from XML or PDF files.') . '<br/>' .
-    t('Please note, that if PDF option is used server should have <b>pdf2htmlEX</b> installed and <b>os2dagsorden_pdf2htmlex</b> module activated.'),
+    '#description' => t('This decides whether the bullet information will be imported from XML or PDF files.') . '<br/>' . t('Please note, that if PDF option is used server should have <b>pdf2htmlEX</b> installed and <b>os2dagsorden_pdf2htmlex</b> module activated.'),
     '#default_value' => variable_get('os2web_edoc_middelfart_esdh_bullet_source', 'xml'),
   );
   $form['meetings']['os2web_edoc_middelfart_esdh_empty_bullet_title'] = array(

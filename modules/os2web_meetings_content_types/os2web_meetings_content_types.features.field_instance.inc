@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2web_meetings_content_types.features.field_instance.inc
@@ -1858,7 +1857,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 20,
+      'weight' => 23,
     ),
   );
 
@@ -1914,61 +1913,6 @@ function os2web_meetings_content_types_field_default_field_instances() {
       'settings' => array(),
       'type' => 'computed',
       'weight' => 20,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'node-os2web_meetings_meeting-field_os2web_meetings_status'.
-  $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_status'] = array(
-    'bundle' => 'os2web_meetings_meeting',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 11,
-      ),
-      'ical' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 2,
-      ),
-      'os2web_meetings_meeting_detail_view' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'related_block' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_meetings_status',
-    'label' => 'Status',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 5,
     ),
   );
 
@@ -2713,7 +2657,6 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Referat admins');
   t('Regular');
   t('Search meta data');
-  t('Status');
   t('System id');
   t('Tillæg til');
   t('Type');

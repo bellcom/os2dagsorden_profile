@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_meeting_views.features.inc
