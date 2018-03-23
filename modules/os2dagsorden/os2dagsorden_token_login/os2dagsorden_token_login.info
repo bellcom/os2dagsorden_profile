@@ -1,0 +1,3 @@
+name = OS2Dagsorden token login
+description = Allows logging in using a custom token instead of a normal password
+core = 7.x

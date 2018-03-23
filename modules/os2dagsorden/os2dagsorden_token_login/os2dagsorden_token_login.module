@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Code for the OS2dagsorden token login.
+ */
+
+/**
+ * Implements hook_init().
+ *
+ * This hook implementation is intercepting os2intra_simplesaml_init hook,
+ * because it is executed first (according to the alphabetical order).
+ * This is a desired behaviour.
+ */
+function os2dagsorden_token_login_init() {
+  $token = $_GET['token'];
+
+  if (current_path() === 'user' && !empty($token)) {
+    $ip_address = ip_address();
+
+    // Testing if IP is in the whitelist.
+    $whitelisted_ips = explode(',', variable_get('os2dagsorden_token_login_ip_whitelist'));
+    foreach ($whitelisted_ips as $whitelisted_ip) {
+      if (strpos($ip_address, $whitelisted_ip) !== FALSE) {
+        $token_user_uid = db_select('field_data_field_user_login_token', 'f')
+          ->fields('f', array('entity_id'))
+          ->condition('field_user_login_token_value', $token)
+          ->execute()
+          ->fetchField();
+
+        if (isset($token_user_uid)) {
+          $form_state = array('uid' => $token_user_uid);
+          user_login_submit(array(), $form_state);
+          // Saving a flag that this user logged in via token.
+          $_SESSION['token_login'] = TRUE;
+          drupal_goto('<front>');
+        }
+      }
+    }
+  }
+
+  // Restricting pages if user has token_login flag.
+  if ($_SESSION['token_login']) {
+    $allowed_paths = variable_get('os2dagsorden_token_login_allowed_paths', '<front>');
+    $current_path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
+    if ($current_path !== 'logout' && !drupal_match_path($current_path, $allowed_paths)) {
+      drupal_goto('<front>');
+    }
+  }
+}

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_meeting_views.views_default.inc
@@ -287,6 +286,13 @@ os2dagsorden_meeting_views_coming_meetings_fields_meeting_location($row->nid);
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = 'return os2dagsorden_meeting_views_coming_meetings_filter_in_my_list($row->tid);;';
+  /* Filter criterion: Filter meeting node */
+  $handler->display->display_options['filters']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['filters']['php_1']['table'] = 'views';
+  $handler->display->display_options['filters']['php_1']['field'] = 'php';
+  $handler->display->display_options['filters']['php_1']['ui_name'] = 'Filter meeting node';
+  $handler->display->display_options['filters']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php_1']['php_filter'] = 'return os2dagsorden_meeting_views_coming_meetings_filter_meeting($row->nid);';
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
@@ -2647,6 +2653,13 @@ os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data);
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = 'return os2dagsorden_meeting_views_meetings_search_filter_additional_agendas($row->nid);';
+  /* Filter criterion: Filter meeting node */
+  $handler->display->display_options['filters']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['filters']['php_1']['table'] = 'views';
+  $handler->display->display_options['filters']['php_1']['field'] = 'php';
+  $handler->display->display_options['filters']['php_1']['ui_name'] = 'Filter meeting node';
+  $handler->display->display_options['filters']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php_1']['php_filter'] = 'return os2dagsorden_meeting_views_meetings_search_filter_meeting($row->nid);';
   $handler->display->display_options['path'] = 'meetings-search';
   $translatables['meetings_search'] = array(
     t('Master'),
@@ -2968,6 +2981,13 @@ os2dagsorden_meeting_views_last_8_meetings_fields_meeting_location($row->nid)
   $handler->display->display_options['filters']['field_os2web_meetings_addendum_nid']['table'] = 'field_data_field_os2web_meetings_addendum';
   $handler->display->display_options['filters']['field_os2web_meetings_addendum_nid']['field'] = 'field_os2web_meetings_addendum_nid';
   $handler->display->display_options['filters']['field_os2web_meetings_addendum_nid']['operator'] = 'empty';
+  /* Filter criterion: Filter meeting node */
+  $handler->display->display_options['filters']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['filters']['php_1']['table'] = 'views';
+  $handler->display->display_options['filters']['php_1']['field'] = 'php';
+  $handler->display->display_options['filters']['php_1']['ui_name'] = 'Filter meeting node';
+  $handler->display->display_options['filters']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php_1']['php_filter'] = 'return os2dagsorden_meeting_views_last_8_meetings_filter_meeting($row->nid);';
 
   /* Display: Block all meetings */
   $handler = $view->new_display('block', 'Block all meetings', 'block');
@@ -3290,6 +3310,13 @@ os2dagsorden_meeting_views_last_8_meetings_fields_meeting_location($row->nid)
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = 'return os2dagsorden_meeting_views_last_8_meetings_filter_in_my_list($row->tid);';
+  /* Filter criterion: Filter meeting node */
+  $handler->display->display_options['filters']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['filters']['php_1']['table'] = 'views';
+  $handler->display->display_options['filters']['php_1']['field'] = 'php';
+  $handler->display->display_options['filters']['php_1']['ui_name'] = 'Filter meeting node';
+  $handler->display->display_options['filters']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php_1']['php_filter'] = 'return os2dagsorden_meeting_views_last_8_meetings_filter_meeting($row->nid);';
   $translatables['seneste_8_m_der_i_de_st_ende_politiske_udvalg_'] = array(
     t('Master'),
     t('Seneste 8 møder i mine udvalg'),

@@ -185,12 +185,24 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
           $reason = 'MM_REPUBLISH_SUBVERSION';
         }
       }
+      elseif ($meeting['type'] === 'Dagsorden' &&
+        strpos($node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'], 'Premeeting') === 0) {
+        // Republish if current meeting is of type Dagsorden.
+        // This means that the one already exist is a Premeeting/Premeeting_plus.
+        $republish = TRUE;
+        $reason = 'PREMEETING -> DAGSORDEN';
+      }
       elseif ($meeting['type'] === 'Referat' &&
-        ($node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Dagsorden' ||
-          $node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Dagsorden_plus')
-      ) {
+        strpos($node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'], 'Premeeting') === 0) {
         // Republish if current meeting is of type Referat.
-        // This means that the one already exist is a Dagsorden.
+        // This means that the one already exist is a Premeeting/Premeeting_plus.
+        $republish = TRUE;
+        $reason = 'PREMEETING -> REFERAT';
+      }
+      elseif ($meeting['type'] === 'Referat' &&
+        strpos($node->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'], 'Dagsorden') === 0) {
+        // Republish if current meeting is of type Referat.
+        // This means that the one already exist is a Dagsorden/Dagsorden_plus.
         $republish = TRUE;
         $reason = 'DAGSORDEN -> REFERAT';
       }
