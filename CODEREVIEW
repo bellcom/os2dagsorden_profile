@@ -1,5 +1,0 @@
-// @CODEREVIEW: General remarks:
-// @CODEREVIEW:
-// @CODEREVIEW: Remove all unused code (code in comments)
-// @CODEREVIEW: Please run `phpcs` and get rid of all coding standard errors and warnings.
-// @CODEREVIEW: Consider using `===` for all comparisons (rather than just `==`).

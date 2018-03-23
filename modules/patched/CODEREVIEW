@@ -1,3 +1,0 @@
-// @CODEREVIEW: What is going on in this folder?
-// @CODEREVIEW: It's not obvious what is being patched and from which sources.
-// @CODEREVIEW: Consider using a make file in the profile to apply patches.
