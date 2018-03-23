@@ -18,10 +18,7 @@ include_once 'inc/os2dagsorden_access_helper.utils.inc';
 include_once 'inc/os2dagsorden_access_helper.print.inc';
 
 /**
- * Implementation of hook_menu.
- *
- * @return array
- *   Items.
+ * Implements hook_menu().
  */
 function os2dagsorden_access_helper_menu() {
   $items = array();
@@ -53,7 +50,9 @@ function os2dagsorden_access_helper_menu() {
 }
 
 /**
- * Hook to file download. Allows or denies the file download based on user permissions.
+ * Hook to file download.
+ *
+ * Allows or denies the file download based on user permissions.
  *
  * @param string $uri
  *   Path to the file.
@@ -74,7 +73,7 @@ function os2dagsorden_access_helper_file_download($uri) {
       $nid = $usages['file']['node'];
       $node = node_load(key($nid));
       $meeting = NULL;
-      if ($node->type == 'os2web_meetings_meeting') {
+      if ($node->type === 'os2web_meetings_meeting') {
         $meeting = $node;
 
         // Related to personal field?
@@ -147,7 +146,7 @@ function os2dagsorden_access_helper_file_download($uri) {
           return -1;
         }
       }
-      elseif ($node->type == 'os2web_meetings_bullet_attach') {
+      elseif ($node->type === 'os2web_meetings_bullet_attach') {
         if (os2dagsorden_access_helper_check_user_can_download_bullet_point_attachment_file($file->fid)) {
           return os2dagsorden_access_helper_download_file_headers($file);
         }
@@ -156,7 +155,8 @@ function os2dagsorden_access_helper_file_download($uri) {
         }
       }
       else {
-        // Not related with os2web_meetings_meeting or os2web_meetings_bullet_attach node..
+        // Not related with os2web_meetings_meeting or
+        // os2web_meetings_bullet_attach node.
         return os2dagsorden_access_helper_download_file_headers($file);
       }
     }
@@ -192,7 +192,7 @@ function os2dagsorden_access_helper_download_file_headers($file) {
 function os2dagsorden_access_helper_logout() {
   // Destroy the current session, and reset $user to the anonymous user.
   $show_message = TRUE;
-  if (strcasecmp($_SESSION['messages']['status'][0], 'You have been logged out due to inactivity.') == 0) {
+  if (strcasecmp($_SESSION['messages']['status'][0], 'You have been logged out due to inactivity.') === 0) {
     $show_message = FALSE;
   }
   if (drupal_session_started()) {
@@ -207,15 +207,7 @@ function os2dagsorden_access_helper_logout() {
 }
 
 /**
- * Implement hook_cronapi().
- *
- * @param string $op
- *   Operation.
- * @param mixed $job
- *   Job.
- *
- * @return mixed
- *   Cron api array.
+ * Implements hook_cronapi().
  */
 function os2dagsorden_access_helper_cronapi($op, $job = NULL) {
   switch ($op) {
@@ -226,11 +218,6 @@ function os2dagsorden_access_helper_cronapi($op, $job = NULL) {
 
 /**
  * Implements hook_entity_insert().
- *
- * @param object $entity
- *   Entity.
- * @param string $type
- *   Entity type.
  */
 function os2dagsorden_access_helper_entity_insert($entity, $type) {
   drupal_register_shutdown_function('_os2dagsorden_access_helper_trigger_hook', $entity, $type);
@@ -238,11 +225,6 @@ function os2dagsorden_access_helper_entity_insert($entity, $type) {
 
 /**
  * Implements hook_entity_update().
- *
- * @param object $entity
- *   Entity.
- * @param string $type
- *   Entity type.
  */
 function os2dagsorden_access_helper_entity_update($entity, $type) {
   drupal_register_shutdown_function('_os2dagsorden_access_helper_trigger_hook', $entity, $type);
@@ -257,7 +239,7 @@ function os2dagsorden_access_helper_entity_update($entity, $type) {
  *   Entity type.
  */
 function _os2dagsorden_access_helper_trigger_hook($entity, $type) {
-  if ($type == 'node' && $entity->type == 'os2web_meetings_meeting') {
+  if ($type === 'node' && $entity->type === 'os2web_meetings_meeting') {
     $meeting = $entity;
 
     $modules = module_implements('node_save');
@@ -275,7 +257,8 @@ function _os2dagsorden_access_helper_trigger_hook($entity, $type) {
 /**
  * Hook to node_presave.
  *
- * The function will delete the connection to the member object, as well as the role object itself.
+ * The function will delete the connection to the member object, as well as
+ * the role object itself.
  *
  * @param object $node
  *   Mixed  meeting node to be saved.
@@ -284,9 +267,9 @@ function _os2dagsorden_access_helper_trigger_hook($entity, $type) {
  *   Meeting node.
  */
 function os2dagsorden_access_helper_node_save($node) {
-  if ($node->status == 1) {
+  if ($node->status === 1) {
     $status = $node->field_os2web_meetings_type['und'][0]['value'];
-    if (strcasecmp($status, 'Dagsorden') == 0 || strcasecmp($status, 'Referat') == 0) {
+    if (strcasecmp($status, 'Dagsorden') === 0 || strcasecmp($status, 'Referat') === 0) {
       $committee_id = $node->field_os2web_meetings_committee['und'][0]['tid'];
       $committee = taxonomy_term_load($committee_id);
 
@@ -371,7 +354,7 @@ function os2dagsorden_access_helper_node_save($node) {
         $cName = taxonomy_term_load($committee_id)->name;
         $mName = check_plain($node->title);
         $mDate = format_date(strtotime($node->field_os2web_meetings_date['und'][0]['value']), 'short');
-        $published_item = (strcasecmp($status, 'Dagsorden') == 0) ? 'en dagsorden' : 'et referat';
+        $published_item = (strcasecmp($status, 'Dagsorden') === 0) ? 'en dagsorden' : 'et referat';
         $meeting_url = $base_url . '/meeting/' . $node->nid;
         // $mLink = '<a href="' . $meeting_url . '">' . $meeting_url . '</a>';.
         $mLink = $meeting_url;
@@ -385,8 +368,8 @@ function os2dagsorden_access_helper_node_save($node) {
         $uids = array_unique($uids);
 
         foreach ($uids as $uid) {
-          // Checking is there has been a notification for the same meeting, to the same user, with the same status
-          // in the previous hour.
+          // Checking is there has been a notification for the same meeting,
+          // to the same user, with the same status in the previous hour.
           $query = db_select('os2dagsorden_notification_emails', 'ne');
           $query->fields('ne')
             ->condition('uid', $uid)
@@ -433,26 +416,7 @@ function os2dagsorden_access_helper_node_save($node) {
               'body' => $body,
             );
             drupal_mail('os2dagsorden_access_helper', 'os2dagsorden_notification_email_', $user->mail, language_default(), $params, $from);
-            /* $message = array(
-            'to' => $user->mail,
-            'subject' => $subject,
-            'body' => $body,
-            'headers' => array(
-            'MIME-Version' => '1.0',
-            'From' => $from,
-            'Sender' => $from,
-            'Return-Path' => $from,
-            'Content-Type' => 'text/html;charset=utf-8',
-            ),
-            );
-            $system = drupal_mail_system("os2dagsorden_access_helper_node_save", "");
-
-            // The format function must be called before calling the mail function.
-            //$message = $system->format($message);
-            $system->mail($message);
-             *
-             */
-            // setting the database entry about sent email.
+            // Setting the database entry about sent email.
             db_insert('os2dagsorden_notification_emails')
               ->fields(array(
                 'uid' => $uid,
@@ -472,14 +436,17 @@ function os2dagsorden_access_helper_node_save($node) {
 /**
  * Hook to node insert.
  *
- * The function checks the committee of the meeting, and if it matched with the selected committeed for Budget in the settings, then this meeting is considered as the right Budget meeting and the custom URL is updated to point to it.
+ * The function checks the committee of the meeting, and if it matched with
+ * the selected committeed for Budget in the settings, then this meeting is
+ * considered as the right Budget meeting and the custom URL is updated to
+ * point to it.
  *
  * @param object $node
  *   Node.
  */
 function os2dagsorden_access_helper_node_insert($node) {
   if ($node->type === 'os2web_meetings_meeting') {
-    if ($node->field_os2web_meetings_committee['und'][0]['tid'] == variable_get('os2dagsorden_budget_committee', FALSE)) {
+    if ($node->field_os2web_meetings_committee['und'][0]['tid'] === variable_get('os2dagsorden_budget_committee', FALSE)) {
       $path['source'] = 'meeting/' . $node->nid;
       $path['alias'] = 'budget';
       path_save($path);
@@ -489,13 +456,6 @@ function os2dagsorden_access_helper_node_insert($node) {
 
 /**
  * Implements hook_user_presave().
- *
- * @param mixed $edit
- *   Edit fields.
- * @param object $account
- *   User account.
- * @param string $category
- *   Meeting category.
  */
 function os2dagsorden_access_helper_user_presave(&$edit, $account, $category) {
   if ($account->is_new && variable_get('os2dagsorden_user_default_meeting_category')) {
@@ -509,7 +469,10 @@ function os2dagsorden_access_helper_user_presave(&$edit, $account, $category) {
 }
 
 /**
- * Hook to hook_node_access. Function checks whether a given user can or cannot edit/read the given speaker paper.
+ * Hook to hook_node_access.
+ *
+ * Function checks whether a given user can or cannot edit/read the given
+ * speaker paper.
  *
  * @param object $node
  *   Node.
@@ -523,8 +486,8 @@ function os2dagsorden_access_helper_user_presave(&$edit, $account, $category) {
  */
 function os2dagsorden_access_helper_node_access($node, $op, $account) {
   // If Supervisor, do not allow to edit their own node.
-  if ($node->type == 'os2web_meetings_spaper') {
-    if ($op == 'update' || $op == 'view') {
+  if ($node->type === 'os2web_meetings_spaper') {
+    if ($op === 'update' || $op === 'view') {
       if (os2dagsorden_access_helper_check_user_can_see_speaker_paper($node->nid, variable_get('os2dagsorden_shared_speaker_paper', TRUE))) {
         return NODE_ACCESS_ALLOW;
       }
@@ -533,8 +496,8 @@ function os2dagsorden_access_helper_node_access($node, $op, $account) {
       }
     }
   }
-  elseif ($node->type == 'os2web_meetings_meeting') {
-    if ($op == 'view' || in_array('administrator++', $account->roles)) {
+  elseif ($node->type === 'os2web_meetings_meeting') {
+    if ($op === 'view' || in_array('administrator++', $account->roles)) {
       if (os2dagsorden_access_helper_check_user_can_see_meeting($node)) {
         return NODE_ACCESS_ALLOW;
       }
@@ -543,8 +506,8 @@ function os2dagsorden_access_helper_node_access($node, $op, $account) {
       }
     }
   }
-  elseif ($node->type == 'os2web_meetings_bullet') {
-    if ($op == 'view' || in_array('administrator++', $account->roles)) {
+  elseif ($node->type === 'os2web_meetings_bullet') {
+    if ($op === 'view' || in_array('administrator++', $account->roles)) {
       $meeting = os2dagsorden_access_helper_get_meeting_by_bullet_point($node->nid);
       if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting->nid, $node->nid)) {
         return NODE_ACCESS_ALLOW;
@@ -554,8 +517,8 @@ function os2dagsorden_access_helper_node_access($node, $op, $account) {
       }
     }
   }
-  elseif ($node->type == 'os2web_meetings_bullet_attach') {
-    if ($op == 'view' || in_array('administrator++', $account->roles)) {
+  elseif ($node->type === 'os2web_meetings_bullet_attach') {
+    if ($op === 'view' || in_array('administrator++', $account->roles)) {
       $bullet_point = os2dagsorden_access_helper_get_bullet_point_by_bpa($node->nid);
       $meeting = os2dagsorden_access_helper_get_meeting_by_bullet_point($bullet_point->nid);
       if (os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting->nid, $bullet_point->nid, $node->nid)) {
@@ -570,13 +533,6 @@ function os2dagsorden_access_helper_node_access($node, $op, $account) {
 
 /**
  * Implements hook_mail().
- *
- * @param string $key
- *   Mail key.
- * @param string $message
- *   Message.
- * @param mixed $params
- *   Array of params.
  */
 function os2dagsorden_access_helper_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];
