@@ -269,7 +269,7 @@ function _os2dagsorden_access_helper_trigger_hook($entity, $type) {
 function os2dagsorden_access_helper_node_save($node) {
   if ($node->status === 1) {
     $status = $node->field_os2web_meetings_type['und'][0]['value'];
-    if (strcasecmp($status, 'Dagsorden') === 0 || strcasecmp($status, 'Referat') === 0) {
+    if (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0 || strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT) === 0) {
       $committee_id = $node->field_os2web_meetings_committee['und'][0]['tid'];
       $committee = taxonomy_term_load($committee_id);
 
@@ -354,9 +354,8 @@ function os2dagsorden_access_helper_node_save($node) {
         $cName = taxonomy_term_load($committee_id)->name;
         $mName = check_plain($node->title);
         $mDate = format_date(strtotime($node->field_os2web_meetings_date['und'][0]['value']), 'short');
-        $published_item = (strcasecmp($status, 'Dagsorden') === 0) ? 'en dagsorden' : 'et referat';
+        $published_item = (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) ? 'en dagsorden' : 'et referat';
         $meeting_url = $base_url . '/meeting/' . $node->nid;
-        // $mLink = '<a href="' . $meeting_url . '">' . $meeting_url . '</a>';.
         $mLink = $meeting_url;
 
         // Getting subject and body.

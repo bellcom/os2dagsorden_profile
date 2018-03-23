@@ -259,7 +259,9 @@ function os2dagsorden_access_helper_get_user_sp_groups($uid = NULL) {
 }
 
 /**
- * Checks if the bullet point is actually part of the meeting (or any of its additional meetings).
+ * Checks if the bullet point is actually part of the meeting.
+ *
+ * (or any of its additional meetings).
  *
  * @param int $meeting_id
  *   ID of the meeting.
@@ -314,7 +316,9 @@ function os2dagsorden_access_helper_tillaegs_meetings($meeting_id) {
 }
 
 /**
- * Returns an array of ids of meeting and all of its additional (tillaegs meetings).
+ * Returns an array of ids of meeting.
+ *
+ * And all of its additional agendas (tillaegs meetings).
  *
  * @param int $meeting_id
  *   Initial meeting ID.
@@ -423,7 +427,9 @@ function os2dagsorden_access_helper_check_attachment_is_part_of_bullet_point($bu
 }
 
 /**
- * Checks if all of the meeitng bullet point bilag were converted to pdf/html and all the meetings descriptions have been converted to pdf.
+ * Checks if all of the meeitng bullet point bilag were converted to pdf/html.
+ *
+ * And all the meetings descriptions have been converted to pdf.
  *
  * @return bool
  *   TRUE or FALSE.
@@ -543,7 +549,9 @@ function os2dagsorden_access_helper_get_user() {
 }
 
 /**
- * This checks whether a certain meeting has closed bullets poitns. If at least one bullet point is closed, TRUE is returned.
+ * This checks whether a certain meeting has closed bullets points.
+ *
+ * If at least one bullet point is closed, TRUE is returned.
  *
  * @param int $meeting_id
  *   Meeting node id.
@@ -610,7 +618,9 @@ function _os2dagsorden_access_helper_get_committee_by_subid_and_name($com_subid,
 }
 
 /**
- * Callback function for sort methods, that compares the terms name using strnatcmp comparison.
+ * Callback function for sort methods.
+ *
+ * That compares the terms name using strnatcmp comparison.
  *
  * @param object $term1
  *   First term.
@@ -618,7 +628,8 @@ function _os2dagsorden_access_helper_get_committee_by_subid_and_name($com_subid,
  *   Second term.
  *
  * @return int
- *   Returns 0 if equals, -1 if the first is less tan second, 1 if first is greater than second.
+ *   Returns 0 if equals, -1 if the first is less tan second, 1 if first is
+ *   greater than second.
  */
 function os2dagsorden_access_helper_compare_term_by_name($term1, $term2) {
   return strnatcmp($term1->name, $term2->name);
@@ -697,7 +708,10 @@ function _os2dagsorden_access_helper_check_user_is_committee_admin($meeting_type
 }
 
 /**
- * Checks if the PDF download is available on this installation for user with that IP address.
+ * Check PDF is enabled.
+ *
+ * Checks if the PDF download is available on this installation for user with
+ * that IP address.
  *
  * @return bool
  *   True or false.
@@ -708,10 +722,13 @@ function os2dagsorden_access_helper_check_pdf_download_enabled() {
     $remote_ip = ip_address();
 
     foreach ($whitelisted_ips as $whitelisted_ip) {
-      // If we the client request is from one of the IP's, login using SimpleSAMLphp; otherwise use nemid login.
+      // If we the client request is from one of the IP's, login using
+      // SimpleSAMLphp; otherwise use nemid login.
+      //
       // If check for only parts of the ip address.
       // This makes it possible to add only the beginning of the IP range.
-      // F.ex. 192.168 will allow all ip adresses including 192.168 as part of the io.
+      // F.ex. 192.168 will allow all ip adresses including 192.168 as part of
+      // the io.
       if (strpos($remote_ip, $whitelisted_ip) !== FALSE) {
         return TRUE;
       }
@@ -723,7 +740,10 @@ function os2dagsorden_access_helper_check_pdf_download_enabled() {
 }
 
 /**
- * Function determines whether user should or should not be shown a special Byradet link. Only members or followers+ will be shown the meeting.
+ * Helper function.
+ *
+ * Function determines whether user should or should not be shown a special
+ * Byradet link. Only members or followers+ will be shown the meeting.
  *
  * @return bool
  *   TRUE or FALSE.

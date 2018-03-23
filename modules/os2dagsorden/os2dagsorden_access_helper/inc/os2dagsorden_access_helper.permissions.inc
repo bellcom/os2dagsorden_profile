@@ -14,7 +14,10 @@
  */
 
 /**
- * Checks is given meeting can bee seen by the user. The function checks user role, if user has role 'os2dagsorden limited' then only his own committees would be visible for him.
+ * Checks is given meeting can bee seen by the user.
+ *
+ * The function checks user role, if user has role 'os2dagsorden limited' then
+ * only his own committees would be visible for him.
  *
  * @param int $meeting
  *   The ID of the meeting or meeting object.

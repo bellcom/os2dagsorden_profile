@@ -74,10 +74,10 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
       else {
         $link = $com_term->name;
       }
-      if ($com['field'] == 'c_premeeting') {
+      if ($com['field'] === 'c_premeeting') {
         $link = '[' . t('Formøde') . '] ' . $link;
       }
-      elseif ($com['field'] == 'c_plus') {
+      elseif ($com['field'] === 'c_plus') {
         $link .= '<b>+</b>';
       }
       elseif ($com['field'] === 'c_pp') {
