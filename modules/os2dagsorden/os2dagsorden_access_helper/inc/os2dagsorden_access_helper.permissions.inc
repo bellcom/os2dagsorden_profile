@@ -84,7 +84,7 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
 
     // Checking if is meeting in hidden agendas list.
     $hidden_agendas = explode(',', variable_get('os2dagsorden_hidden_agenda_committee'));
-    if (strpos(strtolower($meeting->field_os2web_meetings_type['und'][0]['value']), "dagsorden") !== FALSE) {
+    if (strpos(strtolower($meeting->field_os2web_meetings_type['und'][0]['value']), "dagsorden") === 0) {
       if (isset($committee->field_os2web_meetings_com_subid['und'])) {
         foreach ($committee->field_os2web_meetings_com_subid['und'] as $id_raw) {
           if (in_array(intval($id_raw['value']), $hidden_agendas)) {
