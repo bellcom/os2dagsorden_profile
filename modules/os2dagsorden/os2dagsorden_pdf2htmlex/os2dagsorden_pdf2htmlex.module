@@ -21,7 +21,7 @@ define('OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_TEMP_DIR', variable_get('file_temporary_
 define('OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_TRANS_LIMIT', 500);
 // Min pdf2htmlex version.
 define('OS2DAGSORDEN_PDF2HTMLEX_MIN_PDF2HTMLEX_VERSION', '0.6');
-//define pdf2htmlex default font suffix.
+// Define pdf2htmlex default font suffix.
 define('OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_FONT_SUFFIX', '.woff');
 
 /**
