@@ -1191,7 +1191,7 @@ pager li.pager-first {
   -webkit-appearance: none;
   display: block;
   vertical-align: middle;
-  border-radius: 12px;
+  border-radius: 3px;
 }
 .pager li a:hover {
   background-color: #ae477d;
