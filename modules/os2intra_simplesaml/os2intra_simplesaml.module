@@ -204,10 +204,7 @@ function os2intra_simplesaml_init() {
           'logout',
         );
         if (!in_array($_GET['q'], $non_redirect_paths)) {
-          // Loading the Simplesamlphp autoloader.
-          require_once variable_get('simplesamlphp_auth_installdir') . '/lib/_autoload.php';
-          $as = new SimpleSAML_Auth_Simple(variable_get('simplesamlphp_auth_authsource'));
-          $as->requireAuth();
+          drupal_goto('saml_login', array('query' => drupal_get_destination()));
         }
       }
     }
