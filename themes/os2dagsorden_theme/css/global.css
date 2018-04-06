@@ -1255,7 +1255,7 @@ ul.primary {
   line-height: normal;
   list-style: none outside none;
   margin: 0;
-  padding: 0  0  10px 5px;
+  padding: 10px  0  10px 5px;
   white-space: nowrap;
 }
 
