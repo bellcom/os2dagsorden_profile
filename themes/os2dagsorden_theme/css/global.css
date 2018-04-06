@@ -1179,41 +1179,24 @@ pager li.pager-first {
 }
 
 .pager li a {
-  /* Fallback */
-  background: #c0c0c0;
-  /* W3C */
-  background: linear-gradient(top, #fcfcfc 0%, #c0c0c0 100%);
-  /* Safari 4-5, Chrome 1-9 */
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fcfcfc), to(#c0c0c0));
-  /* Safari 5.1, Chrome 10+ */
-  background: -webkit-linear-gradient(top, #fcfcfc, #c0c0c0);
-  /* Firefox 3.6+ */
-  background: -moz-linear-gradient(top, #fcfcfc, #c0c0c0);
-  /* IE 10 */
-  background: -ms-linear-gradient(top, #fcfcfc, #c0c0c0);
-  /* Opera 11.10+ */
-  background: -o-linear-gradient(top, #fcfcfc, #c0c0c0);
-  border-color: #b9b9b9 #b9b9b9 #bbbbbb;
-  border-radius: 7px;
+  background: #9c1a5e;
   border-style: solid;
-  border-width: 1px;
-  color: #333333;
+  border-width: 0px;
+  color: #fffffe;
   padding: 5px 10px 5px 10px;
-  text-shadow: 1px 1px #f5f5f5;
-  font-family: Arial,Helvetica,sans-serif;
-  font-size: 13px;
+  font-family: "Source Sans Pro";
+  font-size: 16px;
   text-decoration: none;
-  text-transform: uppercase;
   cursor: pointer;
+  -webkit-appearance: none;
+  display: block;
+  vertical-align: middle;
+  border-radius: 12px;
 }
 .pager li a:hover {
-  background: #c0c0c0;
-  background: linear-gradient(top, #fcfcfc 0%, #c0c0c0 100%);
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fcfcfc), to(#c0c0c0));
-  background: -webkit-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: -moz-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: -ms-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: -o-linear-gradient(top, #fcfcfc, #c0c0c0);
+  background-color: #ae477d;
+  transition: background-color .3s ease-out;
+  color: #fffffe;
 }
 
 .pager li.first {
@@ -1283,18 +1266,30 @@ ul.primary {
 }
 
 ul.primary li a {
-  border-color: #b9b9b9;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 7px;
+  background-color: #f7f1f1;
+  border: 1px solid #f7f1f1;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  color: #373636;
   padding: 5px 20px 5px 20px;
+  font-family: "Source Sans Pro";
+  font-size: 16px;
   text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color .1s ease-in;
+}
+
+ul.primary li a:hover {
+  background-color: #ae477d;
+  border: 1px solid #ae477d;
+  color: #fffffe;
 }
 
 ul.primary li.active a {
-  color: #feffff;
+  color: #fffffe;
   font-weight: bold;
-  background-color: #373636;
+  background-color: #ae477d;
   border-style: none;
   padding: 5px 20px 5px 20px;
 }
