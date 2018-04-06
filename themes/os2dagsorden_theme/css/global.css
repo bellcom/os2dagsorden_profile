@@ -1200,13 +1200,13 @@ pager li.pager-first {
 }
 
 .pager li.first {
-  border-radius: 7px;
+  border-radius: 3px;
 }
 .pager li.first a {
-  border-radius: 7px;
+  border-radius: 3px;
 }
 .pager li.first a:hover {
-  border-radius: 7px;
+  border-radius: 3px;
 }
 
 .item-list ul {
