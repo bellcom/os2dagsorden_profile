@@ -7,3 +7,19 @@
 
 include_once 'os2dagsorden_meetings_calendar_view.features.inc';
 include_once 'inc/os2dagsorden_meetings_calendar_view_fields.inc';
+
+/**
+ * Implements hook_preprocess_calendar_datebox().
+ *
+ * @param mixed $vars
+ *   Variables array.
+ */
+function os2dagsorden_meetings_calendar_view_preprocess_calendar_datebox(&$vars) {
+  $date = $vars['date'];
+  $day_path = calendar_granularity_path($vars['view'], 'day');
+  if ($vars['mini'] === FALSE && $vars['granularity'] == 'month') {
+    $vars['url'] = $day_path . '/' . $date;
+    $date_formatted = t(date('F', strtotime($date))) . ' ' . t(date('Y', strtotime($date)));
+    $vars['link'] = l($vars['day'], $vars['url']);
+  }
+}
