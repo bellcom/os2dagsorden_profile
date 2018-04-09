@@ -17,7 +17,7 @@ include_once 'inc/os2dagsorden_meetings_calendar_view_fields.inc';
 function os2dagsorden_meetings_calendar_view_preprocess_calendar_datebox(&$vars) {
   $date = $vars['date'];
   $day_path = calendar_granularity_path($vars['view'], 'day');
-  if ($vars['mini'] === FALSE && $vars['granularity'] == 'month') {
+  if ($vars['granularity'] == 'month') {
     $vars['url'] = $day_path . '/' . $date;
     $date_formatted = t(date('F', strtotime($date))) . ' ' . t(date('Y', strtotime($date)));
     $vars['link'] = l($vars['day'], $vars['url']);
