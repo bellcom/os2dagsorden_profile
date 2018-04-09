@@ -217,7 +217,7 @@ function os2intra_simplesaml_init() {
 
         // Redirecting only if module exists and path is valid.
         if (module_exists('drupal_nemid_login')) {
-          drupal_goto('nemid');
+          drupal_goto('nemid', array('query' => array('destination' => current_path())));
         }
       }
     }

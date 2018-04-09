@@ -242,7 +242,13 @@ function _drupal_nemid_login_verify() {
           // to 9208-2002-2-191840243924.
           $pid = preg_replace("/[^\d-]+/", "", $pid);
           $_SESSION['nemlogin_pid'] = $pid;
-          drupal_goto();
+
+          // Saving destination.
+          $destination = drupal_get_destination();
+          // Unsetting destination to prevent immediate redirect.
+          unset($_GET['destination']);
+          // Putting destination back as query param.
+          drupal_goto('<front>', array('query' => $destination));
         }
       }
       catch (Exception $e) {

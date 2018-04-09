@@ -55,7 +55,7 @@ if (!isset($_SESSION['nemid_login']['errors'])) {
       }
     }
     else {
-      echo url('nemid/verify');
+      echo url('nemid/verify', array('query' => array(drupal_get_destination())));
     }
 
     ?>" method="post">
