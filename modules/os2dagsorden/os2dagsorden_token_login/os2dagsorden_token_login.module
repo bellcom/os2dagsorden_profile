@@ -13,9 +13,8 @@
  * This is a desired behaviour.
  */
 function os2dagsorden_token_login_init() {
-  $token = $_GET['token'];
-
-  if (current_path() === 'user' && !empty($token)) {
+  if (current_path() === 'user' && isset($_GET['token'])) {
+    $token = $_GET['token'];
     $ip_address = ip_address();
 
     // Testing if IP is in the whitelist.
