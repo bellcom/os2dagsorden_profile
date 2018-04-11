@@ -25,7 +25,7 @@ function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
   if ($nid) {
     $status = IMPORT_STATUS_IMPORTED;
   }
-  if (empty($agenda['publish']) || $agenda['publish'] === 0) {
+  if (empty($agenda['publish']) || $agenda['publish'] == 0) {
     $status = IMPORT_STATUS_IGNORED;
   }
 

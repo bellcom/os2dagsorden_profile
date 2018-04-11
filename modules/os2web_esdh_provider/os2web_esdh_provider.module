@@ -231,7 +231,7 @@ function os2web_esdh_provider_cron() {
 function os2web_esdh_provider_queue_meetings() {
   if (os2web_esdh_provider_has_api('mm')) {
     $queue = DrupalQueue::get('acadre_mm_import');
-    if ($queue->numberOfItems() === 0) {
+    if ($queue->numberOfItems() == 0) {
       $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
       $current_timestamp = time();
 

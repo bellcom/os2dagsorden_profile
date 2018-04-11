@@ -466,7 +466,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     node_save($node);
     $nid = $node->nid;
     // If unpublished.
-    if ($node->status === 0) {
+    if ($node->status == 0) {
       global $base_url;
       $committee_id = $node->field_os2web_meetings_committee['und'][0]['tid'];
       $status = $node->field_os2web_meetings_type['und'][0]['value'];

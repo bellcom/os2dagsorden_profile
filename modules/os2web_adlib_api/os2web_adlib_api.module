@@ -344,7 +344,7 @@ function os2web_adlib_api_cron() {
 
   // Add set up queue for adlib requeueing.
   $queue = DrupalQueue::get('os2web_adlib_reprocess');
-  if ($queue->numberOfItems() === 0) {
+  if ($queue->numberOfItems() == 0) {
     $items = _os2web_adlib_api_bulletpoint_nid();
     $chunk_size = max(min((int) sqrt(count($items)), 25), 1);
     $items = array_chunk($items, $chunk_size);
@@ -516,7 +516,7 @@ function _os2web_adlib_api_do_processing() {
   //
   // Disable auto queue of missing files.
   $queue = DrupalQueue::get('os2web_adlib_process');
-  if ($queue->numberOfItems() === 0) {
+  if ($queue->numberOfItems() == 0) {
     $items = db_select('os2web_adlib_api_doc_files', 'f')
       ->fields('f')
       ->condition(db_or()->condition('job_id', 'Complete', '!=')->isNull('job_id'))
