@@ -1702,6 +1702,7 @@ table .speaker-paper-link-container {
   font-size: inherit;
   text-decoration: underline;
   color: #9c1a5e;
+  overflow: visible;
 }
 .view-meeting-details .attachment table.views-table tr td a .view-header {
   margin-top: 10px;
