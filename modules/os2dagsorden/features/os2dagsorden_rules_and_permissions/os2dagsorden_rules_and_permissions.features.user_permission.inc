@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_rules_and_permissions.features.user_permission.inc
@@ -72,6 +71,7 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'access user profiles',
     'roles' => array(
       'administrator++' => 'administrator++',
+      'os2dagsorden' => 'os2dagsorden',
     ),
     'module' => 'user',
   );

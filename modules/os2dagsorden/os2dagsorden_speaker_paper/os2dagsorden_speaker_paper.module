@@ -133,7 +133,7 @@ function os2dagsorden_speaker_paper_form_os2dagsorden_settings_settings_form_alt
 /**
  * Implements hook_form_alter().
  *
- * Multiple modifications to speaper paper create/edit form.
+ * Multiple modifications to speaker paper create/edit form.
  */
 function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id === 'os2web_meetings_spaper_node_form') {

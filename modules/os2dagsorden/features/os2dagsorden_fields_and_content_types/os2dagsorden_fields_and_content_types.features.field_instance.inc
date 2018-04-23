@@ -243,10 +243,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 1,
+        'type' => 'hidden',
+        'weight' => 13,
       ),
       'full' => array(
         'label' => 'above',
@@ -287,10 +286,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 6,
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'full' => array(
         'label' => 'above',
@@ -331,10 +329,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 13,
+        'type' => 'hidden',
+        'weight' => 4,
       ),
       'full' => array(
         'label' => 'above',
@@ -375,10 +372,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 17,
+        'type' => 'hidden',
+        'weight' => 7,
       ),
       'full' => array(
         'label' => 'above',
@@ -426,10 +422,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 14,
+        'type' => 'hidden',
+        'weight' => 6,
       ),
       'full' => array(
         'label' => 'above',
@@ -470,10 +465,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 12,
       ),
       'full' => array(
         'label' => 'above',
@@ -514,10 +508,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 15,
+        'type' => 'hidden',
+        'weight' => 8,
       ),
       'full' => array(
         'label' => 'above',
@@ -558,10 +551,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 2,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'full' => array(
         'label' => 'hidden',
@@ -610,15 +602,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => ' ',
-        ),
-        'type' => 'number_integer',
-        'weight' => 4,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'full' => array(
         'label' => 'above',
@@ -668,10 +654,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 21,
+        'type' => 'hidden',
+        'weight' => 14,
       ),
       'os2dagsorden_users_select' => array(
         'label' => 'above',
@@ -715,10 +700,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 10,
+        'type' => 'hidden',
+        'weight' => 5,
       ),
       'full' => array(
         'label' => 'above',
@@ -759,10 +743,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 16,
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'full' => array(
         'label' => 'above',
@@ -806,10 +789,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 20,
+        'type' => 'hidden',
+        'weight' => 11,
       ),
       'os2dagsorden_users_select' => array(
         'label' => 'above',
@@ -843,10 +825,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 18,
+        'type' => 'hidden',
+        'weight' => 10,
       ),
       'os2dagsorden_users_select' => array(
         'label' => 'above',
