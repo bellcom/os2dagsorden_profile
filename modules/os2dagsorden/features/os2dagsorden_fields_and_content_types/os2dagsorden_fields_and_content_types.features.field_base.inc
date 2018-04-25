@@ -69,6 +69,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_follows_committee_plus',
+    'field_permissions' => array(
+      'type' => 2,
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -97,6 +100,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_follows_committee_pp',
+    'field_permissions' => array(
+      'type' => 2,
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -284,7 +290,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_user_can_send_closed_bp',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'indexes' => array(
       'value' => array(
@@ -311,6 +317,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_user_committee',
+    'field_permissions' => array(
+      'type' => 2,
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -340,7 +349,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_user_forrbidden_categories',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'indexes' => array(
       'value' => array(
@@ -388,6 +397,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_user_id',
+    'field_permissions' => array(
+      'type' => 2,
+    ),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'number',
@@ -404,7 +416,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_user_login_token',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'indexes' => array(
       'format' => array(
@@ -480,7 +492,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_user_premeeting_committee',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'indexes' => array(
       'tid' => array(
@@ -510,6 +522,9 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_user_sp_groups',
+    'field_permissions' => array(
+      'type' => 2,
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
