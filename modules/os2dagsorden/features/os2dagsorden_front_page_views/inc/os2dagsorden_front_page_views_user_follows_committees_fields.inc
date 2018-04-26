@@ -23,7 +23,7 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
     $term_list = $full_user->field_user_premeeting_committee['und'];
     foreach ($term_list as $com) {
       $output_list[$com['tid']] = array(
-        'tid' => $com['tid'],
+        'tid' => (int) $com['tid'],
         'fleld' => 'c_premeeting',
       );
     }
@@ -33,7 +33,7 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
     $term_list = $full_user->field_follows_committee_pp['und'];
     foreach ($term_list as $com) {
       $output_list[$com['tid']] = array(
-        'tid' => $com['tid'],
+        'tid' => (int) $com['tid'],
         'fleld' => 'c_pp',
       );
     }
@@ -43,7 +43,7 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
     $term_list = $full_user->field_follows_committee_plus['und'];
     foreach ($term_list as $com) {
       $output_list[$com['tid']] = array(
-        'tid' => $com['tid'],
+        'tid' => (int) $com['tid'],
         'fleld' => 'c_plus',
       );
     }
