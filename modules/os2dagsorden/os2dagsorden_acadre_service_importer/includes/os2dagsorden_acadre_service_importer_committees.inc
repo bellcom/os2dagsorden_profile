@@ -13,7 +13,7 @@
  * @param array $committees_rows
  *   Array of committees.
  */
-function _os2dagsorden_acadre_service_importer_process_committees(array $committees_rows) {
+function _os2dagsorden_acadre_service_importer_process_committees(SimpleXMLElement $committees_rows) {
   $vid = db_select('taxonomy_vocabulary', 'tv')
     ->fields('tv', array('vid'))
     ->condition('machine_name', 'os2web_meetings_tax_committee')
