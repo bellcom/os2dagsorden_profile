@@ -6,7 +6,8 @@
  */
 
 use Monolog\Handler\GelfHandler;
-use Gelf\MessagePublisher;
+use Gelf\Publisher;
+use Gelf\Transport\UdpTransport;
 
 /**
  * Monolog loader callback; Loads a GelfHandler handler.
@@ -14,7 +15,8 @@ use Gelf\MessagePublisher;
  * @return HandlerInterface
  */
 function monolog_gelf_handler_loader($options) {
-  $publisher = new MessagePublisher($options['hostname'], $options['port'], $options['chunk_size']);
+  $publisher = new Publisher();
+  $publisher->addTransport(new UdpTransport($options['hostname'], $options['port'], $options['chunk_size']));
   return new GelfHandler($publisher, $options['level'], $options['bubble']);
 }
 

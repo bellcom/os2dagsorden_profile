@@ -3,9 +3,9 @@ description = Provides a permission to control whether or not users can edit the
 package = Permissions
 core = 7.x
 
-; Information added by drupal.org packaging script on 2011-10-29
-version = "7.x-2.0-beta1"
+; Information added by Drupal.org packaging script on 2017-05-06
+version = "7.x-2.0"
 core = "7.x"
 project = "edit_own_user_account_permission"
-datestamp = "1319852437"
+datestamp = "1494103686"
 

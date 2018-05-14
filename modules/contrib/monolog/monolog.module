@@ -178,7 +178,9 @@ function monolog($channel_name) {
   if (!isset($loggers[$channel_name])) {
     try {
 
-      composer_manager_register_autoloader();
+      if (function_exists('composer_manager_register_autoloader')) {
+        composer_manager_register_autoloader();
+      }
       if (!class_exists('Drupal\Monolog\Logger')) {
         $message = t('The Drupal\Monolog\Logger class was not found. Make sure the Monolog package is installed via Composer.');
         throw new \RuntimeException($message);

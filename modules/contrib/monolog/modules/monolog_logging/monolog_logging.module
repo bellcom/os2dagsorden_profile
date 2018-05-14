@@ -121,7 +121,9 @@ function monolog_logging_bootstrap() {
     // Load the required modules.
     drupal_load('module', 'system');
     drupal_load('module', 'ctools');
-    drupal_load('module', 'composer_manager');
+    if (module_exists('composer_manager')) {
+      drupal_load('module', 'composer_manager');
+    }
     drupal_load('module', 'monolog');
 
     // Detect string handling method.

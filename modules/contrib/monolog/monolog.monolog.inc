@@ -46,6 +46,16 @@ function monolog_monolog_handler_info() {
     ),
   );
 
+  $handlers['syslogudp'] = array(
+    'label' => t('SyslogUdp Handler'),
+    'description' => t('Logs records to syslogUdp.'),
+    'group' => t('Files and syslog'),
+    'default settings' => array(
+      'host' => 'rsyslog',
+      'port' => 514,
+    ),
+  );
+
   $handlers['native_mailer'] = array(
     'label' => t('Native Mail Handler'),
     'description' => t('Sends emails using PHP\'s <code>mail()</code> function.'),

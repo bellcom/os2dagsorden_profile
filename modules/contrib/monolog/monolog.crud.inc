@@ -174,7 +174,9 @@ function monolog_channel_info_load($name) {
 function monolog_handler_info_load_all() {
   $handlers = &drupal_static(__FUNCTION__);
   if (!$handlers) {
-    composer_manager_register_autoloader();
+    if (function_exists('composer_manager_register_autoloader')) {
+      composer_manager_register_autoloader();
+    }
     foreach (module_implements('monolog_handler_info') as $module) {
 
       $module_path = drupal_get_path('module', $module);

@@ -20,6 +20,6 @@
         "issues": "http://drupal.org/project/issues/monolog"
     },
     "require": {
-        "mlehner/gelf-php": "1.0.*"
+        "graylog2/gelf-php": "~1.5"
     }
 }

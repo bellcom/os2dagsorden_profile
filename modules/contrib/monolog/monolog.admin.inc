@@ -638,7 +638,9 @@ function monolog_handler_page($profile) {
   $build = array();
 
   $grouped_handlers = array();
-  composer_manager_register_autoloader();
+  if (function_exists('composer_manager_register_autoloader')) {
+    composer_manager_register_autoloader();
+  }
   $handlers = monolog_handler_info_load_all();
   foreach ($handlers as $handler_name => $handler_info) {
     $grouped_handlers[$handler_info['group']][$handler_name] = $handler_info;

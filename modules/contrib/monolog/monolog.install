@@ -6,6 +6,24 @@
  */
 
 /**
+ * Implements hook_requirements().
+ */
+function monolog_requirements($phase) {
+  $requirements = array();
+  if (!module_exists('composer_manager') && !class_exists('Drupal\Monolog\Logger')) {
+    $requirements['monolog_logger_class'] = array(
+      'title' => t('The Drupal\Monolog\Logger class was not found'),
+      'value' => t(
+        'Make sure the Monolog package is installed via Composer. This can be done using the <a href="!url">composer_manager</a> module.',
+        array('!url' => 'https://drupal.org/project/composer_manager')
+      ),
+      'severity' => REQUIREMENT_ERROR,
+    );
+  }
+  return $requirements;
+}
+
+/**
  * Implements hook_schema().
  */
 function monolog_schema() {
