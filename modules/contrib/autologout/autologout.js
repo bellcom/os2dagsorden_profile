@@ -103,13 +103,13 @@
 
       function dialog() {
         var buttons = {};
-        buttons[Drupal.t('Fortsæt')] = function() {
+        buttons[Drupal.t('Yes')] = function() {
           $(this).dialog("destroy");
           clearTimeout(paddingTimer);
           refresh();
         };
 
-        buttons[Drupal.t('Log af')] = function() {
+        buttons[Drupal.t('No')] = function() {
           $(this).dialog("destroy");
           logout();
         };
@@ -144,7 +144,7 @@
 
       function logout() {
         if (localSettings.use_alt_logout_method) {
-          window.location = Drupal.settings.basePath + "?q=autologout_ahah_logout";
+          window.location = Drupal.settings.basePath + "?q=autologout_ahah_logout/alt";
         }
         else {
           $.ajax({
@@ -195,6 +195,7 @@
         };
 
         try {
+          ajax.beforeSerialize(ajax.element, ajax.options);
           $.ajax(ajax.options);
         }
         catch (e) {
@@ -245,6 +246,7 @@
         };
 
         try {
+          ajax.beforeSerialize(ajax.element, ajax.options);
           $.ajax(ajax.options);
         }
         catch (e) {
