@@ -1696,6 +1696,7 @@ table .speaker-paper-link-container {
 }
 .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment_text_container .attachment-text a {
   background-color: inherit;
+  display: inline;
   border: none;
   padding: inherit;
   font-weight: inherit;
