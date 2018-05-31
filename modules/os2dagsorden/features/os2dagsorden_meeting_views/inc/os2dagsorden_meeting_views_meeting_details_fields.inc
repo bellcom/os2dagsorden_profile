@@ -30,7 +30,7 @@ function os2dagsorden_meeting_views_meeting_details_agenda_and_edit_button() {
     if (os2dagsorden_create_agenda_check_user_can_create_meeting_in_commitee($committee_tid) === TRUE) {
       if (os2dagsorden_create_agenda_check_user_can_delete_meeting_content($committee_tid) === TRUE) {
         print '<div class="controls-right">';
-        print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '/clear" class="form-submit">Anonymize</a>';
+        print '<a href="' . $base_url . '/agenda/' . $meeting_id . '/clear" class="form-submit">Anonymize</a>';
         print '</div>';
       }
       print '<div class="controls-right">';
