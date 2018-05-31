@@ -104,7 +104,7 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
       }
     }
 
-    // closed version - if not empty.
+    // Closed version - if not empty.
     if ($user_can_see_closed_agendas) {
       if (!empty($meeting->field_os2web_meetings_att_doc_c['und'][0]['uri'])) {
         echo '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_att_doc_c['und'][0]['uri']) .
@@ -442,9 +442,15 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
   $q = $_GET['q'];
   $q = explode('/', $q);
   $meeting_id = $q[1];
-
   $meeting = node_load($meeting_id);
-  return node_access('view', $meeting);
+  $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+  if (os2dagsorden_access_helper_check_external_commitee($committee_tid) === TRUE) {
+    $access_granted = (node_access('view', $meeting) && os2dagsorden_access_helper_check_user_can_see_meeting_in_external_commitee($meeting));
+  }
+  else {
+    $access_granted = node_access('view', $meeting);
+  }
+  return $access_granted;
 }
 
 /**

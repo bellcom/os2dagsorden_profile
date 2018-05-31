@@ -537,3 +537,57 @@ function os2dagsorden_access_helper_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];
   $message['body'][] = $params['body'];
 }
+
+/**
+ * Checks is given meeting i external committee can bee seen by the user.
+ *
+ * The function checks if user is participants of given meeting then he can see meeting content.
+ *
+ * @param object $meeting
+ *   The meeting object.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_commitee($meeting) {
+  $user = os2dagsorden_access_helper_get_user();
+  $access_granted = FALSE;
+  if (field_get_items('node', $meeting, 'field_os2web_meetings_partic')) {
+    $participants_field = array_pop(field_get_items('node', $meeting, 'field_os2web_meetings_partic'));
+    $participants = explode(',', $participants_field['safe_value']);
+    foreach ($participants as $el => $value) {
+      // Array.
+      $value = explode(' ', $value);
+      // (name)
+      $value = end($value);
+      // Name.
+      $username = substr($value, 1, strlen($value) - 2);
+      $account = user_load_by_name($username);
+      if ($user->uid == $account->uid) {
+        $days_before_meeting_date = (strtotime($meeting->field_os2web_meetings_date['und'][0]['value']) - time()) / 60 / 60 / 24;
+        if ($days_before_meeting_date < variable_get('os2dagsorden_timespan_open_meeting_content', 14)) {
+          $access_granted = TRUE;
+        }
+      }
+    }
+  }
+  return $access_granted;
+}
+
+/**
+ * Checks is given committee is external.
+ *
+ * @param int $committee_tid
+ *   The committee ID.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_access_helper_check_external_commitee($committee_tid) {
+  $committee = taxonomy_term_load($committee_tid);
+  if (isset($committee->field_os2web_meetings_com_ext['und'])
+      && (int) $committee->field_os2web_meetings_com_ext['und'][0]['value'] === 1) {
+    return TRUE;
+  }
+  return FALSE;
+}

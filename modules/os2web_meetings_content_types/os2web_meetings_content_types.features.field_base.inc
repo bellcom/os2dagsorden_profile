@@ -705,6 +705,34 @@ function os2web_meetings_content_types_field_default_field_bases() {
     'type' => 'user_reference',
   );
 
+  // Exported field_base: 'field_os2web_meetings_com_ext'.
+  $field_bases['field_os2web_meetings_com_ext'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_com_ext',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => 'Extrenal committee',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_os2web_meetings_com_import'.
   $field_bases['field_os2web_meetings_com_import'] = array(
     'active' => 1,
@@ -1238,6 +1266,7 @@ function os2web_meetings_content_types_field_default_field_bases() {
         'data_type' => 'longtext',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,

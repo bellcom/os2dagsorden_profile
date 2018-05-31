@@ -38,7 +38,6 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
     $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
   }
   $committee = taxonomy_term_load($committee_tid);
-
   // Checking category.
   if (isset($committee->field_os2web_meetings_com_cat['und'])) {
     $meeting_category = $committee->field_os2web_meetings_com_cat['und'][0]['value'];

@@ -1193,6 +1193,23 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     );
   }
 
+  // Settings for meetings in external committee.
+  $form['os2dagsorden_external_committee'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('Meeting view settings'),
+  );
+  $form['os2dagsorden_external_committee']['os2dagsorden_timespan_open_meeting_content'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Participants must see the contents of the meeting before:'),
+    '#maxlength' => 200,
+    '#field_suffix' => t('Days'),
+    '#size' => 10,
+    '#description' => t('Number of days before the meeting for which participants should see its contents'),
+    '#default_value' => variable_get('os2dagsorden_timespan_open_meeting_content', 14),
+  );
+
   // Sort items alphabetically.
   ksort($form);
   return system_settings_form($form);
