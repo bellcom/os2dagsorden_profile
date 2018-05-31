@@ -22,14 +22,25 @@ function os2dagsorden_meeting_views_meeting_details_agenda_and_edit_button() {
   global $base_url;
   $q = explode('/', $_GET['q']);
   $meeting_id = $q[1];
+  $meeting = node_load($meeting_id);
+  $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
   if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
-    print '<div class="controls-right">';
-    print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '?simple=1" class="form-submit">Simple Edit</a>';
-    print '</div>';
-    print '<div class="controls-right">';
-    print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '" class="form-submit">Edit</a>';
-    print '</div>';
-    print '<div class="clearfix"></div>';
+    $meeting = node_load($meeting_id);
+    $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+    if (os2dagsorden_create_agenda_check_user_can_create_meeting_in_commitee($committee_tid) === TRUE) {
+      if (os2dagsorden_create_agenda_check_user_can_delete_meeting_content($committee_tid) === TRUE) {
+        print '<div class="controls-right">';
+        print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '/clear" class="form-submit">Anonymize</a>';
+        print '</div>';
+      }
+      print '<div class="controls-right">';
+      print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '?simple=1" class="form-submit">Simple Edit</a>';
+      print '</div>';
+      print '<div class="controls-right">';
+      print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '" class="form-submit">Edit</a>';
+      print '</div>';
+      print '<div class="clearfix"></div>';
+    }
   }
 }
 
@@ -566,11 +577,11 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_attachme
       print '<div>Sagen afgøres i: ' . $bullet_point->field_os2web_meetings_bul_com_n['und'][0]['value'] . '</div>';
     }
     if ($bullet_point->field_os2web_meetings_bul_closed['und'][0]['value'] == 1 && !os2dagsorden_meeting_views_meeting_details_show_closed_bullet_point_content($meeting_id, $bp_id)) {
-      print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er lukket. 
+      print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er lukket.
       Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
     }
     elseif ($bullet_point->field_os2web_meetings_bul_pers['und'][0]['value'] == 1 && !os2dagsorden_meeting_views_meeting_details_show_closed_bullet_point_content($meeting_id, $bp_id)) {
-      print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er et personpunkt. 
+      print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er et personpunkt.
       Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
     }
     else {

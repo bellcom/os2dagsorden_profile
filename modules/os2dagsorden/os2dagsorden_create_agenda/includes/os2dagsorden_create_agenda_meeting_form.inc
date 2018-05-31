@@ -98,7 +98,9 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
   $com_terms = taxonomy_get_tree($com_voc->vid);
   $com_select = array();
   foreach ($com_terms as $com_term) {
-    $com_select[$com_term->tid] = $com_term->name;
+    if (os2dagsorden_create_agenda_check_user_can_create_meeting_in_commitee($com_term->tid)) {
+      $com_select[$com_term->tid] = $com_term->name;
+    }
   }
   $form['os2web_meetings_tax_committee'] = array(
     '#type' => 'select',
@@ -261,4 +263,25 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   }
 
   return $node;
+}
+
+/**
+ * Checks is current user is commitee admin .
+ *
+ * @param int $committee_tid
+ *   The committee ID.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_create_agenda_check_user_commitee_admin($committee_tid) {
+  $user = os2dagsorden_access_helper_get_user();
+  $committee = taxonomy_term_load($committee_tid);
+  $commitee_admins = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_admin');
+  foreach ($commitee_admins as $key => $admin) {
+    if ($user->uid === $admin['uid']) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }

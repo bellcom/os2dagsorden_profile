@@ -2170,6 +2170,42 @@ function os2web_meetings_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_admin'.
+  $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_admin'] = array(
+    'bundle' => 'os2web_meetings_tax_committee',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'user_reference',
+        'settings' => array(),
+        'type' => 'user_reference_default',
+        'weight' => 16,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_os2web_meetings_com_admin',
+    'label' => 'Committee admins',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'user_reference',
+      'settings' => array(
+        'autocomplete_match' => 'contains',
+        'autocomplete_path' => 'user_reference/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'user_reference_autocomplete',
+      'weight' => 14,
+    ),
+  );
+
+  // Exported field_instance:
   // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_cat'.
   $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_cat'] = array(
     'bundle' => 'os2web_meetings_tax_committee',
@@ -2664,6 +2700,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Comments');
   t('Committee');
   t('Committee Sub ID');
+  t('Committee admins');
   t('Dagsorden admins');
   t('Date');
   t('Date valid');
