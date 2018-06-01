@@ -69,7 +69,8 @@ div.date-heading h3 a {
 }
 
 /* --------------------------- Drag and drop START -------------------------------*/
-#available_committee {
+#available_committee,
+#available_users{
   background-image: none;
   padding-right: 0;
 }

@@ -128,7 +128,6 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
   $form['#attached']['css'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
   );
-
   return $form;
 }
 
@@ -217,6 +216,8 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $loc_tid = $input['location'];
   $com_tid = $input['os2web_meetings_tax_committee'];
   $participants = $input['participants'];
+  $internal_participants  = explode(',', $input['internal_participants_hidden']);
+  $external_participants  = explode(',', $input['external_participants_hidden']);
 
   if (!$form_state['meeting_id']) {
     // Node creating.
@@ -261,6 +262,24 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   else {
     $node->field_os2web_meetings_partic['und'][0]['value'] = '';
   }
+   // Unsetting internal members.
+  $node->field_os2web_meetings_partic_int['und'] = array();
+  if ($internal_participants) {
+    foreach ($internal_participants as $uid) {
+      if (!empty($uid)) {
+        $node->field_os2web_meetings_partic_int['und'][]['uid'] = $uid;
+      }
+    }
+  }
+   // Unsetting external members.
+  $node->field_os2web_meetings_partic_ext['und'] = array();
+  if ($external_participants) {
+    foreach ($external_participants as $uid) {
+      if (!empty($uid)) {
+        $node->field_os2web_meetings_partic_ext['und'][]['uid'] = $uid;
+      }
+    }
+  }
 
   return $node;
 }
@@ -278,10 +297,117 @@ function os2dagsorden_create_agenda_check_user_commitee_admin($committee_tid) {
   $user = os2dagsorden_access_helper_get_user();
   $committee = taxonomy_term_load($committee_tid);
   $commitee_admins = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_admin');
-  foreach ($commitee_admins as $key => $admin) {
-    if ($user->uid === $admin['uid']) {
-      return TRUE;
+  if ($commitee_admins) {
+    foreach ($commitee_admins as $key => $admin) {
+      if ($user->uid === $admin['uid']) {
+        return TRUE;
+      }
     }
   }
   return FALSE;
+}
+
+/**
+ * Fills forms with drag and drop controls for manipulating participants.
+ *
+ * External/internal, invisible/visible participants.
+ *
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $meeting_id
+ *   Meeting ID.
+ */
+function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meeting_id) {
+  $form[] = array(
+    '#markup' => "<div class=\"select-participants\">",
+  );
+
+  $form['internal_participants_div'] = array(
+    '#type' => 'item',
+    '#prefix' => '<label class="label-participants">' . t('Internal participants:') . '</label><div class="note">' . t('Invisible:') . '</div>',
+    '#markup' => '',
+  );
+  $form['internal_participants_hidden'] = array(
+    '#type' => 'hidden',
+    '#attributes' => array(
+      'id' => 'internal_participants_hidden',
+    ),
+  );
+  $form['external_participants_div'] = array(
+    '#type' => 'item',
+    '#prefix' => '<label class="label-participants">' . t('External participants:') . '</label><div class="note">' . t('Invisible:') . '</div>',
+    '#markup' => '',
+  );
+  $form['external_participants_hidden'] = array(
+    '#type' => 'hidden',
+    '#attributes' => array(
+      'id' => 'external_participants_hidden',
+    ),
+  );
+  $form[] = array(
+    // <div class="select-committee">.
+    '#markup' => '</div >',
+  );
+
+  $external_participants = array();
+  $internal_participants = array();
+  $meeting = node_load($meeting_id);
+  // external_participants.
+  if ($external_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext')) {
+    foreach ($external_participants_items as $external_participant) {
+      $external_participants[] = $external_participant['uid'];
+    }
+  }
+    if ($internal_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int')) {
+    foreach ($internal_participants_items as $internal_participants) {
+      $internal_participants[] = $internal_participants['uid'];
+    }
+  }
+    // Printing follows plus.
+   $content = "<ul id='external_participants' class='droptrue'>";
+    foreach ($external_participants as $uid) {
+      $user = user_load($uid);
+      $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+      $form['external_participants_hidden']['#value'] .=  $uid . ',';
+      $content .= "<li id='{$uid}' class='ui-state-default'><span>{$user_name}</span><input id='checkbox_$uid' type='checkbox' class='checkbox'></li>";
+    }
+    $content .= '</ul>';
+    $form['external_participants_div']['#markup'] = $content;
+
+    // Printing follows plus plus.
+    $content = "<ul id=internal_participants' class='droptrue'>";
+    foreach ($internal_participants as $uid) {
+      $user = user_load($uid);
+      $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+      $form['internal_participants_hidden']['#value'] .=  $uid . ',';
+      $content .= "<li id='{$uid}' class='ui-state-default'><span>{$user_name}</span><input id='checkbox_$uid' type='checkbox' class='checkbox'></li>";
+    }
+    $content .= '</ul>';
+    $form['internal_participants_div']['#markup'] = $content;
+
+    // Printing arrows reverse.
+    $form[]['#markup'] =
+      '<div class="arrows-reverse">
+      <img src = "' . base_path() . drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/img_arrows_reverse.png">
+      </div>';
+
+    $user_list = "<ul id='available_users' class='droptrue'>";
+    $users = entity_load('user');
+    foreach ($users as $user) {
+      if (in_array($user->uid, $internal_participants) || in_array($user->uid, $external_participants)) continue;
+      $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+      $user_list .= "<li id='{$user->uid}' class='ui-state-default'><span>{$user_name}</span><input id='checkbox_$user->uid'  type='checkbox' class='checkbox'></li>";
+    }
+    $user_list .= "</ul>";
+    $form['available_users'] = array(
+      '#type' => 'item',
+      '#prefix' => "<div class='available_users'><label>" . t('Users:') . "</label>",
+      '#markup' => $user_list,
+      '#suffix' => '</div>',
+    );
+    $form[] = array(
+      '#markup' => '<div style="clear:both"></div>',
+    );
+
 }

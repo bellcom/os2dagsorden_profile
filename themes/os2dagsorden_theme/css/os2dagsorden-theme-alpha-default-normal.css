@@ -33,7 +33,8 @@ div.date-heading h3 a {
   width: 130px;
 }
 
-.available_committee {
+.available_committee,
+.available_users{
   float: left;
 }
 

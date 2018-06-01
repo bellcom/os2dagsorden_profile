@@ -2163,12 +2163,13 @@ a.annotator-wrapper {
 
 /* -- user_simple_edit drag&drop -- */
 
-.select-committee, .remove-committee {
+.select-committee, .select-participants, .remove-committee {
   float: left;
   min-width: 250px;
 }
 
-#edit-available-committee {
+#edit-available-committee,
+#edit-available-users {
   float: right;
   overflow-y: scroll;
   background: $color-white;
@@ -2213,7 +2214,8 @@ ul.droptrue {
   }
 }
 
-label.label_follows {
+label.label_follows,
+label.label-participants{
   display: inline;
 }
 
