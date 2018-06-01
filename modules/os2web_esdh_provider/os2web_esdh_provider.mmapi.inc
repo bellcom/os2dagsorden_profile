@@ -1433,7 +1433,7 @@ function _os2web_esdh_provider_strip_tags($str, $tags) {
       continue;
     }
 
-    $str = preg_replace('#</?' . $tag . ' [^>]*>' . $content . '#is', '', $str);
+    $str = preg_replace('#</?' . $tag . '[^>]*>' . $content . '#is', '', $str);
   }
   return $str;
 }
