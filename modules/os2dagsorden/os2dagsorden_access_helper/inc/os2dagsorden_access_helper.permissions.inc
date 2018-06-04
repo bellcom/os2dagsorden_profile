@@ -481,3 +481,114 @@ function os2dagsorden_access_helper_check_user_can_see_speaker_paper($sp_id, $in
 
   return FALSE;
 }
+
+/**
+ * Checks is given meeting i external committee can bee seen by the user.
+ *
+ * The function checks if user is participants of given meeting then he can see meeting content.
+ *
+ * @param object $meeting
+ *   The meeting object.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting) {
+  $user = os2dagsorden_access_helper_get_user();
+  $access_granted = FALSE;
+  $internal_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int');
+  $external_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext');
+  $days_before_meeting_date = (strtotime($meeting->field_os2web_meetings_date['und'][0]['value']) - time()) / 60 / 60 / 24;
+  if ($internal_participants || $external_participants) {
+    if ($internal_participants) {
+      foreach ($internal_participants as $participant) {
+        if ((int) $participant['uid'] === (int) $user->uid) {
+          if ($days_before_meeting_date < variable_get('os2dagsorden_timespan_open_meeting_content', 14)) {
+            return TRUE;
+          }
+        }
+      }
+    }
+    if ($external_participants) {
+      foreach ($external_participants as $participant) {
+        if ((int) $participant['uid'] === (int) $user->uid) {
+          if ($days_before_meeting_date < variable_get('os2dagsorden_timespan_open_meeting_content', 14)) {
+            return TRUE;
+          }
+        }
+      }
+    }
+  }
+  else {
+    if (field_get_items('node', $meeting, 'field_os2web_meetings_partic')) {
+      $participants_field = array_pop(field_get_items('node', $meeting, 'field_os2web_meetings_partic'));
+      $participants = explode(',', $participants_field['safe_value']);
+      foreach ($participants as $el => $value) {
+        $value = explode(' ', $value);
+        $value = end($value);
+        $username = substr($value, 1, strlen($value) - 2);
+        $account = user_load_by_name($username);
+        if ((int) $user->uid === (int) $account->uid) {
+          if ($days_before_meeting_date < variable_get('os2dagsorden_timespan_open_meeting_content', 14)) {
+            return TRUE;
+          }
+        }
+      }
+    }
+  }
+  return $access_granted;
+}
+
+/**
+ * Checks is given committee is external.
+ *
+ * @param int $committee_tid
+ *   The committee ID.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_access_helper_check_external_committee($committee_tid) {
+  $committee = taxonomy_term_load($committee_tid);
+  if (isset($committee->field_os2web_meetings_com_ext['und'])
+      && (int) $committee->field_os2web_meetings_com_ext['und'][0]['value'] === 1) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Checks is current user can create meeting in given committee.
+ *
+ * @param int $committee_tid
+ *   The committee ID.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($committee_tid) {
+  if (os2dagsorden_access_helper_check_external_committee($committee_tid) === TRUE) {
+    if (!os2dagsorden_create_agenda_check_user_committee_admin($committee_tid)) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Checks is current user can clear meeting content.
+ *
+ * @param int $committee_tid
+ *   The committee ID.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_access_helper_check_user_can_delete_meeting_content($committee_tid) {
+  if (os2dagsorden_access_helper_check_external_committee($committee_tid) === TRUE) {
+    if (os2dagsorden_create_agenda_check_user_committee_admin($committee_tid)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}

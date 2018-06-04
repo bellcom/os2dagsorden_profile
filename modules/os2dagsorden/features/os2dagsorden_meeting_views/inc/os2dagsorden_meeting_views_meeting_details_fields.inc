@@ -22,22 +22,20 @@ function os2dagsorden_meeting_views_meeting_details_agenda_and_edit_button() {
   global $base_url;
   $q = explode('/', $_GET['q']);
   $meeting_id = $q[1];
-  $meeting = node_load($meeting_id);
-  $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
   if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
     $meeting = node_load($meeting_id);
     $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
-    if (os2dagsorden_create_agenda_check_user_can_create_meeting_in_commitee($committee_tid) === TRUE) {
-      if (os2dagsorden_create_agenda_check_user_can_delete_meeting_content($committee_tid) === TRUE) {
+    if (os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($committee_tid) === TRUE) {
+      if (os2dagsorden_access_helper_check_user_can_delete_meeting_content($committee_tid) === TRUE) {
         print '<div class="controls-right">';
-        print '<a href="' . $base_url . '/agenda/' . $meeting_id . '/clear" class="form-submit">Anonymize</a>';
+        print '<a href="' . $base_url . '/agenda/' . $meeting_id . '/clear" class="form-submit">' . t('Anonymize') . '</a>';
         print '</div>';
       }
       print '<div class="controls-right">';
-      print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '?simple=1" class="form-submit">Simple Edit</a>';
+      print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '?simple=1" class="form-submit">' . t('Simple Edit') . '</a>';
       print '</div>';
       print '<div class="controls-right">';
-      print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '" class="form-submit">Edit</a>';
+      print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '" class="form-submit">' . t('Edit') . '</a>';
       print '</div>';
       print '<div class="clearfix"></div>';
     }
@@ -398,7 +396,38 @@ function os2dagsorden_meeting_views_meeting_details_special_conditions_access() 
  */
 function os2dagsorden_meeting_views_meeting_details_fields_participants_deltog($meeting_id) {
   $meeting = node_load($meeting_id);
-  print($meeting->field_os2web_meetings_partic['und'][0]['value']);
+  $participants = array();
+  $internal_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int');
+  $external_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext');
+  $invisible = field_get_items('node', $meeting, 'field_os2web_meetings_partic_inv');
+  if ($internal_participants || $external_participants) {
+    $visible_participants = array();
+    $invisible_participants = array();
+    if ($internal_participants) {
+      foreach ($internal_participants as $participant) {
+        $visible_participants[$participant['uid']] = $participant['uid'];
+      }
+    }
+    if ($external_participants) {
+      foreach ($external_participants as $participant) {
+        $visible_participants[$participant['uid']] = $participant['uid'];
+      }
+    }
+    // Hide invisible participants.
+    if ($invisible) {
+      foreach ($invisible as $participant) {
+        unset($visible_participants[$participant['uid']]);
+      }
+    }
+    $users = user_load_multiple($visible_participants);
+    foreach ($users as $id => $user) {
+      $participants[] = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+    }
+    print implode(',', $participants);
+  }
+  else {
+    print($meeting->field_os2web_meetings_partic['und'][0]['value']);
+  }
 
 }
 
@@ -455,8 +484,8 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
   $meeting_id = $q[1];
   $meeting = node_load($meeting_id);
   $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
-  if (os2dagsorden_access_helper_check_external_commitee($committee_tid) === TRUE) {
-    $access_granted = (node_access('view', $meeting) && os2dagsorden_access_helper_check_user_can_see_meeting_in_external_commitee($meeting));
+  if (os2dagsorden_access_helper_check_external_committee($committee_tid) === TRUE) {
+    $access_granted = (node_access('view', $meeting) && os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting));
   }
   else {
     $access_granted = node_access('view', $meeting);

@@ -250,7 +250,8 @@
   border-radius: 3px;
 }
 
-.select-committee ul.droptrue {
+.select-committee ul.droptrue,
+.select-participants ul.droptrue{
   border: 1px solid #f7f1f1;
   border-radius: 3px;
 }
@@ -2371,21 +2372,26 @@ a.annotator-wrapper {
 /* ---------------------------- arrows_reverse END ---------------------------- */
 /* -- user_simple_edit drag&drop -- */
 .select-committee,
+.select-participants,
 .remove-committee {
   float: left;
   min-width: 250px;
 }
 
-#edit-available-committee {
+#edit-available-committee,
+#edit-available-users{
   float: right;
   overflow-y: scroll;
   background: #fffffe;
+  min-width: 250px;
 }
-#edit-available-committee::-webkit-scrollbar {
+#edit-available-committee::-webkit-scrollbar,
+#edit-available-users ::-webkit-scrollbar{
   -webkit-appearance: none;
   width: 7px;
 }
-#edit-available-committee::-webkit-scrollbar-thumb {
+#edit-available-committee::-webkit-scrollbar-thumb,
+#edit-available-users ::-webkit-scrollbar {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
@@ -2421,7 +2427,8 @@ ul.droptrue li.can-subscribe.subscribed {
   background-image: url("../img/icon-send-to-friend-bullet-point.png");
 }
 
-label.label_follows {
+label.label_follows,
+label.label-participants{
   display: inline;
 }
 
@@ -2435,11 +2442,13 @@ div.note {
   display: none;
 }
 
-.checkbox_follows {
+.checkbox_follows,
+.checkbox_invisible{
   float: right;
 }
 
-.checkbox.follows {
+.checkbox.follows,
+.checkbox.invisible{
   float: right;
   display: inline;
 }
@@ -2572,4 +2581,16 @@ div.note {
 
 #os2dagsorden-content-modify-user-edit-form {
   background: #fffffe;
+}
+/* user filter */
+#edit-available-users #users_filter.form-text {
+  width: 100%;
+  margin-bottom: 5px;
+  line-height: 20px;
+  background: url("../img/icon_search.png") no-repeat;
+  background-position: right;
+  background-size: 15px;
+  margin-bottom: 0;
+  border: 1px solid #ae477d;
+  border-radius: 3px;
 }
