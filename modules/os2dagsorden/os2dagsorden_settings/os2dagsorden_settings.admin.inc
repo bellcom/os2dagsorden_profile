@@ -1198,7 +1198,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#title' => t('Meeting view settings'),
+    '#title' => t('External committee'),
   );
   $form['os2dagsorden_external_committee']['os2dagsorden_timespan_open_meeting_content'] = array(
     '#type' => 'textfield',
