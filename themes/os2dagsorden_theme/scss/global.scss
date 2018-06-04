@@ -2375,3 +2375,15 @@ div.note {
 #os2dagsorden-content-modify-user-edit-form {
   background: $color-white;
 }
+/* user filter */
+#edit-available-users #users_filter.form-text {
+  width: 100%;
+  margin-bottom: 5px;
+  line-height: 20px;
+  background: url("../img/icon_search.png") no-repeat;
+  background-position: right;
+  background-size: 15px;
+  margin-bottom: 0;
+  border: 1px solid $color-branding-secondary;
+  border-radius: $border-radius;
+}

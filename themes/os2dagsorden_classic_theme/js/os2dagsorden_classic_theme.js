@@ -37,6 +37,27 @@ function follows_subscribe_click(event) {
     //console.log(event.target);
 }
 
+/*
+ * Adds the subscribe/unsubscribe behavior for elements in the follows committees section
+ */
+function invisible_participants_click(event) {
+    var invisible_elements = [];
+    if (jQuery('#participants_invisible_hidden').val() != '') {
+        invisible_elements = jQuery('#participants_invisible_hidden').val().split(',');
+    }
+     var id_toggle = jQuery(event.target).attr('id').replace("checkbox_", "");
+    if (invisible_elements.indexOf(id_toggle) > -1) {
+        //removing element 1 element
+        invisible_elements.splice(invisible_elements.indexOf(id_toggle), 1);
+    } else {
+        //adding this element
+        invisible_elements.push(id_toggle);
+    }
+
+     jQuery('#participants_invisible_hidden').val(invisible_elements.join(','));
+    //console.log(event.target);
+}
+
 jQuery(document).ready(function() {
     jQuery("ul.droptrue").sortable({
         connectWith: 'ul',
@@ -53,9 +74,32 @@ jQuery(document).ready(function() {
         jQuery('#' + jQuery(this).attr('id') + '_hidden').val(arr_receiver.join(','));
         jQuery('#' + jQuery(ui.sender[0]).attr('id') + '_hidden').val(arr_sender.join(','));
     });
-
+    jQuery(".select-participants ul.droptrue li input[type=checkbox]").click(invisible_participants_click);
+    jQuery(".available_users ul.droptrue li input[type=checkbox]").click(invisible_participants_click);
     //add click behaviour to existing items
 
+    jQuery(".select-committee #edit-follows-div ul.droptrue li input[type=checkbox]").click(follows_subscribe_click);
+    //add behaviour to item that is added to the participants section
+    jQuery(".select-participants ul.droptrue").bind("sortreceive", function(event, ui){
+      jQuery('#checkbox_' + ui.item.context.id).addClass('invisible');
+    });
+      //remove behaviour from item that is removed from the participants section
+    jQuery(".select-participants ul.droptrue").bind("sortremove", function(event, ui){
+         jQuery('#checkbox_' + ui.item.context.id ).removeClass('invisible');
+        jQuery(ui.item).find("input[type=checkbox]").removeAttr("checked");
+      //removing this user from invisible
+        var invisible_elements = [];
+        if (jQuery('#participants_invisible_hidden').val() != '') {
+            invisible_elements = jQuery('#participants_invisible_hidden').val().trim().split(',');
+        }
+        var id_toggle = jQuery(ui.item).attr('id');
+
+        if (invisible_elements.indexOf(id_toggle) > -1) {
+            //removing element 1 element
+            invisible_elements.splice(invisible_elements.indexOf(id_toggle), 1);
+        }
+        jQuery('#participants_invisible_hidden').val(invisible_elements.join(','));
+    });
     jQuery(".select-committee #edit-follows-div ul.droptrue li input[type=checkbox]").click(follows_subscribe_click);
     //add behaviour to item that is added to the follow section
     jQuery(".select-committee #edit-follows-div ul.droptrue").bind("sortreceive", function(event, ui){
@@ -64,7 +108,6 @@ jQuery(document).ready(function() {
         //console.log(ui.item);
         setTimeout(function(){ jQuery(ui.item).find(["input[type=checkbox]"]).bind('click', follows_subscribe_click); }, 1);
     });
-
     //remove behaviour from item that is removed from the follow section
     jQuery(".select-committee.single #edit-follows-div ul.droptrue").bind("sortremove", function(event, ui){
         jQuery(ui.item).removeClass('can-subscribe subscribed');
@@ -88,13 +131,30 @@ jQuery(document).ready(function() {
         jQuery('#follows_subscribed_hidden').val(subscribed_elements.join(','));
     });
 
-    
+
     jQuery("#edit-available-committee").css('height',jQuery(".select-committee").height()+"px");
     jQuery(".remove-committee").css('width',jQuery(".select-committee").width()+"px");
+    jQuery("#edit-available-users").css('height',jQuery(".select-participants").height()+"px");
     //updatePostOrder();
 });
- 
 
+
+jQuery(document).ready(function() {
+  jQuery('#users_filter').change( function () {
+    var filter = jQuery(this).val(); // get the value of the input, which we filter on
+    jQuery('ul#available_users li').each(function() {
+    if(jQuery(this).html().toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+      jQuery(this).show();
+    }
+    else {
+      jQuery(this).hide();
+    }
+    })
+  }).keyup( function () {
+    // fire the above change event after every letter
+    jQuery(this).change();
+  });
+});
 jQuery(document).ready(function() {
     jQuery('.form-item-from-date-value-date input.form-text').change(function(){
           jQuery(this).val(prepareDate(jQuery(this).val()));
@@ -476,7 +536,7 @@ function attachment_add_expand_behaviour(bulletPoint, bulletPointIndex, url, mas
     else {
       jQuery(".btn_hide_show_all_attachments_text_"+bulletPointIndex).addClass('opened');
     }
-      
+
       }
     });
 

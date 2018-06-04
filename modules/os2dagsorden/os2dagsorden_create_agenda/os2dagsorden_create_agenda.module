@@ -146,44 +146,8 @@ function _os2dagsorden_create_agenda_meeting_access($meeting_id) {
     return FALSE;
   }
   $committee_tid = $node->field_os2web_meetings_committee['und'][0]['tid'];
-  $access_granted = (user_access('administer os2web') && os2dagsorden_create_agenda_check_user_can_create_meeting_in_commitee($committee_tid));
+  $access_granted = (user_access('administer os2web') && os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($committee_tid));
   return $access_granted;
-}
-
-/**
- * Checks is current user can create meeting in given committee.
- *
- * @param int $committee_tid
- *   The committee ID.
- *
- * @return bool
- *   True of false.
- */
-function os2dagsorden_create_agenda_check_user_can_create_meeting_in_commitee($committee_tid) {
-  if (os2dagsorden_access_helper_check_external_commitee($committee_tid) === TRUE) {
-    if (!os2dagsorden_create_agenda_check_user_commitee_admin($committee_tid)) {
-      return FALSE;
-    }
-  }
-  return TRUE;
-}
-
-/**
- * Checks is current user can clear meeting content.
- *
- * @param int $committee_tid
- *   The committee ID.
- *
- * @return bool
- *   True of false.
- */
-function os2dagsorden_create_agenda_check_user_can_delete_meeting_content($committee_tid) {
-  if (os2dagsorden_access_helper_check_external_commitee($committee_tid) === TRUE) {
-    if (os2dagsorden_create_agenda_check_user_commitee_admin($committee_tid)) {
-      return TRUE;
-    }
-  }
-  return FALSE;
 }
 
 /**

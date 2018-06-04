@@ -2383,6 +2383,7 @@ a.annotator-wrapper {
   float: right;
   overflow-y: scroll;
   background: #fffffe;
+  min-width: 250px;
 }
 #edit-available-committee::-webkit-scrollbar,
 #edit-available-users ::-webkit-scrollbar{
@@ -2441,11 +2442,13 @@ div.note {
   display: none;
 }
 
-.checkbox_follows {
+.checkbox_follows,
+.checkbox_invisible{
   float: right;
 }
 
-.checkbox.follows {
+.checkbox.follows,
+.checkbox.invisible{
   float: right;
   display: inline;
 }
@@ -2578,4 +2581,16 @@ div.note {
 
 #os2dagsorden-content-modify-user-edit-form {
   background: #fffffe;
+}
+/* user filter */
+#edit-available-users #users_filter.form-text {
+  width: 100%;
+  margin-bottom: 5px;
+  line-height: 20px;
+  background: url("../img/icon_search.png") no-repeat;
+  background-position: right;
+  background-size: 15px;
+  margin-bottom: 0;
+  border: 1px solid #ae477d;
+  border-radius: 3px;
 }
