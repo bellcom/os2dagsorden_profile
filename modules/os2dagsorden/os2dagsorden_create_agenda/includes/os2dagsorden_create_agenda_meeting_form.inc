@@ -391,21 +391,23 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
   $external_participants = array();
   $internal_participants = array();
   $invisible_participants = array();
-  $meeting = node_load($meeting_id);
-  // external_participants.
-  if ($external_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext')) {
-    foreach ($external_participants_items as $external_participant) {
-      $external_participants[] = $external_participant['uid'];
+  if($meeting_id) {
+    $meeting = node_load($meeting_id);
+    // external_participants.
+    if ($external_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext')) {
+      foreach ($external_participants_items as $external_participant) {
+        $external_participants[] = $external_participant['uid'];
+      }
     }
-  }
-  if ($internal_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int')) {
-    foreach ($internal_participants_items as $internal_participant) {
-      $internal_participants[] = $internal_participant['uid'];
+    if ($internal_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int')) {
+      foreach ($internal_participants_items as $internal_participant) {
+        $internal_participants[] = $internal_participant['uid'];
+      }
     }
-  }
-  if ($invisible_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_inv')) {
-    foreach ($invisible_participants_items as $invisible_participant) {
-      $invisible_participants[] = $invisible_participant['uid'];
+    if ($invisible_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_inv')) {
+      foreach ($invisible_participants_items as $invisible_participant) {
+        $invisible_participants[] = $invisible_participant['uid'];
+      }
     }
   }
   // Printing follows plus plus.
