@@ -35,6 +35,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#size' => 60,
     '#maxlength' => 128,
     '#required' => TRUE,
+    '#attributes' => array('required' => 'required'),
     '#description' => 'Full title of the meeting',
   );
 
@@ -67,6 +68,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#size' => 10,
     '#required' => TRUE,
     '#date_format' => 'd/m/Y H:i',
+    '#attributes' => array('required' => 'required'),
   );
   $form['end_date'] = array(
     '#type' => 'date_popup',
@@ -107,6 +109,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#title' => t('Committee:'),
     '#required' => TRUE,
     '#options' => $com_select,
+    '#attributes' => array('required' => 'required'),
     '#multiple' => FALSE,
   );
 
