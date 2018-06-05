@@ -31,9 +31,9 @@ function os2dagsorden_meeting_views_meeting_details_agenda_and_edit_button() {
         print '<a href="' . $base_url . '/agenda/' . $meeting_id . '/clear" class="form-submit">' . t('Anonymize') . '</a>';
         print '</div>';
       }
-      print '<div class="controls-right">';
-      print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '?simple=1" class="form-submit">' . t('Simple Edit') . '</a>';
-      print '</div>';
+      //print '<div class="controls-right">';
+      //print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '?simple=1" class="form-submit">' . t('Simple Edit') . '</a>';
+      //print '</div>';
       print '<div class="controls-right">';
       print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '" class="form-submit">' . t('Edit') . '</a>';
       print '</div>';
