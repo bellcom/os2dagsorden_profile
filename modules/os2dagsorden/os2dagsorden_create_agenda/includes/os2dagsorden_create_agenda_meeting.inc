@@ -39,7 +39,6 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
 
   // Adding general fields.
   $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form);
-
   // Adding other fields.
   $form['description_opened'] = array(
     '#title' => t('Description opened:'),

@@ -113,6 +113,9 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
   $user_select = array();
   $users = entity_load('user');
   foreach ($users as $user) {
+    if ((int)$user->uid === 0) {
+      continue;
+    }
     $user_select[$user->uid] = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
   }
   $form['participants'] = array(
@@ -327,7 +330,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
  * @return bool
  *   True of false.
  */
-function os2dagsorden_create_agenda_check_user_committee_admin($committee_tid) {
+function os2dagsorden_create_agenda_is_user_committee_admin($committee_tid) {
   $user = os2dagsorden_access_helper_get_user();
   $committee = taxonomy_term_load($committee_tid);
   $committee_admins = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_admin');
@@ -391,7 +394,7 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
   $external_participants = array();
   $internal_participants = array();
   $invisible_participants = array();
-  if($meeting_id) {
+  if ($meeting_id) {
     $meeting = node_load($meeting_id);
     // external_participants.
     if ($external_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext')) {
@@ -452,6 +455,9 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
   $user_list = "<input id='users_filter' type='text' class='form-text'><br/><ul id='available_users' class='droptrue ui-sortable'>";
   $users = entity_load('user');
   foreach ($users as $user) {
+    if ((int) $user->uid === 0) {
+      continue;
+    }
     if (in_array($user->uid, $internal_participants) || in_array($user->uid, $external_participants)) {
       continue;
     }

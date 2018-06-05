@@ -173,8 +173,14 @@ function os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting_id
   if (!$user_ent->uid) {
     return FALSE;
   }
+
   $meetings = entity_load('node', array($meeting_id), array('type' => 'os2web_meetings_meeting'));
   $meeting_committee_id = $meetings[$meeting_id]->field_os2web_meetings_committee['und'][0]['tid'];
+  if (os2dagsorden_access_helper_is_external_committee($meeting_committee_id) === TRUE) {
+    if (!os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meetings[$meeting_id])) {
+      return FALSE;
+    }
+  }
 
   // Is part of premeeting committee.
   if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_premeeting_member_of_committees())) {
@@ -216,7 +222,11 @@ function os2dagsorden_access_helper_check_user_can_see_personal_agenda($meeting_
   }
   $meetings = entity_load('node', array($meeting_id), array('type' => 'os2web_meetings_meeting'));
   $meeting_committee_id = $meetings[$meeting_id]->field_os2web_meetings_committee['und'][0]['tid'];
-
+  if (os2dagsorden_access_helper_is_external_committee($meeting_committee_id) === TRUE) {
+    if (!os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meetings[$meeting_id])) {
+      return FALSE;
+    }
+  }
   // Is part of premeeting committee.
   if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_premeeting_member_of_committees())) {
     return TRUE;
@@ -256,7 +266,13 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
   }
 
   $meeting = node_load($meeting_id);
-  if (!node_access('view', $meeting)) {
+  $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+  if (os2dagsorden_access_helper_is_external_committee($meeting_committee_id) === TRUE) {
+    if (!(node_access('view', $meeting) && os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting))) {
+      return FALSE;
+    }
+  }
+  elseif (!node_access('view', $meeting)) {
     return FALSE;
   }
 
@@ -323,8 +339,14 @@ function os2dagsorden_access_helper_check_user_can_send_bullet_point($meeting_id
   }
 
   $meeting = node_load($meeting_id);
+  $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
   if (!node_access('view', $meeting)) {
     return FALSE;
+  }
+  if (os2dagsorden_access_helper_is_external_committee($meeting_committee_id) === TRUE) {
+    if (!os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting)) {
+      return FALSE;
+    }
   }
 
   if (os2dagsorden_access_helper_check_bullet_point_is_part_of_meeting($meeting_id, $bullet_point_id)) {
@@ -366,7 +388,11 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($
     if ($bpa->field_os2web_meetings_bpa_closed['und'][0]['value'] == 1) {
       $meeting = node_load($meeting_id);
       $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
-
+      if (os2dagsorden_access_helper_is_external_committee($meeting_committee_id) === TRUE) {
+        if (!os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting)) {
+          return FALSE;
+        }
+      }
       // Is part of premeeting committee.
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_premeeting_member_of_committees())) {
         return TRUE;
@@ -495,48 +521,20 @@ function os2dagsorden_access_helper_check_user_can_see_speaker_paper($sp_id, $in
  */
 function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting) {
   $user = os2dagsorden_access_helper_get_user();
-  $access_granted = FALSE;
   $internal_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int');
   $external_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext');
   $days_before_meeting_date = (strtotime($meeting->field_os2web_meetings_date['und'][0]['value']) - time()) / 60 / 60 / 24;
-  if ($internal_participants || $external_participants) {
-    if ($internal_participants) {
-      foreach ($internal_participants as $participant) {
-        if ((int) $participant['uid'] === (int) $user->uid) {
-          if ($days_before_meeting_date < variable_get('os2dagsorden_timespan_open_meeting_content', 14)) {
-            return TRUE;
-          }
-        }
-      }
-    }
-    if ($external_participants) {
-      foreach ($external_participants as $participant) {
-        if ((int) $participant['uid'] === (int) $user->uid) {
-          if ($days_before_meeting_date < variable_get('os2dagsorden_timespan_open_meeting_content', 14)) {
-            return TRUE;
-          }
+  $participants = array_merge($internal_participants, $external_participants);
+  if (!empty($participants)) {
+    foreach ($participants as $participant) {
+      if ((int) $participant['uid'] === (int) $user->uid) {
+        if ($days_before_meeting_date < variable_get('os2dagsorden_timespan_open_meeting_content', 14)) {
+          return TRUE;
         }
       }
     }
   }
-  else {
-    if (field_get_items('node', $meeting, 'field_os2web_meetings_partic')) {
-      $participants_field = array_pop(field_get_items('node', $meeting, 'field_os2web_meetings_partic'));
-      $participants = explode(',', $participants_field['safe_value']);
-      foreach ($participants as $el => $value) {
-        $value = explode(' ', $value);
-        $value = end($value);
-        $username = substr($value, 1, strlen($value) - 2);
-        $account = user_load_by_name($username);
-        if ((int) $user->uid === (int) $account->uid) {
-          if ($days_before_meeting_date < variable_get('os2dagsorden_timespan_open_meeting_content', 14)) {
-            return TRUE;
-          }
-        }
-      }
-    }
-  }
-  return $access_granted;
+  return FALSE;
 }
 
 /**
@@ -548,7 +546,7 @@ function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_commi
  * @return bool
  *   True of false.
  */
-function os2dagsorden_access_helper_check_external_committee($committee_tid) {
+function os2dagsorden_access_helper_is_external_committee($committee_tid) {
   $committee = taxonomy_term_load($committee_tid);
   if (isset($committee->field_os2web_meetings_com_ext['und'])
       && (int) $committee->field_os2web_meetings_com_ext['und'][0]['value'] === 1) {
@@ -567,8 +565,8 @@ function os2dagsorden_access_helper_check_external_committee($committee_tid) {
  *   True of false.
  */
 function os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($committee_tid) {
-  if (os2dagsorden_access_helper_check_external_committee($committee_tid) === TRUE) {
-    if (!os2dagsorden_create_agenda_check_user_committee_admin($committee_tid)) {
+  if (os2dagsorden_access_helper_is_external_committee($committee_tid) === TRUE) {
+    if (!os2dagsorden_create_agenda_is_user_committee_admin($committee_tid)) {
       return FALSE;
     }
   }
@@ -585,8 +583,8 @@ function os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($
  *   True of false.
  */
 function os2dagsorden_access_helper_check_user_can_delete_meeting_content($committee_tid) {
-  if (os2dagsorden_access_helper_check_external_committee($committee_tid) === TRUE) {
-    if (os2dagsorden_create_agenda_check_user_committee_admin($committee_tid)) {
+  if (os2dagsorden_access_helper_is_external_committee($committee_tid) === TRUE) {
+    if (os2dagsorden_create_agenda_is_user_committee_admin($committee_tid)) {
       return TRUE;
     }
   }
