@@ -221,6 +221,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $end_time = $input['end_date']['time'];
   $loc_tid = $input['location'];
   $com_tid = $input['os2web_meetings_tax_committee'];
+
   $participants = $input['participants'];
   $internal_participants = explode(',', $input['internal_participants_hidden']);
   $external_participants = explode(',', $input['external_participants_hidden']);
@@ -454,7 +455,7 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
     <img src = "' . base_path() . drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/img_arrows_reverse.png">
     </div>';
 
-  $user_list = "<input id='users_filter' type='text' class='form-text'><br/><ul id='available_users' class='droptrue ui-sortable'>";
+  $user_list = "<ul id='available_users' class='droptrue ui-sortable'>";
   $users = entity_load('user');
   foreach ($users as $user) {
     if ((int) $user->uid === 0) {
@@ -469,7 +470,8 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
   $user_list .= "</ul>";
   $form['available_users'] = array(
     '#type' => 'item',
-    '#prefix' => "<div class='available_users'><label>" . t('Users:') . "</label>",
+    '#prefix' => "<div class='available_users'><label>" . t('Users:') . "</label>"
+    . "<div class='user-filter-block'><input id='users_filter' type='text' class='form-text'></div>",
     '#markup' => $user_list,
     '#suffix' => '</div>',
   );

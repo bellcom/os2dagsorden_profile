@@ -2587,14 +2587,18 @@ div.note {
   background: #fffffe;
 }
 /* user filter */
-#edit-available-users #users_filter.form-text {
+.user-filter-block {
+  min-width: 250px;
+  margin-right: 30px;
+}
+.user-filter-block #users_filter.form-text {
   width: 100%;
-  margin-bottom: 5px;
   line-height: 20px;
-  background: url("../img/icon_search.png") no-repeat;
+  background: #fffffe url("../img/icon_search.png") no-repeat;
   background-position: right;
   background-size: 15px;
   margin-bottom: 0;
-  border: 1px solid #ae477d;
+  border: 1px solid darkgray;
   border-radius: 3px;
+  padding: 5px;
 }

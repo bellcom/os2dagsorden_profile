@@ -2379,14 +2379,18 @@ div.note {
   background: $color-white;
 }
 /* user filter */
-#edit-available-users #users_filter.form-text {
-  width: 100%;
-  margin-bottom: 5px;
-  line-height: 20px;
-  background: url("../img/icon_search.png") no-repeat;
-  background-position: right;
-  background-size: 15px;
-  margin-bottom: 0;
-  border: 1px solid $color-branding-secondary;
-  border-radius: $border-radius;
-}
+.user-filter-block {
+  min-width: 250px;
+  margin-right: 30px;
+  #users_filter.form-text {
+    width: 100%;
+    margin-bottom: 5px;
+    line-height: 20px;
+    background: $color-white url("../img/icon_search.png") no-repeat;
+    background-position: right;
+    background-size: 15px;
+    margin-bottom: 0;
+    border: 1px solid darkgray;
+    border-radius: $border-radius;
+   }
+} 

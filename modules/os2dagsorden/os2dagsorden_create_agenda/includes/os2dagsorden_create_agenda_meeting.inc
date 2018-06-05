@@ -251,7 +251,7 @@ function os2dagsorden_create_agenda_bullet_point_delete_ajax($form, $form_state)
  */
 function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
   $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
-
+ 
   $input = $form_state['input'];
   // File extraction.
   $description_opened = $form_state['values']['description_opened'];
