@@ -110,7 +110,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#multiple' => FALSE,
   );
 
-  $user_select = array();
+ /* $user_select = array();
   $users = entity_load('user');
   foreach ($users as $user) {
     if ((int)$user->uid === 0) {
@@ -126,7 +126,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#multiple' => TRUE,
     '#attributes' => array('class' => array('improved-multi-select')),
   );
-
+ */
   // Finishing form.
   $form['#attached']['css'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
@@ -253,7 +253,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
 
   $node->field_os2web_meetings_location['und'][0]['tid'] = $loc_tid;
 
-  if ($participants) {
+  /*if ($participants) {
     $participant_str = '';
     foreach ($participants as $participant => $value) {
       $user = user_load($value);
@@ -264,7 +264,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   }
   else {
     $node->field_os2web_meetings_partic['und'][0]['value'] = '';
-  }
+  }*/
   // Unsetting internal members.
   $node->field_os2web_meetings_partic_int['und'] = array();
   if ($internal_participants) {
@@ -390,7 +390,6 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
   $form[] = array(
     '#markup' => '</div >',
   );
-
   $external_participants = array();
   $internal_participants = array();
   $invisible_participants = array();

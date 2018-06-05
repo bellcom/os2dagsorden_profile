@@ -994,6 +994,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_general_mine_indstillinger', 'Mine indstillinger'),
     '#title' => t('Log af'),
   );
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_create_meeting'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2dagsorden_title_general_create_meeting', 'Tilføj møde'),
+    '#title' => t('Log af'),
+  );
   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_log_off'] = array(
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_general_log_off', 'Log af'),

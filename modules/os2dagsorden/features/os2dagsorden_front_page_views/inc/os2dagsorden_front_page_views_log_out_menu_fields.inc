@@ -13,6 +13,15 @@ function os2dagsorden_front_page_views_fields_text_log_off() {
 }
 
 /**
+ * Generates link for add meeting.
+ */
+function os2dagsorden_front_page_views_fields_create_meering() {
+  if (user_access('administer os2web')) {
+    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting" class="create-meeting-btn button">' . variable_get('os2dagsorden_title_general_create_meeting', 'Tilføj møde') . '</a>';
+  }
+}
+
+/**
  * Generates link to the settings page.
  */
 function os2dagsorden_front_page_views_fields_settings() {

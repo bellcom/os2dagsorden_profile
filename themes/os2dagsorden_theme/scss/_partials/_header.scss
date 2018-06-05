@@ -20,7 +20,7 @@
       margin: 0 0 0 7px;
       -webkit-appearance: none; 
     }
-    .settings-btn, .user-logout-btn, .user-guide-btn{
+    .settings-btn, .user-logout-btn, .user-guide-btn, .create-meeting-btn{
         color: $color-white;
         font-family: $font-basic;
         font-weight: 100;
@@ -33,6 +33,9 @@
         background: $color-branding-secondary;
         display: inline-block;
         position: relative;
+    }
+    .create-meeting-btn{
+      padding-left: 10px;
     }
    /* .settings-btn {
         background: $color-branding-secondary url('../img/icon_settings.png') no-repeat 10px 50%;

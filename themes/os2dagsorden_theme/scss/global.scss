@@ -2173,6 +2173,7 @@ a.annotator-wrapper {
   float: right;
   overflow-y: scroll;
   background: $color-white;
+  min-width: 250px;
   &::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 7px;
@@ -2229,11 +2230,13 @@ div.note {
   display: none;
 }
 
-.checkbox_follows {
+.checkbox_follows,
+.checkbox_invisible {
   float: right;
 }
 
-.checkbox.follows {
+.checkbox.follows,
+.checkbox.invisible {
   float: right;
   display: inline;
 }

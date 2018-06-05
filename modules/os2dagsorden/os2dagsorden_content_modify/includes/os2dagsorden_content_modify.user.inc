@@ -104,8 +104,10 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
     $form['user_roles']['administrator++']['#disabled'] = TRUE;
   }
 
+  if (!(user_has_role(user_role_load_by_name("os2dagsorden limited")->rid))) {
   // DAGS-349 - enabling drag and drop for touch devices.
-  _os2dagsorden_content_modify_render_drag_and_drop_controls($form, array($uid));
+    _os2dagsorden_content_modify_render_drag_and_drop_controls($form, array($uid));
+  }
 
   // Loading common user fields.
   if ($uid) {

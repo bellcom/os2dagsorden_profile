@@ -21,7 +21,8 @@
 }
 .user-logout-block .settings-btn,
 .user-logout-block .user-logout-btn,
-.user-logout-block .user-guide-btn {
+.user-logout-block .user-guide-btn,
+.user-logout-block .create-meeting-btn{
   color: #fffffe;
   font-family: "Source Sans Pro";
   font-weight: 100;
@@ -34,6 +35,9 @@
   background: #ae477d;
   display: inline-block;
   position: relative;
+}
+.user-logout-block .create-meeting-btn {
+  padding-left: 10px;
 }
 .user-logout-block .settings-btn:before {
   content: "\E8B8";
