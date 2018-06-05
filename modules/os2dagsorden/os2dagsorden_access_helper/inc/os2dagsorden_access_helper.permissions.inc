@@ -521,6 +521,8 @@ function os2dagsorden_access_helper_check_user_can_see_speaker_paper($sp_id, $in
  */
 function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting) {
   $user = os2dagsorden_access_helper_get_user();
+  $internal_participants =  array();
+  $external_participants = array();
   $internal_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int');
   $external_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext');
   $days_before_meeting_date = (strtotime($meeting->field_os2web_meetings_date['und'][0]['value']) - time()) / 60 / 60 / 24;
