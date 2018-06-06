@@ -156,9 +156,10 @@ function _os2dagsorden_create_agenda_meeting_access($meeting_id) {
 function os2dagsorden_create_agenda_meeting_content_deletion($form, &$form_state, $meeting_id) {
   $meeting = node_load($meeting_id);
   $msg = '<p>' . t('Are you sure that you want clear content of meeting %meeting', array('%meeting' => $meeting->title)) . '</p>';
-  $msg .= '<p>' . t('Denne handling kan ikke fortrydes.') . '</p>';
+  $msg .= '<p>' . t('This action cannot be undone.') . '</p>';
   $form_state['meeting_id'] = $meeting_id;
-  return confirm_form($form, 'Anonymize meeting' . $meeting->title, "meeting/" . $meeting_id, $msg, t('Anonymize'), t('Cancel'));
+  $header = t('Anonymize meeting %meeting', array($meeting->title));
+  return confirm_form($form, $header, "meeting/" . $meeting_id, $msg, t('Anonymize'), t('Cancel'));
 }
 
 /**
