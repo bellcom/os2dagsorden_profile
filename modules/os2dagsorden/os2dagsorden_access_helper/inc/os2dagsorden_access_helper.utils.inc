@@ -24,6 +24,9 @@
  */
 function os2dagsorden_access_helper_meeting_has_speaker_paper($meeting_id) {
   $meeting = node_load($meeting_id);
+  if (!os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting)) {
+    return FALSE;
+  }
   if (isset($meeting->field_os2web_meetings_bullets['und'])) {
     foreach ($meeting->field_os2web_meetings_bullets['und'] as $bullet_point) {
       if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point['target_id'], variable_get('os2dagsorden_shared_speaker_paper', TRUE))) {

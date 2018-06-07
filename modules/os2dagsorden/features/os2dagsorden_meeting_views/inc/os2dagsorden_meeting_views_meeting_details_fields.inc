@@ -31,9 +31,9 @@ function os2dagsorden_meeting_views_meeting_details_agenda_and_edit_button() {
         print '<a href="' . $base_url . '/agenda/' . $meeting_id . '/clear" class="form-submit">' . t('Anonymize') . '</a>';
         print '</div>';
       }
-      //print '<div class="controls-right">';
-      //print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '?simple=1" class="form-submit">' . t('Simple Edit') . '</a>';
-      //print '</div>';
+      // print '<div class="controls-right">';
+      // print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '?simple=1" class="form-submit">' . t('Simple Edit') . '</a>';
+      // print '</div>';
       print '<div class="controls-right">';
       print '<a href="' . $base_url . '/agenda/meeting/' . $meeting_id . '" class="form-submit">' . t('Edit') . '</a>';
       print '</div>';
@@ -60,14 +60,8 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   if (!node_access('view', $meeting)) {
     return;
   }
-  $meeting_full_access_granted = TRUE;
-  $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
-  if (os2dagsorden_access_helper_is_external_committee($meeting_committee_id) === TRUE) {
-    if (!os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting)) {
-      $meeting_full_access_granted = FALSE;
-    }
-  }
-
+  $meeting_full_access_granted = os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting);
+  
   if ($meeting_full_access_granted) {
     // Meeting all notes.
     echo '<div class="controls-right breadcrumb-level">';
@@ -499,12 +493,18 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
   $meeting_id = $q[1];
   $meeting = node_load($meeting_id);
   $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+  $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
   if (os2dagsorden_access_helper_is_external_committee($committee_tid) === TRUE) {
     $access_granted = (node_access('view', $meeting) && os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting));
   }
+  //Forbidding access to premeeting.
+  elseif (strpos($meeting_type, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING) === 0) {
+    $access_granted = (node_access('view', $meeting) && in_array($committee_tid, os2dagsorden_access_helper_get_user_premeeting_member_of_committees()));
+  }    
   else {
     $access_granted = node_access('view', $meeting);
   }
+ 
   return $access_granted;
 }
 
