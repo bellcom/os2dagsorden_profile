@@ -19,6 +19,9 @@ function hide_print_buttons(){
  */
 function follows_subscribe_click(event) {
     var subscribed_elements = [];
+    if (jQuery(event.target).hasClass('premeeting')) {
+      return;
+    }
     if (jQuery('#follows_subscribed_hidden').val() != '') {
         subscribed_elements = jQuery('#follows_subscribed_hidden').val().split(',');
     }
@@ -34,6 +37,28 @@ function follows_subscribe_click(event) {
 
     jQuery(event.target).toggleClass('subscribed');
     jQuery('#follows_subscribed_hidden').val(subscribed_elements.join(','));
+    //console.log(event.target);
+}
+
+function premeeting_committee_click(event) {
+  var premeeting_committee_elements = [];
+  if (jQuery(event.target).hasClass('checkbox_follows')) {
+      return;
+    }
+  if (jQuery('#premeeting_committee_hidden').val() != '') {
+    premeeting_committee_elements = jQuery('#premeeting_committee_hidden').val().split(',');
+  }
+
+  var id_toggle = jQuery(event.target).attr('id').replace("premeeting_checkbox_", "");
+  if (premeeting_committee_elements.indexOf(id_toggle) > -1) {
+    //removing element 1 element
+    premeeting_committee_elements.splice(premeeting_committee_elements.indexOf(id_toggle), 1);
+  } else {
+    //adding this element
+    premeeting_committee_elements.push(id_toggle);
+  }
+
+  jQuery('#premeeting_committee_hidden').val(premeeting_committee_elements.join(','));
     //console.log(event.target);
 }
 
@@ -78,7 +103,8 @@ jQuery(document).ready(function() {
     jQuery(".available_users ul.droptrue li input[type=checkbox]").click(invisible_participants_click);
     //add click behaviour to existing items
 
-    jQuery(".select-committee #edit-follows-div ul.droptrue li input[type=checkbox]").click(follows_subscribe_click);
+    jQuery(".select-committee #edit-follows-div ul.droptrue li input.checkbox_follows").click(follows_subscribe_click);
+    jQuery(".select-committee  ul.droptrue li input.checkbox.premeeting").click(premeeting_committee_click);
     //add behaviour to item that is added to the participants section
     jQuery(".select-participants ul.droptrue").bind("sortreceive", function(event, ui){
       jQuery('#checkbox_' + ui.item.context.id).addClass('invisible');
@@ -100,22 +126,33 @@ jQuery(document).ready(function() {
         }
         jQuery('#participants_invisible_hidden').val(invisible_elements.join(','));
     });
-    jQuery(".select-committee #edit-follows-div ul.droptrue li input[type=checkbox]").click(follows_subscribe_click);
+
     //add behaviour to item that is added to the follow section
     jQuery(".select-committee #edit-follows-div ul.droptrue").bind("sortreceive", function(event, ui){
         jQuery(ui.item).addClass('can-subscribe');
-        jQuery('#checkbox_' + ui.item.context.id).addClass('follows');
+        jQuery('#checkbox_' + ui.item.context.id).addClass('checkbox_follows');
+        jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
         //console.log(ui.item);
-        setTimeout(function(){ jQuery(ui.item).find(["input[type=checkbox]"]).bind('click', follows_subscribe_click); }, 1);
+        setTimeout(function(){
+          jQuery(ui.item).find("input.checkbox_follows").bind('click', follows_subscribe_click);
+          jQuery(ui.item).find(["input.checkbox.premeeting"]).bind('click', premeeting_committee_click); }, 1);
+    });
+    jQuery(".select-committee ul.droptrue").bind("sortreceive", function(event, ui){
+        jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
+        //console.log(ui.item);
+        setTimeout(function(){console.log(ui.item);
+          jQuery(ui.item).find("input.checkbox.premeeting").bind('click', premeeting_committee_click); }, 1);
     });
     //remove behaviour from item that is removed from the follow section
-    jQuery(".select-committee.single #edit-follows-div ul.droptrue").bind("sortremove", function(event, ui){
+    jQuery(".select-committee.single ul.droptrue").bind("sortremove", function(event, ui){
         jQuery(ui.item).removeClass('can-subscribe subscribed');
         jQuery('#checkbox_' + ui.item.context.id ).removeClass('follows subscribed');
         jQuery('#checkbox_' + ui.item.context.id ).removeClass('checkbox_follows');
+        jQuery('#premeeting_checkbox_' + ui.item.context.id ).removeClass('premeeting');
         jQuery('#checkbox_' + ui.item.context.id).addClass('checkbox');
         jQuery(ui.item).find("input[type=checkbox]").removeAttr("checked");
         jQuery('#checkbox_' + ui.item.context.id).unbind('click');
+        jQuery('#premeeting_checkbox_' + ui.item.context.id).unbind('click');
 
         //removing this element from subscribed
         var subscribed_elements = [];
@@ -129,6 +166,19 @@ jQuery(document).ready(function() {
             subscribed_elements.splice(subscribed_elements.indexOf(id_toggle), 1);
         }
         jQuery('#follows_subscribed_hidden').val(subscribed_elements.join(','));
+
+        //removing this element from premeeting
+        var premeeting_committee_elements = [];
+        if (jQuery('#premeeting_committee_hidden').val() != '') {
+            premeeting_committee_elements = jQuery('#premeeting_committee_hidden').val().trim().split(',');
+        }
+        var id_toggle = jQuery(ui.item).attr('id');
+
+        if (premeeting_committee_elements.indexOf(id_toggle) > -1) {
+            //removing element 1 element
+            premeeting_committee_elements.splice(premeeting_committee_elements.indexOf(id_toggle), 1);
+        }
+        jQuery('#premeeting_committee_hidden').val(premeeting_committee_elements.join(','));
     });
 
 

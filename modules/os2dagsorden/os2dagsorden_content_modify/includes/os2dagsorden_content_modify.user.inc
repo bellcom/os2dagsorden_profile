@@ -105,7 +105,7 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
   }
 
   if (!(user_has_role(user_role_load_by_name("os2dagsorden limited")->rid))) {
-  // DAGS-349 - enabling drag and drop for touch devices.
+    // DAGS-349 - enabling drag and drop for touch devices.
     _os2dagsorden_content_modify_render_drag_and_drop_controls($form, array($uid));
   }
 
@@ -152,19 +152,8 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form[] = array(
     '#markup' => "<div class=\"select-committee {$single_or_batch_class}\">",
   );
+  $is_admin = user_access('administer users');
 
-  $form['premeeting_member_of_div'] = array(
-    '#access' => user_access('administer users'),
-    '#type' => 'item',
-    '#prefix' => '<label>' . t('Premeeting of:') . '</label>',
-    '#markup' => '',
-  );
-  $form['premeeting_member_of_hidden'] = array(
-    '#type' => 'hidden',
-    '#attributes' => array(
-      'id' => 'premeeting_member_of_hidden',
-    ),
-  );
   $form['member_of_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
@@ -220,6 +209,12 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     '#type' => 'hidden',
     '#attributes' => array(
       'id' => 'follows_plus_plus_hidden',
+    ),
+  );
+  $form['premeeting_committee_hidden'] = array(
+    '#type' => 'hidden',
+    '#attributes' => array(
+      'id' => 'premeeting_committee_hidden',
     ),
   );
   $form[] = array(
@@ -320,24 +315,35 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
         }
       }
     }
-
     // Printing premeeting member of.
-    $content = "<ul id='premeeting_member_of' class='droptrue'>";
+    /*$content = "<ul id='premeeting_member_of' class='droptrue'>";
     foreach ($shared_premeeting_member_of as $tid => $count) {
       if ($count == count($uids)) {
         $form['premeeting_member_of_hidden']['#value'] .= $tid . ',';
-        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox'></li>";
+        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting'></li>";
       }
     }
     $content .= '</ul>';
     $form['premeeting_member_of_div']['#markup'] = $content;
-
+*/
     // Printing member of.
     $content = "<ul id='member_of' class='droptrue'>";
     foreach ($shared_member_of as $tid => $count) {
       if ($count === count($uids)) {
         $form['member_of_hidden']['#value'] .= $tid . ',';
-        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox'></li>";
+        if (count($uids) === $shared_premeeting_member_of[$tid]) {
+          $form['premeeting_committee_hidden']['#value'] .= $tid . ',';
+          $premeeting_check_id = $tid;
+        }
+        $checked = '';
+        if ($premeeting_check_id === $tid) {
+          $checked = "checked='checked'";
+        }
+        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
+        if ($is_admin) {
+          $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+        }
+        $content .= '</li>';
       }
     }
     $content .= '</ul>';
@@ -356,11 +362,27 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
           $form['follows_subscribed_hidden']['#value'] .= $tid . ',';
           $check_id = $tid;
         }
+        if (count($uids) === $shared_premeeting_member_of[$tid]) {
+          $form['premeeting_committee_hidden']['#value'] .= $tid . ',';
+          $premeeting_check_id = $tid;
+        }
+        $checked = '';
+        if ($premeeting_check_id === $tid) {
+          $checked = "checked='checked'";
+        }
         if ($check_id === $tid) {
-          $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows' checked='checked' ></li>";
+          $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows' checked='checked'>";
+          if ($is_admin) {
+            $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+          }
+          $content .= '</li>';
         }
         else {
-          $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows'></li>";
+          $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows'>";
+          if ($is_admin) {
+            $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+          }
+          $content .= '</li>';
         }
       }
     }
@@ -372,7 +394,19 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     foreach ($shared_follows_plus as $tid => $count) {
       if ($count === count($uids)) {
         $form['follows_plus_hidden']['#value'] .= $tid . ',';
-        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox'></li>";
+        if (count($uids) === $shared_premeeting_member_of[$tid]) {
+          $form['premeeting_committee_hidden']['#value'] .= $tid . ',';
+          $premeeting_check_id = $tid;
+        }
+        $checked = '';
+        if ($premeeting_check_id === $tid) {
+          $checked = "checked='checked'";
+        }
+        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
+        if ($is_admin) {
+          $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+        }
+        $content .= '</li>';
       }
     }
     $content .= '</ul>';
@@ -383,7 +417,19 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     foreach ($shared_follows_plus_plus as $tid => $count) {
       if ($count === count($uids)) {
         $form['follows_plus_plus_hidden']['#value'] .= $tid . ',';
-        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox'></li>";
+        if (count($uids) === $shared_premeeting_member_of[$tid]) {
+          $form['premeeting_committee_hidden']['#value'] .= $tid . ',';
+          $premeeting_check_id = $tid;
+        }
+        $checked = '';
+        if ($premeeting_check_id === $tid) {
+          $checked = "checked='checked'";
+        }
+        $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
+        if ($is_admin) {
+          $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+        }
+        $content .= '</li>';
       }
     }
     $content .= '</ul>';
@@ -401,7 +447,10 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     foreach ($com_select as $tid => $com_term) {
       // If the committee actually available?
       if ($shared_all_user_committee[$tid] < count($uids)) {
-        $com_list .= "<li id='{$tid}' class='ui-state-default'><span>{$com_term}</span><input id='checkbox_$tid'  type='checkbox' class='checkbox'></li>";
+        $com_list .= "<li id='{$tid}' class='ui-state-default'><span>{$com_term}</span><input id='checkbox_$tid'  type='checkbox' class='checkbox'>";
+        if ($is_admin) {
+          $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox' ></li>";
+        }
       }
     }
     $com_list .= "</ul>";
@@ -499,7 +548,7 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
 
   $follows = explode(',', $follows_hidden);
   $follows_subscribed = explode(',', $follows_subscribed_hidden);
-  $premeeting_member_of = explode(',', $premeeting_member_of_hidden);
+  $premeeting_member_of = explode(',', $premeeting_committee_hidden);
   $member_of = explode(',', $member_of_hidden);
   $follows_plus = explode(',', $follows_plus_hidden);
   $follows_plus_plus = explode(',', $follows_plus_plus_hidden);

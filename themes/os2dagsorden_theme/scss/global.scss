@@ -2205,8 +2205,11 @@ ul.droptrue {
       background-position: 88% 7px;
       background-size: 15px;
       span {
-        max-width: 190px;
+        max-width: 170px;
         display: inline-block;
+      }
+      .checkbox.premeeting{
+        right: 20px;
       }
       &.subscribed {
         background-image: url('../img/icon-send-to-friend-bullet-point.png');
@@ -2230,15 +2233,29 @@ div.note {
   display: none;
 }
 
-.checkbox_follows,
-.checkbox_invisible {
+.checkbox.follows,
+.checkbox_invisible,
+.checkbox.premeeting {
   float: right;
 }
 
 .checkbox.follows,
-.checkbox.invisible {
+.checkbox.invisible,
+.checkbox.premeeting {
   float: right;
   display: inline;
+  position: relative;
+}
+.checkbox.premeeting::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/calendar.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 15px;
+  top: -1px;
+  width: 16px;
+  height: 16px;
 }
 
 /* ---------------------------- Dropdown Button START ---------------------------- */
@@ -2393,4 +2410,4 @@ div.note {
     border: 1px solid darkgray;
     border-radius: $border-radius;
    }
-} 
+}
