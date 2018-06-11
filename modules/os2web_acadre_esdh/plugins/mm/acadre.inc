@@ -552,6 +552,14 @@ function _os2web_acadre_esdh_import_bullet($info, SimpleXMLElement $bullet_xml) 
     return FALSE;
   }
   $bullet['body'] = _acadre_esdh_mm_improve_body_html($bullet['body']);
+
+  $absentmembers = array();
+  foreach ($bullet_xml->xpath("table[@name='absentmembers']") as $absentmember) {
+    $absentmembers[] = _get_value_from_xml($absentmember->xpath("fields/field[@name='name']"));
+  }
+
+  $bullet['absentmembers'] = $absentmembers;
+
   $bullet += os2web_esdh_provider_default_bullet();
   return $bullet;
 }
