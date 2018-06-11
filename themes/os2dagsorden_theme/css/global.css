@@ -2443,7 +2443,12 @@ div.note {
   display: inline;
   float: right;
 }
-
+div.note.premeeting,
+div.note.subscribe {
+  display: block;
+  float: none;
+  margin-left: 18px;
+}
 .checkbox {
   float: right;
   display: none;
@@ -2462,14 +2467,34 @@ div.note {
   display: inline;
   position: relative;
 }
-.checkbox.premeeting::before{
+.checkbox.premeeting::before {
   content: '';
   position: absolute;
-  background-image: url(../img/calendar.png);
+  background-image: url(../img/premeeting.png);
   background-repeat: no-repeat;
   background-size: 15px;
   right: 15px;
   top: -1px;
+  width: 16px;
+  height: 16px;
+}
+div.note.premeeting::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/premeeting.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  left: 8px;
+  width: 16px;
+  height: 16px;
+}
+div.note.subscribe::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/icon-send-to-friend-bullet-point.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  left: 8px;
   width: 16px;
   height: 16px;
 }

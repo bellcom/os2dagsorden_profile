@@ -157,7 +157,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['member_of_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Member of:') . '</label>',
+    '#prefix' => '<label>' . t('Member of:') . '</label><div class="note premeeting">' . t('Formøde publicering:') . '</div>',
     '#markup' => '',
   );
   $form['member_of_hidden'] = array(
@@ -168,7 +168,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   );
   $form['follows_div'] = array(
     '#type' => 'item',
-    '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note">' . t('Notifikationer på mail:') . '</div>',
+    '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note subscribe">' . t('Notifikationer på mail:') . '</div><div class="note premeeting">' . t('Formøde publicering:') . '</div>',
     '#markup' => '',
   );
   $form['follows_hidden'] = array(
@@ -187,7 +187,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['follows_plus_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Follows+:') . '</label>',
+    '#prefix' => '<label>' . t('Follows+:') . '</label><div class="note premeeting">' . t('Formøde publicering:') . '</div>',
     '#markup' => '',
 
   );
@@ -201,7 +201,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['follows_plus_plus_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Follows++:') . '</label>',
+    '#prefix' => '<label>' . t('Follows++:') . '</label><div class="note premeeting">' . t('Formøde publicering:') . '</div>',
     '#markup' => '',
 
   );
