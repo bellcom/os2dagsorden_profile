@@ -157,7 +157,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['member_of_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Member of:') . '</label><div class="note premeeting">' . t('Formøde publicering:') . '</div>',
+    '#prefix' => '<label>' . t('Member of:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
     '#markup' => '',
   );
   $form['member_of_hidden'] = array(
@@ -168,7 +168,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   );
   $form['follows_div'] = array(
     '#type' => 'item',
-    '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note subscribe">' . t('Notifikationer på mail:') . '</div><div class="note premeeting">' . t('Formøde publicering:') . '</div>',
+    '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note subscribe">' . t('Notifikationer på mail:') . '</div>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
     '#markup' => '',
   );
   $form['follows_hidden'] = array(
@@ -187,7 +187,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['follows_plus_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Follows+:') . '</label><div class="note premeeting">' . t('Formøde publicering:') . '</div>',
+    '#prefix' => '<label>' . t('Follows+:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
     '#markup' => '',
 
   );
@@ -201,7 +201,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['follows_plus_plus_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Follows++:') . '</label><div class="note premeeting">' . t('Formøde publicering:') . '</div>',
+    '#prefix' => '<label>' . t('Follows++:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
     '#markup' => '',
 
   );
@@ -341,7 +341,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
         }
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
         if ($is_admin) {
-          $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+          $content .= " <span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
         }
         $content .= '</li>';
       }
@@ -373,14 +373,14 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
         if ($check_id === $tid) {
           $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows' checked='checked'>";
           if ($is_admin) {
-            $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+            $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
           }
           $content .= '</li>';
         }
         else {
           $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows'>";
           if ($is_admin) {
-            $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+            $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
           }
           $content .= '</li>';
         }
@@ -404,7 +404,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
         }
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
         if ($is_admin) {
-          $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+          $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
         }
         $content .= '</li>';
       }
@@ -427,7 +427,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
         }
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
         if ($is_admin) {
-          $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox premeeting' {$checked}>";
+          $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
         }
         $content .= '</li>';
       }
@@ -449,8 +449,9 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
       if ($shared_all_user_committee[$tid] < count($uids)) {
         $com_list .= "<li id='{$tid}' class='ui-state-default'><span>{$com_term}</span><input id='checkbox_$tid'  type='checkbox' class='checkbox'>";
         if ($is_admin) {
-          $content .= "<input id='premeeting_checkbox_$tid' type='checkbox' class='checkbox' ></li>";
+          $com_list .= "<span class='checkbox'><input id='premeeting_checkbox_$tid' type='checkbox' class='' >";
         }
+        $com_list .= '</li>';
       }
     }
     $com_list .= "</ul>";

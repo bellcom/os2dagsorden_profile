@@ -104,7 +104,7 @@ jQuery(document).ready(function() {
     //add click behaviour to existing items
 
     jQuery(".select-committee #edit-follows-div ul.droptrue li input.checkbox_follows").click(follows_subscribe_click);
-    jQuery(".select-committee  ul.droptrue li input.checkbox.premeeting").click(premeeting_committee_click);
+    jQuery(".select-committee  ul.droptrue li span.checkbox.premeeting input").click(premeeting_committee_click);
     //add behaviour to item that is added to the participants section
     jQuery(".select-participants ul.droptrue").bind("sortreceive", function(event, ui){
       jQuery('#checkbox_' + ui.item.context.id).addClass('invisible');
@@ -138,17 +138,17 @@ jQuery(document).ready(function() {
           jQuery(ui.item).find(["input.checkbox.premeeting"]).bind('click', premeeting_committee_click); }, 1);
     });
     jQuery(".select-committee ul.droptrue").bind("sortreceive", function(event, ui){
-        jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
+        jQuery('#premeeting_checkbox_' + ui.item.context.id).parent('span').addClass('premeeting');
         //console.log(ui.item);
         setTimeout(function(){console.log(ui.item);
-          jQuery(ui.item).find("input.checkbox.premeeting").bind('click', premeeting_committee_click); }, 1);
+          jQuery(ui.item).find("#premeeting_checkbox_" + ui.item.context.id).bind('click', premeeting_committee_click); }, 1);
     });
     //remove behaviour from item that is removed from the follow section
     jQuery(".select-committee.single ul.droptrue").bind("sortremove", function(event, ui){
         jQuery(ui.item).removeClass('can-subscribe subscribed');
         jQuery('#checkbox_' + ui.item.context.id ).removeClass('follows subscribed');
         jQuery('#checkbox_' + ui.item.context.id ).removeClass('checkbox_follows');
-        jQuery('#premeeting_checkbox_' + ui.item.context.id ).removeClass('premeeting');
+        jQuery('#premeeting_checkbox_' + ui.item.context.id ).parent('span').removeClass('premeeting');
         jQuery('#checkbox_' + ui.item.context.id).addClass('checkbox');
         jQuery(ui.item).find("input[type=checkbox]").removeAttr("checked");
         jQuery('#checkbox_' + ui.item.context.id).unbind('click');
