@@ -112,6 +112,9 @@ function os2dagsorden_admin_views_form_alter(&$form, $form_state, $form_id) {
     $form['#info'] = _os2dagsorden_admin_views_array_push_after($form['#info'], $filter, "filter-field_user_organization_value");
 
   }
+  if ($form_id === 'taxonomy_form_term') {
+    $form['#validate'][] = 'os2dagsorden_admin_views_taxonomy_term_update_validate';
+  }
 }
 
 /**
@@ -824,4 +827,47 @@ function os2dagsorden_admin_views_user_is_committee_admin() {
   }
 
   return FALSE;
+}
+
+/**
+ * Implements custom validate function.
+ *
+ * @param mixed $form
+ *   Form.
+ * @param mixed $form_state
+ *   Form state.
+ */
+function os2dagsorden_admin_views_taxonomy_term_update_validate($form, $form_state) {
+  $values = $form_state['values'];
+  if ($values['vocabulary_machine_name'] === 'os2web_meetings_tax_committee' && $values['field_os2web_meetings_com_active']['und'][0]['value'] === 1) {
+    $com_ids = array();
+    foreach ($values['field_os2web_meetings_com_subid']['und'] as $key => $value) {
+      if (isset($value['value']) && !empty($value['value'])) {
+        $com_ids[] = $value['value'];
+      }
+    }
+    $vid = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee')->vid;
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'taxonomy_term')
+      ->propertyCondition('vid', $vid, '=');
+    if ($values['tid']) {
+      $query->propertyCondition('tid', $values['tid'], '!=');
+    }
+    $query->fieldCondition('field_os2web_meetings_com_active', 'value', 1, '=')
+      ->fieldCondition('field_os2web_meetings_com_subid', 'value', $com_ids, 'IN');
+    $result = $query->execute();
+
+    if (isset($result['taxonomy_term'])) {
+      $existing_term = reset($result['taxonomy_term']);
+      $existing_term = taxonomy_term_load($existing_term->tid);
+      $existing_term_com_ids_field = field_get_items('taxonomy_term', $existing_term, 'field_os2web_meetings_com_subid');
+      $existing_term_com_ids = array();
+      foreach ($existing_term_com_ids_field as $key => $value) {
+        $existing_term_com_ids[] = $value['value'];
+      }
+      $ids = array_intersect($com_ids, $existing_term_com_ids);
+      $ids = implode(',', $ids);
+      form_set_error('field_os2web_meetings_com_subid', t('Term can not be saved. Active term with this ID %id  already exists', array('%id' => $ids)));
+    }
+  }
 }
