@@ -146,8 +146,7 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
  *   Array of uid.
  */
 function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uids) {
-  global $user;
-  $current_user = user_load($user->uid);
+  $current_user = os2dagsorden_access_helper_get_user();
 
   $single_or_batch_class = (count($uids) === 1) ? 'single' : 'batch';
 
