@@ -5,6 +5,7 @@
   <file>modules</file>
   <file>themes</file>
 
+  <exclude-pattern>themes/*/node_modules/*</exclude-pattern>
   <exclude-pattern>*/contrib/*</exclude-pattern>
   <exclude-pattern>*/libraries/*</exclude-pattern>
   <exclude-pattern>modules/patched/*</exclude-pattern>

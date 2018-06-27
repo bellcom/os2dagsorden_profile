@@ -6,7 +6,7 @@
 @import '_partials/_header';
 @import '_partials/_login';
 @import '_partials/_forms';
-
+@import '_partials/_nodes';
 
 /* This file will hold styles for the mobile version of your website (mobile first). */
 /* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
@@ -398,10 +398,15 @@ ul li.leaf {
 
 /*---------------------------- Views Start ----------------------------*/
 
+.view-header, .view-content {
+  h3, h4 {
+    font-family: $font-basic;
+  }
+}
+
 .view-header h3, .view-content h3 {
   color: $color-font-primary;
   text-transform: capitalize;
-  font-family: $font-basic;
   font-weight: 100;
   font-size: 18px;
   background-color: $color-background-primary;
@@ -413,7 +418,6 @@ ul li.leaf {
 .block-views-exp-meetings-search-page .views-exposed-form .views-exposed-widget .form-submit {
   margin-top: 0;
 }
-
 
 div.date-heading h3 {
   a {
@@ -428,7 +432,7 @@ div.date-heading h3 {
   background: none;
 }
 
-.view-id-events, .view-id-user_committee, .view-id-user_follow_committees, .view-id-kommende_m_der_i_mine_udvalg, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_, .block-views-exp-meetings-search-page .views-exposed-form, .node-form, .node, .view-display-id-page {
+.view-id-events, .view-id-user_committee, .view-id-user_follow_committees, .view-id-kommende_m_der_i_mine_udvalg, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_, .block-views-exp-meetings-search-page .views-exposed-form, .node-form, .node, .view-display-id-page, .view.view-meetings-search.view-display-id-page_meetings_overview {
   background: $color-background-primary;
   border-radius: $border-radius;
   border: $border-block-body;
@@ -507,6 +511,17 @@ div.attachment {
   }
   .view-user-logout-menu .view-content {
     overflow: visible;
+  }
+}
+
+.view-id-meetings_search.view-display-id-page_meetings_overview {
+  .view-filters form {
+    .views-exposed-widget.views-widget-filter-field_os2web_meetings_date_value,
+    .views-exposed-widget.views-widget-filter-field_os2web_meetings_date_value_1,
+    .views-exposed-widget.views-widget-filter-term_node_tid_depth {
+      width:31%;
+      min-height: 60px;
+    }
   }
 }
 

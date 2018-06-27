@@ -290,12 +290,14 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
       }
     }
   }
-  else {
-    if ($form['#id'] === 'user-login-form') {
-      $form['name']['#description'] = "";
-      $form['pass']['#description'] = "";
-      $form['links']['#markup'] = "";
-    }
+  elseif ($form['#id'] === 'user-login-form') {
+    $form['name']['#description'] = "";
+    $form['pass']['#description'] = "";
+    $form['links']['#markup'] = "";
+  }
+  elseif ($form['#id'] === 'views-exposed-form-meetings-search-page-meetings-overview') {
+    $form['from_date']['value']['#date_format'] = 'd-m-Y';
+    $form['to_date']['value']['#date_format'] = 'd-m-Y';
   }
 }
 
@@ -385,4 +387,15 @@ function os2dagsorden_classic_theme_hide_menu_on_pages() {
     // No pages forcing menu to be hidden, can add orientation listener.
     drupal_add_js('add_tablet_orientation_listener();', 'inline');
   }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function os2dagsorden_classic_theme_preprocess_node(&$variables) {
+  // Add css class "node--NODETYPE--VIEWMODE" to nodes.
+  $variables['classes_array'][] = 'node--' . $variables['type'] . '--' . $variables['view_mode'];
+
+  // Make "node--NODETYPE--VIEWMODE.tpl.php" templates available for nodes.
+  $variables['theme_hook_suggestions'][] = 'node__' . $variables['type'] . '__' . $variables['view_mode'];
 }

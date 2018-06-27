@@ -62,6 +62,13 @@ function os2dagsorden_meeting_views_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'print_css';
+  $strongarm->value = '%t/css/print.css';
+  $export['print_css'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'print_footer_options';
   $strongarm->value = '0';
   $export['print_footer_options'] = $strongarm;

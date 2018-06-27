@@ -89,12 +89,9 @@ function os2web_meetings_content_types_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(
-          'trim_length' => 600,
-        ),
-        'type' => 'text_summary_or_trimmed',
-        'weight' => 0,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'node',
@@ -141,7 +138,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -201,9 +198,14 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'weight' => 0,
       ),
       'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
+        'label' => 'hidden',
+        'module' => 'entityreference',
+        'settings' => array(
+          'links' => 0,
+          'use_content_language' => 0,
+          'view_mode' => 'teaser',
+        ),
+        'type' => 'entityreference_entity_view',
         'weight' => 0,
       ),
     ),
@@ -246,7 +248,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'node',
@@ -287,7 +289,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 5,
       ),
     ),
     'entity_type' => 'node',
@@ -344,7 +346,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 9,
       ),
     ),
     'entity_type' => 'node',
@@ -389,7 +391,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 10,
       ),
     ),
     'entity_type' => 'node',
@@ -435,7 +437,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
@@ -487,7 +489,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'node',
@@ -557,9 +559,10 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'weight' => 0,
       ),
       'teaser' => array(
-        'label' => 'above',
+        'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'text_default',
         'weight' => 0,
       ),
     ),
@@ -605,7 +608,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'node',
@@ -656,7 +659,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
@@ -710,7 +713,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 5,
       ),
     ),
     'entity_type' => 'node',
@@ -771,7 +774,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'node',
@@ -818,7 +821,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'node',
@@ -864,7 +867,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -896,6 +899,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'file_default',
         'weight' => 25,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -940,6 +949,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 26,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 13,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -982,6 +997,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'file_default',
         'weight' => 37,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 21,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1027,6 +1048,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'node_reference_default',
         'weight' => 22,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1067,6 +1094,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'file_default',
         'weight' => 34,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 18,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1111,6 +1144,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 35,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 19,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1154,6 +1193,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 38,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 22,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1195,6 +1240,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -1205,6 +1251,17 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 6,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'hidden',
+        'module' => 'entityreference',
+        'settings' => array(
+          'links' => 0,
+          'use_content_language' => 0,
+          'view_mode' => 'teaser',
+        ),
+        'type' => 'entityreference_entity_view',
+        'weight' => 4,
       ),
       'os2web_meetings_meeting_detail_view' => array(
         'label' => 'hidden',
@@ -1265,6 +1322,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 31,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 15,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1304,6 +1367,13 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 13,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 1,
       ),
       'os2web_meetings_meeting_detail_view' => array(
         'label' => 'hidden',
@@ -1362,6 +1432,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 32,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 16,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1397,6 +1473,20 @@ function os2web_meetings_content_types_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
+        'label' => 'inline',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
+        ),
+        'type' => 'date_default',
+        'weight' => 0,
+      ),
+      'os2dagsorden_meeting_overview' => array(
         'label' => 'inline',
         'module' => 'date',
         'settings' => array(
@@ -1478,6 +1568,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 5,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
+      ),
       'related_block' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1537,6 +1633,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 24,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1579,6 +1681,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'file_default',
         'weight' => 36,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 20,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1628,6 +1736,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 3,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
       ),
       'os2web_meetings_meeting_detail_view' => array(
         'label' => 'above',
@@ -1686,6 +1800,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 14,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 25,
+      ),
       'os2web_meetings_meeting_detail_view' => array(
         'label' => 'hidden',
         'settings' => array(),
@@ -1736,6 +1856,13 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 8,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 2,
       ),
       'os2web_meetings_meeting_detail_view' => array(
         'label' => 'hidden',
@@ -1794,6 +1921,13 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 23,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 3,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1803,7 +1937,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_os2web_meetings_partic',
-    'label' => 'Participants',
+    'label' => 'Deltagere',
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
@@ -1834,6 +1968,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 30,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1881,6 +2021,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 5,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
+      ),
       'os2web_meetings_meeting_detail_view' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1917,6 +2063,67 @@ function os2web_meetings_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_meetings_meeting-field_os2web_meetings_status'.
+  $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_status'] = array(
+    'bundle' => 'os2web_meetings_meeting',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
+      ),
+      'ical' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 24,
+      ),
+      'os2web_meetings_meeting_detail_view' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
+      ),
+      'related_block' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_status',
+    'label' => 'Status',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_meetings_meeting-field_os2web_meetings_sub_id'.
   $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_sub_id'] = array(
     'bundle' => 'os2web_meetings_meeting',
@@ -1935,6 +2142,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 15,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1976,6 +2189,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 10,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 23,
       ),
       'os2web_meetings_meeting_detail_view' => array(
         'label' => 'above',
@@ -2031,6 +2250,12 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 6,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2577,6 +2802,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
     'label' => 'Ekstern URL',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -2593,6 +2819,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'insert_plugin' => '',
       ),
       'title' => 'optional',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 255,
       'title_value' => '',
       'url' => 0,
@@ -2629,6 +2856,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Dagsorden admins');
   t('Date');
   t('Date valid');
+  t('Deltagere');
   t('Ekstern URL');
   t('Enclosures');
   t('File');
@@ -2649,7 +2877,6 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Meeting sub ID');
   t('Name short');
   t('Number');
-  t('Participants');
   t('Participants Cancelled');
   t('Personal');
   t('Ref Attachment');
@@ -2657,6 +2884,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Referat admins');
   t('Regular');
   t('Search meta data');
+  t('Status');
   t('System id');
   t('Tillæg til');
   t('Type');
