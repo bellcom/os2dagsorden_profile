@@ -13,6 +13,35 @@ include_once 'inc/os2dagsorden_meeting_views_bullet_point_fields.inc';
 include_once 'inc/os2dagsorden_meeting_views_meetings_search_fields.inc';
 include_once 'inc/os2dagsorden_meeting_views_last_8_meetings_fields.inc';
 include_once 'inc/os2dagsorden_meeting_views_coming_meetings_fields.inc';
+include_once 'inc/os2dagsorden_meeting_views.pdf_generation.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function os2dagsorden_meeting_views_menu() {
+  $items['admin/config/os2dagsorden/meetings-overview'] = array(
+    'title' => 'Overblik over sagsproduction',
+    'description' => 'Giver en søge oversigt hvor man kan vælge et udvalg of få udtrukket, f.eks. alle beslutnings sektioner pa møderne. Listen kan generes for en periode også',
+    'page callback' => 'os2dagsorden_meeting_views_meetings_overview_callback',
+    'access arguments' => array('administer os2web'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['meetings-overview/pdf'] = array(
+    'title' => 'PDF Dagsorden',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'os2dagsorden_meeting_views_meetings_overview_pdf_generate',
+    'access arguments' => array('administer os2web'),
+  );
+
+  return $items;
+}
+
+/**
+ * Page callback to send to meetings overview page.
+ */
+function os2dagsorden_meeting_views_meetings_overview_callback() {
+  drupal_goto('meetings-overview');
+}
 
 /**
  * Implements hook_form_alter().
@@ -21,5 +50,73 @@ function os2dagsorden_meeting_views_form_alter(&$form, &$form_state, $form_id) {
   // The 'All' option in the exposed views filter isn't translated.
   if ($form_id === 'views_exposed_form' && $form['#id'] === 'views-exposed-form-meetings-search-page') {
     $form['field_os2web_meetings_committee_tid_depth']['#options']['All'] = 'Alle';
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function os2dagsorden_meeting_views_views_pre_render(&$view) {
+  if ($view->name === 'meetings_search' && $view->current_display === 'page_meetings_overview') {
+    $count = $view->query->pager->total_items;
+    foreach ($view->result as $result_delta => $result) {
+      $rendered_meeting = node_view(node_load($result->nid), 'os2dagsorden_meeting_overview');
+      if (empty($rendered_meeting['field_os2web_meetings_bullets']['#items'])) {
+        unset($view->result[$result_delta]);
+        $count--;
+      }
+    }
+
+    // Reset the count of items.
+    $view->query->pager->total_items = $count;
+    $view->query->pager->update_page_info();
+  }
+}
+
+/**
+ * Implements hook_view_node().
+ */
+function os2dagsorden_meeting_views_node_view($node, $view_mode, $langcode) {
+  if ($node->type === 'os2web_meetings_meeting' && $view_mode === 'os2dagsorden_meeting_overview') {
+    foreach ($node->content['field_os2web_meetings_bullets'] as $bp_delta => $bp) {
+      if (is_array($bp) && isset($bp['node'])) {
+        $bp = reset($bp['node']);
+
+        // Does BP have any BPA?
+        if (empty($bp['field_os2web_meetings_attach']['#items'])) {
+          unset($node->content['field_os2web_meetings_bullets'][$bp_delta]);
+          unset($node->content['field_os2web_meetings_bullets']['#items'][$bp_delta]);
+        }
+      }
+    }
+  }
+
+  if ($node->type === 'os2web_meetings_bullet' && $view_mode === 'teaser') {
+    $bpa_filters = $_GET['bpa_filter'];
+    foreach ($node->content['field_os2web_meetings_attach'] as $bpa_delta => $bpa) {
+      if (is_array($bpa) && isset($bpa['node'])) {
+        $bpa = reset($bpa['node']);
+        $bpa_node = $bpa['#node'];
+
+        // Does BPA have text?
+        if (empty($bpa_node->field_os2web_meetings_bpa_body)) {
+          unset($node->content['field_os2web_meetings_attach'][$bpa_delta]);
+          unset($node->content['field_os2web_meetings_attach']['#items'][$bpa_delta]);
+        }
+        elseif (!empty($bpa_filters)) {
+          // Does BPA match search criteria?
+          $to_unset = TRUE;
+          foreach ($bpa_filters as $bpa_filter) {
+            if (strncasecmp($bpa_filter, $bpa_node->title, strlen($bpa_filter)) === 0) {
+              $to_unset = FALSE;
+            }
+          }
+          if ($to_unset) {
+            unset($node->content['field_os2web_meetings_attach'][$bpa_delta]);
+            unset($node->content['field_os2web_meetings_attach']['#items'][$bpa_delta]);
+          }
+        }
+      }
+    }
   }
 }

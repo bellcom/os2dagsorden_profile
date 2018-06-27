@@ -28,7 +28,10 @@
 <?php endif; ?>
 <div class="views-exposed-form no-print">
   <div class="controls-right">
-    <a href="<?php print $GLOBALS['base_url'] . $GLOBALS['base_path'] . 'print' . $_SERVER['REQUEST_URI'];?>" class="form-submit" target="_blank">Print</a>
+    <?php
+      $link = l('Print', 'meetings-overview/pdf', array('query' => drupal_get_query_parameters(), 'attributes' => array('class' => array('form-submit'))));
+      print $link;
+    ?>
   </div>
   <div class="clearfix"></div>
   <div class="views-exposed-widgets clearfix">
