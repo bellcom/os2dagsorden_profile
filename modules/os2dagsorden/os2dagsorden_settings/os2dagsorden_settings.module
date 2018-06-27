@@ -531,9 +531,14 @@ function os2dagsorden_settings_form_alter(&$form, &$form_state, $form_id) {
       '#type' => 'select',
       '#title' => t('Udvalgt punkter:'),
       '#options' => array(
+        'resume' => t('Resume'),
         'sagsfremstilling' => t('Sagsfremstilling'),
+        'Økonomi og organisatoriske konsekvenser' => t('Økonomi og organisatoriske konsekvenser'),
+        'lovgrundlag' => t('Lovgrundlag'),
+        'bilag' => t('Bilag'),
         'indstilling' => t('Indstilling'),
         'beslutning' => t('Beslutning'),
+        'supplerende sagsfremstilling' => t('Supplerende sagsfremstilling')
       ),
       '#default_value' => 0,
       '#multiple' => TRUE,
