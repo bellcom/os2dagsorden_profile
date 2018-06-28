@@ -1,9 +1,8 @@
-@media print {
-  .no-print,
-  .no-print * {
+.no-print,
+.no-print * {
     display: none !important;
-  }
-  .tip-darkgray {
+}
+
+.tip-darkgray {
     display: none !important;
-  }
 }

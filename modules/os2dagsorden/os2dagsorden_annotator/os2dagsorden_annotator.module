@@ -14,6 +14,8 @@
  */
 
 module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.common');
+module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.send_to_friend');
+
 define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad'));
 define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? 3 : 5);
 
@@ -54,6 +56,22 @@ function os2dagsorden_annotator_menu() {
     'title' => 'Mødenoter',
     'type' => MENU_CALLBACK,
     'page callback' => '_os2dagsorden_annotator_meeting_all_notes_view',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+  );
+
+  $items['meeting/%/notes/send_to_friend_form'] = array(
+    'title' => 'Send noter til venner',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'os2dagsorden_annotator_send_notes_to_friend_form',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+  );
+
+  $items['meeting/%/notes/send_to_friend_service'] = array(
+    'title' => 'Send noter til venner',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'os2dagsorden_annotator_send_notes_to_friend',
     'page arguments' => array(1),
     'access arguments' => array('access content'),
   );
@@ -642,6 +660,8 @@ function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bila
  *   The html of the created page.
  */
 function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
+  global $base_url;
+
   // Overriding title for bilag.
   drupal_set_title("Mødenoter");
 
@@ -654,6 +674,31 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
   // Help icon.
   $html = '<div class="node">';
   $html .= '<div id="content" class="view-content">';
+
+  // Print and send to friend
+  $print_link = l('Print noter', "print/meeting/$meeting_id/notes", array('attributes' => array('target' => '_blank', 'class' => array('form-submit'))));
+  $send_to_friend_list = l('Send til ven', "meeting/$meeting_id/notes/send_to_friend_form", array('attributes' => array('rel' => 'lightframe', 'class' => array('form-submit'))));
+
+  $html .= '<div class="controls-right no-print">' . $print_link . '</div>';
+  $html .= '<div class="controls-right no-print">' . $send_to_friend_list . '</div>';
+  $html .= '<div class="clearfix"></div>';
+
+  $html .= _os2dagsorden_annotator_meeting_all_notes_generate_html($meeting_id);
+
+  return $html;
+}
+
+/**
+ * Generates HTML of meeting notes.
+ *
+ * @param int $meeting_id
+ *   ID of the meeting.
+ *
+ * @return string
+ *   The html of the created page.
+ */
+function _os2dagsorden_annotator_meeting_all_notes_generate_html($meeting_id) {
+  $html = '';
 
   $potential_meetings = os2dagsorden_access_helper_get_meeting_and_tillaegs_meetings($meeting_id);
 
@@ -846,7 +891,7 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
       }
 
       global $base_url;
-      $to_return .= '<a target="_blank" href="' . $base_url . $link . '"> >>> </a>';
+      $to_return .= '<a target="_blank" href="' . $base_url . $link . '" class="no-print"> >>> </a>';
 
     }
     $to_return .= '<br/>';
