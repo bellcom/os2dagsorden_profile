@@ -301,6 +301,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
 
   // Meeting view settings.
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_hide_meeting_details'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hide meeting details on meeting layout'),
+    '#description' => t('Check this box to hide the meeting details in the top of the meeting presentation'),
+    '#default_value' => variable_get('os2dagsorden_hide_meeting_details', FALSE),
+  );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_all_bullets'] = array(
     '#type' => 'checkbox',
     '#title' => t('Expand all bullets on agenda page load'),
