@@ -98,10 +98,21 @@ function os2dagsorden_meeting_views_node_view($node, $view_mode, $langcode) {
     }
 
     if (isset($node->content['field_os2web_meetings_attach'])) {
+      $attachments_unique = array();
+
       foreach ($node->content['field_os2web_meetings_attach'] as $bpa_delta => $bpa) {
         if (is_array($bpa) && isset($bpa['node'])) {
           $bpa = reset($bpa['node']);
           $bpa_node = $bpa['#node'];
+
+          // Duplicate attachment?
+          if (in_array($bpa_node->nid, $attachments_unique)) {
+            unset($node->content['field_os2web_meetings_attach'][$bpa_delta]);
+            unset($node->content['field_os2web_meetings_attach']['#items'][$bpa_delta]);
+          }
+          else {
+            $attachments_unique[] = $bpa_node->nid;
+          }
 
           // Does BPA have text?
           if (empty($bpa_node->field_os2web_meetings_bpa_body)) {

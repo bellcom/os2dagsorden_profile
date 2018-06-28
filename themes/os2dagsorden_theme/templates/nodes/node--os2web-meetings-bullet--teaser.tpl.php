@@ -82,7 +82,14 @@
 ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
   <?php if (!$page): ?>
-    <h3<?php print $title_attributes; ?>><?php print $title; ?></h3>
+    <h3<?php print $title_attributes; ?>><?php print $title;
+      if (variable_get('os2dagsorden_show_bullet_case_nr', FALSE)) {
+        if ($node->field_os2web_meetings_bul_case['und'] && !empty($node->field_os2web_meetings_bul_case['und'][0]['value'])) {
+          print ' (' . $node->field_os2web_meetings_bul_case['und'][0]['value'] . ')';
+        }
+      }
+      ?>
+    </h3>
   <?php endif; ?>
 
   <div class="content"<?php print $content_attributes; ?>>
