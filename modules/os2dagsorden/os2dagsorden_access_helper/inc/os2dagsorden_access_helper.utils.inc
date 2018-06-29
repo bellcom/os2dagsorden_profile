@@ -784,3 +784,20 @@ function os2dagsorden_access_helper_show_byradet_menu() {
 
   return FALSE;
 }
+
+/**
+ * Check of user has any of the provided roles.
+ *
+ * @return bool
+ *   TRUE or FALSE.
+ */
+function os2dagsorden_access_helper_user_has_role() {
+  global $user;
+  $roles = func_get_args();
+  foreach ($roles as $role) {
+    if (in_array($role, $user->roles)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
