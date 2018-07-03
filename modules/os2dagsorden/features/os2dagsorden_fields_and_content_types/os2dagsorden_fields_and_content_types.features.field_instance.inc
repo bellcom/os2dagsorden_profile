@@ -236,6 +236,40 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_categ'.
+  $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_categ'] = array(
+    'bundle' => 'os2web_meetings_tax_committee',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 15,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_os2web_meetings_com_categ',
+    'label' => 'Category',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'apply_chosen' => '',
+      ),
+      'type' => 'options_buttons',
+      'weight' => 12,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_follows_committee'.
   $field_instances['user-user-field_follows_committee'] = array(
     'bundle' => 'user',
@@ -455,6 +489,73 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_buttons',
       'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_user_com_categ'.
+  $field_instances['user-user-field_user_com_categ'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 19,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_com_categ',
+    'label' => 'Committee category',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 11,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_user_com_forbid_categ'.
+  $field_instances['user-user-field_user_com_forbid_categ'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 20,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_com_forbid_categ',
+    'label' => 'Forbidden committee categories',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'options',
+      'settings' => array(
+        'apply_chosen' => '',
+        'autocomplete_path' => 'taxonomy/autocomplete',
+        'content_taxonomy_opt_groups' => FALSE,
+        'size' => 60,
+      ),
+      'type' => 'options_buttons',
+      'weight' => 16,
     ),
   );
 
@@ -856,6 +957,8 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Category');
+  t('Committee category');
   t('Comname');
   t('Deles med');
   t('Deles med grupper');
@@ -863,6 +966,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('Follows committees subscribed');
   t('Follows committees+');
   t('Follows committees++');
+  t('Forbidden committee categories');
   t('Forrbidden categories');
   t('Full name');
   t('ID');

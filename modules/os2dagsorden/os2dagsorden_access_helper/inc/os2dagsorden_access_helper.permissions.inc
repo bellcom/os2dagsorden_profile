@@ -40,11 +40,11 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
   $committee = taxonomy_term_load($committee_tid);
 
   // Checking category.
-  if (isset($committee->field_os2web_meetings_com_cat['und'])) {
-    $meeting_category = $committee->field_os2web_meetings_com_cat['und'][0]['value'];
-    if (isset($user->field_user_forrbidden_categories['und'])) {
-      foreach ($user->field_user_forrbidden_categories['und'] as $user_cat) {
-        if ($user_cat['value'] == $meeting_category) {
+  if (isset($committee->field_os2web_meetings_com_categ['und'])) {
+    $meeting_category = $committee->field_os2web_meetings_com_categ['und'][0]['tid'];
+    if (isset($user->field_user_com_forbid_categ['und'])) {
+      foreach ($user->field_user_com_forbid_categ['und'] as $user_cat) {
+        if ($user_cat['tid'] == $meeting_category) {
           return FALSE;
         }
       }
@@ -146,16 +146,20 @@ function os2dagsorden_access_helper_check_user_can_see_meeting_in_calendar($meet
   $committee = taxonomy_term_load($committee_tid);
   $access_granted = FALSE;
 
-  if (isset($committee->field_os2web_meetings_com_cat['und'])) {
-    $meeting_category = $committee->field_os2web_meetings_com_cat['und'][0]['value'];
-    if (isset($user->field_user_meetings_category['und'])) {
-      foreach ($user->field_user_meetings_category['und'] as $user_cat) {
-        if ($user_cat['value'] == $meeting_category) {
+  if (isset($committee->field_os2web_meetings_com_categ['und'])) {
+    $meeting_category = $committee->field_os2web_meetings_com_categ['und'][0]['tid'];
+    if (isset($user->field_user_com_categ['und'])) {
+      foreach ($user->field_user_com_categ['und'] as $user_cat) {
+        if ($user_cat['tid'] == $meeting_category) {
           $access_granted = TRUE;
           break;
         }
       }
     }
+    else {
+      $access_granted = TRUE;
+    }
+
   }
   return $access_granted;
 }

@@ -457,11 +457,11 @@ function os2dagsorden_access_helper_node_insert($node) {
  * Implements hook_user_presave().
  */
 function os2dagsorden_access_helper_user_presave(&$edit, $account, $category) {
-  if ($account->is_new && variable_get('os2dagsorden_user_default_meeting_category')) {
-    $user_category = variable_get('os2dagsorden_user_default_meeting_category');
+  if ($account->is_new && variable_get('os2dagsorden_user_default_committee_category')) {
+    $user_category = variable_get('os2dagsorden_user_default_committee_category');
     foreach ($user_category as $key => $value) {
       if ($value) {
-        $edit['field_user_meetings_category']['und'][] = array('value' => $value);
+        $edit['field_user_com_categ']['und'][] = array('tid' => $value);
       }
     }
   }

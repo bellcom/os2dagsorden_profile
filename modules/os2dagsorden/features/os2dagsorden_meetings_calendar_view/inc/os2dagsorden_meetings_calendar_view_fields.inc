@@ -32,7 +32,11 @@ function os2dagsorden_meetings_calendar_view_fields_title($data) {
     }
   }
 
-  $meeting_category = substr(strtoupper($data->_field_data['taxonomy_term_data_field_data_field_os2web_meetings_committe']['entity']->field_os2web_meetings_com_cat['und'][0]['value']), 0, 1);
+  $meeting_category = $data->_field_data['taxonomy_term_data_field_data_field_os2web_meetings_committe']['entity']->field_os2web_meetings_com_categ['und'][0]['tid'];
+  if ($meeting_category) {
+    $meeting_category = taxonomy_term_load($meeting_category);
+    $meeting_category = substr(strtoupper($meeting_category->name), 0, 1);
+  }
 
   if (variable_get('os2dagsorden_show_meeting_category', 'true') === 'true') {
     echo '<font style="color:#' . $data->_field_data['taxonomy_term_data_field_data_field_os2web_meetings_committe']['entity']->field_os2web_meetings_com_color['und'][0]['jquery_colorpicker'] . '">' . '[' . $meeting_category . '] ' . $title . '</font>';
@@ -56,10 +60,10 @@ function os2dagsorden_meetings_calendar_view_fields_filter_by_meeting_category($
 
   $meeting = node_load($meeting_id);
   $committee = taxonomy_term_load($meeting->field_os2web_meetings_committee['und'][0]['tid']);
-  $meeting_category = $committee->field_os2web_meetings_com_cat['und'][0]['value'];
-  if (isset($user_loaded->field_user_meetings_category['und'])) {
-    foreach ($user_loaded->field_user_meetings_category['und'] as $user_category) {
-      if (strcasecmp($user_category['value'], $meeting_category) === 0) {
+  $meeting_category = $committee->field_os2web_meetings_com_categ['und'][0]['tid'];
+  if (isset($user_loaded->field_user_com_categ['und'])) {
+    foreach ($user_loaded->field_user_com_categ['und'] as $user_category) {
+      if ($user_category['tid'] === $meeting_category) {
         return FALSE;
       }
     }

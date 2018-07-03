@@ -289,8 +289,6 @@ function os2dagsorden_print_meetings_generate_month_headers($from_month, $to_mon
  */
 function os2dagsorden_print_meetings_generate_month($from_month, $to_month, $meetings) {
   global $base_url;
-  global $user;
-  $user = user_load($user->uid);
 
   $html = "<tr>";
   for ($month = $from_month; $month <= $to_month; $month++) {
@@ -317,13 +315,7 @@ function os2dagsorden_print_meetings_generate_month($from_month, $to_month, $mee
         }
 
         $committee = taxonomy_term_load($met->field_os2web_meetings_committee['und'][0]['tid']);
-        // Have to limit the results, because user should see only one type of
-        // meeting.
-        if (count($user->field_user_meetings_category['und']) != 2) {
-          if (strcasecmp($user->field_user_meetings_category['und'][0]['value'], $committee->field_os2web_meetings_com_cat['und'][0]['value']) != 0) {
-            continue;
-          }
-        }
+
         if (substr($met->field_os2web_meetings_date['und'][0]['value'], 0, 10) === date('Y-m-d', mktime(0, 0, 0, $month, $i, date("Y")))) {
           $link = $base_url . '/meeting/' . $met->nid;
 

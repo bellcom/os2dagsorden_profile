@@ -38,6 +38,15 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
+  // Exported permission: 'create field_user_com_forbid_categ'.
+  $permissions['create field_user_com_forbid_categ'] = array(
+    'name' => 'create field_user_com_forbid_categ',
+    'roles' => array(
+      'anonymous user' => 'anonymous user',
+    ),
+    'module' => 'field_permissions',
+  );
+
   // Exported permission: 'create field_user_committee'.
   $permissions['create field_user_committee'] = array(
     'name' => 'create field_user_committee',
@@ -116,6 +125,16 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
   // Exported permission: 'edit field_user_can_send_closed_bp'.
   $permissions['edit field_user_can_send_closed_bp'] = array(
     'name' => 'edit field_user_can_send_closed_bp',
+    'roles' => array(
+      'administrator+' => 'administrator+',
+      'administrator++' => 'administrator++',
+    ),
+    'module' => 'field_permissions',
+  );
+
+  // Exported permission: 'edit field_user_com_forbid_categ'.
+  $permissions['edit field_user_com_forbid_categ'] = array(
+    'name' => 'edit field_user_com_forbid_categ',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -213,6 +232,16 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
+  // Exported permission: 'edit own field_user_com_forbid_categ'.
+  $permissions['edit own field_user_com_forbid_categ'] = array(
+    'name' => 'edit own field_user_com_forbid_categ',
+    'roles' => array(
+      'administrator+' => 'administrator+',
+      'administrator++' => 'administrator++',
+    ),
+    'module' => 'field_permissions',
+  );
+
   // Exported permission: 'edit own field_user_committee'.
   $permissions['edit own field_user_committee'] = array(
     'name' => 'edit own field_user_committee',
@@ -296,6 +325,16 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
   // Exported permission: 'view field_user_can_send_closed_bp'.
   $permissions['view field_user_can_send_closed_bp'] = array(
     'name' => 'view field_user_can_send_closed_bp',
+    'roles' => array(
+      'administrator+' => 'administrator+',
+      'administrator++' => 'administrator++',
+    ),
+    'module' => 'field_permissions',
+  );
+
+  // Exported permission: 'view field_user_com_forbid_categ'.
+  $permissions['view field_user_com_forbid_categ'] = array(
+    'name' => 'view field_user_com_forbid_categ',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -388,6 +427,17 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
   // Exported permission: 'view own field_user_can_send_closed_bp'.
   $permissions['view own field_user_can_send_closed_bp'] = array(
     'name' => 'view own field_user_can_send_closed_bp',
+    'roles' => array(
+      'administrator+' => 'administrator+',
+      'administrator++' => 'administrator++',
+      'os2dagsorden' => 'os2dagsorden',
+    ),
+    'module' => 'field_permissions',
+  );
+
+  // Exported permission: 'view own field_user_com_forbid_categ'.
+  $permissions['view own field_user_com_forbid_categ'] = array(
+    'name' => 'view own field_user_com_forbid_categ',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
