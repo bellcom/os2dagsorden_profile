@@ -602,49 +602,6 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_user_forrbidden_categories'.
-  $field_instances['user-user-field_user_forrbidden_categories'] = array(
-    'bundle' => 'user',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 6,
-      ),
-      'os2dagsorden_users_select' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_user_forrbidden_categories',
-    'label' => 'Forrbidden categories',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 16,
-    ),
-  );
-
   // Exported field_instance: 'user-user-field_user_full_name'.
   $field_instances['user-user-field_user_full_name'] = array(
     'bundle' => 'user',
@@ -787,56 +744,6 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_user_meetings_category'.
-  $field_instances['user-user-field_user_meetings_category'] = array(
-    'bundle' => 'user',
-    'default_value' => array(
-      0 => array(
-        'value' => 'pol',
-      ),
-      1 => array(
-        'value' => 'org',
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 8,
-      ),
-      'os2dagsorden_users_select' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_user_meetings_category',
-    'label' => 'Meeting category',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 12,
-    ),
-  );
-
   // Exported field_instance: 'user-user-field_user_organization'.
   $field_instances['user-user-field_user_organization'] = array(
     'bundle' => 'user',
@@ -967,12 +874,10 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('Follows committees+');
   t('Follows committees++');
   t('Forbidden committee categories');
-  t('Forrbidden categories');
   t('Full name');
   t('ID');
   t('Is part of Committee');
   t('Login token');
-  t('Meeting category');
   t('Organization');
   t('Premeeting committee');
   t('Rediger tekst');

@@ -2395,42 +2395,6 @@ function os2web_meetings_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_cat'.
-  $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_cat'] = array(
-    'bundle' => 'os2web_meetings_tax_committee',
-    'default_value' => array(
-      0 => array(
-        'value' => 'pol',
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 9,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_os2web_meetings_com_cat',
-    'label' => 'Category',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 9,
-    ),
-  );
-
-  // Exported field_instance:
   // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_color'.
   $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_color'] = array(
     'bundle' => 'os2web_meetings_tax_committee',
@@ -2847,7 +2811,6 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Body');
   t('Case ID');
   t('Case nr');
-  t('Category');
   t('Closed');
   t('Color');
   t('Comments');
