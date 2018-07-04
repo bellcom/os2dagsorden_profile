@@ -14,6 +14,8 @@
   <exclude-pattern>modules/os2dagsorden/os2dagsorden_annotator/lib/*</exclude-pattern>
   <exclude-pattern>modules/os2intra_simplesaml/modules/drupal_nemid_login/lib/*</exclude-pattern>
   <exclude-pattern>themes/os2dagsorden_theme/css/pagescroller.skins.css</exclude-pattern>
+  <exclude-pattern>themes/os2dagsorden_theme/css/*</exclude-pattern>
+  <exclude-pattern>themes/os2dagsorden_theme/templates/*</exclude-pattern>
 
   <exclude-pattern>*.features.*</exclude-pattern>
   <exclude-pattern>*.pages_default.inc</exclude-pattern>

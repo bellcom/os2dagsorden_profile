@@ -29,7 +29,7 @@
 <div class="views-exposed-form no-print">
   <div class="controls-right">
     <?php
-      $link = l('Print', 'meetings-overview/pdf', array('query' => drupal_get_query_parameters(), 'attributes' => array('class' => array('form-submit'))));
+      $link = l(t('Print'), 'meetings-overview/pdf', array('query' => drupal_get_query_parameters(), 'attributes' => array('class' => array('form-submit'))));
       print $link;
     ?>
   </div>

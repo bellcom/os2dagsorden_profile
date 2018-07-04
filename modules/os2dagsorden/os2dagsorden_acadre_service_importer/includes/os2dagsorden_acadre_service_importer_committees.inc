@@ -10,7 +10,7 @@
  *
  * Processes the committees xml. Delegates to create committees.
  *
- * @param array $committees_rows
+ * @param SimpleXMLElement $committees_rows
  *   Array of committees.
  */
 function _os2dagsorden_acadre_service_importer_process_committees(SimpleXMLElement $committees_rows) {

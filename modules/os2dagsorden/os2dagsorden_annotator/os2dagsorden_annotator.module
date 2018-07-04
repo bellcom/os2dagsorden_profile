@@ -675,9 +675,9 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
   $html = '<div class="node">';
   $html .= '<div id="content" class="view-content">';
 
-  // Print and send to friend
-  $print_link = l('Print noter', "print/meeting/$meeting_id/notes", array('attributes' => array('target' => '_blank', 'class' => array('form-submit'))));
-  $send_to_friend_list = l('Send til ven', "meeting/$meeting_id/notes/send_to_friend_form", array('attributes' => array('rel' => 'lightframe', 'class' => array('form-submit'))));
+  // Print and send to friend.
+  $print_link = l(t('Print noter'), "print/meeting/$meeting_id/notes", array('attributes' => array('target' => '_blank', 'class' => array('form-submit'))));
+  $send_to_friend_list = l(t('Send til ven'), "meeting/$meeting_id/notes/send_to_friend_form", array('attributes' => array('rel' => 'lightframe', 'class' => array('form-submit'))));
 
   $html .= '<div class="controls-right no-print">' . $print_link . '</div>';
   $html .= '<div class="controls-right no-print">' . $send_to_friend_list . '</div>';
