@@ -266,7 +266,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
         'apply_chosen' => '',
       ),
       'type' => 'options_buttons',
-      'weight' => 11,
+      'weight' => 12,
     ),
   );
 

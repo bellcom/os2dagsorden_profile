@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * Implements hook_update_N().
+ *
+ * Migrating committee taxonomies from list values to taxonomy terms.
+ */
+function os2dagsorden_fields_and_content_types_update_7100() {
+  // Find taxonomy vocabulary and create terms.
+  $cat_voc = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee_category');
+
+  // Creating political category.
+  $term = new stdClass();
+  $term->name = 'Politisk';
+  $term->vid = $cat_voc->vid;
+  $term->parent = 0;
+  taxonomy_term_save($term);
+  $polCatTid = $term->tid;
+
+  // Creating organizational category.
+  $term = new stdClass();
+  $term->name = 'Organisatorisk';
+  $term->vid = $cat_voc->vid;
+  $term->parent = 0;
+  taxonomy_term_save($term);
+  $orgCatTid = $term->tid;
+
+  // Updating committees.
+  $com_voc = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee');
+  foreach (taxonomy_get_tree($com_voc->vid) as $committee) {
+    $committee = taxonomy_term_load($committee->tid);
+
+    if ($committee->field_os2web_meetings_com_cat['und'][0]['value'] === 'org') {
+      $committee->field_os2web_meetings_com_categ['und'][0]['tid'] = $orgCatTid;
+    }
+    else {
+      $committee->field_os2web_meetings_com_categ['und'][0]['tid'] = $polCatTid;
+    }
+    taxonomy_term_save($committee);
+  }
+
+  // Updating users.
+  $users = entity_load('user');
+  foreach ($users as $user) {
+    // Skipping anonymous user.
+    if ($user->uid == 0) {
+      continue;
+    }
+
+    // Committee categories.
+    if (isset($user->field_user_meetings_category) && !empty($user->field_user_meetings_category['und'])) {
+      foreach ($user->field_user_meetings_category['und'] as $cat) {
+        if ($cat['value'] === 'pol') {
+          $user->field_user_com_categ['und'][]['tid'] = $polCatTid;
+        }
+        elseif ($cat['value'] === 'org') {
+          $user->field_user_com_categ['und'][]['tid'] = $orgCatTid;
+        }
+      }
+    }
+    // If empty, add all, that is a default value.
+    if (empty($user->field_user_com_categ)) {
+      $user->field_user_com_categ['und'][]['tid'] = $polCatTid;
+      $user->field_user_com_categ['und'][]['tid'] = $orgCatTid;
+    }
+
+    // Forbidden categories.
+    if (isset($user->field_user_forrbidden_categories) && !empty($user->field_user_forrbidden_categories['und'])) {
+      foreach ($user->field_user_forrbidden_categories['und'] as $cat) {
+        if ($cat['value'] === 'pol') {
+          $user->field_user_com_forbid_categ['und'][]['tid'] = $polCatTid;
+        }
+        elseif ($cat['value'] === 'org') {
+          $user->field_user_com_forbid_categ['und'][]['tid'] = $orgCatTid;
+        }
+      }
+    }
+
+    user_save($user);
+  }
+}
