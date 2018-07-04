@@ -839,6 +839,16 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#options' => $cat_select,
     '#default_value' => variable_get('os2dagsorden_user_default_committee_category'),
   );
+  $form['os2dagsorden_committee_category_settings']['os2dagsorden_committee_forbidden_allowed_categories_mode'] = array(
+    '#type' => 'radios',
+    '#default_value' => variable_get('os2dagsorden_committee_forbidden_allowed_categories_mode', 'forbidden'),
+    '#title' => t('Committee forbidden categories mode'),
+    '#options' => array(
+      'forbidden' => t('Forbidden mode'),
+      'allowed' => t('Allowed mode'),
+    ),
+    '#description' => t('Changes the user settings page by toggling between forbidden and allowed categories mode. In other words white list and black list.'),
+  );
 
   // SOFD Integration settings.
   if (module_exists('os2dagsorden_importer')) {
@@ -1444,6 +1454,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
 
     variable_set('os2dagsorden_show_meeting_category', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_show_meeting_category']);
     variable_set('os2dagsorden_user_default_committee_category', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_user_default_committee_category']);
+    variable_set('os2dagsorden_committee_forbidden_allowed_categories_mode', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_committee_forbidden_allowed_categories_mode']);
 
     variable_set('ultimate_cron_rule', $setting_array['os2dagsorden_cron_job_freq']['os2dagsorden_importer_cron']);
     variable_set('ultimate_cron_rule', $setting_array['os2dagsorden_cron_job_freq']['os2dagsorden_acadre_service_importer_cron']);

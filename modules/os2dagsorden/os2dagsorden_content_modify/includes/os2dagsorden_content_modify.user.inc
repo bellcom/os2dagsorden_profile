@@ -59,13 +59,24 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
     '#title' => "<b>" . t('Calendar preferences:') . "</b>",
   );
 
-  $form['forbidden_cat'] = array(
-    '#access' => user_access('administer users'),
-    '#type' => 'checkboxes',
-    '#options' => $cat_select,
-    '#title' => "<b>" . t('Forbidden categories:') . "</b>",
-    '#description' => t('Which categories the user is FORBIDDEN to have access to'),
-  );
+  if (variable_get('os2dagsorden_committee_forbidden_allowed_categories_mode', 'forbidden') === 'forbidden') {
+    $form['forbidden_cat'] = array(
+      '#access' => user_access('administer users'),
+      '#type' => 'checkboxes',
+      '#options' => $cat_select,
+      '#title' => "<b>" . t('Forbidden categories:') . "</b>",
+      '#description' => t('Which categories the user is FORBIDDEN to have access to'),
+    );
+  }
+  else {
+    $form['allowed_cat'] = array(
+      '#access' => user_access('administer users'),
+      '#type' => 'checkboxes',
+      '#options' => $cat_select,
+      '#title' => "<b>" . t('Allowed categories:') . "</b>",
+      '#description' => t('Which categories the user is ALLOWED to have access to'),
+    );
+  }
 
   $form['user_can_send_closed_bp'] = array(
     '#access' => user_access('administer users'),
@@ -451,18 +462,22 @@ function _os2dagsorden_conten_modify_load_user_fields(&$form, $uid) {
 
   if (field_get_items('user', $user, 'field_user_com_forbid_categ')) {
     $forbidden_cats_field = field_get_items('user', $user, 'field_user_com_forbid_categ');
-    $selection = array();
+    $forbidden_cats_selection = array();
 
     foreach ($forbidden_cats_field as $forbidden_cat) {
-      $selection[] = $forbidden_cat['tid'];
-    };
-    $form['forbidden_cat']['#default_value'] = $selection;
+      $forbidden_cats_selection[] = $forbidden_cat['tid'];
+    }
+    $form['forbidden_cat']['#default_value'] = $forbidden_cats_selection;
+    $form['allowed_cat']['#default_value'] = array_diff(array_keys($form['calendar_pref']['#options']), $forbidden_cats_selection);
 
     $options = $form['calendar_pref']['#options'];
-    foreach ($selection as $forbidden_cat) {
+    foreach ($forbidden_cats_selection as $forbidden_cat) {
       unset($options[$forbidden_cat]);
     }
     $form['calendar_pref']['#options'] = $options;
+  }
+  else {
+    $form['allowed_cat']['#default_value'] = array_keys($form['calendar_pref']['#options']);
   }
 
   if (field_get_items('user', $user, 'field_user_com_categ')) {
@@ -503,6 +518,19 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
   $member_of = explode(',', $member_of_hidden);
   $follows_plus = explode(',', $follows_plus_hidden);
   $follows_plus_plus = explode(',', $follows_plus_plus_hidden);
+
+  // If the forbidden categories are not preset and categories mode is allowed,
+  // fill the variable artificially.
+  if (!isset($forbidden_cat) && variable_get('os2dagsorden_committee_forbidden_allowed_categories_mode','forbidden') === 'allowed') {
+    $cat_voc = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee_category');
+    $cat_terms = taxonomy_get_tree($cat_voc->vid);
+    $cat_all = array();
+    foreach ($cat_terms as $cat_term) {
+      $cat_all[] = $cat_term->tid;
+    }
+
+    $forbidden_cat = array_diff($cat_all, $allowed_cat);
+  }
 
   $user = user_load($form_state['values']['uid']);
   $user->field_user_full_name['und'][0]['value'] = $full_name;

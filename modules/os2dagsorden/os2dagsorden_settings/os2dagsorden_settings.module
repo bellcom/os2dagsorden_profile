@@ -168,6 +168,7 @@ function os2dagsorden_settings_export_to_file() {
 
   $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_show_meeting_category'] = variable_get('os2dagsorden_show_meeting_category');
   $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_user_default_committee_category'] = variable_get('os2dagsorden_user_default_committee_category');
+  $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_committee_forbidden_allowed_categories_mode'] = variable_get('os2dagsorden_committee_forbidden_allowed_categories_mode', 'forbidden');
 
   if (module_exists('ultimate_cron')) {
     $conf = ultimate_cron_get_settings("os2dagsorden_importer_cron");
