@@ -112,8 +112,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
 
         $bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . '-' . $i] = $bp;
       }
-      ksort($bullet_points);
 
+      ksort($bullet_points);
       foreach ($bullet_points as $bp) {
         $form['agenda'][] = array(
           '#markup' => '<div class="create-agenda-list-item">',
@@ -145,7 +145,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
         );
 
         $form['agenda'][] = array(
-        // '<span class="create-agenda-edit-delete-container">',.
+          // '<span class="create-agenda-edit-delete-container">',.
           '#markup' => '</span>',
         );
 
@@ -177,7 +177,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
         }
 
         $form['agenda'][] = array(
-        // '<span class="create-agenda-privacy-container">',.
+          // '<span class="create-agenda-privacy-container">',.
           '#markup' => '</span>',
         );
 
@@ -185,11 +185,15 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
           '#markup' => '[' . $bp->field_os2web_meetings_bul_number['und'][0]['value'] . '] ' . $bp->title,
         );
         $form['agenda'][] = array(
-        // '<div class="create-agenda-list-item">',.
+          // '<div class="create-agenda-list-item">',.
           '#markup' => '</div>',
         );
       }
     }
+  }
+
+  if (!isset($form['agenda'][0])) {
+    unset($form['agenda']);
   }
 
   // Finishing form.
