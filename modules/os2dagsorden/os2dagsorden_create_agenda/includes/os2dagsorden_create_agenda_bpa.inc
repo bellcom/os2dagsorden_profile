@@ -45,7 +45,7 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
 
   $form['attachment'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Attachment'),
+    '#title' => t('Attachment (text)'),
     '#collapsible' => TRUE,
     '#description' => t('Add the text-based bullet point attachment to the bullet point.'),
     '#group' => 'add_attachment',
@@ -60,7 +60,7 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
 
   $form['bilag'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Bilag'),
+    '#title' => t('Bilag (file)'),
     '#collapsible' => TRUE,
     '#description' => t('Enclose a file to the bullet point attachment.'),
     '#group' => 'add_attachment',
