@@ -521,7 +521,7 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
 
   // If the forbidden categories are not preset and categories mode is allowed,
   // fill the variable artificially.
-  if (!isset($forbidden_cat) && variable_get('os2dagsorden_committee_forbidden_allowed_categories_mode','forbidden') === 'allowed') {
+  if (!isset($forbidden_cat) && variable_get('os2dagsorden_committee_forbidden_allowed_categories_mode', 'forbidden') === 'allowed') {
     $cat_voc = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee_category');
     $cat_terms = taxonomy_get_tree($cat_voc->vid);
     $cat_all = array();

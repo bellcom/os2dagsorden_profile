@@ -479,12 +479,13 @@ function os2dagsorden_access_helper_user_presave(&$edit, $account, $category) {
 /**
  * Implements hook_term_insert().
  *
- * Adds a newly created committee category term to each user forbidden categories list.
+ * Adds a newly created committee category term to each user forbidden
+ * categories list.
  */
 function os2dagsorden_access_helper_taxonomy_term_insert($term) {
   if ($term->vocabulary_machine_name === 'os2web_meetings_tax_committee_category') {
     $users = entity_load('user');
-    foreach($users as $user) {
+    foreach ($users as $user) {
       if ($user->uid == 0) {
         continue;
       }
