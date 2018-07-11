@@ -65,6 +65,8 @@ function os2dagsorden_fields_and_content_types_update_7100() {
     }
 
     // Forbidden categories.
+    $user->field_user_com_forbid_categ['und'] = array();
+    
     if (isset($user->field_user_forrbidden_categories) && !empty($user->field_user_forrbidden_categories['und'])) {
       foreach ($user->field_user_forrbidden_categories['und'] as $cat) {
         if ($cat['value'] === 'pol') {
