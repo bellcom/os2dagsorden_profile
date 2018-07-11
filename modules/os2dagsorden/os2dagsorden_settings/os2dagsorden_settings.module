@@ -462,7 +462,7 @@ function os2dagsorden_settings_form_alter(&$form, &$form_state, $form_id) {
         'bilag' => t('Bilag'),
         'indstilling' => t('Indstilling'),
         'beslutning' => t('Beslutning'),
-        'supplerende sagsfremstilling' => t('Supplerende sagsfremstilling')
+        'supplerende sagsfremstilling' => t('Supplerende sagsfremstilling'),
       ),
       '#default_value' => 0,
       '#multiple' => TRUE,

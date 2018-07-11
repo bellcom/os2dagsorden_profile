@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * @file
+ * Os2dagsorden_annotator.
+ *
+ * PHP version 5
+ *
+ * @category OS2Dagsorden
+ * @package OS2Dagsorden_Annotator
+ *  The annotator module send ot friend functions.
+ * @author Stanislav Kutasevits <stan@bellcom.dk>
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License,
+ *  version 2
+ * @link http://bellcom.dk
+ */
+
+/**
  * Creates a form.
  *
  * Creates a form that allows to send the meetings notes to an
