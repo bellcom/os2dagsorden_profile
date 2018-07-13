@@ -39,29 +39,32 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
 
   // Adding general fields.
   $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form);
+
+  // Pass the maximum file size in bytes - 2 MB.
+  $two_mb_bytes = 2 * 1024 * 1024;
+  $allowed_extensions = 'doc docx pdf';
+
   // Adding other fields.
   $form['description_opened'] = array(
     '#title' => t('Description opened:'),
     '#type' => 'managed_file',
-    '#description' => 'Files must be less than <b>2 MB</b>.<br/>Allowed file types: <b>doc docx pdf</b>.',
+    '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($two_mb_bytes) . '</strong>')) . '<br/>' .
+      t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
     '#upload_location' => 'private://manual_agendas',
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
-      // Pass the maximum file size in bytes
-  // 2 MB.
-      'file_validate_size' => array(2 * 1024 * 1024 * 1024),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($two_mb_bytes),
     ),
   );
   $form['description_closed'] = array(
     '#title' => t('Description closed:'),
     '#type' => 'managed_file',
-    '#description' => 'Files must be less than <b>2 MB</b>.<br/>Allowed file types: <b>doc docx pdf</b>.',
+    '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($two_mb_bytes) . '</strong>')) . '<br/>' .
+      t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
     '#upload_location' => 'private://manual_agendas',
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
-      // Pass the maximum file size in bytes
-  // 2 MB.
-      'file_validate_size' => array(2 * 1024 * 1024 * 1024),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($two_mb_bytes),
     ),
   );
 

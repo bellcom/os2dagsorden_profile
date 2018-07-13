@@ -66,16 +66,19 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
     '#group' => 'add_attachment',
   );
 
+  // Pass the maximum file size in bytes - 20 MB.
+  $twenty_mb_bytes = 20 * 1024 * 1024;
+  $allowed_extensions = 'doc docx pdf';
+
   $form['bilag']['file'] = array(
     '#type' => 'managed_file',
     '#title' => t('Bilag file:'),
     '#group' => 'add_attachment',
-    '#description' => 'Files must be less than <b>20 MB</b>.<br/>Allowed file types: <b>doc docx pdf</b>.',
+    '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($twenty_mb_bytes) . '</strong>')) . '<br/>' .
+      t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
-      // Pass the maximum file size in bytes
-  // 2 MB.
-      'file_validate_size' => array(20 * 1024 * 1024 * 1024),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($twenty_mb_bytes),
     ),
   );
 
