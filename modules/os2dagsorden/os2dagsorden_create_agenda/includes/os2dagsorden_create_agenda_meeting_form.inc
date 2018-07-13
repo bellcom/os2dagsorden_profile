@@ -36,7 +36,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#maxlength' => 128,
     '#required' => TRUE,
     '#attributes' => array('required' => 'required'),
-    '#description' => 'Full title of the meeting',
+    '#description' => t('Full title of the meeting'),
   );
 
   $form['status'] = array(
@@ -57,7 +57,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#type' => 'jquery_colorpicker',
     '#title' => t('Meeting color:'),
     '#default_value' => '757575',
-    '#description' => 'Choose a color for meeting, will be used to for marking the meeting in the calendar',
+    '#description' => t('Choose a color for meeting, will be used to for marking the meeting in the calendar'),
   );
   $form[] = array(
     '#markup' => '<div class="clearfix">',
