@@ -4,7 +4,7 @@
             var events = $('.form-submit-delete').clone(true).data('events');// Get the jQuery events.
             $('.form-submit-delete').unbind('mousedown'); // Remove the click events.
             $('.form-submit-delete').mousedown(function () {
-                if (confirm('Are you sure you want to delete that?')) {
+                if (confirm(Drupal.t('Are you sure you want to delete this item?'))) {
                     $.each(events.mousedown, function () {
                         this.handler(); // Invoke the mousedown handlers that was removed.
                     });
