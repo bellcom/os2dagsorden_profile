@@ -133,6 +133,10 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
     }
   }
 
+  if (!isset($form['bpas'][0])) {
+    unset($form['bpas']);
+  }
+
   // Finishing form.
   $form[] = array(
     '#type' => 'submit',
