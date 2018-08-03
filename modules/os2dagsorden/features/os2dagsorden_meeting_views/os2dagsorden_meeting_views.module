@@ -55,7 +55,7 @@ function os2dagsorden_meeting_views_form_alter(&$form, &$form_state, $form_id) {
     $form['reset'] = array(
       '#name' => 'reset',
       '#type' => 'submit',
-      '#value' => t('Nulstill søgning'),
+      '#value' => t('Nulstil søgning'),
     );
 
     $form['#submit'][] = 'os2dagsorden_meeting_views_meetings_overview_submit';
