@@ -77,11 +77,9 @@
     <?php endif; ?>
     <div class="views-exposed-widget views-submit-button">
       <?php print $button; ?>
+      <?php if (!empty($reset_button)): ?>
+          <?php print $reset_button; ?>
+      <?php endif; ?>
     </div>
-    <?php if (!empty($reset_button)): ?>
-      <div class="views-exposed-widget views-reset-button">
-        <?php print $reset_button; ?>
-      </div>
-    <?php endif; ?>
   </div>
 </div>

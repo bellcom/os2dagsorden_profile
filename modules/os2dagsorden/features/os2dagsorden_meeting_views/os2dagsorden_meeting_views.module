@@ -20,7 +20,7 @@ include_once 'inc/os2dagsorden_meeting_views.pdf_generation.inc';
  */
 function os2dagsorden_meeting_views_menu() {
   $items['admin/config/os2dagsorden/meetings-overview'] = array(
-    'title' => 'Overblik over sagsproduction',
+    'title' => 'Mødeudtræk',
     'description' => 'Giver en søge oversigt hvor man kan vælge et udvalg of få udtrukket, f.eks. alle beslutnings sektioner pa møderne. Listen kan generes for en periode også',
     'page callback' => 'os2dagsorden_meeting_views_meetings_overview_callback',
     'access callback' => 'os2dagsorden_access_helper_user_has_role',
@@ -49,14 +49,23 @@ function os2dagsorden_meeting_views_meetings_overview_callback() {
  * Implements hook_form_alter().
  */
 function os2dagsorden_meeting_views_form_alter(&$form, &$form_state, $form_id) {
-  // The 'All' option in the exposed views filter isn't translated.
-  if ($form_id === 'views_exposed_form' && $form['#id'] === 'views-exposed-form-meetings-search-page') {
-    $form['field_os2web_meetings_committee_tid_depth']['#options']['All'] = 'Alle';
+  if ($form_id === 'views_exposed_form' && $form['#id'] === 'views-exposed-form-meetings-search-page-meetings-overview') {
+    $form['submit']['#name'] = 'search';
+
+    $form['reset'] = array(
+      '#name' => 'reset',
+      '#type' => 'submit',
+      '#value' => t('Nulstill søgning'),
+    );
+
+    $form['#submit'][] = 'os2dagsorden_meeting_views_meetings_overview_submit';
   }
 }
 
 /**
  * Implements hook_views_pre_render().
+ *
+ * Updates pager count.
  */
 function os2dagsorden_meeting_views_views_pre_render(&$view) {
   if ($view->name === 'meetings_search' && $view->current_display === 'page_meetings_overview') {
@@ -72,6 +81,48 @@ function os2dagsorden_meeting_views_views_pre_render(&$view) {
     // Reset the count of items.
     $view->query->pager->total_items = $count;
     $view->query->pager->update_page_info();
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ *
+ * Resets the exposed filter values.
+ */
+function os2dagsorden_meeting_views_views_pre_build(&$view) {
+  if ($view->name === 'meetings_search' && $view->current_display === 'page_meetings_overview') {
+    if (isset($_SESSION['views']['meetings_search']['page_meetings_overview'])) {
+      if (isset($_SESSION['views']['meetings_search']['page_meetings_overview']['submit_time'])) {
+        $submit_time = $_SESSION['views']['meetings_search']['page_meetings_overview']['submit_time'];
+
+        // Converting allowed period in minutes to seconds.
+        $allowed_period_s = variable_get('os2dagsorden_meetings_overview_remember_filter_period', 60) * 60;
+
+        if (time() - $submit_time > $allowed_period_s) {
+          unset($_SESSION['views']['meetings_search']['page_meetings_overview']);
+          $view->exposed_data = array();
+        }
+      }
+    }
+  }
+}
+
+/***
+ * Updates the submit time and handles reset logic.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function os2dagsorden_meeting_views_meetings_overview_submit(&$form, &$form_state) {
+  if ($form_state['triggering_element']['#name'] === 'search') {
+    $_SESSION['views']['meetings_search']['page_meetings_overview']['submit_time'] = time();
+  } elseif ($form_state['triggering_element']['#name'] === 'reset' && $_GET['reset']) {
+    unset($_SESSION['views']['meetings_search']['page_meetings_overview']);
+
+    $form_state['rebuild'] = TRUE;
+
+    // Forcing redirect.
+    os2dagsorden_meeting_views_meetings_overview_callback();
   }
 }
 

@@ -25,7 +25,8 @@ function os2dagsorden_settings_menu() {
     'description' => 'Set up OS2 cms services',
     'position' => 'right',
     'weight' => -15,
-    'access arguments' => array('administer os2web'),
+    'access callback' => 'os2dagsorden_access_helper_user_has_role',
+    'access arguments' => array('administrator+', 'administrator++'),
     'page callback' => 'system_admin_menu_block_page',
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
@@ -138,6 +139,8 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_include_add_agenda'] = variable_get('os2dagsorden_meetings_search_include_add_agenda', TRUE);
   $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_startdate'] = variable_get('os2dagsorden_search_startdate', 1);
   $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_enddate'] = variable_get('os2dagsorden_search_enddate', 1);
+  $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_meeting_is_closed'] = variable_get('os2dagsorden_search_meeting_is_closed', FALSE);
+  $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_overview_remember_filter_period'] = variable_get('os2dagsorden_meetings_overview_remember_filter_period', 60);
 
   $setting_array['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budget_committee'] = variable_get('os2dagsorden_budget_committee', FALSE);
 

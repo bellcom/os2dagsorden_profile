@@ -575,6 +575,14 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether a closed indicator will be shown next to meeting if meeting has at least one bullet that is closed'),
     '#default_value' => variable_get('os2dagsorden_search_meeting_is_closed', FALSE),
   );
+  $form['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_overview_remember_filter_period'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Meetings overview filter remember period'),
+    '#field_suffix' => t('minutes'),
+    '#size' => 5,
+    '#default_value' => variable_get('os2dagsorden_meetings_overview_remember_filter_period', 60),
+    '#description' => t('Number of minutes to remember meetings overview exposed form values.'),
+  );
 
   // Sidemenu layout settings.
   $form['os2dagsorden_sidepane_menu_layout'] = array(
@@ -1424,6 +1432,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_search_startdate', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_startdate']);
     variable_set('os2dagsorden_search_enddate', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_enddate']);
     variable_set('os2dagsorden_search_meeting_is_closed', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_meeting_is_closed']);
+    variable_set('os2dagsorden_meetings_overview_remember_filter_period', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_overview_remember_filter_period']);
 
     variable_set('os2dagsorden_budget_committee', $setting_array['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budget_committee']);
 
