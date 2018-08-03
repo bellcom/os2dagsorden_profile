@@ -457,12 +457,41 @@ function os2dagsorden_access_helper_node_insert($node) {
  * Implements hook_user_presave().
  */
 function os2dagsorden_access_helper_user_presave(&$edit, $account, $category) {
-  if ($account->is_new && variable_get('os2dagsorden_user_default_meeting_category')) {
-    $user_category = variable_get('os2dagsorden_user_default_meeting_category');
-    foreach ($user_category as $key => $value) {
-      if ($value) {
-        $edit['field_user_meetings_category']['und'][] = array('value' => $value);
+  if ($account->is_new) {
+    if ($user_category = variable_get('os2dagsorden_user_default_committee_category')) {
+      foreach ($user_category as $key => $value) {
+        if ($value) {
+          $edit['field_user_com_categ']['und'][] = array('tid' => $value);
+        }
       }
+    }
+
+    if ($forbidden_committee_categories = variable_get('os2dagsorden_committee_default_forbidden_cat')) {
+      foreach ($forbidden_committee_categories as $key => $value) {
+        if ($value) {
+          $edit['field_user_com_forbid_categ']['und'][] = array('tid' => $value);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_term_insert().
+ *
+ * Adds a newly created committee category term to each user forbidden
+ * categories list.
+ */
+function os2dagsorden_access_helper_taxonomy_term_insert($term) {
+  if ($term->vocabulary_machine_name === 'os2web_meetings_tax_committee_category') {
+    $users = entity_load('user');
+    foreach ($users as $user) {
+      if ($user->uid == 0) {
+        continue;
+      }
+
+      $user->field_user_com_forbid_categ['und'][]['tid'] = $term->tid;
+      user_save($user);
     }
   }
 }

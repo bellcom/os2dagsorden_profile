@@ -425,7 +425,7 @@ function _os2dagsorden_admin_views_export_committee_to_xml($term, &$xml) {
   $xml->color = $term->field_os2web_meetings_com_color['und'][0]['jquery_colorpicker'];
   $xml->acadrename = $term->field_os2web_meetings_acadrename['und'][0]['value'];
   $xml->shortname = $term->field_os2web_meetings_com_shname['und'][0]['value'];
-  $xml->category = $term->field_os2web_meetings_com_cat['und'][0]['value'];
+  $xml->category = $term->field_os2web_meetings_com_categ['und'][0]['tid'];
   $sub_ids = $xml->addChild('ArrayOfSubIDs');
   foreach ($term->field_os2web_meetings_com_subid['und'] as $sysid) {
     $sub_ids->sysid[] = $sysid['value'];
@@ -546,7 +546,7 @@ function _os2dagsorden_admin_views_create_committee_term($xml_data, $vid, $weigh
   $term->field_os2web_meetings_com_color['und'][0]['jquery_colorpicker'] = (string) $xml_data->color;
   $term->field_os2web_meetings_acadrename['und'][0]['value'] = (string) $xml_data->acadrename;
   $term->field_os2web_meetings_com_shname['und'][0]['value'] = (string) $xml_data->shortname;
-  $term->field_os2web_meetings_com_cat['und'][0]['value'] = (string) $xml_data->category;
+  $term->field_os2web_meetings_com_categ['und'][0]['tid'] = (string) $xml_data->category;
   if (isset($xml_data->ArrayOfSubIDs)) {
     foreach ($xml_data->ArrayOfSubIDs->sysid as $key => $sysid) {
       $term->field_os2web_meetings_com_subid['und'][]['value'] = (int) $sysid;
