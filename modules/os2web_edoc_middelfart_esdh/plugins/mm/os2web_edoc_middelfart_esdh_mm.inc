@@ -568,8 +568,7 @@ function _os2web_edoc_esdh_mm_improve_body_html($data, $meeting_uri) {
       $file = $element->getAttribute('src');
       if (strpos($file, 'http://') === FALSE) {
         $file = str_replace('"', '', $file);
-        $uri_parts = explode('/', $file);
-
+        $uri_parts = preg_split('/(\/|\\\\)/m', $file);
         // Saving the file location information.
         $filename = trim(array_pop($uri_parts));
         $folder_name = array_pop($uri_parts);
