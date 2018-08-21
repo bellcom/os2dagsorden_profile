@@ -56,6 +56,10 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
         $meeting_id = (string) array_shift($meeting_id);
         $meeting_id = _os2web_edoc_middelfart_esdh_generate_id($meeting_id);
 
+        $agenda_id = $manifest->xpath('/Root/edoc:Notification/edoc:AgendaIdentifier');
+        $agenda_id = (string) array_shift($agenda_id);
+        $agenda_id = _os2web_edoc_middelfart_esdh_generate_id($agenda_id);
+
         $isPublished = $manifest->xpath('/Root/edoc:Notification/edoc:Publish');
         $isPublished = (string) array_shift($isPublished);
         $isPublished = (strcmp($isPublished, 'true') === 0) ? TRUE : FALSE;
@@ -68,8 +72,8 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
           }
         }
 
-        $uris[$meeting_id] = array(
-          'id' => $meeting_id,
+        $uris[] = array(
+          'id' => $agenda_id,
           'uri' => $xml_file->uri,
           'publish' => $isPublished,
           'lastModified' => filemtime($real_path),
@@ -77,6 +81,7 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
       }
     }
   }
+
   return $uris;
 }
 
@@ -103,18 +108,22 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
     libxml_clear_errors();
     libxml_use_internal_errors(FALSE);
 
+    $meeting_id = $manifest->xpath('/Root/edoc:Notification/edoc:MeetingIdentifier');
+    $meeting_id = (string) array_shift($meeting_id);
+    $meeting_id = _os2web_edoc_middelfart_esdh_generate_id($meeting_id);
+
+    $agenda_id = $manifest->xpath('/Root/edoc:Notification/edoc:AgendaIdentifier');
+    $agenda_id = (string) array_shift($agenda_id);
+    $agenda_id = _os2web_edoc_middelfart_esdh_generate_id($agenda_id);
+
     // This meeting must be unpublished.
     if (!$agenda['publish']) {
-
-      $meeting_id = $manifest->xpath('/Root/edoc:Notification/edoc:MeetingIdentifier');
-      $meeting_id = (string) array_shift($meeting_id);
-      $meeting_id = _os2web_edoc_middelfart_esdh_generate_id($meeting_id);
 
       $meetings[] = array(
         'publish' => FALSE,
         'meeting_id' => $meeting_id,
-        'system_id' => $meeting_id,
-        'meeting_sub_id' => $meeting_id,
+        'system_id' => $agenda_id,
+        'meeting_sub_id' => $agenda_id,
         'path' => drupal_realpath($file),
       );
       // This meeting will be published.
@@ -159,11 +168,6 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           $meeting_date_end_xpath = $agenda_manifest->xpath('/Root/edoc:Committee/edoc:Meeting/edoc:EndDateTime');
           $meeting_date_end = (string) array_shift($meeting_date_end_xpath);
 
-          $meeting_id = $manifest->xpath('/Root/edoc:Notification/edoc:MeetingIdentifier');
-          $meeting_id = (string) array_shift($meeting_id);
-          // Generated meeting_id.
-          $meeting_id = _os2web_edoc_middelfart_esdh_generate_id($meeting_id);
-
           $meeting_type_xpath = $agenda_manifest->xpath('/Root/edoc:OutputTypeEnumName');
           $meeting_type = (string) array_shift($meeting_type_xpath);
           if (strcasecmp($meeting_type, 'Minute') === 0) {
@@ -189,16 +193,20 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           date_timezone_set($date_obj, timezone_open('UTC'));
           $meeting_date_end = date_format($date_obj, 'Y-m-d H:i');
 
+          // Checking if meeting is additional/tillaægsdagsorden.
+          $agenda_type = $meeting_agenda->xpath('edoc:Type');
+          $agenda_type = (string) array_shift($agenda_type);
+
           // Saving the meeting data in ESDH Provider format.
           $meeting = array(
-            'system_id' => $meeting_id,
+            'system_id' => $agenda_id,
             'meeting_id' => $meeting_id,
-            'meeting_sub_id' => $meeting_id,
+            'meeting_sub_id' => $agenda_id,
             'committee' => $committee,
             'committee_name' => $committee,
             'committee_id' => _os2web_edoc_middelfart_esdh_generate_id($committee),
             'location' => $location,
-            'title' => $committee,
+            'title' => (stripos($agenda_type, 'tillæg') !== false) ? $agenda_type . ': ' . $committee : $committee,
             'uri' => dirname($agenda_relative_path),
             'path' => $agenda_real_path,
             'meeting_date' => $meeting_date_start,
@@ -414,8 +422,6 @@ function _os2web_edoc_middelfart_esdh_mm_order_addenums($drush = FALSE) {
   $debug = variable_get('os2web_esdh_provider_debug_info');
   $debug && timer_start('_os2web_edoc_middelfart_esdh_mm_order_addenums') && error_log('MM Import - Start of addendums - ' . timer_read('_os2web_edoc_middelfart_esdh_mm_order_addenums') . 'ms - ' . memory_get_usage());
 
-  $rev_meetings = array();
-
   // Find all meetings and gather meeting and agenda_ids.
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node', '=')
@@ -426,11 +432,7 @@ function _os2web_edoc_middelfart_esdh_mm_order_addenums($drush = FALSE) {
     return;
   }
   $nodes = $nodes_result['node'];
-  // Load necessary fields into the node object.
-  $fields = field_info_instances('node', 'meeting');
-  field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_addendum']['field_id']));
-  field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_id']['field_id']));
-  field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_sub_id']['field_id']));
+  $nodes = node_load_multiple(array_keys($nodes));
 
   // Meetings as: $meetings[<meeting_id>][<system_id>][<node_id>] .
   $meetings = array();
@@ -464,67 +466,53 @@ function _os2web_edoc_middelfart_esdh_mm_order_addenums($drush = FALSE) {
   }
 
   $debug && error_log('MM Import - Update addendums on ' . count($meetings) . ' nodes - ' . timer_read('_os2web_edoc_middelfart_esdh_mm_order_addenums') . 'ms - ' . memory_get_usage());
+
   // Run through the meeting array, to determine the addendums.
-  foreach ($meetings as $m_id => $meeting) {
-    // Lowest system id first.
-    ksort($meeting);
-    if (in_array($m_id, $rev_meetings)) {
-      $meeting = array_reverse($meeting);
+  foreach ($meetings as $m_id => $meeting_versions) {
+    // Find primary node
+    $primary = NULL;
+    foreach ($meeting_versions as $meeting_version_key => $meeting_version) {
+      if ((stripos($nodes[$meeting_version]->title, 'tillæg') !== 0)) {
+        $primary = $nodes[$meeting_version];
+
+        // Removing primary node from our list.
+        unset($meeting_versions[$meeting_version_key]);
+        break;
+      }
     }
-    // Lowest system id is primary.
-    $primary = $nodes[array_shift($meeting)];
+
+    // Resetting primary node field_os2web_meetings_addendum field, if present.
     $addenum_to = field_get_items('node', $primary, 'field_os2web_meetings_addendum');
     if (!empty($addenum_to[0]['nid'])) {
       $primary->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
       node_save($primary);
     }
-    while ($next = array_shift($meeting)) {
-      // Set up references for addenum agendas.
-      $node = $nodes[$next];
-      if ($primary) {
-        $addenum_to = field_get_items('node', $node, 'field_os2web_meetings_addendum');
 
-        if (is_array($addenum_to)) {
-          $addenum_to = array_shift($addenum_to);
-          $addenum_to = array_shift($addenum_to);
-        }
-        else {
-          $addenum_to = FALSE;
-        }
+    // Updating additional/tillægsdagsorden with our primary meeting reference.
+    foreach ($meeting_versions as $meeting_version_key => $meeting_version) {
+      $additional_meeting = $nodes[$meeting_version];
 
-        // Save time by only updating what is needed.
-        if ($addenum_to != $primary->nid) {
-          $node->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
-          node_save($node);
-        }
+      if ($additional_meeting->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] !== $primary->nid) {
+        $additional_meeting->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
+        node_save($additional_meeting);
       }
-      else {
-      }
+
       // Remove node from final nids_with_addendums.
-      unset($nids_with_addendums[$node->nid]);
-      if ($drush === TRUE) {
-        if ($primary) {
-          drush_log("Updated meeting $m_id..", 'ok');
-        }
-        else {
-          drush_log("Removed stale addenum $m_id..", 'ok');
-        }
-      }
+      unset($nids_with_addendums[$additional_meeting->nid]);
     }
   }
 
-  $debug && error_log('MM Import - Start reset addendums on ' . count($nids_with_addendums) . ' nodes - ' . timer_read('_os2web_edoc_middelfart_esdh_mm_order_addenums') . 'ms - ' . memory_get_usage());
   // Remove any addendums from nodes which hasnt been proccessed.
+  $debug && error_log('MM Import - Start reset addendums on ' . count($nids_with_addendums) . ' nodes - ' . timer_read('_os2web_edoc_middelfart_esdh_mm_order_addenums') . 'ms - ' . memory_get_usage());
   foreach ($nids_with_addendums as $nid) {
     // Load the node from the local variable.
     $node = $nodes[$nid];
     $node->field_os2web_meetings_addendum = array();
     node_save($node);
-    if ($drush === TRUE) {
-      drush_log("Resetting $nid..", 'ok');
-    }
   }
+
   $debug && error_log('MM Import - End of addendums - ' . timer_read('_os2web_edoc_middelfart_esdh_mm_order_addenums') . 'ms - ' . memory_get_usage());
+
   lock_release(__FUNCTION__);
 }
 
