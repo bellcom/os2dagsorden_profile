@@ -356,6 +356,24 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides case nr will be shown next to the bullet title'),
     '#default_value' => variable_get('os2dagsorden_show_bullet_case_nr', FALSE),
   );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop'] = array(
+    '#type' => 'textfield',
+    '#title' => t('How many attachment\'s  pages are shown on meetings on desktop devices'),
+    '#description' => t('This decides how many pages will be shown in attachments on desktop devices.'),
+    '#maxlength' => 10,
+    '#size' => 10,
+    '#field_suffix' => t('Pages'),
+    '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5),
+  );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile'] = array(
+    '#type' => 'textfield',
+    '#title' => t('How many attachment\'s  pages are shown on meetings on mobile devices'),
+    '#description' => t('This decides how many pages will be shown in attachments on mobile devices.'),
+    '#maxlength' => 10,
+    '#size' => 10,
+    '#field_suffix' => t('Pages'),
+    '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3),
+  );
 
   // Show latest meetings in my committee or all committees.
   $form['os2dagsorden_latest_meetings_view_settings'] = array(

@@ -17,7 +17,7 @@ module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_ann
 module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.send_to_friend');
 
 define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad'));
-define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? 3 : 5);
+define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5));
 
 /**
  * Implements hook_menu().
