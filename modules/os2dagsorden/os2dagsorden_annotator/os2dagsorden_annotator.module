@@ -17,7 +17,6 @@ module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_ann
 module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.send_to_friend');
 
 define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad'));
-define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5));
 
 /**
  * Implements hook_menu().
@@ -405,7 +404,8 @@ HTML;
 
     // Preparing the pager.
     $pageStart = intval($_GET['page']) + 1;
-    $pageEnd = intval($_GET['page']) + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
+    $pages_per_view = (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5);
+    $pageEnd = intval($_GET['page']) + $pages_per_view;
 
     // Bilag has converter to HTML version of file, getting the text out of it.
     if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
@@ -532,16 +532,17 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
     $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment-light/' . $bilag_id;
   }
 
-  if ($page - OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW >= 0) {
-    $prev_page_link = $current_bilag_url . '?page=' . ($page - OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW);
+  $pages_per_view = (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5);
+  if ($page - $pages_per_view >= 0) {
+    $prev_page_link = $current_bilag_url . '?page=' . ($page - $pages_per_view);
   }
-  elseif ($page - OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < 0 && $page > 0) {
+  elseif ($page - $pages_per_view < 0 && $page > 0) {
     // Go to the first page.
     $prev_page_link = $current_bilag_url;
   }
 
   if ($page + 5 <= $pageLimit) {
-    $next_page_link = $current_bilag_url . '?page=' . ($page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW);
+    $next_page_link = $current_bilag_url . '?page=' . ($page + $pages_per_view);
   }
 
   $pager = '<div class="item-list clearfix annotator-pager">
@@ -883,11 +884,12 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
     }
 
     $to_return .= ' <b>' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i>';
+    $pages_per_view = (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5);
     if (!empty($link)) {
-      if (intval($page_nr) > OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) {
+      if (intval($page_nr) > $pages_per_view) {
         // If pages per view is 5, then the page number will be 5, 10, 15 etc.
         $link .= '?page=' . intval($page_nr /
-            OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
+            $pages_per_view) * $pages_per_view;
       }
 
       global $base_url;
