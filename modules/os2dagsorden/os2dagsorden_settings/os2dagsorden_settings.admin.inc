@@ -313,6 +313,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether all bullet points will be expanded on page load'),
     '#default_value' => variable_get('os2dagsorden_expand_all_bullets', FALSE),
   );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show "Expand all" button meeting page'),
+    '#description' => t('This decides "Expand all" button will be shown next to the bullet title'),
+    '#default_value' => variable_get('os2dagsorden_show_expand_all_button', FALSE),
+  );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_attachment_onload'] = array(
     '#type' => 'checkbox',
     '#title' => t('Expand all attachments on bullet point open'),

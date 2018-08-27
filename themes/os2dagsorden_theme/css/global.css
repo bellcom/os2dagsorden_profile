@@ -988,6 +988,10 @@ pager li.pager-first {
   float: right;
   margin: 5px 1px 20px 10px; }
 
+.controls-right.agenda-level {
+  float: right;
+  margin: 10px 1px 10px 10px; }
+
 .controls-left {
   float: left;
   margin: 5px 10px 10px 0; }
