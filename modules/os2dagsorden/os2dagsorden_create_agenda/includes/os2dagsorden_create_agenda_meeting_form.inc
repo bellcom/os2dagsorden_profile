@@ -121,6 +121,14 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#multiple' => TRUE,
     '#attributes' => array('class' => array('improved-multi-select')),
   );
+   $form['referents'] = array(
+    '#type' => 'select',
+    '#title' => t('Referent:'),
+    '#required' => FALSE,
+    '#options' => $user_select,
+    '#multiple' => TRUE,
+    '#attributes' => array('class' => array('improved-multi-select')),
+  );
 
   // Finishing form.
   $form['#attached']['css'] = array(
@@ -166,6 +174,22 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
   if (field_get_items('node', $node, 'field_os2web_meetings_location')) {
     $location_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_location'));
     $form['location']['#default_value'] = $location_field['tid'];
+  }
+
+  if (field_get_items('node', $node, 'field_os2web_meetings_referent')) {
+    $referent_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_referent'));
+    $referents = explode(',', $referent_field['safe_value']);
+    foreach ($referents as $el => $value) {
+      // Array.
+      $value = explode(' ', $value);
+      // (name)
+      $value = end($value);
+      // Name.
+      $username = substr($value, 1, strlen($value) - 2);
+       $account = user_load_by_name($username);
+      $selection[] = $account->uid;
+    }
+    $form['referents']['#default_value'] = $selection;
   }
 
   if (field_get_items('node', $node, 'field_os2web_meetings_partic')) {
@@ -215,6 +239,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $loc_tid = $input['location'];
   $com_tid = $input['os2web_meetings_tax_committee'];
   $participants = $input['participants'];
+  $referents = $input['referents'];
 
   if (!$form_state['meeting_id']) {
     // Node creating.
@@ -258,6 +283,18 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   }
   else {
     $node->field_os2web_meetings_partic['und'][0]['value'] = '';
+  }
+  if ($referents) {
+    $referent_str = '';
+    foreach ($referents as $referent => $value) {
+      $user = user_load($value);
+      $referent_str .= $user->field_user_full_name['und'][0]['value'] . " ($user->name), ";
+    }
+    // Removing last coma.
+    $node->field_os2web_meetings_referent['und'][0]['value'] = substr($referent_str, 0, strlen($referent_str) - 2);
+  }
+  else {
+    $node->field_os2web_meetings_referent['und'][0]['value'] = '';
   }
 
   return $node;
