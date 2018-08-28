@@ -224,11 +224,16 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           foreach ($meeting_participants as $meeting_participant) {
             $participate_xpath = $meeting_participant->xpath("edoc:Participate");
             $name_xpath = $meeting_participant->xpath("edoc:Name");
+            $role_in_meeting = (string) array_shift($meeting_participant->xpath("edoc:RoleInMeeting"));
+            $participant_name = (string) array_shift($name_xpath);
             if ((string) array_shift($participate_xpath) === 'true') {
-              $meeting['participants'][] = (string) array_shift($name_xpath);
+              $meeting['participants'][] = $participant_name;
+              if ($role_in_meeting === 'Referent') {
+                $meeting['referent'][] = $participant_name;
+              }
             }
             else {
-              $meeting['participants_cancellation'][] = (string) array_shift($name_xpath);
+              $meeting['participants_cancellation'][] = $participant_name;
             }
           }
 

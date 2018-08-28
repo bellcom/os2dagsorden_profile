@@ -390,6 +390,17 @@ function os2dagsorden_meeting_views_meeting_details_fields_participants_deltog($
   print($meeting->field_os2web_meetings_partic['und'][0]['value']);
 
 }
+/**
+ * Print field referent.
+ *
+ * @param int $meeting_id
+ *   Nid of meeting.
+ */
+function os2dagsorden_meeting_views_meeting_details_fields_referent_deltog($meeting_id) {
+  $meeting = node_load($meeting_id);
+  print($meeting->field_os2web_meetings_referent['und'][0]['value']);
+
+}
 
 /**
  * If the participants cancelled shown be printed.

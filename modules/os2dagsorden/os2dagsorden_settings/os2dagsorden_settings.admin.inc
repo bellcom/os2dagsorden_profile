@@ -1138,6 +1138,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_meeting_participants', 'Deltagere'),
     '#title' => t('Deltagere'),
   );
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_referent'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2dagsorden_title_meeting_referent', 'Referent'),
+    '#title' => t('Referent'),
+  );
   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_cancelled_participants'] = array(
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_meeting_cancelled_participants', 'Afbud / Fraværende'),
