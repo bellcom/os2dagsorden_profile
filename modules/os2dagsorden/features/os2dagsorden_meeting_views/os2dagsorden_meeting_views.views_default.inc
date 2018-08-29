@@ -397,14 +397,6 @@ os2dagsorden_meeting_views_coming_meetings_help_text();
   $handler->display->display_options['header']['php']['php_output'] = '<?php
 os2dagsorden_meeting_views_meeting_details_breadcrumb();
 ?>';
-  /* Overskrift: agenda edit button */
-  $handler->display->display_options['header']['php_2']['id'] = 'php_2';
-  $handler->display->display_options['header']['php_2']['table'] = 'views';
-  $handler->display->display_options['header']['php_2']['field'] = 'php';
-  $handler->display->display_options['header']['php_2']['ui_name'] = 'agenda edit button';
-  $handler->display->display_options['header']['php_2']['php_output'] = '<?php
-os2dagsorden_meeting_views_meeting_details_agenda_and_edit_button();
-?>';
   /* Relationship: Indhold: Forfatter */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
