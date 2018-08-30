@@ -95,7 +95,7 @@ jQuery(document).ready(function() {
         //console.log(ui.item);
         setTimeout(function(){ jQuery(ui.item).find(["input[type=checkbox]"]).bind('click', follows_subscribe_click); }, 1);
     });
-
+    
     //remove behaviour from item that is removed from the follow section
     jQuery(".select-committee.single #edit-follows-div ul.droptrue").bind("sortremove", function(event, ui){
         jQuery(ui.item).removeClass('can-subscribe subscribed');
@@ -122,6 +122,7 @@ jQuery(document).ready(function() {
     
     jQuery("#edit-available-committee").css('height',jQuery(".select-committee").height()+"px");
     jQuery(".remove-committee").css('width',jQuery(".select-committee").width()+"px");
+    
     //updatePostOrder();
 });
  

@@ -1955,6 +1955,135 @@ function os2web_meetings_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_meetings_meeting-field_os2web_meetings_partic_ext'.
+  $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_partic_ext'] = array(
+    'bundle' => 'os2web_meetings_meeting',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'user_reference',
+        'settings' => array(),
+        'type' => 'user_reference_default',
+        'weight' => 40,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_partic_ext',
+    'label' => 'External participants',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'user_reference',
+      'settings' => array(
+        'apply_chosen' => '',
+        'autocomplete_match' => 'contains',
+        'autocomplete_path' => 'user_reference/autocomplete',
+        'content_taxonomy_opt_groups' => FALSE,
+        'size' => 60,
+      ),
+      'type' => 'user_reference_autocomplete',
+      'weight' => 27,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-os2web_meetings_meeting-field_os2web_meetings_partic_int'.
+  $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_partic_int'] = array(
+    'bundle' => 'os2web_meetings_meeting',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'user_reference',
+        'settings' => array(),
+        'type' => 'user_reference_default',
+        'weight' => 39,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_partic_int',
+    'label' => 'Internal participants',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'user_reference',
+      'settings' => array(
+        'apply_chosen' => '',
+        'autocomplete_match' => 'contains',
+        'autocomplete_path' => 'user_reference/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'user_reference_autocomplete',
+      'weight' => 26,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-os2web_meetings_meeting-field_os2web_meetings_partic_inv'.
+  $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_partic_inv'] = array(
+    'bundle' => 'os2web_meetings_meeting',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'user_reference',
+        'settings' => array(),
+        'type' => 'user_reference_default',
+        'weight' => 41,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_partic_inv',
+    'label' => 'Invisible participants',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'user_reference',
+      'settings' => array(
+        'autocomplete_match' => 'contains',
+        'autocomplete_path' => 'user_reference/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'user_reference_autocomplete',
+      'weight' => 28,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_meetings_meeting-field_os2web_meetings_particcanl'.
   $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_particcanl'] = array(
     'bundle' => 'os2web_meetings_meeting',
@@ -2442,6 +2571,79 @@ function os2web_meetings_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_admin'.
+  $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_admin'] = array(
+    'bundle' => 'os2web_meetings_tax_committee',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'user_reference',
+        'settings' => array(),
+        'type' => 'user_reference_default',
+        'weight' => 16,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_os2web_meetings_com_admin',
+    'label' => 'Committee admins',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'user_reference',
+      'settings' => array(
+        'autocomplete_match' => 'contains',
+        'autocomplete_path' => 'user_reference/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'user_reference_autocomplete',
+      'weight' => 14,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_cat'.
+  $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_cat'] = array(
+    'bundle' => 'os2web_meetings_tax_committee',
+    'default_value' => array(
+      0 => array(
+        'value' => 'pol',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 9,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_os2web_meetings_com_cat',
+    'label' => 'Category',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 9,
+    ),
+  );
+
+  // Exported field_instance:
+
   // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_color'.
   $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_color'] = array(
     'bundle' => 'os2web_meetings_tax_committee',
@@ -2510,6 +2712,44 @@ function os2web_meetings_content_types_field_default_field_instances() {
       ),
       'type' => 'user_reference_autocomplete',
       'weight' => 11,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_ext'.
+  $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_ext'] = array(
+    'bundle' => 'os2web_meetings_tax_committee',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 15,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_os2web_meetings_com_ext',
+    'label' => 'Extrenal committee',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 13,
     ),
   );
 
@@ -2863,12 +3103,15 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Comments');
   t('Committee');
   t('Committee Sub ID');
+  t('Committee admins');
   t('Dagsorden admins');
   t('Date');
   t('Date valid');
   t('Deltagere');
   t('Ekstern URL');
   t('Enclosures');
+  t('External participants');
+  t('Extrenal committee');
   t('File');
   t('File HTML');
   t('Full doc');
@@ -2882,6 +3125,8 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('ID');
   t('Import');
   t('Import as unpublished');
+  t('Internal participants');
+  t('Invisible participants');
   t('Lokation');
   t('Meeting ID');
   t('Meeting sub ID');

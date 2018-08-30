@@ -523,7 +523,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_bases() {
   // Exported field_base: 'field_user_premeeting_committee'.
   $field_bases['field_user_premeeting_committee'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_user_premeeting_committee',
