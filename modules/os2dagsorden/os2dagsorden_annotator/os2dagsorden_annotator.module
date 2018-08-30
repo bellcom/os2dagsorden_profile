@@ -540,7 +540,7 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
     $prev_page_link = $current_bilag_url;
   }
 
-  if ($page + 5 <= $pageLimit) {
+  if ($page +  OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < $pageLimit) {
     $next_page_link = $current_bilag_url . '?page=' . ($page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW);
   }
 
