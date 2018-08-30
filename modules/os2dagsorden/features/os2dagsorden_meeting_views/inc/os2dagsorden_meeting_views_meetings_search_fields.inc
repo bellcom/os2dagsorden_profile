@@ -213,7 +213,7 @@ function os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data)
     print($to_print);
   }
   else {
-    print('&nbsp;');
+    print('The search term was only found in the meeting description/title');
   }
 }
 
