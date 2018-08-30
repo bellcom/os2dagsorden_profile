@@ -2002,6 +2002,53 @@ function os2web_meetings_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_meetings_meeting-field_os2web_meetings_referent'.
+  $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_referent'] = array(
+    'bundle' => 'os2web_meetings_meeting',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 39,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_referent',
+    'label' => 'Referent',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 26,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_meetings_meeting-field_os2web_meetings_searchdata'.
   $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_searchdata'] = array(
     'bundle' => 'os2web_meetings_meeting',
@@ -2845,6 +2892,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Ref Attachment');
   t('Ref Bullet points');
   t('Referat admins');
+  t('Referent');
   t('Regular');
   t('Search meta data');
   t('Status');
