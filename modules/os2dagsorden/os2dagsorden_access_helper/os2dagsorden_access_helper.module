@@ -75,10 +75,7 @@ function os2dagsorden_access_helper_file_download($uri) {
       $meeting = NULL;
       if ($node->type === 'os2web_meetings_meeting') {
         $meeting = $node;
-        $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
-        if (!os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting)) {
-          return -1;
-        }
+
         // Related to personal field?
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')

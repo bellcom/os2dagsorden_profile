@@ -45,8 +45,7 @@ div.date-heading h3 {
 }
 
 /* --------------------------- Drag and drop START -------------------------------*/
-#available_committee,
-#available_users {
+#available_committee {
   background-image: none;
   padding-right: 0;
 }
@@ -65,7 +64,7 @@ ul.droptrue li {
 }
 
 ul.droptrue li.can-subscribe span {
-  max-width: 170px;
+  max-width: 190px;
 }
 /* ---------------------------- arrows_reverse END ---------------------------- */
 .breadcrumb .breadcrumb-active {

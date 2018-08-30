@@ -2178,17 +2178,15 @@ a.annotator-wrapper {
 
 /* -- user_simple_edit drag&drop -- */
 
-.select-committee, .select-participants, .remove-committee {
+.select-committee, .remove-committee {
   float: left;
   min-width: 250px;
 }
 
-#edit-available-committee,
-#edit-available-users {
+#edit-available-committee {
   float: right;
   overflow-y: scroll;
   background: $color-white;
-  min-width: 250px;
   &::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 7px;
@@ -2220,11 +2218,8 @@ ul.droptrue {
       background-position: 88% 7px;
       background-size: 15px;
       span {
-        max-width: 170px;
+        max-width: 190px;
         display: inline-block;
-      }
-      .checkbox.premeeting{
-        right: 20px;
       }
       &.subscribed {
         background-image: url('../img/icon-send-to-friend-bullet-point.png');
@@ -2233,8 +2228,7 @@ ul.droptrue {
   }
 }
 
-label.label_follows,
-label.label-participants{
+label.label_follows {
   display: inline;
 }
 
@@ -2242,62 +2236,19 @@ div.note {
   display: inline;
   float: right;
 }
-div.note.premeeting,
-div.note.subscribe {
-  display: block;
-  float: none;
-  margin-left: 18px;
-}
+
 .checkbox {
   float: right;
   display: none;
 }
 
-.checkbox.follows,
-.checkbox_invisible,
-.checkbox.premeeting {
+.checkbox_follows {
   float: right;
 }
 
-.checkbox.follows,
-.checkbox.invisible,
-.checkbox.premeeting {
+.checkbox.follows {
   float: right;
   display: inline;
-  position: relative;
-}
-.checkbox.premeeting::before{
-  content: '';
-  position: absolute;
-  background-image: url(../img/calendar.png);
-  background-repeat: no-repeat;
-  background-size: 15px;
-  right: 20px;
-  top: 2px;
-  top: -1px;
-  width: 16px;
-  height: 16px;
-}
-
-div.note.premeeting::before{
-  content: '';
-  position: absolute;
-  background-image: url(../img/premeeting.png);
-  background-repeat: no-repeat;
-  background-size: 15px;
-  left: 8px;
-  width: 16px;
-  height: 16px;
-}
-div.note.subscribe::before{
-  content: '';
-  position: absolute;
-  background-image: url(../img/icon-send-to-friend-bullet-point.png);
-  background-repeat: no-repeat;
-  background-size: 15px;
-  left: 8px;
-  width: 16px;
-  height: 16px;
 }
 
 /* ---------------------------- Dropdown Button START ---------------------------- */
@@ -2436,20 +2387,4 @@ div.note.subscribe::before{
 
 #os2dagsorden-content-modify-user-edit-form {
   background: $color-white;
-}
-/* user filter */
-.user-filter-block {
-  min-width: 250px;
-  margin-right: 30px;
-  #users_filter.form-text {
-    width: 100%;
-    margin-bottom: 5px;
-    line-height: 20px;
-    background: $color-white url("../img/icon_search.png") no-repeat;
-    background-position: right;
-    background-size: 15px;
-    margin-bottom: 0;
-    border: 1px solid darkgray;
-    border-radius: $border-radius;
-   }
 }

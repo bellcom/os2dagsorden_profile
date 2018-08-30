@@ -71,14 +71,6 @@ function os2dagsorden_create_agenda_menu() {
     'access arguments' => array('administer os2web'),
     'type' => MENU_NORMAL_ITEM,
   );
-  $items['agenda/%/clear'] = array(
-    'page callback' => 'drupal_get_form',
-    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
-    'access arguments' => array(1),
-    'page arguments' => array('os2dagsorden_create_agenda_meeting_content_deletion', 1),
-    'title' => 'Anonymize agenda',
-    'type' => MENU_LOCAL_TASK,
-  );
 
   return $items;
 }
@@ -145,32 +137,5 @@ function _os2dagsorden_create_agenda_meeting_access($meeting_id) {
   if ($node->type != 'os2web_meetings_meeting') {
     return FALSE;
   }
-  $committee_tid = $node->field_os2web_meetings_committee['und'][0]['tid'];
-  $access_granted = (user_access('administer os2web') && os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($committee_tid));
-  return $access_granted;
-}
-
-/**
- * Implements hook_form().
- */
-function os2dagsorden_create_agenda_meeting_content_deletion($form, &$form_state, $meeting_id) {
-  $meeting = node_load($meeting_id);
-  $msg = '<p>' . t('Are you sure that you want clear content of meeting %meeting', array('%meeting' => $meeting->title)) . '</p>';
-  $msg .= '<p>' . t('This action cannot be undone.') . '</p>';
-  $form_state['meeting_id'] = $meeting_id;
-  $header = t('Anonymize meeting %meeting', array("%meeting" => $meeting->title));
-  return confirm_form($form, $header, "meeting/" . $meeting_id, $msg, t('Anonymize'), t('Cancel'));
-}
-
-/**
- * Implements hook_FORM_submit().
- */
-function os2dagsorden_create_agenda_meeting_content_deletion_submit($form, &$form_state) {
-  $meeting = node_load($form_state['meeting_id']);
-  $bullet_points = field_get_items('node', $meeting, 'field_os2web_meetings_bullets');
-  foreach ($bullet_points as $bullet_point) {
-    os2dagsorden_create_agenda_remove_bullet_point_from_meeting($meeting->nid, $bullet_point['target_id']);
-    node_delete($bullet_point['target_id']);
-  }
-  drupal_goto('meeting/' . $meeting->nid);
+  return user_access('administer os2web');
 }

@@ -1908,27 +1908,22 @@ a.annotator-wrapper {
 /* -- user_simple_edit drag&drop -- */
 
 .select-committee,
-.remove-committee,
-.select-participants {
+.remove-committee {
   float: left;
   min-width: 250px;
-  position:relative;
 }
 
-#edit-available-committee,
-#edit-available-users {
+#edit-available-committee {
   float: right;
   overflow-y: scroll;
   background: #fff;
 }
 
-#edit-available-committee::-webkit-scrollbar,
-#edit-available-users::-webkit-scrollbar {
+#edit-available-committee::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 7px;
 }
-#edit-available-committee::-webkit-scrollbar-thumb,
-#edit-available-users::-webkit-scrollbar-thumb{
+#edit-available-committee::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0,0,0,.2);
   -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
@@ -1960,12 +1955,9 @@ ul.droptrue li.can-subscribe {
   background-position: 88% 7px;
   background-size: 15px;
 }
-li.can-subscribe .checkbox.premeeting {
-  right: 20px;
-}
 
-ul.droptrue li span:not(.checkbox) {
-  max-width: 170px;
+ul.droptrue li.can-subscribe span {
+  max-width: 190px;
   display: inline-block;
 }
 
@@ -1973,8 +1965,7 @@ ul.droptrue li.can-subscribe.subscribed {
   background-image: url('../img/icon-send-to-friend-bullet-point.png');
 }
 
-label.label_follows,
-label.label-participants {
+label.label_follows {
   display: inline;
 }
 
@@ -1987,53 +1978,14 @@ div.note {
   float: right;
   display: none;
 }
-div.note.premeeting,
-div.note.subscribe {
-  display: block;
-  float: none;
-  margin-left: 18px;
-}
 .checkbox_follows {
   float: right;
 }
-.checkbox_follows,
-.checkbox.invisible,
-.checkbox.premeeting{
+.checkbox.follows {
   float: right;
   display: inline;
-  position: relative;
 }
-.checkbox.premeeting::before {
-  content: '';
-  position: absolute;
-  background-image: url(../img/premeeting.png);
-  background-repeat: no-repeat;
-  background-size: 15px;
-  right: 20px;
-  top: 2px;
-  width: 16px;
-  height: 16px;
-}
-div.note.premeeting::before{
-  content: '';
-  position: absolute;
-  background-image: url(../img/premeeting.png);
-  background-repeat: no-repeat;
-  background-size: 15px;
-  left: 0;
-  width: 16px;
-  height: 16px;
-}
-div.note.subscribe::before{
-  content: '';
-  position: absolute;
-  background-image: url(../img/icon-send-to-friend-bullet-point.png);
-  background-repeat: no-repeat;
-  background-size: 15px;
-  left: 0;
-  width: 16px;
-  height: 16px;
-}
+
 /* ---------------------------- Dropdown Button START ---------------------------- */
 .dropbtn {
   border-color: #b9b9b9 #b9b9b9 #bbbbbb;
@@ -2119,18 +2071,3 @@ div.note.subscribe::before{
 }
 
 /* ---------------------------- Dropdown Button END ---------------------------- */
-/* user filter */
-.user-filter-block {
-  margin-right: 30px;
-}
-.user-filter-block #users_filter.form-text {
-  width: 100%;
-  line-height: 20px;
-  background: #fffffe url("../img/icon_search.png") no-repeat;
-  background-position: right;
-  background-size: 15px;
-  margin-bottom: 0;
-  border: 1px solid darkgray;
-  border-radius: 3px;
-  padding: 5px;
-}
