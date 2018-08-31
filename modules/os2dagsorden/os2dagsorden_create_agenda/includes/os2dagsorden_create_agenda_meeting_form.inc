@@ -35,6 +35,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#size' => 60,
     '#maxlength' => 128,
     '#required' => TRUE,
+    '#attributes' => array('required' => 'required'),
     '#description' => 'Full title of the meeting',
   );
 
@@ -67,6 +68,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#size' => 10,
     '#required' => TRUE,
     '#date_format' => 'd/m/Y H:i',
+    '#attributes' => array('required' => 'required'),
   );
   $form['end_date'] = array(
     '#type' => 'date_popup',
@@ -98,19 +100,25 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
   $com_terms = taxonomy_get_tree($com_voc->vid);
   $com_select = array();
   foreach ($com_terms as $com_term) {
-    $com_select[$com_term->tid] = $com_term->name;
+    if (os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($com_term->tid)) {
+      $com_select[$com_term->tid] = $com_term->name;
+    }
   }
   $form['os2web_meetings_tax_committee'] = array(
     '#type' => 'select',
     '#title' => t('Committee:'),
     '#required' => TRUE,
     '#options' => $com_select,
+    '#attributes' => array('required' => 'required'),
     '#multiple' => FALSE,
   );
 
-  $user_select = array();
+ /* $user_select = array();
   $users = entity_load('user');
   foreach ($users as $user) {
+    if ((int)$user->uid === 0) {
+      continue;
+    }
     $user_select[$user->uid] = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
   }
   $form['participants'] = array(
@@ -121,6 +129,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#multiple' => TRUE,
     '#attributes' => array('class' => array('improved-multi-select')),
   );
+
    $form['referents'] = array(
     '#type' => 'select',
     '#title' => t('Referent:'),
@@ -129,12 +138,12 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#multiple' => TRUE,
     '#attributes' => array('class' => array('improved-multi-select')),
   );
+*/
 
   // Finishing form.
   $form['#attached']['css'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
   );
-
   return $form;
 }
 
@@ -241,6 +250,10 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $participants = $input['participants'];
   $referents = $input['referents'];
 
+  $participants = $input['participants'];
+  $internal_participants = explode(',', $input['internal_participants_hidden']);
+  $external_participants = explode(',', $input['external_participants_hidden']);
+  $invisible_participants = explode(',', $input['participants_invisible_hidden']);
   if (!$form_state['meeting_id']) {
     // Node creating.
     $node = new stdClass();
@@ -272,7 +285,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
 
   $node->field_os2web_meetings_location['und'][0]['tid'] = $loc_tid;
 
-  if ($participants) {
+  /*if ($participants) {
     $participant_str = '';
     foreach ($participants as $participant => $value) {
       $user = user_load($value);
@@ -283,6 +296,58 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   }
   else {
     $node->field_os2web_meetings_partic['und'][0]['value'] = '';
+  }*/
+  // Unsetting internal members.
+  $node->field_os2web_meetings_partic_int['und'] = array();
+  if ($internal_participants) {
+    foreach ($internal_participants as $uid) {
+      if (!empty($uid)) {
+        $node->field_os2web_meetings_partic_int['und'][]['uid'] = $uid;
+      }
+    }
+  }
+  // Unsetting external members.
+  $node->field_os2web_meetings_partic_ext['und'] = array();
+  if ($external_participants) {
+    $role = user_role_load_by_name("os2dagsorden limited");
+    foreach ($external_participants as $uid) {
+      if (!empty($uid)) {
+        $node->field_os2web_meetings_partic_ext['und'][]['uid'] = $uid;
+      }
+    }
+    // Add os2dagsorden limited role.
+    user_multiple_role_edit($external_participants, 'add_role', $role->rid);
+  }
+  // Unsetting external members.
+  $node->field_os2web_meetings_partic_inv['und'] = array();
+  if ($invisible_participants) {
+    foreach ($invisible_participants as $uid) {
+      if (!empty($uid)) {
+        $node->field_os2web_meetings_partic_inv['und'][]['uid'] = $uid;
+      }
+    }
+  }
+
+  $participants = array_merge($external_participants, $internal_participants);
+  foreach ($participants as $uid) {
+    if (!empty($uid)) {
+      $user = user_load($uid);
+      // Member of.
+      $is_member_of = FALSE;
+      if ($user_member_of_field = field_get_items('user', $user, 'field_user_committee')) {
+
+        foreach ($user_member_of_field as $member_of) {
+          if ((int) $com_tid === (int) $member_of['tid']) {
+            $is_member_of = TRUE;
+            break;
+          }
+        }
+      }
+      if (!$is_member_of) {
+        $user->field_user_committee['und'][]['tid'] = $com_tid;
+        user_save($user);
+      }
+    }
   }
   if ($referents) {
     $referent_str = '';
@@ -298,4 +363,159 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   }
 
   return $node;
+}
+
+/**
+ * Checks is current user is committee admin .
+ *
+ * @param int $committee_tid
+ *   The committee ID.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_create_agenda_is_user_committee_admin($committee_tid) {
+  $user = os2dagsorden_access_helper_get_user();
+  $committee = taxonomy_term_load($committee_tid);
+  $committee_admins = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_admin');
+  if ($committee_admins) {
+    foreach ($committee_admins as $key => $admin) {
+      if ($user->uid === $admin['uid']) {
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Fills forms with drag and drop controls for manipulating participants.
+ *
+ * External/internal, invisible/visible participants.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $meeting_id
+ *   Meeting ID.
+ */
+function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meeting_id) {
+  $form[] = array(
+    '#markup' => "<div class=\"select-participants\">",
+  );
+
+  $form['internal_participants_div'] = array(
+    '#type' => 'item',
+    '#prefix' => '<label class="label-participants">' . t('Internal participants:') . '</label><div class="note">' . t('Invisible:') . '</div>',
+    '#markup' => '',
+  );
+  $form['internal_participants_hidden'] = array(
+    '#type' => 'hidden',
+    '#attributes' => array(
+      'id' => 'internal_participants_hidden',
+    ),
+  );
+  $form['external_participants_div'] = array(
+    '#type' => 'item',
+    '#prefix' => '<label class="label-participants">' . t('External participants:') . '</label><div class="note">' . t('Invisible:') . '</div>',
+    '#markup' => '',
+  );
+  $form['external_participants_hidden'] = array(
+    '#type' => 'hidden',
+    '#attributes' => array(
+      'id' => 'external_participants_hidden',
+    ),
+  );
+  $form['participants_invisible_hidden'] = array(
+    '#type' => 'hidden',
+    '#attributes' => array(
+      'id' => 'participants_invisible_hidden',
+    ),
+  );
+  $form[] = array(
+    '#markup' => '</div >',
+  );
+  $external_participants = array();
+  $internal_participants = array();
+  $invisible_participants = array();
+  if ($meeting_id) {
+    $meeting = node_load($meeting_id);
+    // external_participants.
+    if ($external_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext')) {
+      foreach ($external_participants_items as $external_participant) {
+        $external_participants[] = $external_participant['uid'];
+      }
+    }
+    if ($internal_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int')) {
+      foreach ($internal_participants_items as $internal_participant) {
+        $internal_participants[] = $internal_participant['uid'];
+      }
+    }
+    if ($invisible_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_inv')) {
+      foreach ($invisible_participants_items as $invisible_participant) {
+        $invisible_participants[] = $invisible_participant['uid'];
+      }
+    }
+  }
+  // Printing follows plus plus.
+  $content = "<ul id='internal_participants' class='droptrue ui-sortable'>";
+  foreach ($internal_participants as $uid) {
+    $user = user_load($uid);
+    $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+    $form['internal_participants_hidden']['#value'] .= $uid . ',';
+    $content .= "<li id='{$uid}' class='ui-state-default'><span>{$user_name}</span>";
+    $checked = '';
+    if (in_array($uid, $invisible_participants)) {
+      $checked = "checked='checked'";
+    }
+    $content .= "<input id='checkbox_{$uid}'  type='checkbox' class='checkbox invisible' {$checked}></li>";
+  }
+  $content .= '</ul>';
+  $form['internal_participants_div']['#markup'] = $content;
+  // Printing follows plus.
+  $content = "<ul id='external_participants' class='droptrue ui-sortable'>";
+  foreach ($external_participants as $uid) {
+    $user = user_load($uid);
+    $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+    $form['external_participants_hidden']['#value'] .= $uid . ',';
+    $content .= "<li id='{$uid}' class='ui-state-default'><span>{$user_name}</span>";
+    $checked = '';
+    if (in_array($uid, $invisible_participants)) {
+      $checked = "checked='checked'";
+    }
+    $content .= "<input id='checkbox_{$uid}' type='checkbox' class='checkbox invisible' {$checked}></li>";
+  }
+  $content .= '</ul>';
+  $form['external_participants_div']['#markup'] = $content;
+
+  $form['participants_invisible_hidden']['#value'] = implode(',', $invisible_participants);
+
+  // Printing arrows reverse.
+  $form[]['#markup'] =
+    '<div class="arrows-reverse">
+    <img src = "' . base_path() . drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/img_arrows_reverse.png">
+    </div>';
+
+  $user_list = "<ul id='available_users' class='droptrue ui-sortable'>";
+  $users = entity_load('user');
+  foreach ($users as $user) {
+    if ((int) $user->uid === 0) {
+      continue;
+    }
+    if (in_array($user->uid, $internal_participants) || in_array($user->uid, $external_participants)) {
+      continue;
+    }
+    $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+    $user_list .= "<li id='{$user->uid}' class='ui-state-default'><span>{$user_name}</span><input id='checkbox_$user->uid'  type='checkbox' class='checkbox'></li>";
+  }
+  $user_list .= "</ul>";
+  $form['available_users'] = array(
+    '#type' => 'item',
+    '#prefix' => "<div class='available_users'><label>" . t('Users:') . "</label>"
+    . "<div class='user-filter-block'><input id='users_filter' type='text' class='form-text'></div>",
+    '#markup' => $user_list,
+    '#suffix' => '</div>',
+  );
+  $form[] = array(
+    '#markup' => '<div style="clear:both"></div>',
+  );
 }
