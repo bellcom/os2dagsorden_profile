@@ -182,8 +182,10 @@ function os2dagsorden_meeting_views_meetings_search_fields_meeting_title($data) 
  *   Meeting data.
  */
 function os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data) {
-  $search_param = $_GET['search_params'];
-  if (!empty($search_param)) {
+  $query = $_GET['search_params'];
+  $full_meta_data = $meta_data;
+  if (!empty($query)) {
+    $search_param = $query;
     $search_param_pos_s = stripos($meta_data, $search_param);
     $search_param_pos_e = $search_param_pos_s + strlen($search_param);
     // Part of the text before the found occurence.
@@ -208,9 +210,49 @@ function os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data)
 
       $to_print = $bpa->title . ': [' . $bullet_point->title . ']';
     }
-  }
-  if (!empty($to_print)) {
-    print($to_print);
+    if (!empty($to_print)) {
+      print($to_print);
+    }
+    else {
+      // Search by each world.
+      foreach (explode(" ", $query) as $search_param) {
+        $search_string = $full_meta_data;
+        while ($search_param_pos_s = stripos($search_string, $search_param)) {
+          $full_search_string = $search_string;
+          $search_param_pos_e = $search_param_pos_s + strlen($search_param);
+          // Part of the text before the found occurence.
+          $search_string = substr($search_string, 0, $search_param_pos_e + 1);
+
+          $search_token_pos_s = strripos($search_string, '[search_token]');
+          $search_token_pos_e = $search_token_pos_s + strlen('[search_token]');
+
+          $bullet_point_token_pos_s = strripos($search_string, '[bp]');
+          $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen('[bp]');
+
+          $bpa_token_pos_s = strripos($search_string, '[bpa]');
+          $bpa_token_pos_e = $bpa_token_pos_s + strlen('[bpa]');
+
+          // Is in bullet point.
+          if ($bullet_point_token_pos_s === $search_token_pos_e) {
+            $bullet_point_id = substr($search_string, $bullet_point_token_pos_e + 1, $bpa_token_pos_s - $bullet_point_token_pos_e - 2);
+            $bullet_point = node_load($bullet_point_id);
+
+            $bpa_id = substr($search_string, $bpa_token_pos_e + 1, strripos($search_string, ']') - $bpa_token_pos_e - 1);
+            $bpa = node_load($bpa_id);
+
+            $to_print[] = $bpa->title . ': [' . $bullet_point->title . ']';
+          }
+          $search_string = substr($full_search_string, $search_param_pos_e + 1);
+        }
+      }
+      if (!empty($to_print)) {
+        $occurences = array_count_values($to_print);
+        print array_shift(array_keys($occurences, max($occurences)));
+      }
+      else {
+        print t('The search term was only found in the meeting description/title');
+      }
+    }
   }
   else {
     print t('The search term was only found in the meeting description/title');
