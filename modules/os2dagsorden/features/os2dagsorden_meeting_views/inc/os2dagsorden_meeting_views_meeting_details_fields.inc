@@ -555,7 +555,7 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
 function os2dagsorden_meeting_views_meeting_details_fields_dagsorden_header() {
   if (variable_get('os2dagsorden_show_expand_all_button', FALSE)) {
     print '<div class="controls-right agenda-level">';
-    print '<a href="" id = "expand_all_agendas" class="form-submit">' . t('Expand all') . '</a>';
+    print '<a href="" id = "expand_all_agendas" class="form-submit">' . t('Open/Close all') . '</a>';
     print '</div>';
   }
   print '<h3>' . variable_get('os2dagsorden_title_meeting_agenda', 'Dagsorden:') . '</h3>';
