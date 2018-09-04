@@ -730,6 +730,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_stripped_tags', ''),
     '#description' => t('Comma-separated list of html tags that want to strip (fe. font, span).'),
   );
+  $form['os2dagsorden_meeting_import']['os2dagsorden_allowed_span_styles'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Allowed styles in filtered span tags'),
+    '#maxlength' => 250,
+    '#default_value' => variable_get('os2dagsorden_allowed_span_styles', ''),
+    '#description' => t('Comma-separated list of allowed styles in <span> tag (fe. font-weight:bold)'),
+  );
   $form['os2dagsorden_meeting_import']['os2dagsorden_tab_tag'] = array(
     '#type' => 'textfield',
     '#title' => t('Replace  multiple &amp;nbsp; tags with:'),
