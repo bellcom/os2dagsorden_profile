@@ -644,6 +644,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#empty_option' => '- ' . t('None') . ' -',
     '#default_value' => variable_get('os2dagsorden_budget_committee', FALSE),
   );
+  $form['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budgetforhandling_button_committees'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Committees whose members have access to <b>Budgetforhandlingt</b> button in sidepane'),
+    '#description' => t('Comma separated list of committees whose members have access to <b>Budgetforhandlingt</b> button in sidepane'),
+    '#default_value' => variable_get('os2dagsorden_budgetforhandling_button_committees', FALSE),
+  );
 
   // Meeting import settings.
   $form['os2dagsorden_meeting_import'] = array(

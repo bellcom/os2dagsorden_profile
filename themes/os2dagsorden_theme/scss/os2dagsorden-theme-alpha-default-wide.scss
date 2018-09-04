@@ -33,20 +33,26 @@ div.content ul.menu li #menu-print-kalendar {
   &:before {
      font-size: 20px;
      padding-right: 15px;
-     
+
   }
-}  
+}
 div.content ul.menu li #menu-simple-user-edit{
   font-size: 20px;
   padding: 10px 0;
   &:before{
     font-size: 20px;
      padding-right: 15px
-   
+
  }
 }
+div.content ul.menu li #menu-budgetforhandling {
+  :before {
+    font-size: 20px;
+    padding-right: 15px; }
+}
+
 div.content ul.menu li #menu-byradet{
-     font-size: 20px; 
+     font-size: 20px;
      padding: 10px 92px 10px 0;
     &:before{
       font-size: 20px;

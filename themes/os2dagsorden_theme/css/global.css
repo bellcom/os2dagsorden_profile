@@ -395,6 +395,29 @@ div.content ul.menu li {
       vertical-align: middle;
       padding-right: 10px;
       left: -2px; }
+    div.content ul.menu li #menu-budgetforhandling {
+    background: #f7f1f1;
+    background-size: 20px;
+    transition: background-color .1s ease-in;
+    position: relative;
+    text-align: center; }
+    div.content ul.menu li #menu-budgetforhandling:hover, div.content ul.menu li #menu-budgetforhandling.active:hover {
+      background: #ae477d;
+      background-size: 20px;
+      color: #fffffe;
+      transition: background-color .3s ease-out; }
+    div.content ul.menu li #menu-budgetforhandling.active {
+      background: #ae477d;
+      background-size: 20px;
+      color: #fffffe; }
+    div.content ul.menu li #menu-budgetforhandling:before {
+      content: "\E919";
+      font-family: "Material Icons";
+      font-size: 20px;
+      position: relative;
+      vertical-align: middle;
+      padding-right: 10px;
+      left: -2px; }
   div.content ul.menu li #menu-home {
     background: #e3d6d6 url("../img/icon_home.png") no-repeat 45px 50%;
     padding-left: 75px;
@@ -435,7 +458,7 @@ div.content ul.menu li {
     transition: background-color .1s ease-in;
     position: relative;
     text-align: center; }
-    div.content ul.menu li #menu-simple-user-edit:before {
+    div.content ul.menu li #menu-simple-user-edit:before{
       content: "\E8B8";
       font-family: "Material Icons";
       font-size: 20px;
