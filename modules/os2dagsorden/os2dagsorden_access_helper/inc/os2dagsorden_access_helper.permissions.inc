@@ -284,20 +284,29 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
     if (intval($is_closed) == 0 && intval($is_personal) == 0) {
       return TRUE;
     }
-    // Is closed or personal.
-    else {
-      // Is part of the committee.
+    // Is closed.
+    if ((intval($is_closed) == 1)) {
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
         return TRUE;
       }
-
-      // Follows PP.
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+        return TRUE;
+      }
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
+        return TRUE;
+      }
+    }
+    // Is personal.
+    if ((intval($is_personal) == 1)) {
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
+        return TRUE;
+      }
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
         return TRUE;
       }
     }
-    return FALSE;
   }
+  return FALSE;
 }
 
 /**
