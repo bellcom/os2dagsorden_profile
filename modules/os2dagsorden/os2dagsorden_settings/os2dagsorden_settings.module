@@ -145,6 +145,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_overview_remember_filter_period'] = variable_get('os2dagsorden_meetings_overview_remember_filter_period', 60);
 
   $setting_array['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budget_committee'] = variable_get('os2dagsorden_budget_committee', FALSE);
+  $setting_array['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budgetforhandling_button_committees'] = variable_get('os2dagsorden_budgetforhandling_button_committees', FALSE);
 
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_participants_delimeter'] = variable_get('os2dagsorden_participants_delimeter', ', ');
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_send_notification_committee'] = variable_get('os2dagsorden_send_notification_committee', FALSE);
