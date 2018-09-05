@@ -268,6 +268,7 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
   $meeting = node_load($meeting_id);
   $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
   $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
+
   if (!os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting)) {
     return FALSE;
   }
@@ -284,32 +285,8 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
     if (intval($is_closed) == 0 && intval($is_personal) == 0) {
       return TRUE;
     }
-    else if (intval($is_closed) == 1 && intval($is_personal) == 0) {
-      $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
-      // Follows committee PLUS.
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
-        // Forbidding access to premeeting.
-        if (strpos($meeting_type, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING) === 0) {
-          return FALSE;
-        }
-        else {
-          return TRUE;
-        }
-      }
-      // Is part of the committee.
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
-        return TRUE;
-      }
-
-      // Follows PP.
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
-        return TRUE;
-      }
-    }
     // Is closed or personal.
     else {
-      $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
-
       // Is part of premeeting committee.
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_premeeting_member_of_committees())) {
         return TRUE;
@@ -322,7 +299,13 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
 
       // Follows PP.
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
-        return TRUE;
+        // Forbidding access to premeeting.
+        if (strpos($meeting_type, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING) === 0) {
+          return FALSE;
+        }
+        else {
+          return TRUE;
+        }
       }
     }
     return FALSE;
