@@ -286,12 +286,23 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
     }
     else if (intval($is_closed) == 1 && intval($is_personal) == 0) {
       $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
-      // Forbidding access to premeeting.
-      if (strpos($meeting_type, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING) === 0) {
-        return FALSE;
-      }
       // Follows committee PLUS.
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
+        // Forbidding access to premeeting.
+        if (strpos($meeting_type, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING) === 0) {
+          return FALSE;
+        }
+        else {
+          return TRUE;
+        }
+      }
+      // Is part of the committee.
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
+        return TRUE;
+      }
+
+      // Follows PP.
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
         return TRUE;
       }
     }
