@@ -317,8 +317,8 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
   $attachment_xpath = $xml->xpath('edoc:HandlingItem/edoc:Attachments');
   $xml_item_enclosures = array_shift($attachment_xpath);
 
-  $neutralTitle_xpath = $xml->xpath('edoc:HandlingItem/edoc:NeutralTitle');
-  $xml_item['name'] = (string) array_shift($neutralTitle_xpath);
+  $itemTitle_xpath = $xml->xpath('edoc:HandlingItem/edoc:Title');
+  $xml_item['name'] = (string) array_shift($itemTitle_xpath);
 
   $identifier_xpath = $xml->xpath('edoc:HandlingItem/edoc:Identifier');
   $xml_item['documentid'] = (string) array_shift($identifier_xpath);
