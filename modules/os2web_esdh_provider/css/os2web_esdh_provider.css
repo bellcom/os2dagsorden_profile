@@ -101,3 +101,23 @@ table.views-table tr td .attachment_text_full_container a:visited,
   line-height: 30px;
   text-shadow: 1px 1px #F5F5F5;*/
 }
+
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text tr td {
+  padding: 0;
+  font-size: inherit;
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text h1,
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text h2,
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text h3{
+  font-weight: bold;
+  font-size: inherit;
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text p {
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
