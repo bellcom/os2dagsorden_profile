@@ -113,7 +113,6 @@ table.views-table tr td .attachment_text_full_container a:visited,
   font-size: inherit;
 }
 .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text p {
-  word-break: break-all;
   word-wrap: break-word;
   overflow-wrap: break-word;
   -webkit-hyphens: auto;
