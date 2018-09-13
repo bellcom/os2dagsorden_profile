@@ -267,6 +267,7 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
 
   $meeting = node_load($meeting_id);
   $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+
   if (!os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting)) {
     return FALSE;
   }
@@ -283,39 +284,29 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
     if (intval($is_closed) == 0 && intval($is_personal) == 0) {
       return TRUE;
     }
-    // Is closed or personal.
-    else {
-      $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
-
-      // Is part of premeeting committee.
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_premeeting_member_of_committees())) {
-        return TRUE;
-      }
-
-      // Is part of the committee.
+    // Is closed.
+    if ((intval($is_closed) == 1)) {
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
         return TRUE;
       }
-
-      // Follows PP.
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
         return TRUE;
       }
-
-      // Is closed and not personal.
-      if (intval($is_closed) == 1 && intval($is_personal) == 0) {
-        // Follows committee PLUS.
-        if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
-          return TRUE;
-        }
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
+        return TRUE;
       }
-      // None of the above, access denied.
-      return FALSE;
+    }
+    // Is personal.
+    if ((intval($is_personal) == 1)) {
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
+        return TRUE;
+      }
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+        return TRUE;
+      }
     }
   }
-  else {
-    return FALSE;
-  }
+  return FALSE;
 }
 
 /**
