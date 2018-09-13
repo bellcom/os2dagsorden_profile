@@ -123,7 +123,10 @@ table.views-table tr td .attachment_text_full_container a:visited,
 .annotator-wrapper .attachment_text_full_container h3 {
   font-weight: bold;
   font-size: inherit;
+  font-family: inherit;
+  letter-spacing: normal;
 }
+
 .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text p {
   word-wrap: break-word;
   overflow-wrap: break-word;
