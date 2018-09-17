@@ -69,7 +69,7 @@
     }
 }
 /* Meeting date */
-.container-inline-date {
+.node-form .container-inline-date {
     .form-item {
         .form-item {
             width: 19%;
@@ -139,7 +139,8 @@
   border-radius: $border-radius;
 }
 
-.select-committee ul.droptrue {
+.select-committee ul.droptrue,
+.select-participants ul.droptrue{
   border: 1px solid $color-background-primary;
   border-radius: $border-radius;
 }

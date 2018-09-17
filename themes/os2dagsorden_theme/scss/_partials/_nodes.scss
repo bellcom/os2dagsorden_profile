@@ -1,0 +1,92 @@
+.node {
+  &.node-os2web-meetings-meeting {
+    &.node--os2web_meetings_meeting--os2dagsorden_meeting_overview {
+      padding: 0;
+      h3 {
+        font-weight: bold;
+      }
+      table.views-table {
+        margin-bottom: 5px;
+        thead tr {
+          border: none;
+
+        }
+        tr {
+          td {
+            background: $color-white;
+            font-weight: normal;
+            padding: 10px 10px 7px 2px;
+            &:nth-child(1) {
+              padding-left: 10px;
+              border-radius: $border-radius 0 0 $border-radius;
+            }
+            &:last-child {
+              border-radius: 0 $border-radius $border-radius 0;
+            }
+          }
+
+          th, td {
+            font-size: $font-size-button;
+            text-transform: none;
+          }
+
+          th {
+            padding: 10px 10px 10px 2px;
+            font-weight: bold;
+            &:nth-child(1) {
+              padding-left: 10px;
+            }
+          }
+        }
+      }
+
+      .field-name-field-os2web-meetings-bullets {
+        margin-left: -10px;
+        margin-right: -10px;
+        > .field-items > .field-item:first-child > .node {
+          padding-top: 10px;
+        }
+      }
+    }
+  }
+
+  &.node-os2web-meetings-bullet {
+    &.node-teaser {
+      //padding: 10px 0 0 0;
+      padding: 0;
+      background: $color-white;
+      border: none;
+      h3 {
+        background: inherit;
+        font-size: 14px;
+        padding: 7px 15px;
+        border: 1px solid $color-background-primary;
+        margin: 0 0 10px 0;
+      }
+      .field-name-field-os2web-meetings-attach {
+        padding-left: 50px;
+        .field-item {
+          margin-bottom: 10px;
+//          &:last-child {
+//            margin-bottom: 0;
+//          }
+        }
+      }
+    }
+  }
+
+  &.node-os2web-meetings-bullet-attach {
+    &.node-teaser {
+      padding: 0;
+      background: $color-white;
+      h4 {
+        font-size: 14px;
+        padding: 7px 15px;
+        background: $color-background-primary;
+      }
+      .content {
+        padding: 5px;
+      }
+    }
+  }
+}

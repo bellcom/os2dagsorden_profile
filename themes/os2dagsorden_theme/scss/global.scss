@@ -6,7 +6,7 @@
 @import '_partials/_header';
 @import '_partials/_login';
 @import '_partials/_forms';
-
+@import '_partials/_nodes';
 
 /* This file will hold styles for the mobile version of your website (mobile first). */
 /* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
@@ -124,6 +124,36 @@ div.content ul.menu li {
     position:relative;
     text-align: center;
     padding: 10px 92px 10px 0;
+    &:hover, &.active:hover {
+      background: $color-branding-secondary;
+      background-size: 20px;
+      color: $color-white;
+      transition: background-color .3s ease-out;
+    }
+
+    &.active {
+      background: $color-branding-secondary;
+      background-size: 20px;
+      color: $color-white;
+    }
+
+     &:before {
+      content: "\E919";
+      font-family: $font-icons;
+      font-size: $font-size-headings;
+      position: relative;
+      vertical-align: middle;
+      padding-right: 10px;
+      left: -2px;
+
+    }
+  }
+  #menu-budgetforhandling {
+    background: $color-background-primary;
+    background-size: 20px;
+    transition: background-color .1s ease-in;
+    position:relative;
+    text-align: center;
     &:hover, &.active:hover {
       background: $color-branding-secondary;
       background-size: 20px;
@@ -398,10 +428,15 @@ ul li.leaf {
 
 /*---------------------------- Views Start ----------------------------*/
 
+.view-header, .view-content {
+  h3, h4 {
+    font-family: $font-basic;
+  }
+}
+
 .view-header h3, .view-content h3 {
   color: $color-font-primary;
   text-transform: capitalize;
-  font-family: $font-basic;
   font-weight: 100;
   font-size: 18px;
   background-color: $color-background-primary;
@@ -413,7 +448,6 @@ ul li.leaf {
 .block-views-exp-meetings-search-page .views-exposed-form .views-exposed-widget .form-submit {
   margin-top: 0;
 }
-
 
 div.date-heading h3 {
   a {
@@ -428,7 +462,7 @@ div.date-heading h3 {
   background: none;
 }
 
-.view-id-events, .view-id-user_committee, .view-id-user_follow_committees, .view-id-kommende_m_der_i_mine_udvalg, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_, .block-views-exp-meetings-search-page .views-exposed-form, .node-form, .node, .view-display-id-page {
+.view-id-events, .view-id-user_committee, .view-id-user_follow_committees, .view-id-kommende_m_der_i_mine_udvalg, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_, .block-views-exp-meetings-search-page .views-exposed-form, .node-form, .node, .view-display-id-page, .view.view-meetings-search.view-display-id-page_meetings_overview {
   background: $color-background-primary;
   border-radius: $border-radius;
   border: $border-block-body;
@@ -507,6 +541,17 @@ div.attachment {
   }
   .view-user-logout-menu .view-content {
     overflow: visible;
+  }
+}
+
+.view-id-meetings_search.view-display-id-page_meetings_overview {
+  .view-filters form {
+    .views-exposed-widget.views-widget-filter-field_os2web_meetings_date_value,
+    .views-exposed-widget.views-widget-filter-field_os2web_meetings_date_value_1,
+    .views-exposed-widget.views-widget-filter-term_node_tid_depth {
+      width:31%;
+      min-height: 60px;
+    }
   }
 }
 
@@ -1559,13 +1604,10 @@ div.speaker-paper-print {
 .form-submit.nav-button {
   display: inline-block;
   font-weight: normal;
-  padding: 0px 11px 0px 11px;
-  top: -4px;
+
   &:hover {
     display: inline-block;
     font-weight: normal;
-    padding: 0px 11px 0px 11px;
-    top: -4px;
   }
   &.left {
     margin-right: 10px;
@@ -2163,15 +2205,17 @@ a.annotator-wrapper {
 
 /* -- user_simple_edit drag&drop -- */
 
-.select-committee, .remove-committee {
+.select-committee, .select-participants, .remove-committee {
   float: left;
   min-width: 250px;
 }
 
-#edit-available-committee {
+#edit-available-committee,
+#edit-available-users {
   float: right;
   overflow-y: scroll;
   background: $color-white;
+  min-width: 250px;
   &::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 7px;
@@ -2203,8 +2247,11 @@ ul.droptrue {
       background-position: 88% 7px;
       background-size: 15px;
       span {
-        max-width: 190px;
+        max-width: 170px;
         display: inline-block;
+      }
+      .checkbox.premeeting{
+        right: 20px;
       }
       &.subscribed {
         background-image: url('../img/icon-send-to-friend-bullet-point.png');
@@ -2213,7 +2260,8 @@ ul.droptrue {
   }
 }
 
-label.label_follows {
+label.label_follows,
+label.label-participants{
   display: inline;
 }
 
@@ -2221,19 +2269,62 @@ div.note {
   display: inline;
   float: right;
 }
-
+div.note.premeeting,
+div.note.subscribe {
+  display: block;
+  float: none;
+  margin-left: 18px;
+}
 .checkbox {
   float: right;
   display: none;
 }
 
-.checkbox_follows {
+.checkbox.follows,
+.checkbox_invisible,
+.checkbox.premeeting {
   float: right;
 }
 
-.checkbox.follows {
+.checkbox.follows,
+.checkbox.invisible,
+.checkbox.premeeting {
   float: right;
   display: inline;
+  position: relative;
+}
+.checkbox.premeeting::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/calendar.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  top: -1px;
+  width: 16px;
+  height: 16px;
+}
+
+div.note.premeeting::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/premeeting.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  left: 8px;
+  width: 16px;
+  height: 16px;
+}
+div.note.subscribe::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/icon-send-to-friend-bullet-point.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  left: 8px;
+  width: 16px;
+  height: 16px;
 }
 
 /* ---------------------------- Dropdown Button START ---------------------------- */
@@ -2372,4 +2463,20 @@ div.note {
 
 #os2dagsorden-content-modify-user-edit-form {
   background: $color-white;
+}
+/* user filter */
+.user-filter-block {
+  min-width: 250px;
+  margin-right: 30px;
+  #users_filter.form-text {
+    width: 100%;
+    margin-bottom: 5px;
+    line-height: 20px;
+    background: $color-white url("../img/icon_search.png") no-repeat;
+    background-position: right;
+    background-size: 15px;
+    margin-bottom: 0;
+    border: 1px solid darkgray;
+    border-radius: $border-radius;
+   }
 }

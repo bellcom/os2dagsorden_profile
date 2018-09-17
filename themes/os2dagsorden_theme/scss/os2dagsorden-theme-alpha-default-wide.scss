@@ -33,20 +33,26 @@ div.content ul.menu li #menu-print-kalendar {
   &:before {
      font-size: 20px;
      padding-right: 15px;
-     
+
   }
-}  
+}
 div.content ul.menu li #menu-simple-user-edit{
   font-size: 20px;
   padding: 10px 0;
   &:before{
     font-size: 20px;
      padding-right: 15px
-   
+
  }
 }
+div.content ul.menu li #menu-budgetforhandling {
+  :before {
+    font-size: 20px;
+    padding-right: 15px; }
+}
+
 div.content ul.menu li #menu-byradet{
-     font-size: 20px; 
+     font-size: 20px;
      padding: 10px 92px 10px 0;
     &:before{
       font-size: 20px;
@@ -87,7 +93,7 @@ div.date-heading h3 {
 ul.droptrue li {
   max-width: 250px;
   &.can-subscribe span {
-    max-width: 190px;
+    max-width: 170px;
   }
 }
 

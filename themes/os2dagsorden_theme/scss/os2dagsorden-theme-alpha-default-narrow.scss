@@ -20,20 +20,28 @@
   }
 }
 div.content ul.menu li a {
-  font-size: 18px; 
+  font-size: 18px;
   padding: 10px 0;
 }
 div.content ul.menu li #menu-print-kalendar {
- 
+
   &:before {
     font-size: 18px;
     padding-right: 5px;
-    
-    
-  }  
+
+
+  }
 }
 div.content ul.menu li #menu-simple-user-edit{
-     font-size: 18px; 
+     font-size: 18px;
+    padding: 10px 0;
+    &:before{
+      font-size: 18px;
+      padding-right: 5px;
+  }
+}
+div.content ul.menu li #menu-simple-user-edit{
+     font-size: 18px;
     padding: 10px 0;
     &:before{
       font-size: 18px;
@@ -41,7 +49,7 @@ div.content ul.menu li #menu-simple-user-edit{
   }
 }
 div.content ul.menu li #menu-byradet{
-     font-size: 18px; 
+     font-size: 18px;
      padding: 10px 75px 10px 0;
     &:before{
       font-size: 18px;
@@ -51,7 +59,8 @@ div.content ul.menu li #menu-byradet{
 
 /* --------------------------- Drag and drop START -------------------------------*/
 
-#available_committee {
+#available_committee,
+#available_users{
   background: url( data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAKklEQVQYV2NkIAIwEqGGgXRFO3fu/A8z2d3dHW4AiknUU4TLE6Q7HJdJAOgfDApc6n+qAAAAAElFTkSuQmCC ) repeat-y;
   padding-right: 20px;
   background-position: 98% top;
@@ -65,7 +74,7 @@ div.content ul.menu li #menu-byradet{
   display: none;
 }
 
-.available_committee {
+.available_users {
   float: right;
 }
 

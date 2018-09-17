@@ -309,6 +309,20 @@ os2dagsorden_front_page_views_fields_text_log_off();
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Felt: Create meeting (PHP) */
+  $handler->display->display_options['fields']['php_3']['id'] = 'php_3';
+  $handler->display->display_options['fields']['php_3']['table'] = 'views';
+  $handler->display->display_options['fields']['php_3']['field'] = 'php';
+  $handler->display->display_options['fields']['php_3']['ui_name'] = 'Create meeting (PHP)';
+  $handler->display->display_options['fields']['php_3']['label'] = '';
+  $handler->display->display_options['fields']['php_3']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['php_3']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
+os2dagsorden_front_page_views_fields_create_meering();
+?>';
+  $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
   /* Felt: block 1 (name and help) */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
@@ -325,7 +339,7 @@ os2dagsorden_front_page_views_fields_text_log_off();
   $handler->display->display_options['fields']['nothing_1']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing_1']['ui_name'] = 'block2 (settings and logout)';
   $handler->display->display_options['fields']['nothing_1']['label'] = '';
-  $handler->display->display_options['fields']['nothing_1']['alter']['text'] = '[php_1] [php]';
+  $handler->display->display_options['fields']['nothing_1']['alter']['text'] = '[php_1][php_3] [php]';
   $handler->display->display_options['fields']['nothing_1']['element_label_colon'] = FALSE;
   /* Filter criterion: Bruger: Aktiv */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -354,7 +368,7 @@ os2dagsorden_front_page_views_fields_text_log_off();
     t('Desc'),
     t('Log af'),
     t('<span class ="user-logout-textbox">[field_user_full_name]</span> [php_2]'),
-    t('[php_1] [php]'),
+    t('[php_1][php_3] [php]'),
     t('Block'),
   );
   $export['user_logout_menu'] = $view;

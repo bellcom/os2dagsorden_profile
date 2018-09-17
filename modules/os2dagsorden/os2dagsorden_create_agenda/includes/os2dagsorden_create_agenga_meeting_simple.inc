@@ -39,7 +39,7 @@ function os2dagsorden_create_agenda_meeting_simple($form, &$form_state, $meeting
     // If meeting id is empty, try to fill it with form_state meeting_id value.
     $meeting_id = $form_state['meeting_id'];
   }
-
+  _os2dagsorden_create_agenda_render_drag_and_drop_controls($form, $meeting_id);
   if ($meeting_id) {
     // Saving for usage in the submit function.
     $form_state['meeting_id'] = $meeting_id;

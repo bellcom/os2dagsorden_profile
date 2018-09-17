@@ -38,18 +38,18 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'create field_user_committee'.
-  $permissions['create field_user_committee'] = array(
-    'name' => 'create field_user_committee',
+  // Exported permission: 'create field_user_com_forbid_categ'.
+  $permissions['create field_user_com_forbid_categ'] = array(
+    'name' => 'create field_user_com_forbid_categ',
     'roles' => array(
       'anonymous user' => 'anonymous user',
     ),
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'create field_user_forrbidden_categories'.
-  $permissions['create field_user_forrbidden_categories'] = array(
-    'name' => 'create field_user_forrbidden_categories',
+  // Exported permission: 'create field_user_committee'.
+  $permissions['create field_user_committee'] = array(
+    'name' => 'create field_user_committee',
     'roles' => array(
       'anonymous user' => 'anonymous user',
     ),
@@ -123,9 +123,9 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'edit field_user_committee'.
-  $permissions['edit field_user_committee'] = array(
-    'name' => 'edit field_user_committee',
+  // Exported permission: 'edit field_user_com_forbid_categ'.
+  $permissions['edit field_user_com_forbid_categ'] = array(
+    'name' => 'edit field_user_com_forbid_categ',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -133,9 +133,9 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'edit field_user_forrbidden_categories'.
-  $permissions['edit field_user_forrbidden_categories'] = array(
-    'name' => 'edit field_user_forrbidden_categories',
+  // Exported permission: 'edit field_user_committee'.
+  $permissions['edit field_user_committee'] = array(
+    'name' => 'edit field_user_committee',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -213,9 +213,9 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'edit own field_user_committee'.
-  $permissions['edit own field_user_committee'] = array(
-    'name' => 'edit own field_user_committee',
+  // Exported permission: 'edit own field_user_com_forbid_categ'.
+  $permissions['edit own field_user_com_forbid_categ'] = array(
+    'name' => 'edit own field_user_com_forbid_categ',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -223,9 +223,9 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'edit own field_user_forrbidden_categories'.
-  $permissions['edit own field_user_forrbidden_categories'] = array(
-    'name' => 'edit own field_user_forrbidden_categories',
+  // Exported permission: 'edit own field_user_committee'.
+  $permissions['edit own field_user_committee'] = array(
+    'name' => 'edit own field_user_committee',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -303,9 +303,9 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'view field_user_committee'.
-  $permissions['view field_user_committee'] = array(
-    'name' => 'view field_user_committee',
+  // Exported permission: 'view field_user_com_forbid_categ'.
+  $permissions['view field_user_com_forbid_categ'] = array(
+    'name' => 'view field_user_com_forbid_categ',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -313,9 +313,9 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'view field_user_forrbidden_categories'.
-  $permissions['view field_user_forrbidden_categories'] = array(
-    'name' => 'view field_user_forrbidden_categories',
+  // Exported permission: 'view field_user_committee'.
+  $permissions['view field_user_committee'] = array(
+    'name' => 'view field_user_committee',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -396,9 +396,9 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'view own field_user_committee'.
-  $permissions['view own field_user_committee'] = array(
-    'name' => 'view own field_user_committee',
+  // Exported permission: 'view own field_user_com_forbid_categ'.
+  $permissions['view own field_user_com_forbid_categ'] = array(
+    'name' => 'view own field_user_com_forbid_categ',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',
@@ -407,9 +407,9 @@ function os2dagsorden_fields_and_content_types_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
-  // Exported permission: 'view own field_user_forrbidden_categories'.
-  $permissions['view own field_user_forrbidden_categories'] = array(
-    'name' => 'view own field_user_forrbidden_categories',
+  // Exported permission: 'view own field_user_committee'.
+  $permissions['view own field_user_committee'] = array(
+    'name' => 'view own field_user_committee',
     'roles' => array(
       'administrator+' => 'administrator+',
       'administrator++' => 'administrator++',

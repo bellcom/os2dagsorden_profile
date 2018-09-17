@@ -356,6 +356,24 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides case nr will be shown next to the bullet title'),
     '#default_value' => variable_get('os2dagsorden_show_bullet_case_nr', FALSE),
   );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop'] = array(
+    '#type' => 'textfield',
+    '#title' => t('How many attachment\'s  pages are shown on meetings on desktop devices'),
+    '#description' => t('This decides how many pages will be shown in attachments on desktop devices.'),
+    '#maxlength' => 10,
+    '#size' => 10,
+    '#field_suffix' => t('Pages'),
+    '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5),
+  );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile'] = array(
+    '#type' => 'textfield',
+    '#title' => t('How many attachment\'s  pages are shown on meetings on mobile devices'),
+    '#description' => t('This decides how many pages will be shown in attachments on mobile devices.'),
+    '#maxlength' => 10,
+    '#size' => 10,
+    '#field_suffix' => t('Pages'),
+    '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3),
+  );
 
   // Show latest meetings in my committee or all committees.
   $form['os2dagsorden_latest_meetings_view_settings'] = array(
@@ -575,6 +593,14 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether a closed indicator will be shown next to meeting if meeting has at least one bullet that is closed'),
     '#default_value' => variable_get('os2dagsorden_search_meeting_is_closed', FALSE),
   );
+  $form['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_overview_remember_filter_period'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Meetings overview filter remember period'),
+    '#field_suffix' => t('minutes'),
+    '#size' => 5,
+    '#default_value' => variable_get('os2dagsorden_meetings_overview_remember_filter_period', 60),
+    '#description' => t('Number of minutes to remember meetings overview exposed form values.'),
+  );
 
   // Sidemenu layout settings.
   $form['os2dagsorden_sidepane_menu_layout'] = array(
@@ -617,6 +643,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#options' => $options_committee,
     '#empty_option' => '- ' . t('None') . ' -',
     '#default_value' => variable_get('os2dagsorden_budget_committee', FALSE),
+  );
+  $form['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budgetforhandling_button_committees'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Committees whose members have access to <b>Budgetforhandlingt</b> button in sidepane'),
+    '#description' => t('Comma separated list of committees whose members have access to <b>Budgetforhandlingt</b> button in sidepane'),
+    '#default_value' => variable_get('os2dagsorden_budgetforhandling_button_committees', FALSE),
   );
 
   // Meeting import settings.
@@ -690,20 +722,6 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether the will be added a prefix to Bilag or Case bullet point attachment on import.<br/>e.g. <b>Bilag:</b> Indsigelser of Bemaerkninger.'),
     '#default_value' => variable_get('os2dagsorden_add_type_prefix', 'true'),
   );
-  $form['os2dagsorden_meeting_import']['os2dagsorden_committee_category_pol'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Political committees'),
-    '#maxlength' => 250,
-    '#default_value' => variable_get('os2dagsorden_committee_category_pol', FALSE),
-    '#description' => t('Comma-separated list of committees meetings of which should be tagged as POLITICAL during the import.'),
-  );
-  $form['os2dagsorden_meeting_import']['os2dagsorden_committee_category_org'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Organisational committees'),
-    '#maxlength' => 250,
-    '#default_value' => variable_get('os2dagsorden_committee_category_org', FALSE),
-    '#description' => t('Comma-separated list of committees meetings of which should be tagged as ORGANISATIONAL during the import.'),
-  );
   $form['os2dagsorden_meeting_import']['os2dagsorden_filtered_tags'] = array(
     '#type' => 'textfield',
     '#title' => t('Filtered HTML tags lists'),
@@ -717,6 +735,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#maxlength' => 250,
     '#default_value' => variable_get('os2dagsorden_stripped_tags', ''),
     '#description' => t('Comma-separated list of html tags that want to strip (fe. font, span).'),
+  );
+  $form['os2dagsorden_meeting_import']['os2dagsorden_allowed_span_styles'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Allowed styles in filtered span tags'),
+    '#maxlength' => 250,
+    '#default_value' => variable_get('os2dagsorden_allowed_span_styles', ''),
+    '#description' => t('Comma-separated list of allowed styles in <span> tag (fe. font-weight:bold)'),
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_tab_tag'] = array(
     '#type' => 'textfield',
@@ -826,26 +851,49 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_clear_cache_frequency', 0),
   );
 
-  $form['os2dagsorden_political_organizational_settings'] = array(
+  $form['os2dagsorden_committee_category_settings'] = array(
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#title' => t('Political/organizational category settings'),
+    '#title' => t('Committee category settings'),
   );
   $options2 = array('true' => t('Show'), 'false' => t('Do not show'));
-  $form['os2dagsorden_political_organizational_settings']['os2dagsorden_show_meeting_category'] = array(
+  $form['os2dagsorden_committee_category_settings']['os2dagsorden_show_meeting_category'] = array(
     '#type' => 'radios',
     '#title' => t('Show meeting categories'),
     '#default_value' => variable_get('os2dagsorden_show_meeting_category'),
     '#options' => $options2,
     '#description' => t('This decides whether a meeting title in the calendar view will be prefixed with the meeting category (<b>[P]</b>olitical/<b>[O]</b>rganization)'),
   );
-  $form['os2dagsorden_political_organizational_settings']['os2dagsorden_user_default_meeting_category'] = array(
+  $cat_voc = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee_category');
+  $cat_terms = taxonomy_get_tree($cat_voc->vid);
+  $cat_select = array();
+  foreach ($cat_terms as $cat_term) {
+    $cat_select[$cat_term->tid] = $cat_term->name;
+  }
+  $form['os2dagsorden_committee_category_settings']['os2dagsorden_user_default_committee_category'] = array(
     '#title' => t('Default value for user meeting category'),
     '#type' => 'checkboxes',
     '#description' => t('Select default value for user meeting category.'),
-    '#options' => array('pol' => t('Political'), 'org' => t('Organisation')),
-    '#default_value' => variable_get('os2dagsorden_user_default_meeting_category', 'pol'),
+    '#options' => $cat_select,
+    '#default_value' => variable_get('os2dagsorden_user_default_committee_category'),
+  );
+  $form['os2dagsorden_committee_category_settings']['os2dagsorden_committee_forbidden_allowed_categories_mode'] = array(
+    '#type' => 'radios',
+    '#default_value' => variable_get('os2dagsorden_committee_forbidden_allowed_categories_mode', 'forbidden'),
+    '#title' => t('Committee forbidden categories mode'),
+    '#options' => array(
+      'forbidden' => t('Forbidden mode'),
+      'allowed' => t('Allowed mode'),
+    ),
+    '#description' => t('Changes the user settings page by toggling between forbidden and allowed categories mode. In other words white list and black list.'),
+  );
+  $form['os2dagsorden_committee_category_settings']['os2dagsorden_committee_default_forbidden_cat'] = array(
+    '#type' => 'checkboxes',
+    '#default_value' => variable_get('os2dagsorden_committee_default_forbidden_cat'),
+    '#options' => $cat_select,
+    '#title' => "<b>" . t('Default forbidden categories') . "</b>",
+    '#description' => t('Which categories the user is FORBIDDEN to have access to when created'),
   );
 
   // SOFD Integration settings.
@@ -994,6 +1042,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_general_mine_indstillinger', 'Mine indstillinger'),
     '#title' => t('Log af'),
   );
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_create_meeting'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2dagsorden_title_general_create_meeting', 'Tilføj møde'),
+    '#title' => t('Log af'),
+  );
   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_log_off'] = array(
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_general_log_off', 'Log af'),
@@ -1103,6 +1156,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_meeting_participants', 'Deltagere'),
     '#title' => t('Deltagere'),
   );
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_referent'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2dagsorden_title_meeting_referent', 'Referent'),
+    '#title' => t('Referent'),
+  );
   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_cancelled_participants'] = array(
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_meeting_cancelled_participants', 'Afbud / Fraværende'),
@@ -1192,6 +1250,23 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('os2dagsorden_token_login_allowed_paths', '<front>'),
     );
   }
+
+  // Settings for meetings in external committee.
+  $form['os2dagsorden_external_committee'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('External committee'),
+  );
+  $form['os2dagsorden_external_committee']['os2dagsorden_timespan_open_meeting_content'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Participants must see the contents of the meeting before:'),
+    '#maxlength' => 200,
+    '#field_suffix' => t('Days'),
+    '#size' => 10,
+    '#description' => t('Number of days before the meeting for which participants should see its contents'),
+    '#default_value' => variable_get('os2dagsorden_timespan_open_meeting_content', 14),
+  );
 
   // Sort items alphabetically.
   ksort($form);
@@ -1404,6 +1479,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bilag_bullet_point', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bilag_bullet_point']);
     variable_set('os2dagsorden_show_case_bullet_point', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_case_bullet_point']);
     variable_set('os2dagsorden_show_bullet_case_nr', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr']);
+    variable_set('os2dagsorden_attachments_pages_per_view_desktop', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop']);
+    variable_set('os2dagsorden_attachments_pages_per_view_mobile', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_title', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title']);
@@ -1424,8 +1501,10 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_search_startdate', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_startdate']);
     variable_set('os2dagsorden_search_enddate', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_enddate']);
     variable_set('os2dagsorden_search_meeting_is_closed', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_search_meeting_is_closed']);
+    variable_set('os2dagsorden_meetings_overview_remember_filter_period', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_overview_remember_filter_period']);
 
     variable_set('os2dagsorden_budget_committee', $setting_array['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budget_committee']);
+    variable_set('os2dagsorden_budgetforhandling_button_committees', $setting_array['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budgetforhandling_button_committees']);
 
     variable_set('os2dagsorden_participants_delimeter', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_participants_delimeter']);
     variable_set('os2dagsorden_send_notification_committee', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_send_notification_committee']);
@@ -1435,8 +1514,6 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_send_timespan_of_notification', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_send_timespan_of_notification']);
 
     variable_set('os2dagsorden_add_type_prefix', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_add_type_prefix']);
-    variable_set('os2dagsorden_committee_category_pol', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_committee_category_pol']);
-    variable_set('os2dagsorden_committee_category_org', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_committee_category_org']);
 
     if (module_exists('os2web_pdf_conversion_manager')) {
       variable_set('os2web_copied_filetype', $setting_array['os2dagsorden_file_import']['os2web_copied_filetype']);
@@ -1452,9 +1529,10 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
       variable_set('os2dagsorden_gs_conversion_gs_path', $setting_array['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_gs_path']);
     }
 
-    variable_set('os2dagsorden_show_meeting_category', $setting_array['os2dagsorden_political_organizational_settings']['os2dagsorden_show_meeting_category']);
-    variable_set('os2dagsorden_user_default_meeting_category', $setting_array['os2dagsorden_political_organizational_settings']['os2dagsorden_user_default_meeting_category']);
-    variable_set('os2dagsorden_default_meeting_cateroty', $setting_array['os2dagsorden_political_organizational_settings']['os2dagsorden_default_meeting_cateroty']);
+    variable_set('os2dagsorden_show_meeting_category', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_show_meeting_category']);
+    variable_set('os2dagsorden_user_default_committee_category', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_user_default_committee_category']);
+    variable_set('os2dagsorden_committee_forbidden_allowed_categories_mode', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_committee_forbidden_allowed_categories_mode']);
+    variable_set('os2dagsorden_committee_default_forbidden_cat', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_committee_default_forbidden_cat']);
 
     variable_set('ultimate_cron_rule', $setting_array['os2dagsorden_cron_job_freq']['os2dagsorden_importer_cron']);
     variable_set('ultimate_cron_rule', $setting_array['os2dagsorden_cron_job_freq']['os2dagsorden_acadre_service_importer_cron']);

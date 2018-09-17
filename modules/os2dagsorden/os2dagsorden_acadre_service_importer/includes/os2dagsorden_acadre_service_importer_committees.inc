@@ -10,7 +10,7 @@
  *
  * Processes the committees xml. Delegates to create committees.
  *
- * @param array $committees_rows
+ * @param SimpleXMLElement $committees_rows
  *   Array of committees.
  */
 function _os2dagsorden_acadre_service_importer_process_committees(SimpleXMLElement $committees_rows) {
@@ -67,8 +67,13 @@ function os2dagsorden_acadre_service_importer_create_committee(array $xml_data, 
   if (!isset($term->field_os2web_meetings_com_abbr['und']) || empty($term->field_os2web_meetings_com_abbr['und'][0]['value'])) {
     $term->field_os2web_meetings_com_abbr['und'][0]['value'] = $xml_data['committee_name'];
   }
-  if (!isset($term->field_os2web_meetings_com_cat['und']) || empty($term->field_os2web_meetings_com_cat['und'][0]['value'])) {
-    $term->field_os2web_meetings_com_cat['und'][0]['value'] = 'pol';
+  if (!isset($term->field_os2web_meetings_com_categ['und']) || empty($term->field_os2web_meetings_com_categ['und'][0]['tid'])) {
+    $cat_voc = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee_category');
+    $cat_terms = taxonomy_get_tree($cat_voc->vid);
+
+    if (empty($cat_terms)) {
+      $term->field_os2web_meetings_com_categ['und'][0]['tid'] = $cat_terms[0]->tid;
+    }
   }
 
   // See if we need to enable term or its parent.

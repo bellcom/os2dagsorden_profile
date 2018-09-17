@@ -241,33 +241,6 @@ function os2dagsorden_esdh_provider_import_closed_attachment() {
 }
 
 /**
- * Assignes meeting's category.
- *
- * Based on the list of committees provided in the settings.
- *
- * @param object $node
- *   The node object.
- * @param int $committee_subid
- *   SUB_ID of Commitee.
- *
- * @return mixed
- *   The node object.
- */
-function os2dagsorden_esdh_provider_assign_meeting_category($node, $committee_subid) {
-  $pol_committees = array_map('trim', explode(',', variable_get('os2dagsorden_committee_category_pol', '')));
-  if (in_array($committee_subid, $pol_committees)) {
-    $node->field_os2web_meetings_category[LANGUAGE_NONE][0]['value'] = 'pol';
-  }
-
-  $org_committees = array_map('trim', explode(',', variable_get('os2dagsorden_committee_category_org', '')));
-  if (in_array($committee_subid, $org_committees)) {
-    $node->field_os2web_meetings_category[LANGUAGE_NONE][0]['value'] = 'org';
-  }
-
-  return $node;
-}
-
-/**
  * Returns the corresponding bullet if exists, bases on the name.
  *
  * @param string $title

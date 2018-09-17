@@ -24,6 +24,9 @@
  */
 function os2dagsorden_access_helper_meeting_has_speaker_paper($meeting_id) {
   $meeting = node_load($meeting_id);
+  if (!os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting)) {
+    return FALSE;
+  }
   if (isset($meeting->field_os2web_meetings_bullets['und'])) {
     foreach ($meeting->field_os2web_meetings_bullets['und'] as $bullet_point) {
       if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point['target_id'], variable_get('os2dagsorden_shared_speaker_paper', TRUE))) {
@@ -782,5 +785,22 @@ function os2dagsorden_access_helper_show_byradet_menu() {
     }
   }
 
+  return FALSE;
+}
+
+/**
+ * Check of user has any of the provided roles.
+ *
+ * @return bool
+ *   TRUE or FALSE.
+ */
+function os2dagsorden_access_helper_user_has_role() {
+  global $user;
+  $roles = func_get_args();
+  foreach ($roles as $role) {
+    if (in_array($role, $user->roles)) {
+      return TRUE;
+    }
+  }
   return FALSE;
 }

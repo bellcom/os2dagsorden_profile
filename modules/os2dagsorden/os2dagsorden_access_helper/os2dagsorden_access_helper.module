@@ -75,7 +75,10 @@ function os2dagsorden_access_helper_file_download($uri) {
       $meeting = NULL;
       if ($node->type === 'os2web_meetings_meeting') {
         $meeting = $node;
-
+        $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+        if (!os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting)) {
+          return -1;
+        }
         // Related to personal field?
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
@@ -457,12 +460,41 @@ function os2dagsorden_access_helper_node_insert($node) {
  * Implements hook_user_presave().
  */
 function os2dagsorden_access_helper_user_presave(&$edit, $account, $category) {
-  if ($account->is_new && variable_get('os2dagsorden_user_default_meeting_category')) {
-    $user_category = variable_get('os2dagsorden_user_default_meeting_category');
-    foreach ($user_category as $key => $value) {
-      if ($value) {
-        $edit['field_user_meetings_category']['und'][] = array('value' => $value);
+  if ($account->is_new) {
+    if ($user_category = variable_get('os2dagsorden_user_default_committee_category')) {
+      foreach ($user_category as $key => $value) {
+        if ($value) {
+          $edit['field_user_com_categ']['und'][] = array('tid' => $value);
+        }
       }
+    }
+
+    if ($forbidden_committee_categories = variable_get('os2dagsorden_committee_default_forbidden_cat')) {
+      foreach ($forbidden_committee_categories as $key => $value) {
+        if ($value) {
+          $edit['field_user_com_forbid_categ']['und'][] = array('tid' => $value);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_term_insert().
+ *
+ * Adds a newly created committee category term to each user forbidden
+ * categories list.
+ */
+function os2dagsorden_access_helper_taxonomy_term_insert($term) {
+  if ($term->vocabulary_machine_name === 'os2web_meetings_tax_committee_category') {
+    $users = entity_load('user');
+    foreach ($users as $user) {
+      if ($user->uid == 0) {
+        continue;
+      }
+
+      $user->field_user_com_forbid_categ['und'][]['tid'] = $term->tid;
+      user_save($user);
     }
   }
 }
@@ -531,9 +563,49 @@ function os2dagsorden_access_helper_node_access($node, $op, $account) {
 }
 
 /**
+ * Implements hook_menu_link_alter().
+ */
+function os2dagsorden_access_helper_menu_link_alter(&$item) {
+  $item['options']['alter'] = TRUE;
+}
+/**
  * Implements hook_mail().
  */
 function os2dagsorden_access_helper_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];
   $message['body'][] = $params['body'];
+}
+
+/**
+ * Implements hook_translated_menu_link_alter().
+ */
+function os2dagsorden_access_helper_translated_menu_link_alter(&$item, $map) {
+  global $user;
+  if (!empty($item['access'])) {
+    // Menu administrators can see all links.
+    if (strpos(current_path(), 'admin/structure/menu/manage/' . $item['menu_name']) === 0 && user_access('administer menu')) {
+      return;
+    }
+    if ($item['options']['attributes']['id'] == 'menu-budgetforhandling') {
+      $allowed_committees = explode(',', variable_get('os2dagsorden_budgetforhandling_button_committees', FALSE));
+      $user_committees = os2dagsorden_access_helper_get_user_member_of_committees();
+      if (count(array_intersect($allowed_committees, $user_committees)) === 0) {
+        $item['access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function os2dagsorden_access_helper_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'translated_menu_link_alter') {
+    // Move menu_item_visibility_translated_menu_link_alter() to the end of the
+    // list. This is mainly to deal with menu_token resetting the menu item
+    // access back to what is returned by menu_get_item().
+    $group = $implementations['os2dagsorden_access_helper'];
+    unset($implementations['os2dagsorden_access_helper']);
+    $implementations['os2dagsorden_access_helper'] = $group;
+  }
 }

@@ -620,6 +620,45 @@ function os2web_meetings_content_types_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
+  // Exported field_base: 'field_os2web_meetings_com_admin'.
+  $field_bases['field_os2web_meetings_com_admin'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_com_admin',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'uid' => array(
+        0 => 'uid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'user_reference',
+    'settings' => array(
+      'referenceable_roles' => array(
+        2 => 2,
+        3 => 3,
+        4 => 4,
+        5 => 5,
+        6 => 6,
+      ),
+      'referenceable_status' => array(
+        0 => 0,
+        1 => 0,
+      ),
+      'view' => array(
+        'args' => array(),
+        'display_name' => '',
+        'view_name' => '',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'user_reference',
+  );
+
   // Exported field_base: 'field_os2web_meetings_com_cat'.
   $field_bases['field_os2web_meetings_com_cat'] = array(
     'active' => 1,
@@ -647,6 +686,7 @@ function os2web_meetings_content_types_field_default_field_bases() {
     'translatable' => 0,
     'type' => 'list_text',
   );
+
 
   // Exported field_base: 'field_os2web_meetings_com_color'.
   $field_bases['field_os2web_meetings_com_color'] = array(
@@ -703,6 +743,34 @@ function os2web_meetings_content_types_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'user_reference',
+  );
+
+  // Exported field_base: 'field_os2web_meetings_com_ext'.
+  $field_bases['field_os2web_meetings_com_ext'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_com_ext',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => 'Extrenal committee',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
   );
 
   // Exported field_base: 'field_os2web_meetings_com_import'.
@@ -1187,6 +1255,123 @@ function os2web_meetings_content_types_field_default_field_bases() {
     'type' => 'text_long',
   );
 
+  // Exported field_base: 'field_os2web_meetings_partic_ext'.
+  $field_bases['field_os2web_meetings_partic_ext'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_partic_ext',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'uid' => array(
+        0 => 'uid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'user_reference',
+    'settings' => array(
+      'referenceable_roles' => array(
+        2 => 2,
+        3 => 0,
+        4 => 0,
+        5 => 0,
+        6 => 0,
+      ),
+      'referenceable_status' => array(
+        0 => 0,
+        1 => 0,
+      ),
+      'view' => array(
+        'args' => array(),
+        'display_name' => '',
+        'view_name' => '',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'user_reference',
+  );
+
+  // Exported field_base: 'field_os2web_meetings_partic_int'.
+  $field_bases['field_os2web_meetings_partic_int'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_partic_int',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'uid' => array(
+        0 => 'uid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'user_reference',
+    'settings' => array(
+      'referenceable_roles' => array(
+        2 => 2,
+        3 => 0,
+        4 => 0,
+        5 => 0,
+        6 => 0,
+      ),
+      'referenceable_status' => array(
+        0 => 0,
+        1 => 0,
+      ),
+      'view' => array(
+        'args' => array(),
+        'display_name' => '',
+        'view_name' => '',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'user_reference',
+  );
+
+  // Exported field_base: 'field_os2web_meetings_partic_inv'.
+  $field_bases['field_os2web_meetings_partic_inv'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_partic_inv',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'uid' => array(
+        0 => 'uid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'user_reference',
+    'settings' => array(
+      'referenceable_roles' => array(
+        2 => 2,
+        3 => 0,
+        4 => 0,
+        5 => 0,
+        6 => 0,
+      ),
+      'referenceable_status' => array(
+        0 => 0,
+        1 => 0,
+      ),
+      'view' => array(
+        'args' => array(),
+        'display_name' => '',
+        'view_name' => '',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'user_reference',
+  );
+
   // Exported field_base: 'field_os2web_meetings_particcanl'.
   $field_bases['field_os2web_meetings_particcanl'] = array(
     'active' => 1,
@@ -1194,6 +1379,28 @@ function os2web_meetings_content_types_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_os2web_meetings_particcanl',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
+  // Exported field_base: 'field_os2web_meetings_referent'.
+  $field_bases['field_os2web_meetings_referent'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_referent',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -1238,10 +1445,38 @@ function os2web_meetings_content_types_field_default_field_bases() {
         'data_type' => 'longtext',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
+  );
+
+  // Exported field_base: 'field_os2web_meetings_status'.
+  $field_bases['field_os2web_meetings_status'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_status',
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'taxonomy',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'os2web_meetings_tax_status',
+          'parent' => 0,
+        ),
+      ),
+      'options_list_callback' => 'content_taxonomy_allowed_values',
+    ),
+    'translatable' => 0,
+    'type' => 'taxonomy_term_reference',
   );
 
   // Exported field_base: 'field_os2web_meetings_sub_id'.

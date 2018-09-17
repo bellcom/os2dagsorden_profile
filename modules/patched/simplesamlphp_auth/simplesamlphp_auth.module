@@ -358,54 +358,57 @@ function simplesamlphp_auth_init() {
  */
 function simplesamlphp_auth_user_insert(&$edit, $account, $category = NULL) {
   global $_simplesamlphp_auth_as;
-  global $_simplesamlphp_auth_saml_attributes;
+  global $user;
 
   if (!_simplesamlphp_auth_isEnabled()) {
-    // Exit without initializing.
     return;
   }
 
-  if ($category = 'account') {
-    // If user registration has a valid session...
-    if ($_simplesamlphp_auth_as->isAuthenticated()) {
-      // Get name from default attributes.
-      try {
-        _simplesaml_auth_debug(t('Registering user [%acctname]', array('%acctname' => $account->name)));
-        $account->name = _simplesamlphp_auth_get_default_name($account->uid);
-      }
-      catch (Exception $e) {
-        drupal_set_message(t('Your user name was not provided by your identity provider (IDP).'), "error");
-        watchdog('simplesamlphp_auth', $e->getMessage(), NULL, WATCHDOG_CRITICAL);
-      }
+  if ($category != 'account') {
+    return;
+  }
 
+  // Backout if current user wasn't authenticated via SAML.
+  if (!$_simplesamlphp_auth_as || !$_simplesamlphp_auth_as->isAuthenticated()) {
+    return;
+  }
+
+  // Only update the username and email fields for the account if the current
+  // user is in the process of being registered. This prevents users that
+  // are modifying a user from having their own information used for the user
+  // they are modifying.
+  if ($user->uid == 0 || $user->uid === $account->uid) {
+    // Get name from default attributes.
+    try {
+      $account->name = _simplesamlphp_auth_get_default_name($account->uid);
+      _simplesaml_auth_debug(t('Registering user [%acctname]', array('%acctname' => $account->name)));
       db_update('users')
         ->fields(array('name' => $account->name))
         ->condition('uid', $account->uid)
         ->execute();
-
       _simplesaml_auth_debug(t('Updating username [%acctname]', array('%acctname' => $account->name)));
+    } catch (Exception $e) {
+      drupal_set_message(t('Your user name was not provided by your identity provider (IDP).'), "error");
+      watchdog('simplesamlphp_auth', $e->getMessage(), NULL, WATCHDOG_CRITICAL);
+    }
 
-      // Get mail from default attribute.
-      try {
-        $mail_address = _simplesamlphp_auth_get_mail();
-      }
-      catch (Exception $e)  {
-        drupal_set_message(t('Your e-mail address was not provided by your identity provider (IDP).'), "error");
-        watchdog('simplesamlphp_auth', $e->getMessage(), NULL, WATCHDOG_CRITICAL);
-      }
-
+    // Get mail from default attribute.
+    try {
+      $mail_address = _simplesamlphp_auth_get_mail();
+      _simplesaml_auth_debug(t('Updating mail [%mailaddr]', array('%mailaddr' => $mail_address)));
       if (!empty($mail_address)) {
         db_update('users')
           ->fields(array('mail' => $mail_address))
           ->condition('uid', $account->uid)
           ->execute();
       }
-      
-      if (module_exists('rules')) {
-        rules_invoke_event('simplesamlphp_auth_rules_event_register', $account); 
-      }
+    } catch (Exception $e) {
+      drupal_set_message(t('Your e-mail address was not provided by your identity provider (IDP).'), "error");
+      watchdog('simplesamlphp_auth', $e->getMessage(), NULL, WATCHDOG_CRITICAL);
+    }
 
-      _simplesaml_auth_debug(t('Updating mail [%mailaddr]', array('%mailaddr' => $mail_address)));
+    if (module_exists('rules')) {
+      rules_invoke_event('simplesamlphp_auth_rules_event_register', $account);
     }
   }
 }

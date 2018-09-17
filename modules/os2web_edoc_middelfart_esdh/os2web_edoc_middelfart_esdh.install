@@ -4,3 +4,45 @@
  * @file
  * This file cleans up variables from the settings module.
  */
+
+/**
+ * Implements hook_update_N().
+ *
+ * Updates the meeting_xmlid and agenda_sysid in os2web_esdh_provider_import,
+ * as well as sub_id and system_id in the corresponding node.
+ */
+function os2web_edoc_middelfart_esdh_update_7100(&$sandbox) {
+  module_load_include('inc', 'os2web_edoc_middelfart_esdh', 'plugins/mm/os2web_edoc_middelfart_esdh_mm');
+  module_load_include('inc', 'os2web_esdh_provider', 'includes/os2web_esdh_provider.queue');
+
+  // update os2web_esdh_provider_import table
+  $manifests = os2web_edoc_middelfart_esdh_mm_get_import_list();
+
+  foreach ($manifests as $manifest) {
+    // Generate new agenda_id.
+    $agenda_id = $manifest['id'];
+
+    // Update meeting_xmlid.
+    // Update agenda_sysid.
+    db_update('os2web_esdh_provider_import')
+      ->fields(array(
+        'meeting_xmlid' => $agenda_id,
+        'agenda_sysid' => $agenda_id
+      ))
+      ->condition('meeting_xml', $manifest['uri'], '=')
+      ->execute();
+
+    // Load meeting node.
+    $nid = os2web_esdh_provider_index_meeting_get_nid($agenda_id);
+    $meeting = node_load(intval($nid));
+
+    if ($meeting) {
+      // Update sub_id.
+      // Update system_id.
+      $meeting->field_os2web_meetings_sub_id[LANGUAGE_NONE][0]['value'] = $agenda_id;
+      $meeting->field_os2web_meetings_system_id[LANGUAGE_NONE][0]['value'] = $agenda_id;
+
+      node_save($meeting);
+    }
+  }
+}

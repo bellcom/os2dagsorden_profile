@@ -39,7 +39,6 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
 
   // Adding general fields.
   $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form);
-
   // Adding other fields.
   $form['description_opened'] = array(
     '#title' => t('Description opened:'),
@@ -78,7 +77,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
     // If meeting id is empty, try to fill it with form_state meeting_id value.
     $meeting_id = $form_state['meeting_id'];
   }
-
+  _os2dagsorden_create_agenda_render_drag_and_drop_controls($form, $meeting_id);
   if ($meeting_id) {
     // Saving for usage in the submit function.
     $form_state['meeting_id'] = $meeting_id;
@@ -252,7 +251,7 @@ function os2dagsorden_create_agenda_bullet_point_delete_ajax($form, $form_state)
  */
 function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
   $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
-
+ 
   $input = $form_state['input'];
   // File extraction.
   $description_opened = $form_state['values']['description_opened'];
