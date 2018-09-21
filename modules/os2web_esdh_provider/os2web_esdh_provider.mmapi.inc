@@ -1411,7 +1411,7 @@ function os2web_esdh_provider_filter_html_tags($data) {
     $data = _os2web_esdh_provider_remove_img_tags($data);
   }
   // Replace all <p></p> and <p>&nbsp;</p> tags with <br />.
-  $data = preg_replace('#(<p( )*?>((<span>)*?)(|&nbsp;)((<\/span>)*?)<\/p>\s*)+#i', '<br />', $data);
+  $data = preg_replace('#(<p[^>]*(?:\/>|>)(<span[^>]*(?:\/>|>)((<span>)*?)(&\#xa0;|&nbsp;| )*?((<\/span>)*?)<\/span><\/p>)\s*)+#i', '<br />', $data);
   // Remove empty span tags.
   $data = preg_replace('#(<span[^>]*(?:\/>|>)((<span>)*?)(&\#xa0;|&nbsp;| )*?((<\/span>)*?)<\/span>\s*)+#i', '', $data);
   // Replace multiple &nbsp; tags with...
