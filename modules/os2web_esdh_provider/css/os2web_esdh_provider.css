@@ -135,3 +135,6 @@ table.views-table tr td .attachment_text_full_container a:visited,
   -ms-hyphens: auto;
   hyphens: auto;
 }
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text span {
+  display: inline;
+}
