@@ -404,40 +404,79 @@ function os2dagsorden_meeting_views_meeting_details_special_conditions_access() 
  *   Nid of meeting.
  */
 function os2dagsorden_meeting_views_meeting_details_fields_participants_deltog($meeting_id) {
-  $meeting = node_load($meeting_id);
-  $participants = array();
-  $internal_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int');
-  $external_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext');
-  $invisible = field_get_items('node', $meeting, 'field_os2web_meetings_partic_inv');
-  if ($internal_participants || $external_participants) {
-    $visible_participants = array();
-    $invisible_participants = array();
-    if ($internal_participants) {
-      foreach ($internal_participants as $participant) {
-        $visible_participants[$participant['uid']] = $participant['uid'];
+  if (variable_get('os2dagsorden_hide_meeting_details', FALSE) == FALSE) {
+    $meeting = node_load($meeting_id);
+    $participants = array();
+    $internal_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int');
+    $external_participants = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext');
+    $invisible = field_get_items('node', $meeting, 'field_os2web_meetings_partic_inv');
+    if ($internal_participants || $external_participants) {
+      $visible_participants = array();
+      $invisible_participants = array();
+      if ($internal_participants) {
+        foreach ($internal_participants as $participant) {
+          $visible_participants[$participant['uid']] = $participant['uid'];
+        }
       }
-    }
-    if ($external_participants) {
-      foreach ($external_participants as $participant) {
-        $visible_participants[$participant['uid']] = $participant['uid'];
+      if ($external_participants) {
+        foreach ($external_participants as $participant) {
+          $visible_participants[$participant['uid']] = $participant['uid'];
+        }
       }
-    }
-    // Hide invisible participants.
-    if ($invisible) {
-      foreach ($invisible as $participant) {
-        unset($visible_participants[$participant['uid']]);
+      // Hide invisible participants.
+      if ($invisible) {
+        foreach ($invisible as $participant) {
+          unset($visible_participants[$participant['uid']]);
+        }
       }
+      $users = user_load_multiple($visible_participants);
+      foreach ($users as $id => $user) {
+        $participants[] = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+      }
+      print implode(',', $participants);
     }
-    $users = user_load_multiple($visible_participants);
-    foreach ($users as $id => $user) {
-      $participants[] = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+    else {
+      print($meeting->field_os2web_meetings_partic['und'][0]['value']);
     }
-    print implode(',', $participants);
   }
-  else {
-    print($meeting->field_os2web_meetings_partic['und'][0]['value']);
-  }
+}
 
+/**
+ * Print field location.
+ *
+ * @param int $meeting_id
+ *   Nid of meeting.
+ */
+function os2dagsorden_meeting_views_meeting_details_fields_location($meeting_id) {
+  if (variable_get('os2dagsorden_hide_meeting_details', FALSE) == FALSE) {
+    print (os2dagsorden_meeting_views_common_meeting_location($meeting_id));
+  }
+}
+
+/**
+ * Print field comments.
+ *
+ * @param int $meeting_id
+ *   Nid of meeting.
+ */
+function os2dagsorden_meeting_views_meeting_details_fields_comments($meeting_id) {
+  if (variable_get('os2dagsorden_hide_meeting_details', FALSE) == FALSE) {
+    $meeting = node_load($meeting_id);
+    print ($meeting->field_os2web_meetings_comments['und'][0]['value']);
+  }
+}
+
+/**
+ * Print field conditions.
+ *
+ * @param int $meeting_id
+ *   Nid of meeting.
+ */
+function os2dagsorden_meeting_views_meeting_details_fields_conditions($meeting_id) {
+  if (variable_get('os2dagsorden_hide_meeting_details', FALSE) == FALSE) {
+    $meeting = node_load($meeting_id);
+    print ($meeting->field_os2web_meetings_conditions['und'][0]['value']);
+  }
 }
 /**
  * Print field referent.
@@ -468,9 +507,11 @@ function os2dagsorden_meeting_views_meeting_details_fields_participants_afbud_ac
  *   Nid of meeting.
  */
 function os2dagsorden_meeting_views_meeting_details_fields_participants_afbud($meeting_id) {
-  $meeting = node_load($meeting_id);
-  if (isset($meeting->field_os2web_meetings_particcanl['und'])) {
-    print($meeting->field_os2web_meetings_particcanl['und'][0]['value']);
+  if (variable_get('os2dagsorden_hide_meeting_details', FALSE) == FALSE) {
+    $meeting = node_load($meeting_id);
+    if (isset($meeting->field_os2web_meetings_particcanl['und'])) {
+      print($meeting->field_os2web_meetings_particcanl['und'][0]['value']);
+    }
   }
 }
 
@@ -523,6 +564,11 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
  * Open agenda title.
  */
 function os2dagsorden_meeting_views_meeting_details_fields_dagsorden_header() {
+  if (variable_get('os2dagsorden_show_expand_all_button', FALSE)) {
+    print '<div class="controls-right agenda-level">';
+    print '<a href="" id = "expand_all_agendas" class="form-submit">' . t('Open/Close all') . '</a>';
+    print '</div>';
+  }
   print '<h3>' . variable_get('os2dagsorden_title_meeting_agenda', 'Dagsorden:') . '</h3>';
 }
 

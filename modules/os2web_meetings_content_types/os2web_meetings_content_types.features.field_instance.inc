@@ -1317,9 +1317,8 @@ function os2web_meetings_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 31,
       ),
       'os2dagsorden_meeting_overview' => array(
@@ -1964,9 +1963,8 @@ function os2web_meetings_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'user_reference',
         'settings' => array(),
-        'type' => 'user_reference_default',
+        'type' => 'hidden',
         'weight' => 40,
       ),
       'teaser' => array(
@@ -2008,9 +2006,8 @@ function os2web_meetings_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'user_reference',
         'settings' => array(),
-        'type' => 'user_reference_default',
+        'type' => 'hidden',
         'weight' => 39,
       ),
       'teaser' => array(
@@ -2051,9 +2048,8 @@ function os2web_meetings_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'user_reference',
         'settings' => array(),
-        'type' => 'user_reference_default',
+        'type' => 'hidden',
         'weight' => 41,
       ),
       'teaser' => array(
@@ -2186,9 +2182,8 @@ function os2web_meetings_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'computed_field',
         'settings' => array(),
-        'type' => 'computed_field_computed_value',
+        'type' => 'hidden',
         'weight' => 7,
       ),
       'ical' => array(

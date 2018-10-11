@@ -183,7 +183,7 @@ function os2dagsorden_access_helper_download_file_headers($file) {
   return array(
     'Content-Type' => $file->filemime,
     'Content-Length' => $file->filesize,
-    'Content-Disposition' => 'attachment; filename=' . $file->filename,
+    'Content-Disposition' => 'attachment; filename*=UTF-8\'\'' . rawurlencode($file->filename),
   );
 }
 

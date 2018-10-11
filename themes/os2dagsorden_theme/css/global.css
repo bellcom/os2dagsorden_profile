@@ -218,7 +218,7 @@
   border-radius: 3px; }
 
 .select-committee ul.droptrue,
-.select-participants ul.droptrue{
+.select-participants ul.droptrue {
   border: 1px solid #f7f1f1;
   border-radius: 3px; }
 
@@ -458,7 +458,7 @@ div.content ul.menu li {
     transition: background-color .1s ease-in;
     position: relative;
     text-align: center; }
-    div.content ul.menu li #menu-simple-user-edit:before{
+    div.content ul.menu li #menu-simple-user-edit:before {
       content: "\E8B8";
       font-family: "Material Icons";
       font-size: 20px;
@@ -504,9 +504,12 @@ ul li.leaf {
   cursor: pointer; }
   .help-button:after {
     content: '!';
-    position: relative;
+    position: absolute;
     margin: auto;
-    font-weight: bold; }
+    font-weight: bold;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); }
 
 #ToolTipDiv {
   Position: absolute;
@@ -1065,6 +1068,10 @@ pager li.pager-first {
 .controls-right {
   float: right;
   margin: 5px 1px 20px 10px; }
+
+.controls-right.agenda-level {
+  float: right;
+  margin: 15px 6px 0px 10px; }
 
 .controls-left {
   float: left;

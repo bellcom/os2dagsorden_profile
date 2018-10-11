@@ -51,29 +51,26 @@ function os2dagsorden_meeting_views_meetings_search_filter_additional_agendas($n
  *   Raw data from view.
  */
 function os2dagsorden_meeting_views_meetings_search_fields_bp_id($meta_data) {
-  $search_param = $_GET['search_params'];
-  if (!empty($search_param)) {
-    $search_param_pos_s = stripos($meta_data, $search_param);
-    $search_param_pos_e = $search_param_pos_s + strlen($search_param);
-    // Part of the text before the found occurence.
-    $meta_data = substr($meta_data, 0, $search_param_pos_e + 1);
+  $query = $_GET['search_params'];
+  $full_meta_data = $meta_data;
+  if (!empty($query)) {
+    foreach (explode(" ", $query) as $search_param) {
+      $search_string = $full_meta_data;
+      while ($search_param_pos_s = stripos($search_string, $search_param)) {
+        $full_search_string = $search_string;
+        $search_param_pos_e = $search_param_pos_s + strlen($search_param);
+        // Part of the text before the found occurence.
+        $search_string = substr($search_string, 0, $search_param_pos_e + 1);
 
-    $search_token_pos_s = strripos($meta_data, '[search_token]');
-    $search_token_pos_e = $search_token_pos_s + strlen('[search_token]');
+        $bp_id = _os2dagsorden_meeting_views_meetings_search_extract_bp_id($search_string);
+        $bpa_id = _os2dagsorden_meeting_views_meetings_search_extract_bpa_id($search_string);
 
-    $bullet_point_token_pos_s = strripos($meta_data, '[bp]');
-    $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen('[bp]');
-
-    $bpa_token_pos_s = strripos($meta_data, '[bpa]');
-    $bpa_token_pos_e = $bpa_token_pos_s + strlen('[bpa]');
-
-    // Is in bullet point.
-    if ($bullet_point_token_pos_s === $search_token_pos_e) {
-      $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e + 1, $bpa_token_pos_s - $bullet_point_token_pos_e - 2);
-      if ($bullet_point_id) {
-        print("/bullet-point/" . $bullet_point_id);
+        if ($bp_id && $bpa_id) {
+          print("/bullet-point/" . $bp_id);
+          return;
+        }
+        $search_string = substr($full_search_string, $search_param_pos_e + 1);
       }
-
     }
   }
 }
@@ -85,30 +82,25 @@ function os2dagsorden_meeting_views_meetings_search_fields_bp_id($meta_data) {
  *   Raw data from view.
  */
 function os2dagsorden_meeting_views_meetings_search_fields_bpa_id($meta_data) {
-  $search_param = $_GET['search_params'];
-  if (!empty($search_param)) {
-    $search_param_pos_s = stripos($meta_data, $search_param);
-    $search_param_pos_e = $search_param_pos_s + strlen($search_param);
-    // Part of the text before the found occurence.
-    $meta_data = substr($meta_data, 0, $search_param_pos_e + 1);
+  $query = $_GET['search_params'];
+  $full_meta_data = $meta_data;
+  if (!empty($query)) {
+    foreach (explode(" ", $query) as $search_param) {
+      $search_string = $full_meta_data;
+      while ($search_param_pos_s = stripos($search_string, $search_param)) {
+        $full_search_string = $search_string;
+        $search_param_pos_e = $search_param_pos_s + strlen($search_param);
+        // Part of the text before the found occurence.
+        $search_string = substr($search_string, 0, $search_param_pos_e + 1);
 
-    $search_token_pos_s = strripos($meta_data, '[search_token]');
-    $search_token_pos_e = $search_token_pos_s + strlen('[search_token]');
+        $bp_id = _os2dagsorden_meeting_views_meetings_search_extract_bp_id($search_string);
+        $bpa_id = _os2dagsorden_meeting_views_meetings_search_extract_bpa_id($search_string);
 
-    $bullet_point_token_pos_s = strripos($meta_data, '[bp]');
-    $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen('[bp]');
-
-    $bpa_token_pos_s = strripos($meta_data, '[bpa]');
-    $bpa_token_pos_e = $bpa_token_pos_s + strlen('[bpa]');
-
-    // Is in bullet point.
-    if ($bullet_point_token_pos_s === $search_token_pos_e) {
-      $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e + 1, $bpa_token_pos_s - $bullet_point_token_pos_e - 2);
-      $bullet_point = node_load($bullet_point_id);
-
-      $bpa_id = substr($meta_data, $bpa_token_pos_e + 1, strripos($meta_data, ']') - $bpa_token_pos_e - 1);
-      if ($bpa_id) {
-        print("/bullet-point-attachment/" . $bpa_id);
+        if ($bp_id && $bpa_id) {
+          print("/bullet-point-attachment/" . $bpa_id);
+          return;
+        }
+        $search_string = substr($full_search_string, $search_param_pos_e + 1);
       }
     }
   }
@@ -182,38 +174,76 @@ function os2dagsorden_meeting_views_meetings_search_fields_meeting_title($data) 
  *   Meeting data.
  */
 function os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data) {
-  $search_param = $_GET['search_params'];
-  if (!empty($search_param)) {
-    $search_param_pos_s = stripos($meta_data, $search_param);
-    $search_param_pos_e = $search_param_pos_s + strlen($search_param);
-    // Part of the text before the found occurence.
-    $meta_data = substr($meta_data, 0, $search_param_pos_e + 1);
+  $query = $_GET['search_params'];
+  $full_meta_data = $meta_data;
+  if (!empty($query)) {
+    foreach (explode(" ", $query) as $search_param) {
+      $search_string = $full_meta_data;
+      while ($search_param_pos_s = stripos($search_string, $search_param)) {
+        $full_search_string = $search_string;
+        $search_param_pos_e = $search_param_pos_s + strlen($search_param);
+        // Part of the text before the found occurence.
+        $search_string = substr($search_string, 0, $search_param_pos_e + 1);
 
-    $search_token_pos_s = strripos($meta_data, '[search_token]');
-    $search_token_pos_e = $search_token_pos_s + strlen('[search_token]');
+        $bp_id = _os2dagsorden_meeting_views_meetings_search_extract_bp_id($search_string);
+        $bpa_id = _os2dagsorden_meeting_views_meetings_search_extract_bpa_id($search_string);
 
-    $bullet_point_token_pos_s = strripos($meta_data, '[bp]');
-    $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen('[bp]');
+        if ($bp_id && $bpa_id) {
+          $bullet_point = node_load($bp_id);
+          $bpa = node_load($bpa_id);
 
-    $bpa_token_pos_s = strripos($meta_data, '[bpa]');
-    $bpa_token_pos_e = $bpa_token_pos_s + strlen('[bpa]');
-
-    // Is in bullet point.
-    if ($bullet_point_token_pos_s === $search_token_pos_e) {
-      $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e + 1, $bpa_token_pos_s - $bullet_point_token_pos_e - 2);
-      $bullet_point = node_load($bullet_point_id);
-
-      $bpa_id = substr($meta_data, $bpa_token_pos_e + 1, strripos($meta_data, ']') - $bpa_token_pos_e - 1);
-      $bpa = node_load($bpa_id);
-
-      $to_print = $bpa->title . ': [' . $bullet_point->title . ']';
+          print $bpa->title . ': [' . $bullet_point->title . ']';
+          return;
+        }
+        $search_string = substr($full_search_string, $search_param_pos_e + 1);
+      }
     }
   }
-  if (!empty($to_print)) {
-    print($to_print);
+}
+
+/**
+ * Extracts bullet point id from metadata.
+ *
+ * @param $meta_data
+ *
+ * @return string
+ */
+function _os2dagsorden_meeting_views_meetings_search_extract_bp_id($meta_data) {
+  $search_token_pos_s = strripos($meta_data, '[search_token]');
+  $search_token_pos_e = $search_token_pos_s + strlen('[search_token]');
+
+  $bullet_point_token_pos_s = strripos($meta_data, '[bp]');
+  $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen('[bp]');
+
+  $bpa_token_pos_s = strripos($meta_data, '[bpa]');
+
+  // Is in bullet point.
+  if ($bullet_point_token_pos_s === $search_token_pos_e) {
+    $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e + 1, $bpa_token_pos_s - $bullet_point_token_pos_e - 2);
+    return $bullet_point_id;
   }
-  else {
-    print('&nbsp;');
+}
+
+/**
+ * Extracts bullet point attachment id from metadata.
+ *
+ * @param $meta_data
+ *
+ * @return string
+ */
+function _os2dagsorden_meeting_views_meetings_search_extract_bpa_id($meta_data) {
+  $search_token_pos_s = strripos($meta_data, '[search_token]');
+  $search_token_pos_e = $search_token_pos_s + strlen('[search_token]');
+
+  $bullet_point_token_pos_s = strripos($meta_data, '[bp]');
+
+  $bpa_token_pos_s = strripos($meta_data, '[bpa]');
+  $bpa_token_pos_e = $bpa_token_pos_s + strlen('[bpa]');
+
+  // Is in bullet point.
+  if ($bullet_point_token_pos_s === $search_token_pos_e) {
+    $bpa_id = substr($meta_data, $bpa_token_pos_e + 1, strripos($meta_data, ']') - $bpa_token_pos_e - 1);
+    return $bpa_id;
   }
 }
 

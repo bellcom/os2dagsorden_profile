@@ -159,6 +159,8 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
  *   Array of uid.
  */
 function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uids) {
+  $current_user = os2dagsorden_access_helper_get_user();
+
   $single_or_batch_class = (count($uids) === 1) ? 'single' : 'batch';
 
   $form[] = array(
@@ -178,7 +180,9 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
       'id' => 'member_of_hidden',
     ),
   );
+  $user_can_change_follow_commitee = ((int)$current_user->uid === 1 || !empty(array_intersect(array('os2dagsorden limited', 'os2dagsorden', 'administrator++', 'administrator+', 'administrator'), $current_user->roles)));
   $form['follows_div'] = array(
+    '#access' => $user_can_change_follow_commitee,
     '#type' => 'item',
     '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note subscribe">' . t('Notifikationer på mail:') . '</div>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
     '#markup' => '',
@@ -468,6 +472,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     }
     $com_list .= "</ul>";
     $form['available_committee'] = array(
+      '#access' => $user_can_change_follow_commitee,
       '#type' => 'item',
       '#prefix' => "<div class='available_committee'><label>" . t('Available committee:') . "</label>",
       '#markup' => $com_list,

@@ -205,6 +205,61 @@ jQuery(document).ready(function() {
     jQuery(this).change();
   });
 });
+
+jQuery(document).ready(function() {
+  jQuery('#expand_all_agendas').click( function(e){
+	e.preventDefault();
+  if (jQuery('#expand_all_agendas').hasClass('expanded')) {
+     jQuery(".ul-item-list-dagsordenspunkt").each(function(index) {
+
+      jQuery("#attachments_container_" + index).hide();
+      jQuery("#btn_hide_show_attachments_" + index).val("⇓");
+      jQuery("#btn_hide_show_attachments_" + index).removeClass('opened');
+      jQuery("[id^=attachment_text_container_" + index + "_]").each(function (index_attachment) {
+      attachment_load_content(index, index_attachment, '/');
+      jQuery("#btn_hide_show_attachment_text_" + index + "_" + index_attachment).val("⇓");
+      jQuery("#btn_hide_show_attachment_text_" + index + "_" + index_attachment).text("⇓");
+      jQuery("#btn_hide_show_attachment_text_" + index + "_" + index_attachment).removeClass('opened');
+      jQuery(".btn_hide_show_all_attachments_text_" + index).removeClass('opened');
+      jQuery(".btn_hide_show_all_attachments_text_" + index).val('⇊');
+      jQuery(".btn_hide_show_all_attachments_text_" + index).text('⇊');
+
+      jQuery("#btn_hide_show_attachments_" + index + "_" + index_attachment).removeClass('opened');
+
+      jQuery(this).hide();
+
+    });
+  });
+  } else {
+    jQuery(".ul-item-list-dagsordenspunkt").each(function(index) {
+
+      jQuery("#attachments_container_" + index).show();
+      jQuery("#btn_hide_show_attachments_" + index).val("⇑");
+      jQuery("#btn_hide_show_attachments_" + index).addClass('opened');
+      jQuery("[id^=attachment_text_container_" + index + "_]").each(function (index_attachment) {
+      attachment_load_content(index, index_attachment, '/');
+      jQuery("#btn_hide_show_attachment_text_" + index + "_" + index_attachment).val("⇑");
+      jQuery("#btn_hide_show_attachment_text_" + index + "_" + index_attachment).text("⇑");
+      jQuery("#btn_hide_show_attachment_text_" + index + "_" + index_attachment).addClass('opened');
+      jQuery(".btn_hide_show_all_attachments_text_" + index).addClass('opened');
+      jQuery(".btn_hide_show_all_attachments_text_" + index).val('⇈');
+      jQuery(".btn_hide_show_all_attachments_text_" + index).text('⇈');
+
+      jQuery("#btn_hide_show_attachments_" + index + "_" + index_attachment).addClass('opened');
+
+      jQuery(this).show();
+
+    });
+
+    jQuery(".btn_hide_show_all_attachments_text_" + index).val('⇈')
+    });
+
+    }
+    jQuery('#expand_all_agendas').toggleClass('expanded');
+  });
+
+});
+
 jQuery(document).ready(function() {
     jQuery('.form-item-from-date-value-date input.form-text').change(function(){
           jQuery(this).val(prepareDate(jQuery(this).val()));

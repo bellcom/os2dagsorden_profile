@@ -288,10 +288,12 @@ ul li.leaf {
   cursor: pointer;
   &:after{
     content: '!';
-    position: relative;
+    position: absolute;
     margin: auto;
     font-weight: bold;
-
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -1008,6 +1010,11 @@ pager li.pager-first {
 .controls-right {
   float: right;
   margin: 5px 1px 20px 10px;
+}
+
+.controls-right.agenda-level {
+  float: right;
+  margin: 15px 6px 0px 10px;
 }
 
 .controls-left {
