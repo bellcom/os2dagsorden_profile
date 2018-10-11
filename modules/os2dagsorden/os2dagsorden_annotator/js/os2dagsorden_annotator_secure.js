@@ -34,7 +34,7 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
             jQuery('body').append(
                 '<div class="annotator-touch-widget annotator-touch-controls dummy-controls">' +
                     '<div class="annotator-touch-widget-inner">' +
-                        '<a class="annotator-button annotator-add annotator-focus">Lav note</a>' +
+                        '<a class="annotator-button annotator-add annotator-focus">' + Drupal.settings.os2dagsorden_annotator.annotator_button_text + '</a>' +
                     '</div>' +
                 '</div>'
             );
@@ -49,9 +49,11 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
                 else {
                   jQuery("#ToolTipDiv2").css({'display': 'none'});
                 }
-            })
+            });
         }
 
+        // Changing button text.
+        jQuery(".annotator-button.annotator-add.annotator-focus").text(Drupal.settings.os2dagsorden_annotator.annotator_button_text);
 	});
 }
 

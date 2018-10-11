@@ -290,6 +290,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_print_pdf_show_commitee', FALSE),
     '#description' => t('This decides whether meetimg committee and date will be shown in bullet point title in PDF'),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Create note button text'),
+    '#maxlength' => 200,
+    '#description' => t('Text that will be display on a Create note button'),
+    '#default_value' => variable_get('os2dagsorden_create_note_text', 'Lav note'),
+  );
 
   // Expand or not expand bilag on bullet point expand
   // Meetig view settings.
@@ -1480,6 +1487,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_meeting_description_download_title_additional', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_download_title_additional']);
     variable_set('os2dagsorden_meeting_description_generate_pdf_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_title']);
     variable_set('os2dagsorden_meeting_description_generate_pdf_full_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_full_title']);
+    variable_set('os2dagsorden_create_note_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text']);
 
     variable_set('os2dagsorden_shared_speaker_paper', $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper']);
 
