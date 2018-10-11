@@ -2303,12 +2303,11 @@ div.note.subscribe {
 .checkbox.premeeting::before{
   content: '';
   position: absolute;
-  background-image: url(../img/calendar.png);
+  background-image: url(../img/premeeting.png);
   background-repeat: no-repeat;
   background-size: 15px;
   right: 20px;
   top: 2px;
-  top: -1px;
   width: 16px;
   height: 16px;
 }
@@ -2334,6 +2333,17 @@ div.note.subscribe::before{
   height: 16px;
 }
 
+.checkbox_follows,
+.checkbox_invisible,
+.checkbox.premeeting {
+  float: right; }
+
+.checkbox_follows,
+.checkbox.invisible,
+.checkbox.premeeting {
+  float: right;
+  display: inline;
+  position: relative; }
 /* ---------------------------- Dropdown Button START ---------------------------- */
 
 .dropbtn {
