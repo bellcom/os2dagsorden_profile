@@ -185,22 +185,18 @@
     background-color: #ae477d;
     transition: background-color .3s ease-out; }
   .form-submit.nav-button {
-    background: #ae477d;
-    color: #fffffe;
-    padding: 5px 10px 5px 10px;
-    font-family: "Source Sans Pro";
-    font-size: 13px;
-    text-decoration: none;
-    text-transform: uppercase;
-    cursor: pointer; }
+    background: #9c1a5e;
+    border-style: solid;
+    border-width: 0px;
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    color: transparent;
+    text-decoration: none; }
     .form-submit.nav-button:hover {
-      background: #9c1a5e;
-      padding: 5px 10px 5px 10px;
-      font-family: "Source Sans Pro";
-      font-size: 13px;
-      text-decoration: none;
-      text-transform: uppercase;
-      cursor: pointer; }
+      background: #ae477d;
+      font-size: 18px; }
   .form-actions.form-wrapper .form-submit {
     margin-right: 10px; }
 
@@ -1472,62 +1468,77 @@ div.speaker-paper-print {
   position: relative;
   top: -47px; }
 
-.view-speaking-paper .shared-with {
-  padding-top: 5px;
-  border-top: 1px solid #dedede;
-  margin-top: 5px;
-  font-style: italic; }
+.view-speaking-paper.view-display-id-page {
+  background: #fffffe;
+  border: none; }
+  .view-speaking-paper.view-display-id-page .shared-with {
+    padding-top: 5px;
+    border-top: 1px solid #dedede;
+    margin-top: 5px;
+    font-style: italic; }
+  .view-speaking-paper.view-display-id-page .item-list ul li {
+    margin: 0 0 0.25em 1.7em; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text {
+    left: -50px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button {
+    border-radius: 3px;
+    color: transparent;
+    width: 38px;
+    height: 38px;
+    z-index: 9999;
+    cursor: pointer;
+    left: -45px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button:before {
+      font-family: "Material Icons";
+      font-size: 20px;
+      position: absolute;
+      color: #fffffe;
+      content: "\E5CF";
+      top: 9px;
+      left: 9px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.opened:before {
+      font-family: "Material Icons";
+      font-size: 20px;
+      position: absolute;
+      color: #fffffe;
+      content: "\E5CE";
+      top: 9px;
+      left: 9px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .main-text {
+    padding-bottom: 5px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .views-field-title-1 {
+    margin-left: -5px;
+    margin-right: -5px;
+    padding-bottom: 10px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .views-row {
+    padding-bottom: 10px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt li a {
+    background-color: #f7f1f1;
+    color: #001D2F;
+    padding: 3px 10px 3px 10px;
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 14px;
+    border-color: #f7f1f1;
+    border-style: solid;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-radius: 3px 3px 0 0; }
+  .view-speaking-paper.view-display-id-page div.attachment {
+    background: #fffffe; }
+    .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 a {
+      display: block;
+      color: #333333;
+      padding: 3px 10px 3px 10px;
+      line-height: 30px;
+      font-family: Arial,Helvetica,sans-serif;
+      font-weight: bold;
+      font-size: 13px; }
 
-.view-speaking-paper .item-list ul li {
-  margin: 0 0 0.25em 1.7em; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text {
-  left: -50px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .button {
+.page-meeting-bullet-point .region-content-inner {
+  background: #fffffe;
   border-radius: 3px;
-  color: transparent;
-  width: 38px;
-  height: 38px;
-  z-index: 9999;
-  cursor: pointer;
-  left: -45px; }
-  .view-speaking-paper .ul-item-list-dagsordenspunkt .button:before {
-    font-family: "Material Icons";
-    font-size: 20px;
-    position: absolute;
-    color: #fffffe;
-    content: "\E5CF";
-    top: 9px;
-    left: 9px; }
-  .view-speaking-paper .ul-item-list-dagsordenspunkt .button.opened:before {
-    font-family: "Material Icons";
-    font-size: 20px;
-    position: absolute;
-    color: #fffffe;
-    content: "\E5CE";
-    top: 9px;
-    left: 9px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .main-text {
-  padding-bottom: 5px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .views-field-title-1 {
-  margin-left: -5px;
-  margin-right: -5px;
-  padding-bottom: 10px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .views-row {
-  padding-bottom: 10px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .attachment .view-display-id-attachment_1 a {
-  display: block;
-  color: #333333;
-  padding: 3px 10px 3px 10px;
-  line-height: 30px;
-  font-family: Arial,Helvetica,sans-serif;
-  font-weight: bold;
-  font-size: 13px; }
+  border: 1px solid #f7f1f1; }
 
 .form-submit.nav-button {
   display: inline-block;
@@ -1538,10 +1549,30 @@ div.speaker-paper-print {
   .form-submit.nav-button.left {
     margin-right: 10px;
     margin-left: -7px;
-    float: left; }
+    float: left;
+    top: -5px; }
+    .form-submit.nav-button.left:before {
+      content: "\E314";
+      font-family: "Material Icons";
+      font-size: 20px;
+      position: absolute;
+      color: #fffffe;
+      cursor: pointer;
+      top: 5px;
+      left: 9px; }
   .form-submit.nav-button.right {
-    margin-right: -3px;
-    float: right; }
+    margin-right: -6px;
+    float: right;
+    top: -5px; }
+  .form-submit.nav-button:before {
+    content: "\E315";
+    font-family: "Material Icons";
+    font-size: 20px;
+    position: absolute;
+    color: #fffffe;
+    cursor: pointer;
+    top: 5px;
+    left: 9px; }
 
 /*meeting details table*/
 div.speaker-paper-all-print {
