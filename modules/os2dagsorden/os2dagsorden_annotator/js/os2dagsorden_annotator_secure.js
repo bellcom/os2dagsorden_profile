@@ -54,7 +54,14 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
 
         // Changing button text.
         jQuery(".annotator-button.annotator-add.annotator-focus").text(Drupal.settings.os2dagsorden_annotator.annotator_button_text);
-	});
+        if (Drupal.settings.os2dagsorden_annotator.annotator_hide_text) {
+            jQuery(".annotator-button.annotator-add.annotator-focus").html('&nbsp;');
+            jQuery(".annotator-button.annotator-add.annotator-focus").css("cssText", "padding-right: 0 !important;");
+        }
+        if (Drupal.settings.os2dagsorden_annotator.annotator_use_title) {
+            jQuery(".annotator-touch-widget-inner").attr("title", Drupal.settings.os2dagsorden_annotator.annotator_button_text);
+        }
+  });
 }
 
 function annotator_hide_menu(){

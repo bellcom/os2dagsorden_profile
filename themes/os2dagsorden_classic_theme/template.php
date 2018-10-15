@@ -95,7 +95,18 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
       drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
 
       $annotatorButtonText = variable_get('os2dagsorden_create_note_text', 'Lav note');
-      drupal_add_js(array('os2dagsorden_annotator' => array('annotator_button_text' => $annotatorButtonText)), array('type' => 'setting'));
+      $annotatorHideText = variable_get('os2dagsorden_create_note_hide_text', FALSE);
+      $annotatorUseTitle = variable_get('os2dagsorden_create_note_text_use_title', FALSE);
+      drupal_add_js(array(
+          'os2dagsorden_annotator' =>
+            array(
+              'annotator_button_text' => $annotatorButtonText,
+              'annotator_hide_text' => $annotatorHideText,
+              'annotator_use_title' => $annotatorUseTitle
+            )
+        ),
+        array('type' => 'setting'));
+
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
     }
     if ($view->name === 'speaking_paper') {

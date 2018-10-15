@@ -297,6 +297,18 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('Text that will be display on a Create note button'),
     '#default_value' => variable_get('os2dagsorden_create_note_text', 'Lav note'),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create note button hide text'),
+    '#default_value' => variable_get('os2dagsorden_create_note_hide_text', FALSE),
+    '#description' => t('Text on the create note button will be hidden'),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create note button put text to title attribute'),
+    '#default_value' => variable_get('os2dagsorden_create_note_text_use_title', FALSE),
+    '#description' => t('The text will also be put into the title HTML attribute of a button (available on mouse hover)'),
+  );
 
   // Expand or not expand bilag on bullet point expand
   // Meetig view settings.
@@ -1488,6 +1500,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_meeting_description_generate_pdf_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_title']);
     variable_set('os2dagsorden_meeting_description_generate_pdf_full_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_full_title']);
     variable_set('os2dagsorden_create_note_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text']);
+    variable_set('os2dagsorden_create_note_hide_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text']);
+    variable_set('os2dagsorden_create_note_text_use_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title']);
 
     variable_set('os2dagsorden_shared_speaker_paper', $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper']);
 
