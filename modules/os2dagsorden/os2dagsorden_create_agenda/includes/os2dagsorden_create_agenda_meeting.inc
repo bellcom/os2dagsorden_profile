@@ -38,7 +38,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
   );
 
   // Adding general fields.
-  $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form);
+  $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form_state);
 
   // Pass the maximum file size in bytes - 2 MB.
   $two_mb_bytes = 2 * 1024 * 1024;

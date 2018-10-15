@@ -32,7 +32,7 @@ function os2dagsorden_create_agenda_meeting_simple($form, &$form_state, $meeting
   );
 
   // Adding general fields.
-  $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form);
+  $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form_state);
 
   // Filling the fields if meeting_id is not empty.
   if (!$meeting_id) {

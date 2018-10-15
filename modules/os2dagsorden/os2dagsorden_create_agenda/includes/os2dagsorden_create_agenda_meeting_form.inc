@@ -20,11 +20,13 @@
  *
  * @param mixed $form
  *   The form which should be modified.
+ * @param mixed $form_state
+ *   The form_state.
  *
  * @return mixed
  *   The form with new field.
  */
-function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
+function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form_state) {
   $form[] = array(
     '#markup' => '<div class="node">',
   );
@@ -69,6 +71,11 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#required' => TRUE,
     '#date_format' => 'd/m/Y H:i',
     '#attributes' => array('required' => 'required'),
+    '#ajax' => array(
+      'wrapper' => 'js-end-date-wrapper',
+      'callback' => 'os2dagsorden_create_agenda_populate_end_date',
+      'method' => 'replace',
+    )
   );
   $form['end_date'] = array(
     '#type' => 'date_popup',
@@ -76,7 +83,17 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form) {
     '#size' => 10,
     '#required' => FALSE,
     '#date_format' => 'd/m/Y H:i',
+    '#prefix' => '<div id="js-end-date-wrapper">',
+    '#suffix' => '</div>',
   );
+
+  if ($form_state['input']['start_date']['date']) {
+    $form['end_date']['#value']['date'] = $form_state['input']['start_date']['date'];
+  }
+  if ($form_state['input']['start_date']['time']) {
+    $form['end_date']['#value']['time'] = $form_state['input']['start_date']['time'];
+  }
+
   $form[] = array(
     '#markup' => '</div>',
   );
@@ -218,6 +235,25 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
   }
 
   return $form;
+}
+
+/**
+ * Callback for deleting bullet point attachments.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_populate_end_date($form, &$form_state) {
+  if ($form_state['input']['start_date']['date']) {
+    $form['end_date']['#value']['date'] = $form_state['input']['start_date']['date'];
+  }
+  if ($form_state['input']['start_date']['time']) {
+    $form['end_date']['#value']['time'] = $form_state['input']['start_date']['time'];
+  }
+
+  return $form['end_date'];
 }
 
 /**
