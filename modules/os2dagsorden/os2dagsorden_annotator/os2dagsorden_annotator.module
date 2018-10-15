@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -561,12 +562,12 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
 		<ul class="pager">';
   if (isset($prev_page_link)) {
     $pager .= '<li class="page-prev">
-		    <a rel="nofollow" href="' . $prev_page_link . '">« Tidligere</a>
+		    <a rel="nofollow" href="' . $prev_page_link . '">' . variable_get('os2dagsorden_title_general_prev_page', 'Forrige') . '</a>
 		  </li>';
   }
   if (isset($next_page_link)) {
     $pager .= '<li class="page-next">
-		    <a rel="nofollow" href="' . $next_page_link . '">Næste »</a>
+		    <a rel="nofollow" href="' . $next_page_link . '">' . variable_get('os2dagsorden_title_general_next_page', 'Næste') . '</a>
 		  </li>';
   }
   $pager .= '</ul>
