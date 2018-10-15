@@ -1216,7 +1216,18 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir'),
     '#title' => t('Nyt talepapir'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="os2dagsorden_title_meeting_new_speaker_paper_hide"]' => array('checked' => FALSE),
+      ),
+    )
   );
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE),
+    '#title' => t('Hide New speaker paper text'),
+  );
+
   // Upload quide PDF file.
   $form['upload_guide'] = array(
     '#type' => 'fieldset',
@@ -1623,6 +1634,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_title_meeting_closed_agenda', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_closed_agenda']);
     variable_set('os2dagsorden_title_meeting_committee', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_committee']);
     variable_set('os2dagsorden_title_meeting_new_speaker_paper', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper']);
+    variable_set('os2dagsorden_title_meeting_new_speaker_paper_hide', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide']);
 
     variable_set('os2dagsorden_meeting_view_calendar_short_name', $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name']);
 

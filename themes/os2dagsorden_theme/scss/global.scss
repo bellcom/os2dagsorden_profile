@@ -1250,6 +1250,10 @@ table {
   .speaker-paper-link-container {
     width: 130px;
     min-width: 130px;
+    &.no-text {
+      width: 45px;
+      min-width: 45px;
+    }
   }
 }
 

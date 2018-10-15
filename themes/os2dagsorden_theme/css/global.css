@@ -1249,6 +1249,9 @@ table ul.links {
 table .speaker-paper-link-container {
   width: 130px;
   min-width: 130px; }
+  table .speaker-paper-link-container.no-text {
+    width: 45px;
+    min-width: 45px; }
 
 /*meeting details table*/
 .view-meeting-details {

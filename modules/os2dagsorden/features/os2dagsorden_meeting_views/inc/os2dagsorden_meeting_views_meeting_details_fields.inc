@@ -966,6 +966,15 @@ function _os2dasorden_meeting_views_meeting_details_bilag_cases_with_content($el
 }
 
 /**
+ * Prints to-text class is the text is hidden for speaker paper link.
+ */
+function os2dagsorden_meeting_views_meeting_details_fields_speaker_paper_link_class() {
+  if (variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE)) {
+    print 'no-text';
+  }
+}
+
+/**
  * Prints speaker paper link.
  *
  * @param int $meeting_id
@@ -988,7 +997,11 @@ function os2dagsorden_meeting_views_meeting_details_fields_speaker_paper_link($m
     else {
       $q = $_GET['q'];
       $link = $base_url . '/node/add/os2web-meetings-spaper?edit[field_os2web_meetings_sp_bullet][und][0][target_id]=' . $bp_title . ' (' . $bp_id . ')' . '&destination=' . $q;
-      print '<a href="' . $link . '"><div class="indicator-create-speaker-paper"></div>' . variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir') . '</a>';
+      if (!variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE)) {
+        print '<a href="' . $link . '"><div class="indicator-create-speaker-paper"></div>' . variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir') . '</a>';
+      } else {
+        print '<a href="' . $link . '"><div class="indicator-create-speaker-paper"></div>&nbsp;</a>';
+      }
     }
   }
 }
