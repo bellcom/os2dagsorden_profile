@@ -1879,6 +1879,15 @@ a.annotator-wrapper {
     text-align: right;
     width: auto;
     z-index: 1;
+    a {
+      padding: 5px 10px 5px 15px;
+      &::before {
+        content: '«';
+        position: absolute;
+        left: 5px;
+        font-size: 14px;
+      }
+    }
   }
   .page-next {
     background: none repeat scroll 0 0 transparent;
@@ -1893,12 +1902,24 @@ a.annotator-wrapper {
     text-align: right;
     width: auto;
     z-index: 1;
+    a {
+      padding: 5px 15px 5px 10px;
+      &::after {
+        content: '»';
+        position: absolute;
+        font-size: 14px;
+        right: 5px;
+      }
+    }
   }
   .page-prev a, .page-next a {
-    color: inherit;
+    color: $color-white;
     font-size: 14px;
     text-decoration: none;
+
   }
+
+
 }
 
 .annotator-wrapper {

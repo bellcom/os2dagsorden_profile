@@ -1750,6 +1750,13 @@ a.annotator-wrapper {
     text-align: right;
     width: auto;
     z-index: 1; }
+    .annotator-pager .page-prev a {
+      padding: 5px 10px 5px 15px; }
+      .annotator-pager .page-prev a::before {
+        content: '«';
+        position: absolute;
+        left: 5px;
+        font-size: 14px; }
   .annotator-pager .page-next {
     background: none repeat scroll 0 0 transparent;
     border-radius: 5px 0 0 5px;
@@ -1763,8 +1770,15 @@ a.annotator-wrapper {
     text-align: right;
     width: auto;
     z-index: 1; }
+    .annotator-pager .page-next a {
+      padding: 5px 15px 5px 10px; }
+      .annotator-pager .page-next a::after {
+        content: '»';
+        position: absolute;
+        font-size: 14px;
+        right: 5px; }
   .annotator-pager .page-prev a, .annotator-pager .page-next a {
-    color: inherit;
+    color: #fffffe;
     font-size: 14px;
     text-decoration: none; }
 
