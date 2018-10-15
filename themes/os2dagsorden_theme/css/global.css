@@ -627,7 +627,6 @@ ul li.leaf {
 
 .view-header h3, .view-content h3 {
   color: #373636;
-  text-transform: capitalize;
   font-weight: 100;
   font-size: 18px;
   background-color: #f7f1f1;
