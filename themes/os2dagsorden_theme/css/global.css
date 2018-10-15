@@ -2295,10 +2295,12 @@ div.note.subscribe::before {
   .user-filter-block #users_filter.form-text {
     width: 100%;
     margin-bottom: 5px;
-    line-height: 20px;
+    font-size: 1.0em;
+    line-height: 1em;
+    padding: 5px 10px;
     background: #fffffe url("../img/icon_search.png") no-repeat;
     background-position: right;
     background-size: 15px;
     margin-bottom: 0;
-    border: 1px solid darkgray;
+    border: none;
     border-radius: 3px; }
