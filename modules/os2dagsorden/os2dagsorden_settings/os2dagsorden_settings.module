@@ -243,6 +243,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE);
 
   $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name'] = variable_get('os2dagsorden_meeting_view_calendar_short_name');
+  $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_show_calendar_block_on_cal_pages'] = variable_get('os2dagsorden_meeting_show_calendar_block_on_cal_pages');
 
   $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_ip_whitelist'] = variable_get('os2dagsorden_token_login_ip_whitelist');
   $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_allowed_paths'] = variable_get('os2dagsorden_token_login_allowed_paths', '<front>');
