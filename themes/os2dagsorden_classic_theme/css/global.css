@@ -1578,6 +1578,36 @@ a.annotator-wrapper {
   z-index: 1;
 }
 
+.annotator-pager .page-next a {
+    padding: 5px 15px 5px 10px;
+}
+
+.annotator-pager .page-next a::after {
+  content: '»';
+  position: absolute;
+  font-size: 14px;
+  right: 5px;
+}
+.annotator-pager .page-prev a {
+  padding: 5px 10px 5px 15px;
+}
+
+.annotator-pager .page-prev a::before {
+  content: '«';
+  position: absolute;
+  left: 5px;
+  font-size: 14px;
+  top: 4px;
+}
+
+.annotator-pager .page-next a::after {
+  content: '»';
+  position: absolute;
+  font-size: 14px;
+  right: 5px;
+  top: 4px;
+}
+
 .annotator-pager .page-prev a,
 .annotator-pager .page-next a {
   color: inherit;
