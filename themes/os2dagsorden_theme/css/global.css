@@ -1546,13 +1546,15 @@ div.speaker-paper-print {
 /*meeting details table*/
 div.speaker-paper-all-print {
   float: right;
-  margin-right: 5px;
+  margin-right: 0;
   position: relative;
   top: 5px; }
 
 .view-display-id-attachment_print_all_speaker_papers, .view-display-id-attachment_print_all_speaker_papers_tillaeg {
-  position: absolute;
-  right: 5px; }
+  position: relative; }
+  .view-display-id-attachment_print_all_speaker_papers .view-content table.views-table tr td.views-field-php, .view-display-id-attachment_print_all_speaker_papers_tillaeg .view-content table.views-table tr td.views-field-php {
+    background: transparent;
+    padding-right: 0; }
 
 table .hide_show_button_container {
   width: 50px; }
