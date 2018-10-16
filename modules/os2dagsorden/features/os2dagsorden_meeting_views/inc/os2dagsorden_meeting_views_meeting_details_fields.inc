@@ -992,7 +992,11 @@ function os2dagsorden_meeting_views_meeting_details_fields_speaker_paper_link($m
   else {
     if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bp_id, variable_get('os2dagsorden_shared_speaker_paper', TRUE))) {
       $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id;
-      print '<a href="' . $link . '"><div class="indicator-has-speaker-paper"></div>Talepapir</a>';
+      if (!variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE)) {
+        print '<a href="' . $link . '"><div class="indicator-has-speaker-paper"></div>Talepapir</a>';
+      } else {
+        print '<a href="' . $link . '"><div class="indicator-has-speaker-paper"></div>&nbsp;</a>';
+      }
     }
     else {
       $q = $_GET['q'];
