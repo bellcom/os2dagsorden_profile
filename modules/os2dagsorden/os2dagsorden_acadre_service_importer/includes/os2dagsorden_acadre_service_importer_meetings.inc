@@ -110,8 +110,7 @@ function _os2dagsorden_acadre_service_importer_unpublish_meeting($xml_data) {
   if (isset($result['node'])) {
     $nids = array_keys($result['node']);
     $node = reset(entity_load('node', $nids));
-
-    if ($node->status === NODE_PUBLISHED) {
+    if ((int) $node->status === NODE_PUBLISHED) {
       node_unpublish_action($node);
       node_save($node);
     }
