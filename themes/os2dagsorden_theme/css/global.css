@@ -1384,7 +1384,7 @@ table .speaker-paper-link-container {
     .view-meeting-details .attachment .bullet-point-attachments .view-content .button.hide_show_all_attachments_text.opened:before {
       background: url("../img/arrow_right_black.png") no-repeat 50% top;
       position: absolute;
-      color: #fffffe;
+      color: transparent;
       font-family: "Material Icons";
       font-size: 20px;
       cursor: pointer;
@@ -1480,6 +1480,29 @@ div.speaker-paper-print {
     margin: 0 0 0.25em 1.7em; }
   .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text {
     left: -50px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text:before {
+      background: url("../img/arrow_right_black_down.png") no-repeat 50% top;
+      position: absolute;
+      cursor: pointer;
+      top: 13px;
+      left: 9px;
+      background-size: 10px;
+      content: "";
+      width: 20px;
+      height: 20px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text.opened:before {
+      background: url("../img/arrow_right_black.png") no-repeat 50% top;
+      position: absolute;
+      color: transparent;
+      font-family: "Material Icons";
+      font-size: 20px;
+      cursor: pointer;
+      top: 13px;
+      left: 9px;
+      background-size: 10px;
+      content: "";
+      width: 20px;
+      height: 20px; }
   .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button {
     border-radius: 3px;
     color: transparent;
@@ -1524,6 +1547,10 @@ div.speaker-paper-print {
     border-top-width: 1px;
     border-bottom-width: 1px;
     border-radius: 3px 3px 0 0; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt li.bilag a:hover {
+    line-height: 30px;
+    font-weight: bold;
+    padding: 3px 10px 3px 10px; }
   .view-speaking-paper.view-display-id-page div.attachment {
     background: #fffffe; }
     .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 a {
@@ -1620,7 +1647,7 @@ table .ul-item-list-dagsordenspunkt .hide_show_all_attachments_text {
     table .ul-item-list-dagsordenspunkt .hide_show_all_attachments_text.button.opened:before {
       background: url("../img/arrow_right_black.png") no-repeat 50% top;
       position: absolute;
-      color: #fffffe;
+      color: transparent;
       font-family: "Material Icons";
       font-size: 20px;
       cursor: pointer;
@@ -2102,7 +2129,8 @@ ul.droptrue {
         max-width: 170px;
         display: inline-block; }
       ul.droptrue li.can-subscribe .checkbox.premeeting {
-        right: 20px; }
+        right: 20px;
+        display: flex; }
       ul.droptrue li.can-subscribe.subscribed {
         background-image: url("../img/icon-send-to-friend-bullet-point.png"); }
 
@@ -2145,7 +2173,9 @@ div.note.subscribe {
   right: 20px;
   top: 2px;
   width: 16px;
-  height: 16px; }
+  height: 16px;
+  display: flex;
+  align-items: center; }
 
 div.note.premeeting::before {
   content: '';
@@ -2177,7 +2207,8 @@ div.note.subscribe::before {
 .checkbox.premeeting {
   float: right;
   display: inline;
-  position: relative; }
+  position: relative;
+  display: flex; }
 
 /* ---------------------------- Dropdown Button START ---------------------------- */
 .dropbtn {

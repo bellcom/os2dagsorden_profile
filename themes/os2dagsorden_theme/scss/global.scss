@@ -1438,7 +1438,7 @@ table {
           .button.hide_show_all_attachments_text.opened:before{
             background: url('../img/arrow_right_black.png') no-repeat 50% top;
             position: absolute;
-            color: $color-white;
+            color: transparent;
             font-family: $font-icons;
             font-size: $font-size-headings;
             cursor: pointer;
@@ -1562,6 +1562,31 @@ div.speaker-paper-print {
    .ul-item-list-dagsordenspunkt {
      .button.hide_show_all_attachments_text {
        left: -50px;
+       &:before{
+            background: url('../img/arrow_right_black_down.png') no-repeat 50% top;
+            position: absolute;
+            cursor: pointer;
+            top: 13px;
+            left: 9px;
+            background-size: 10px;
+            content: "";
+            width: 20px;
+            height: 20px
+          }
+        &.opened:before{
+            background: url('../img/arrow_right_black.png') no-repeat 50% top;
+            position: absolute;
+            color: transparent;
+            font-family: $font-icons;
+            font-size: $font-size-headings;
+            cursor: pointer;
+            top: 13px;
+            left: 9px;
+            background-size: 10px;
+            content: "";
+            width: 20px;
+            height: 20px
+          }
     }
    .button {
       border-radius: $border-radius;
@@ -1616,6 +1641,11 @@ div.speaker-paper-print {
       border-bottom-width: 1px;
       border-radius: $border-radius $border-radius 0 0;
     }
+    &.bilag a:hover {
+      line-height: 30px;
+      font-weight: bold;
+      padding: 3px 10px 3px 10px;
+      }
   }
 }
   div.attachment{
@@ -1732,7 +1762,7 @@ table {
           &.opened:before{
             background: url('../img/arrow_right_black.png') no-repeat 50% top;
             position: absolute;
-            color: $color-white;
+            color: transparent;
             font-family: $font-icons;
             font-size: $font-size-headings;
             cursor: pointer;
@@ -2336,6 +2366,7 @@ ul.droptrue {
       }
       .checkbox.premeeting{
         right: 20px;
+        display: flex;
       }
       &.subscribed {
         background-image: url('../img/icon-send-to-friend-bullet-point.png');
@@ -2387,6 +2418,8 @@ div.note.subscribe {
   top: 2px;
   width: 16px;
   height: 16px;
+  display: flex;
+  align-items: center;
 }
 
 div.note.premeeting::before{
@@ -2420,7 +2453,9 @@ div.note.subscribe::before{
 .checkbox.premeeting {
   float: right;
   display: inline;
-  position: relative; }
+  position: relative;
+  display: flex;
+}
 /* ---------------------------- Dropdown Button START ---------------------------- */
 
 .dropbtn {
