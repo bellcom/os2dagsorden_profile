@@ -462,7 +462,12 @@ div.date-heading h3 {
   font-family: Arial,Helvetica,sans-serif;
   background: none;
 }
-
+.page-meeting-bullet-point-bullet-point-attachment {
+  .node {
+    background: transparent;
+    border: none;
+  }
+}
 .view-id-events, .view-id-user_committee, .view-id-user_follow_committees, .view-id-kommende_m_der_i_mine_udvalg, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_, .block-views-exp-meetings-search-page .views-exposed-form, .node-form, .node, .view-display-id-page, .view.view-meetings-search.view-display-id-page_meetings_overview {
   background: $color-background-primary;
   border-radius: $border-radius;
