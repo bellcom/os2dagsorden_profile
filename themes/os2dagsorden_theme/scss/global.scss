@@ -2355,15 +2355,16 @@ ul.droptrue {
     background: none;
     background-color: white;
     max-width: 250px;
-    &.can-subscribe {
+    span:not(.checkbox){
+        max-width: 170px;
+        display: inline-block;
+      }
+    /*&.can-subscribe {
       background-image: url('../img/icon-send-to-friend-bullet-point.png');
       background-repeat: no-repeat;
       background-position: 88% 7px;
       background-size: 15px;
-      span {
-        max-width: 170px;
-        display: inline-block;
-      }
+      
       .checkbox.premeeting{
         right: 20px;
         display: flex;
@@ -2371,7 +2372,7 @@ ul.droptrue {
       &.subscribed {
         background-image: url('../img/icon-send-to-friend-bullet-point.png');
       }
-    }
+    }*/
   }
 }
 
@@ -2397,13 +2398,15 @@ div.note.subscribe {
 
 .checkbox.follows,
 .checkbox_invisible,
-.checkbox.premeeting {
+.checkbox.premeeting, 
+.checkbox.can-subscribe {
   float: right;
 }
 
 .checkbox.follows,
 .checkbox.invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.can-subscribe {
   float: right;
   display: inline;
   position: relative;
@@ -2421,7 +2424,19 @@ div.note.subscribe {
   display: flex;
   align-items: center;
 }
-
+.checkbox.can-subscribe::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/icon-send-to-friend-bullet-point.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+}
 div.note.premeeting::before{
   content: '';
   position: absolute;
@@ -2442,11 +2457,16 @@ div.note.subscribe::before{
   width: 16px;
   height: 16px;
 }
-
+ul#follows {
+ .checkbox.premeeting {
+  right: 20px; 
+ }
+}
 .checkbox_follows,
 .checkbox_invisible,
 .checkbox.premeeting {
-  float: right; }
+  float: right; 
+}
 
 .checkbox_follows,
 .checkbox.invisible,

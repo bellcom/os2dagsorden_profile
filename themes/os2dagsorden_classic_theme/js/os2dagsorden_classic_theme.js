@@ -26,7 +26,7 @@ function follows_subscribe_click(event) {
         subscribed_elements = jQuery('#follows_subscribed_hidden').val().split(',');
     }
 
-    var id_toggle = jQuery(event.target).attr('id').replace("checkbox_", "");
+    var id_toggle = jQuery(event.target).attr('id').replace("follows_checkbox_", "");
     if (subscribed_elements.indexOf(id_toggle) > -1) {
         //removing element 1 element
         subscribed_elements.splice(subscribed_elements.indexOf(id_toggle), 1);
@@ -107,11 +107,11 @@ jQuery(document).ready(function() {
     jQuery(".select-committee  ul.droptrue li span.checkbox.premeeting input").click(premeeting_committee_click);
     //add behaviour to item that is added to the participants section
     jQuery(".select-participants ul.droptrue").bind("sortreceive", function(event, ui){
-      jQuery('#checkbox_' + ui.item.context.id).addClass('invisible');
+      jQuery('#follows_checkbox_' + ui.item.context.id).addClass('invisible');
     });
       //remove behaviour from item that is removed from the participants section
     jQuery(".select-participants ul.droptrue").bind("sortremove", function(event, ui){
-         jQuery('#checkbox_' + ui.item.context.id ).removeClass('invisible');
+         jQuery('#follows_checkbox_' + ui.item.context.id ).removeClass('invisible');
         jQuery(ui.item).find("input[type=checkbox]").removeAttr("checked");
       //removing this user from invisible
         var invisible_elements = [];
@@ -129,8 +129,9 @@ jQuery(document).ready(function() {
 
     //add behaviour to item that is added to the follow section
     jQuery(".select-committee #edit-follows-div ul.droptrue").bind("sortreceive", function(event, ui){
-        jQuery(ui.item).addClass('can-subscribe');
-        jQuery('#checkbox_' + ui.item.context.id).addClass('checkbox_follows');
+       // jQuery(ui.item).find('span').addClass('can-subscribe');
+       jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
+        jQuery('#follows_checkbox_' + ui.item.context.id).addClass('checkbox_follows');
         jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
         //console.log(ui.item);
         setTimeout(function(){
@@ -139,19 +140,22 @@ jQuery(document).ready(function() {
     });
     jQuery(".select-committee ul.droptrue").bind("sortreceive", function(event, ui){
         jQuery('#premeeting_checkbox_' + ui.item.context.id).parent('span').addClass('premeeting');
+        jQuery('#follows_checkbox_' + ui.item.context.id).parent('span').addClass('can-subscribe');
         //console.log(ui.item);
         setTimeout(function(){console.log(ui.item);
           jQuery(ui.item).find("#premeeting_checkbox_" + ui.item.context.id).bind('click', premeeting_committee_click); }, 1);
     });
     //remove behaviour from item that is removed from the follow section
     jQuery(".select-committee.single ul.droptrue").bind("sortremove", function(event, ui){
-        jQuery(ui.item).removeClass('can-subscribe subscribed');
-        jQuery('#checkbox_' + ui.item.context.id ).removeClass('follows subscribed');
-        jQuery('#checkbox_' + ui.item.context.id ).removeClass('checkbox_follows');
+        //jQuery(ui.item).removeClass('can-subscribe subscribed');
+        jQuery('#follows_checkbox_' + ui.item.context.id ).removeClass('follows subscribed');
+        jQuery('#follows_checkbox_' + ui.item.context.id ).removeClass('checkbox_follows');
         jQuery('#premeeting_checkbox_' + ui.item.context.id ).parent('span').removeClass('premeeting');
-        jQuery('#checkbox_' + ui.item.context.id).addClass('checkbox');
+        jQuery('#follows_checkbox_' + ui.item.context.id).parent('span').removeClass('can-subscribe');
+        jQuery('#follows_checkbox_' + ui.item.context.id).parent('span').removeClass('subscribed');
+        jQuery('#follows_checkbox_' + ui.item.context.id).addClass('checkbox');
         jQuery(ui.item).find("input[type=checkbox]").removeAttr("checked");
-        jQuery('#checkbox_' + ui.item.context.id).unbind('click');
+        jQuery('#follows_checkbox_' + ui.item.context.id).unbind('click');
         jQuery('#premeeting_checkbox_' + ui.item.context.id).unbind('click');
 
         //removing this element from subscribed
@@ -865,5 +869,34 @@ function open_all_bilag_case_bullet_points(expand_bilags, expand_cases) {
 
       });
     });
+    jQuery("#zoom_in_button").click(function(){
+      var currentZoom = jQuery('body').css('zoom');
+      var newZoom = parseFloat(currentZoom)  + 0.1;
+      if (jQuery('body').css('-moz-transform') == 'none') {
+        currentFFZoom  = 1;
+      }
+      else {
+        currentFFZoom  = jQuery('body').css('-moz-transform').match(/-?[\d\.]+/g)[0];
+      }
+      var newFFZoom = parseFloat(currentFFZoom)  + 0.1;
+
+      jQuery('body').css('zoom', newZoom);
+      $('body').css('-moz-transform', 'scale(' +  newFFZoom + ')');
+    });
+    jQuery("#zoom_out_button").click(function(){
+      var currentZoom = jQuery('body').css('zoom');
+      var newZoom = parseFloat(currentZoom)  - 0.1;
+      if (jQuery('body').css('-moz-transform') == 'none') {
+        currentFFZoom  = 1;
+      }
+      else {
+        currentFFZoom  = jQuery('body').css('-moz-transform').match(/-?[\d\.]+/g)[0];
+      }
+      var newFFZoom = parseFloat(currentFFZoom)  - 0.1;
+      if (newZoom <= 0) return;
+      jQuery('body').css('zoom', newZoom);
+      $('body').css('-moz-transform', 'scale(' +  newFFZoom + ')')
+    });
   });
-})( jQuery );
+  });
+( jQuery );

@@ -387,14 +387,14 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
           $checked = "checked='checked'";
         }
         if ($check_id === $tid) {
-          $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows' checked='checked'>";
+          $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><span class='checkbox {$subscribed_class}'><input id='follows_checkbox_$tid' type='checkbox' class='checkbox_follows' checked='checked'></span>";
           if ($is_admin) {
             $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
           }
           $content .= '</li>';
         }
         else {
-          $content .= "<li id='{$tid}' class='ui-state-default {$subscribed_class}'><span>{$com_select[$tid]}</span><input id='checkbox_$tid' type='checkbox' class='checkbox_follows'>";
+          $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><span class='checkbox {$subscribed_class}'><input id='follows_checkbox_$tid' type='checkbox' class='checkbox_follows'></span>";
           if ($is_admin) {
             $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
           }
@@ -463,7 +463,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     foreach ($com_select as $tid => $com_term) {
       // If the committee actually available?
       if ($shared_all_user_committee[$tid] < count($uids)) {
-        $com_list .= "<li id='{$tid}' class='ui-state-default'><span>{$com_term}</span><input id='checkbox_$tid'  type='checkbox' class='checkbox'>";
+        $com_list .= "<li id='{$tid}' class='ui-state-default'><span>{$com_term}</span><span class='checkbox'><input id='follows_checkbox_$tid'  type='checkbox' class='checkbox'></span>";
         if ($is_admin) {
           $com_list .= "<span class='checkbox'><input id='premeeting_checkbox_$tid' type='checkbox' class='' >";
         }
