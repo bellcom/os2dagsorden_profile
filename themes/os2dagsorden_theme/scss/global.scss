@@ -2356,15 +2356,14 @@ ul.droptrue {
     background-color: white;
     max-width: 250px;
     span:not(.checkbox){
-        max-width: 170px;
-        display: inline-block;
-      }
+      display: inline-block;
+    }
     /*&.can-subscribe {
       background-image: url('../img/icon-send-to-friend-bullet-point.png');
       background-repeat: no-repeat;
       background-position: 88% 7px;
       background-size: 15px;
-      
+
       .checkbox.premeeting{
         right: 20px;
         display: flex;
@@ -2398,7 +2397,7 @@ div.note.subscribe {
 
 .checkbox.follows,
 .checkbox_invisible,
-.checkbox.premeeting, 
+.checkbox.premeeting,
 .checkbox.can-subscribe {
   float: right;
 }
@@ -2459,13 +2458,13 @@ div.note.subscribe::before{
 }
 ul#follows {
  .checkbox.premeeting {
-  right: 20px; 
+  right: 20px;
  }
 }
 .checkbox_follows,
 .checkbox_invisible,
 .checkbox.premeeting {
-  float: right; 
+  float: right;
 }
 
 .checkbox_follows,

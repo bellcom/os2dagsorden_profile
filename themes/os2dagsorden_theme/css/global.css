@@ -2125,7 +2125,7 @@ ul.droptrue {
       background-repeat: no-repeat;
       background-position: 88% 7px;
       background-size: 15px;
-      
+
       .checkbox.premeeting{
         right: 20px;
         display: flex;
@@ -2135,7 +2135,6 @@ ul.droptrue {
       }
     }*/ }
     ul.droptrue li span:not(.checkbox) {
-      max-width: 170px;
       display: inline-block; }
 
 label.label_follows,

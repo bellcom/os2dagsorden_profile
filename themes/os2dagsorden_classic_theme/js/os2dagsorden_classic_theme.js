@@ -131,8 +131,9 @@ jQuery(document).ready(function() {
     jQuery(".select-committee #edit-follows-div ul.droptrue").bind("sortreceive", function(event, ui){
        // jQuery(ui.item).find('span').addClass('can-subscribe');
        jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
-        jQuery('#follows_checkbox_' + ui.item.context.id).addClass('checkbox_follows');
-        jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
+       jQuery('#follows_checkbox_' + ui.item.context.id).addClass('checkbox_follows');
+       jQuery('#follows_checkbox_' + ui.item.context.id).parent('span').addClass('can-subscribe');
+       jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
         //console.log(ui.item);
         setTimeout(function(){
           jQuery(ui.item).find("input.checkbox_follows").bind('click', follows_subscribe_click);
@@ -140,7 +141,7 @@ jQuery(document).ready(function() {
     });
     jQuery(".select-committee ul.droptrue").bind("sortreceive", function(event, ui){
         jQuery('#premeeting_checkbox_' + ui.item.context.id).parent('span').addClass('premeeting');
-        jQuery('#follows_checkbox_' + ui.item.context.id).parent('span').addClass('can-subscribe');
+
         //console.log(ui.item);
         setTimeout(function(){console.log(ui.item);
           jQuery(ui.item).find("#premeeting_checkbox_" + ui.item.context.id).bind('click', premeeting_committee_click); }, 1);
