@@ -2135,6 +2135,7 @@ ul.droptrue {
       }
     }*/ }
     ul.droptrue li span:not(.checkbox) {
+      max-width: 200px;
       display: inline-block; }
 
 label.label_follows,

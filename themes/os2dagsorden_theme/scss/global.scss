@@ -2356,6 +2356,7 @@ ul.droptrue {
     background-color: white;
     max-width: 250px;
     span:not(.checkbox){
+      max-width: 200px;
       display: inline-block;
     }
     /*&.can-subscribe {
