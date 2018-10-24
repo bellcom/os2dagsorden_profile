@@ -331,7 +331,9 @@ function os2dagsorden_settings_views_pre_view(&$view, &$display_id, &$args) {
     $view->display_handler->options['fields']['field_os2web_meetings_date']['label'] = variable_get('os2dagsorden_title_meeting_date', 'Dato');
   }
   elseif ($view->name === 'kommende_m_der_i_mine_udvalg') {
-    $view->display_handler->options['fields']['php_2']['label'] = variable_get('os2dagsorden_title_meeting_meeting', 'Møde');
+    // This view has only one display, hence using different logic for setting the label.
+    $view->display_handler->default_display->options['fields']['php_2']['label']  = variable_get('os2dagsorden_title_meeting_meeting', 'Møde');
+    $view->display_handler->default_display->options['fields']['php_4']['label'] = variable_get('os2dagsorden_title_meeting_location', 'Lokation');
   }
   elseif ($view->name === 'meeting_details') {
     if ($view->display_handler->options['fields']['title']['id']) {
