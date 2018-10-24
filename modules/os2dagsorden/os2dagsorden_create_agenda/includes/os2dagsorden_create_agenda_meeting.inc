@@ -109,13 +109,12 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
 
         // Ordering BPs by number.
         $i = 0;
-        while (isset($bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . '-' . $i])) {
+        while (isset($bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . $i])) {
           $i++;
         }
 
-        $bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . '-' . $i] = $bp;
+        $bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value']  . $i] = $bp;
       }
-
       ksort($bullet_points);
       foreach ($bullet_points as $bp) {
         $form['agenda'][] = array(
