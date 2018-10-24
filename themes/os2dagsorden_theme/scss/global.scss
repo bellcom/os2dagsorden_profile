@@ -1549,7 +1549,7 @@ div.speaker-paper-print {
   float: right;
   margin-right: 5px;
   position: relative;
-  top: -47px;
+  top: -40px;
 }
 
 .view-speaking-paper.view-display-id-page {
@@ -1592,6 +1592,9 @@ div.speaker-paper-print {
             width: 20px;
             height: 20px
           }
+        &:last-child {
+          bottom: 0;
+        }
     }
    .button {
       border-radius: $border-radius;

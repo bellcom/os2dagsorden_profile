@@ -447,7 +447,13 @@ function os2dagsorden_meeting_views_bullet_point_fields_create_new_speaker_paper
   $q = $_GET['q'];
   $q_exp = explode('/', $q);
   $bullet_point = node_load($q_exp[3]);
-  print '<a href="' . $base_url . '/node/add/os2web-meetings-spaper?edit[field_os2web_meetings_sp_bullet][und][0][target_id]=' . $bullet_point->title . ' (' . $bullet_point->nid . ')&destination=' . $q . '"><div class="indicator-create-speaker-paper"></div>Nyt talepapir</a>';
+
+  $link = $base_url . '/node/add/os2web-meetings-spaper?edit[field_os2web_meetings_sp_bullet][und][0][target_id]=' . $bullet_point->title . ' (' . $bullet_point->nid . ')&destination=' . $q;
+  if (!variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE)) {
+    print '<a href="' . $link . '"><div class="indicator-create-speaker-paper"></div>' . variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir') . '</a>';
+  } else {
+    print '<a href="' . $link . '"><div class="indicator-create-speaker-paper"></div>&nbsp;</a>';
+  }
 }
 
 /**

@@ -1470,7 +1470,7 @@ div.speaker-paper-print {
   float: right;
   margin-right: 5px;
   position: relative;
-  top: -47px; }
+  top: -40px; }
 
 .view-speaking-paper.view-display-id-page {
   background: #fffffe;
@@ -1507,6 +1507,8 @@ div.speaker-paper-print {
       content: "";
       width: 20px;
       height: 20px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text:last-child {
+      bottom: 0; }
   .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button {
     border-radius: 3px;
     color: transparent;
