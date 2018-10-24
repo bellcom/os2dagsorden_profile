@@ -100,6 +100,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#collapsed' => TRUE,
     '#title' => t('Meeting view settings'),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_unpublish_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show "Unpublish meeting" button on agenda page'),
+    '#default_value' => variable_get('os2dagsorden_show_meeting_unpublish_button', TRUE),
+    '#description' => t('This decides whether a buttom for unpublishing meeting will be shown on  meeting view.'),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_committee'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show meeting committee on meeting view'),
@@ -1505,6 +1511,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_body_text_size', $setting_array['os2dagsorden_body_text_layout']['os2dagsorden_body_text_size']);
     variable_set('os2dagsorden_title_text_size', $setting_array['os2dagsorden_title_text_layout']['os2dagsorden_title_text_size']);
 
+    variable_set('os2dagsorden_show_meeting_unpublish_button', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_unpublish_button']);
     variable_set('os2dagsorden_show_meeting_committee', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_committee']);
     variable_set('os2dagsorden_show_meeting_enddate', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_enddate']);
     variable_set('os2dagsorden_show_meeting_type', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_type']);

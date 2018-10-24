@@ -61,7 +61,7 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
     return;
   }
   $meeting_full_access_granted = os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting);
-  
+
   if ($meeting_full_access_granted) {
     // Meeting all notes.
     echo '<div class="controls-right breadcrumb-level">';
@@ -302,10 +302,12 @@ function os2dagsorden_meeting_views_meeting_details_admin_controls() {
     $q = explode('/', $_GET['q']);
     $meeting_id = $q[1];
 
-    // Edit button.
-    echo '<div class="controls-left">';
-    echo '<a href="' . $base_url . '?q=node/' . $meeting_id . '/edit" class="form-submit">Afpublicer møde</a>';
-    echo '</div>';
+    if (variable_get('os2dagsorden_show_meeting_unpublish_button', TRUE)) {
+      // Edit button.
+      echo '<div class="controls-left">';
+      echo '<a href="' . $base_url . '?q=node/' . $meeting_id . '/edit" class="form-submit">Afpublicer møde</a>';
+      echo '</div>';
+    }
 
     // Import form.
     echo '<div class="controls-left">';
@@ -573,11 +575,11 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
   //Forbidding access to premeeting.
   elseif (strpos($meeting_type, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING) === 0) {
     $access_granted = (node_access('view', $meeting) && in_array($committee_tid, os2dagsorden_access_helper_get_user_premeeting_member_of_committees()));
-  }    
+  }
   else {
     $access_granted = node_access('view', $meeting);
   }
- 
+
   return $access_granted;
 }
 

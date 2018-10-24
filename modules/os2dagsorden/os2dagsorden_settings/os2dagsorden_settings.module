@@ -84,6 +84,7 @@ function os2dagsorden_settings_export_to_file() {
   header("Content-Disposition:attachment;filename=os2dagsorden_settings.settings");
   ob_clean();
 
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_unpublish_button'] = variable_get('os2dagsorden_show_meeting_unpublish_button', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_committee'] = variable_get('os2dagsorden_show_meeting_committee', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_enddate'] = variable_get('os2dagsorden_show_meeting_enddate', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_type'] = variable_get('os2dagsorden_show_meeting_type', TRUE);
