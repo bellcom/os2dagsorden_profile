@@ -72,6 +72,7 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
     '#date_format' => 'd/m/Y H:i',
     '#attributes' => array('required' => 'required'),
     '#ajax' => array(
+      'event' => 'blur',
       'wrapper' => 'js-end-date-wrapper',
       'callback' => 'os2dagsorden_create_agenda_populate_end_date',
       'method' => 'replace',
