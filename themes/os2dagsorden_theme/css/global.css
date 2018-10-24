@@ -1559,6 +1559,26 @@ div.speaker-paper-print {
     padding: 3px 10px 3px 10px; }
   .view-speaking-paper.view-display-id-page div.attachment {
     background: #fffffe; }
+    .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-delete-button {
+      margin-left: 10px; }
+    .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-edit-button a,
+    .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-delete-button a {
+      display: inline-block;
+      background-color: #9c1a5e;
+      border: 1px solid #ae477d;
+      border-radius: 3px;
+      color: #fffffe;
+      padding: 5px 20px 5px 20px;
+      font-family: "Source Sans Pro";
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color .1s ease-in;
+      line-height: initial; }
+      .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-edit-button a:hover,
+      .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-delete-button a:hover {
+        background-color: #ae477d;
+        transition: background-color .3s ease-out; }
     .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 a {
       display: block;
       color: #333333;
