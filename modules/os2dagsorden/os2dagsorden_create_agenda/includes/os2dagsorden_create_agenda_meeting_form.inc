@@ -55,12 +55,6 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
     '#multiple' => FALSE,
     '#default_value' => OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED,
   );
-  $form['hex_color'] = array(
-    '#type' => 'jquery_colorpicker',
-    '#title' => t('Meeting color:'),
-    '#default_value' => '757575',
-    '#description' => t('Choose a color for meeting, will be used to for marking the meeting in the calendar'),
-  );
   $form[] = array(
     '#markup' => '<div class="clearfix">',
   );
@@ -184,11 +178,6 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
   $status_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_type'));
   $form['status']['#default_value'] = $status_field['value'];
 
-  if (field_get_items('node', $node, 'field_os2web_meetings_hex')) {
-    $hex_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_hex'));
-    $form['hex_color']['#default_value'] = $hex_field['safe_value'];
-  }
-
   $date_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_date'));
   $form['start_date']['#default_value'] = $date_field['value'];
   if ($date_field['value2'] != $date_field['value']) {
@@ -277,7 +266,6 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   // Input extraction.
   $title = $input['title'];
   $status = $input['status'];
-  $hex_color = $input['hex_color'];
   $start_date = $input['start_date']['date'];
   $start_time = $input['start_date']['time'];
   $end_date = $input['end_date']['date'];
@@ -308,8 +296,6 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $start_datetime = date_create_from_format("d/m/Y H:i", $start_date . ' ' . $start_time);
   $node->field_os2web_meetings_date['und'][0]['value'] = $start_datetime->format('Y-m-d H:i:s');
   $node->field_os2web_meetings_committee['und'][0]['tid'] = $com_tid;
-
-  $node->field_os2web_meetings_hex['und'][0]['value'] = $hex_color;
 
   if (!empty($end_date)) {
     $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time);
