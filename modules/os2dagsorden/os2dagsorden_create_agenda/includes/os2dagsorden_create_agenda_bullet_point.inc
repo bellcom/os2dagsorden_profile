@@ -53,6 +53,7 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
     '#required' => TRUE,
     '#element_validate' => array('element_validate_number'),
     '#description' => t('The ordinal number of the bullet point'),
+    '#default_value' => os2dagsorden_create_agenda_bullet_point_find_last_number($form_state)
   );
 
   $form['closed'] = array(
@@ -72,6 +73,8 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
     '#title' => t('Bullet point attachments'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
+    '#prefix' => '<div id="js-bpas-fs">',
+    '#suffix' => '</div>'
   );
 
   // Filling the fields if meeting_id is not empty.
@@ -116,7 +119,7 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
           '#bpa_nid' => $bpa->nid,
           '#ajax' => array(
             'callback' => 'os2dagsorden_create_agenda_bpa_delete_ajax',
-            'wrapper' => 'edit-bpas',
+            'wrapper' => 'js-bpas-fs',
             'method' => 'replace',
             'effect' => 'fade',
           ),
@@ -138,7 +141,7 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
   }
 
   if (!isset($form['bpas'][0])) {
-    unset($form['bpas']);
+    $form['bpas']['#access'] = FALSE;
   }
 
   // Finishing form.
@@ -337,11 +340,9 @@ function os2dagsorden_create_agenda_bullet_point_submit_add_edit_bpa($form, &$fo
  *   The current state of the form.
  */
 function os2dagsorden_create_agenda_bullet_point_submit_delete_bpa($form, &$form_state) {
-  $node = os2dagsorden_create_agenda_save_bullet_point($form, $form_state);
-
   $bpa_id = $form_state['triggering_element']['#bpa_nid'];
-  os2dagsorden_create_agenda_remove_bpa_from_bullet_point($node->nid, $bpa_id);
 
+  os2dagsorden_create_agenda_remove_bpa_from_bullet_point($form_state['bullet_point_id'], $bpa_id);
   node_delete($bpa_id);
 
   $form_state['page_num'] = 2;
@@ -359,4 +360,35 @@ function os2dagsorden_create_agenda_bullet_point_submit_delete_bpa($form, &$form
 function os2dagsorden_create_agenda_bullet_point_back($form, &$form_state) {
   $form_state['page_num'] = 1;
   $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Helper function to generate the number of a next bullet point.
+ *
+ * @param mixed $form_state
+ *   The current state of the form.
+ *
+ * @return int
+ *   The generated bullet point number.
+ */
+function os2dagsorden_create_agenda_bullet_point_find_last_number($form_state) {
+  $number = 1;
+
+  $meeting = node_load($form_state['meeting_id']);
+
+  if (field_get_items('node', $meeting, 'field_os2web_meetings_bullets')) {
+    $bullet_points = field_get_items('node', $meeting, 'field_os2web_meetings_bullets');
+    foreach ($bullet_points as $bullet_point_id) {
+      $bullet_point = node_load($bullet_point_id['target_id']);
+      $current_bp_number = array_pop(field_get_items('node', $bullet_point, 'field_os2web_meetings_bul_number'));
+      if ($current_bp_number['value'] > $number) {
+        $number = $current_bp_number['value'];
+      }
+    }
+
+    // Adding 1 to number.
+    $number++;
+  }
+
+  return $number;
 }
