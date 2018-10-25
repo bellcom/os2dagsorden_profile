@@ -871,9 +871,10 @@ jQuery(document).ready(function() {
     }
   });
   jQuery("#zoom_out_button").click(function(){
-        if(navigator.userAgent.indexOf("Chrome") != -1 ){
+    if(navigator.userAgent.indexOf("Chrome") != -1 ){
       var currentZoom = jQuery('body').css('zoom');
-      var newZoom = parseFloat(currentZoom)  + 0.1;
+      var newZoom = parseFloat(currentZoom)  - 0.1;
+      if (newIEZoom <= 0) return;
       jQuery('body').css('zoom', newZoom);
     }
     else if(navigator.userAgent.indexOf("Safari") != -1){
