@@ -45,9 +45,13 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
   $form['number'] = array(
     '#type' => 'textfield',
     '#title' => t('Number:'),
+    '#attributes' => array(
+      ' type' => 'number',
+    ),
     '#size' => 60,
     '#maxlength' => 128,
     '#required' => TRUE,
+    '#element_validate' => array('element_validate_number'),
     '#description' => t('The ordinal number of the bullet point'),
   );
 
