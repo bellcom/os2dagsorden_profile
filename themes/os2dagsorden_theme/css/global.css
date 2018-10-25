@@ -604,7 +604,8 @@ ul li.leaf {
 
 /*---------------------------- Indicator Icons End ----------------------------*/
 /*---------------------------- Show hide menu Start ----------------------------*/
-#block-block-1 {
+#block-block-1,
+#block-block-3 {
   float: right;
   top: 20px;
   position: relative;
@@ -615,6 +616,33 @@ ul li.leaf {
   text-shadow: none;
   background-color: #ae477d;
   border-radius: 3px; }
+
+.content #zoom_menu_container {
+  line-height: 0; }
+  .content #zoom_menu_container #zoom_in_button, .content #zoom_menu_container #zoom_out_button {
+    position: relative;
+    border-width: 0;
+    text-shadow: none;
+    background-color: #ae477d;
+    border-radius: 3px;
+    width: 33px;
+    height: 33px;
+    margin-right: 10px;
+    line-height: normal; }
+  .content #zoom_menu_container #zoom_in_button::before {
+    content: "\E8ff";
+    font-family: "Material Icons";
+    font-size: 30px;
+    top: 2px;
+    left: 3px;
+    position: absolute; }
+  .content #zoom_menu_container #zoom_out_button::before {
+    content: "\E900";
+    font-family: "Material Icons";
+    font-size: 30px;
+    top: 2px;
+    left: 3px;
+    position: absolute; }
 
 /*---------------------------- Show hide menu End ----------------------------*/
 /*---------------------------- Views Start ----------------------------*/

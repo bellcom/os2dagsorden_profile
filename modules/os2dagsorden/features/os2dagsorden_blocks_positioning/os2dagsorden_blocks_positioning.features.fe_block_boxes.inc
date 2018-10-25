@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_blocks_positioning.features.fe_block_boxes.inc
@@ -20,6 +19,14 @@ os2dagsorden_blocks_positioning_show_git_version();
 ?>';
 
   $export['os2dagsorden_version_number'] = $fe_block_boxes;
+
+  $fe_block_boxes = new stdClass();
+  $fe_block_boxes->info = 'zoom_menu';
+  $fe_block_boxes->format = 'emails';
+  $fe_block_boxes->machine_name = 'zoom_menu';
+  $fe_block_boxes->body = '<div id="zoom_menu_container"><button class="button" id="zoom_in_button"></button><button  class="button" id="zoom_out_button"  ></button></div>';
+
+  $export['zoom_menu'] = $fe_block_boxes;
 
   return $export;
 }

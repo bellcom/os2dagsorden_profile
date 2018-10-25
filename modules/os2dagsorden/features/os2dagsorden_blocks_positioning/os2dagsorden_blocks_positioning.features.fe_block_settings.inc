@@ -57,6 +57,34 @@ function os2dagsorden_blocks_positioning_default_fe_block_settings() {
     'visibility' => 0,
   );
 
+  $export['block-zoom_menu'] = array(
+    'cache' => -1,
+    'custom' => 0,
+    'machine_name' => 'zoom_menu',
+    'module' => 'block',
+    'node_types' => array(),
+    'pages' => '<?php return os2dagsorden_blocks_positioning_show_menu_zoom_block(); ?>',
+    'roles' => array(
+      'authenticated user' => 2,
+    ),
+    'themes' => array(
+      'os2dagsorden_classic_theme' => array(
+        'region' => '',
+        'status' => 0,
+        'theme' => 'os2dagsorden_classic_theme',
+        'weight' => 0,
+      ),
+      'os2dagsorden_theme' => array(
+        'region' => 'menu',
+        'status' => 1,
+        'theme' => 'os2dagsorden_theme',
+        'weight' => 0,
+      ),
+    ),
+    'title' => '',
+    'visibility' => 0,
+  );
+
   $export['user-login'] = array(
     'cache' => -1,
     'custom' => 0,

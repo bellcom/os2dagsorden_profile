@@ -412,18 +412,54 @@ ul li.leaf {
 
 /*---------------------------- Show hide menu Start ----------------------------*/
 
-#block-block-1 {
+#block-block-1,
+#block-block-3 {
   float: right;
   top: 20px;
   position: relative;
   z-index: 1;
 }
 
-.content #show_hide_menu_container #show_hide_menu_button {
+.content #show_hide_menu_container #show_hide_menu_button{
   border-width: 0;
   text-shadow: none;
   background-color: $color-branding-secondary;
   border-radius: $border-radius;
+}
+.content #zoom_menu_container {
+  line-height: 0;
+  #zoom_in_button, #zoom_out_button {
+    position: relative;
+    border-width: 0;
+    text-shadow: none;
+    background-color: $color-branding-secondary;
+    border-radius: $border-radius;
+    width: 33px;
+    height: 33px;
+    margin-right: 10px;
+    line-height: normal;
+
+
+  }
+  #zoom_in_button::before{
+   content: "\E8ff";
+   font-family: "Material Icons";
+   font-size: 30px;
+   top: 2px;
+   left: 3px;
+   position: absolute;
+
+
+  }
+  #zoom_out_button::before{
+    content: "\E900";
+    font-family: "Material Icons";
+    font-size: 30px;
+    top: 2px;
+    left: 3px;
+    position: absolute;
+
+  }
 }
 
 /*---------------------------- Show hide menu End ----------------------------*/

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_blocks_positioning.features.menu_custom.inc

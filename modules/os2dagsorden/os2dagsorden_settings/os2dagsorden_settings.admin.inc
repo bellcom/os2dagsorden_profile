@@ -502,6 +502,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#options' => array('true' => t('Show'), 'false' => t('Hide')),
     '#description' => t('This decides whether a search block title show/hide.'),
   );
+  $form['os2dagsorden_frontpage_layout']['os2dagsorden_frontpage_layout_show_hide_zoom_buttons'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show/Hide zoom buttons'),
+    '#description' => t('This decides whether the zoom buttons will be shown'),
+    '#default_value' => variable_get('os2dagsorden_frontpage_layout_show_hide_zoom_buttons', FALSE),
+  );
 
   // Body text size.
   $form['os2dagsorden_body_text_layout'] = array(
@@ -1565,6 +1571,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_collapse_menu_touch', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch']);
     variable_set('os2dagsorden_frontpage_layout', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_frontpage_layout']);
     variable_set('os2dagsorden_show_search_block_title', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_show_search_block_title']);
+    variable_set('os2dagsorden_frontpage_layout_show_hide_zoom_buttons', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_frontpage_layout_show_hide_zoom_buttons']);
 
     variable_set('os2dagsorden_meetings_search_show_meeting_committee', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_show_meeting_committee']);
     variable_set('os2dagsorden_meetings_search_show_meeting_location', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_show_meeting_location']);
