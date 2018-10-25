@@ -100,6 +100,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#collapsed' => TRUE,
     '#title' => t('Meeting view settings'),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_unpublish_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show "Unpublish meeting" button on agenda page'),
+    '#default_value' => variable_get('os2dagsorden_show_meeting_unpublish_button', TRUE),
+    '#description' => t('This decides whether a buttom for unpublishing meeting will be shown on  meeting view.'),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_committee'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show meeting committee on meeting view'),
@@ -289,6 +295,25 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#title' => t('Show committee and meeting date in bullet point title'),
     '#default_value' => variable_get('os2dagsorden_print_pdf_show_commitee', FALSE),
     '#description' => t('This decides whether meetimg committee and date will be shown in bullet point title in PDF'),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Create note button text'),
+    '#maxlength' => 200,
+    '#description' => t('Text that will be display on a Create note button'),
+    '#default_value' => variable_get('os2dagsorden_create_note_text', 'Lav note'),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create note button hide text'),
+    '#default_value' => variable_get('os2dagsorden_create_note_hide_text', FALSE),
+    '#description' => t('Text on the create note button will be hidden'),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create note button put text to title attribute'),
+    '#default_value' => variable_get('os2dagsorden_create_note_text_use_title', FALSE),
+    '#description' => t('The text will also be put into the title HTML attribute of a button (available on mouse hover)'),
   );
 
   // Expand or not expand bilag on bullet point expand
@@ -1069,6 +1094,16 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_general_search', 'Søg'),
     '#title' => t('Søg'),
   );
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_next_page'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2dagsorden_title_general_next_page', 'Næste'),
+    '#title' => t('Næste'),
+  );
+   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_prev_page'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2dagsorden_title_general_prev_page', 'Forrige'),
+    '#title' => t('Forrige'),
+  );
 
   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_frontpage_placeholder'] = array(
     '#type' => 'fieldset',
@@ -1193,11 +1228,27 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_meeting_committee', 'Udvalg'),
     '#title' => t('Udvalg'),
   );
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_print_all_speakerpapers'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2dagsorden_title_meeting_print_all_speakerpapers', 'Print alle talepapirer'),
+    '#title' => t('Print alle talepapirer'),
+  );
   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper'] = array(
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir'),
     '#title' => t('Nyt talepapir'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="os2dagsorden_title_meeting_new_speaker_paper_hide"]' => array('checked' => FALSE),
+      ),
+    )
   );
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE),
+    '#title' => t('Hide New speaker paper text'),
+  );
+
   // Upload quide PDF file.
   $form['upload_guide'] = array(
     '#type' => 'fieldset',
@@ -1239,6 +1290,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#title' => t('Use committee short instead of the meeting name'),
     '#description' => t('This decides whether a committee short name will used instead of meeting name in the calendar view'),
     '#default_value' => variable_get('os2dagsorden_meeting_view_calendar_short_name', FALSE),
+  );
+  $form['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_show_calendar_block_on_cal_pages'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show calendar block on calendar pages'),
+    '#description' => t('This decides whether calendar block will be shown even on the calendar pages (month/day views)'),
+    '#default_value' => variable_get('os2dagsorden_meeting_show_calendar_block_on_cal_pages', FALSE),
   );
 
   // Token login settings.
@@ -1454,6 +1511,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_body_text_size', $setting_array['os2dagsorden_body_text_layout']['os2dagsorden_body_text_size']);
     variable_set('os2dagsorden_title_text_size', $setting_array['os2dagsorden_title_text_layout']['os2dagsorden_title_text_size']);
 
+    variable_set('os2dagsorden_show_meeting_unpublish_button', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_unpublish_button']);
     variable_set('os2dagsorden_show_meeting_committee', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_committee']);
     variable_set('os2dagsorden_show_meeting_enddate', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_enddate']);
     variable_set('os2dagsorden_show_meeting_type', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_type']);
@@ -1480,6 +1538,9 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_meeting_description_download_title_additional', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_download_title_additional']);
     variable_set('os2dagsorden_meeting_description_generate_pdf_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_title']);
     variable_set('os2dagsorden_meeting_description_generate_pdf_full_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_full_title']);
+    variable_set('os2dagsorden_create_note_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text']);
+    variable_set('os2dagsorden_create_note_hide_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text']);
+    variable_set('os2dagsorden_create_note_text_use_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title']);
 
     variable_set('os2dagsorden_shared_speaker_paper', $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper']);
 
@@ -1577,6 +1638,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_title_general_mine_indstillinger', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_mine_indstillinger']);
     variable_set('os2dagsorden_title_general_log_off', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_log_off']);
     variable_set('os2dagsorden_title_general_search', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_search']);
+    variable_set('os2dagsorden_title_general_prev_page', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_prev_page']);
+    variable_set('os2dagsorden_title_general_next_page', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_next_page']);
 
     variable_set('os2dagsorden_title_frontpage_coming_meetings', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_frontpage_placeholder']['os2dagsorden_title_frontpage_coming_meetings']);
     variable_set('os2dagsorden_title_frontpage_last_8_my_meetings', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_frontpage_placeholder']['os2dagsorden_title_frontpage_last_8_my_meetings']);
@@ -1600,9 +1663,12 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_title_meeting_agenda', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_agenda']);
     variable_set('os2dagsorden_title_meeting_closed_agenda', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_closed_agenda']);
     variable_set('os2dagsorden_title_meeting_committee', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_committee']);
+    variable_set('os2dagsorden_title_meeting_print_all_speakerpapers', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_print_all_speakerpapers']);
     variable_set('os2dagsorden_title_meeting_new_speaker_paper', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper']);
+    variable_set('os2dagsorden_title_meeting_new_speaker_paper_hide', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide']);
 
     variable_set('os2dagsorden_meeting_view_calendar_short_name', $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name']);
+    variable_set('os2dagsorden_meeting_show_calendar_block_on_cal_pages', $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_show_calendar_block_on_cal_pages']);
 
     variable_set('os2dagsorden_token_login_ip_whitelist', $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_ip_whitelist']);
     variable_set('os2dagsorden_token_login_allowed_paths', $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_allowed_paths']);

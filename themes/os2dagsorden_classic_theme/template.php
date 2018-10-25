@@ -88,13 +88,25 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
 
       // Adding annotation.
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
-      $your_passed_info = array('create_note' => 'test');
-      drupal_add_js(array('your_module_name' => $your_passed_info), 'setting');
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch-syddjurs.min.js');
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/json2.js');
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
       drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
       drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
+
+      $annotatorButtonText = variable_get('os2dagsorden_create_note_text', 'Lav note');
+      $annotatorHideText = variable_get('os2dagsorden_create_note_hide_text', FALSE);
+      $annotatorUseTitle = variable_get('os2dagsorden_create_note_text_use_title', FALSE);
+      drupal_add_js(array(
+          'os2dagsorden_annotator' =>
+            array(
+              'annotator_button_text' => $annotatorButtonText,
+              'annotator_hide_text' => $annotatorHideText,
+              'annotator_use_title' => $annotatorUseTitle
+            )
+        ),
+        array('type' => 'setting'));
+
       drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
     }
     if ($view->name === 'speaking_paper') {

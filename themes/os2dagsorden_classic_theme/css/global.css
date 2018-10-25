@@ -1578,6 +1578,36 @@ a.annotator-wrapper {
   z-index: 1;
 }
 
+.annotator-pager .page-next a {  
+    padding: 5px 15px 5px 10px;     
+}
+
+.annotator-pager .page-next a::after {
+  content: '»';
+  position: absolute;
+  font-size: 14px;
+  right: 5px;
+}
+.annotator-pager .page-prev a {  
+  padding: 5px 10px 5px 15px;
+}
+
+.annotator-pager .page-prev a::before {
+  content: '«';
+  position: absolute;
+  left: 5px;
+  font-size: 14px;
+  top: 4px;
+}
+
+.annotator-pager .page-next a::after {
+  content: '»';
+  position: absolute;
+  font-size: 14px;
+  right: 5px;
+  top: 4px;
+} 
+
 .annotator-pager .page-prev a,
 .annotator-pager .page-next a {
   color: inherit;
@@ -1954,13 +1984,13 @@ ul.droptrue li {
   min-width: 220px;
 }
 
-ul.droptrue li.can-subscribe {
+/*ul.droptrue li.can-subscribe {
   background-image: url('../img/icon-send-to-friend-bullet-point.png');
   background-repeat: no-repeat;
   background-position: 88% 7px;
   background-size: 15px;
-}
-li.can-subscribe .checkbox.premeeting {
+}*/
+ul#follows .checkbox.premeeting {
   right: 20px;
 }
 
@@ -1969,9 +1999,9 @@ ul.droptrue li span:not(.checkbox) {
   display: inline-block;
 }
 
-ul.droptrue li.can-subscribe.subscribed {
+/*ul.droptrue li.can-subscribe.subscribed {
   background-image: url('../img/icon-send-to-friend-bullet-point.png');
-}
+}*/
 
 label.label_follows,
 label.label-participants {
@@ -1998,10 +2028,12 @@ div.note.subscribe {
 }
 .checkbox_follows,
 .checkbox.invisible,
-.checkbox.premeeting{
+.checkbox.premeeting, 
+.checkbox.can-subscribe {
   float: right;
   display: inline;
   position: relative;
+  display: flex;
 }
 .checkbox.premeeting::before {
   content: '';
@@ -2013,6 +2045,19 @@ div.note.subscribe {
   top: 2px;
   width: 16px;
   height: 16px;
+  display: flex;
+}
+.checkbox.can-subscribe::before {
+  content: '';
+  position: absolute;
+  background-image: url(../img/icon-send-to-friend-bullet-point.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
 }
 div.note.premeeting::before{
   content: '';

@@ -438,7 +438,6 @@ ul li.leaf {
 
 .view-header h3, .view-content h3 {
   color: $color-font-primary;
-  text-transform: capitalize;
   font-weight: 100;
   font-size: 18px;
   background-color: $color-background-primary;
@@ -463,7 +462,12 @@ div.date-heading h3 {
   font-family: Arial,Helvetica,sans-serif;
   background: none;
 }
-
+.page-meeting-bullet-point-bullet-point-attachment {
+  .node {
+    background: transparent;
+    border: none;
+  }
+}
 .view-id-events, .view-id-user_committee, .view-id-user_follow_committees, .view-id-kommende_m_der_i_mine_udvalg, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_, .block-views-exp-meetings-search-page .views-exposed-form, .node-form, .node, .view-display-id-page, .view.view-meetings-search.view-display-id-page_meetings_overview {
   background: $color-background-primary;
   border-radius: $border-radius;
@@ -1250,6 +1254,10 @@ table {
   .speaker-paper-link-container {
     width: 130px;
     min-width: 130px;
+    &.no-text {
+      width: 45px;
+      min-width: 45px;
+    }
   }
 }
 
@@ -1435,7 +1443,7 @@ table {
           .button.hide_show_all_attachments_text.opened:before{
             background: url('../img/arrow_right_black.png') no-repeat 50% top;
             position: absolute;
-            color: $color-white;
+            color: transparent;
             font-family: $font-icons;
             font-size: $font-size-headings;
             cursor: pointer;
@@ -1541,10 +1549,12 @@ div.speaker-paper-print {
   float: right;
   margin-right: 5px;
   position: relative;
-  top: -47px;
+  top: -40px;
 }
 
-.view-speaking-paper {
+.view-speaking-paper.view-display-id-page {
+  background: $color-white;
+  border: none;
   .shared-with {
     padding-top: 5px;
     border-top: 1px solid #dedede;
@@ -1557,6 +1567,34 @@ div.speaker-paper-print {
    .ul-item-list-dagsordenspunkt {
      .button.hide_show_all_attachments_text {
        left: -50px;
+       &:before{
+            background: url('../img/arrow_right_black_down.png') no-repeat 50% top;
+            position: absolute;
+            cursor: pointer;
+            top: 13px;
+            left: 9px;
+            background-size: 10px;
+            content: "";
+            width: 20px;
+            height: 20px
+          }
+        &.opened:before{
+            background: url('../img/arrow_right_black.png') no-repeat 50% top;
+            position: absolute;
+            color: transparent;
+            font-family: $font-icons;
+            font-size: $font-size-headings;
+            cursor: pointer;
+            top: 13px;
+            left: 9px;
+            background-size: 10px;
+            content: "";
+            width: 20px;
+            height: 20px
+          }
+        &:last-child {
+          bottom: 0;
+        }
     }
    .button {
       border-radius: $border-radius;
@@ -1597,16 +1635,73 @@ div.speaker-paper-print {
   .views-row {
     padding-bottom: 10px;
   }
-  .attachment .view-display-id-attachment_1 a {
-    display: block;
-    color: #333333;
-    padding: 3px 10px 3px 10px;
-    line-height: 30px;
-    font-family: Arial,Helvetica,sans-serif;
-    font-weight: bold;
-    font-size: 13px;
+  li {
+    a {
+      background-color: $color-background-primary;
+      color: #001D2F;
+      padding: 3px 10px 3px 10px;
+      line-height: 30px;
+      font-weight: bold;
+      font-size: $font-size-body;
+      border-color: $color-background-primary;
+      border-style: solid;
+      border-top-width: 1px;
+      border-bottom-width: 1px;
+      border-radius: $border-radius $border-radius 0 0;
+    }
+    &.bilag a:hover {
+      line-height: 30px;
+      font-weight: bold;
+      padding: 3px 10px 3px 10px;
+      }
   }
 }
+  div.attachment{
+    background: $color-white;
+
+    .view-display-id-attachment_1 {
+      .speaking-paper-delete-button {
+        margin-left: 10px;
+      }
+      .speaking-paper-edit-button,
+      .speaking-paper-delete-button {
+        a {
+          display: inline-block;
+          background-color: $color-branding-primary;
+          border: $border-color-secondary;
+          border-radius: $border-radius;
+          color: $color-white;
+          padding: 5px 20px 5px 20px;
+          font-family: $font-basic;
+          font-size: 16px;
+          text-decoration: none;
+          font-weight: bold;
+          transition: background-color .1s ease-in;
+          line-height: initial;
+          &:hover {
+              background-color: $color-branding-secondary;
+              transition: background-color .3s ease-out;
+          }
+        }
+      }
+    }
+    .view-display-id-attachment_1 a {
+      display: block;
+      color: #333333;
+      padding: 3px 10px 3px 10px;
+      line-height: 30px;
+      font-family: Arial,Helvetica,sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+    }
+  }
+}
+.page-meeting-bullet-point {
+  .region-content-inner {
+    background: $color-white;
+    border-radius: $border-radius;
+    border: 1px solid $color-background-primary;
+  }
 }
 .form-submit.nav-button {
   display: inline-block;
@@ -1620,10 +1715,32 @@ div.speaker-paper-print {
     margin-right: 10px;
     margin-left: -7px;
     float: left;
+    top: -5px;
+  &:before {
+    content: "\E314";
+    font-family: $font-icons;
+    font-size: $font-size-headings;
+    position: absolute;
+    color: $color-white;
+    cursor: pointer;
+    top: 5px;
+    left: 9px;
+  }
   }
   &.right {
-    margin-right: -3px;
+    margin-right: -6px;
     float: right;
+    top: -5px;
+  }
+  &:before {
+    content: "\E315";
+    font-family: $font-icons;
+    font-size: $font-size-headings;
+    position: absolute;
+    color: $color-white;
+    cursor: pointer;
+    top: 5px;
+    left: 9px;
   }
 }
 
@@ -1631,14 +1748,17 @@ div.speaker-paper-print {
 
 div.speaker-paper-all-print {
   float: right;
-  margin-right: 5px;
+  margin-right: 0;
   position: relative;
   top: 5px;
 }
 
 .view-display-id-attachment_print_all_speaker_papers, .view-display-id-attachment_print_all_speaker_papers_tillaeg {
-  position: absolute;
-  right: 5px;
+  position: relative;
+  .view-content table.views-table tr td.views-field-php {
+    background: transparent;
+    padding-right: 0;
+  }
 }
 
 table {
@@ -1676,7 +1796,7 @@ table {
           &.opened:before{
             background: url('../img/arrow_right_black.png') no-repeat 50% top;
             position: absolute;
-            color: $color-white;
+            color: transparent;
             font-family: $font-icons;
             font-size: $font-size-headings;
             cursor: pointer;
@@ -1875,6 +1995,15 @@ a.annotator-wrapper {
     text-align: right;
     width: auto;
     z-index: 1;
+    a {
+      padding: 5px 10px 5px 15px;
+      &::before {
+        content: '«';
+        position: absolute;
+        left: 5px;
+        font-size: 14px;
+      }
+    }
   }
   .page-next {
     background: none repeat scroll 0 0 transparent;
@@ -1889,12 +2018,24 @@ a.annotator-wrapper {
     text-align: right;
     width: auto;
     z-index: 1;
+    a {
+      padding: 5px 15px 5px 10px;
+      &::after {
+        content: '»';
+        position: absolute;
+        font-size: 14px;
+        right: 5px;
+      }
+    }
   }
   .page-prev a, .page-next a {
-    color: inherit;
+    color: $color-white;
     font-size: 14px;
     text-decoration: none;
+
   }
+
+
 }
 
 .annotator-wrapper {
@@ -2145,13 +2286,13 @@ a.annotator-wrapper {
 }
 
 .form-back {
-  background: #c0c0c0 url('../img/icon_back.png') no-repeat 5px 50%;
-  background: url('../img/icon_back.png') no-repeat 5px 50%, linear-gradient(top, #fcfcfc 0%, #c0c0c0 100%);
-  background: url('../img/icon_back.png') no-repeat 5px 50%, -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e7e7e7), to(#c0c0c0));
-  background: url('../img/icon_back.png') no-repeat 5px 50%, -webkit-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: url('../img/icon_back.png') no-repeat 5px 50%, -moz-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: url('../img/icon_back.png') no-repeat 5px 50%, -ms-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: url('../img/icon_back.png') no-repeat 5px 50%, -o-linear-gradient(top, #fcfcfc, #c0c0c0);
+  background: $color-branding-primary url('../img/icon_back.png') no-repeat 5px 50%;
+  background: url('../img/icon_back.png') no-repeat 5px 50% $color-branding-primary;;
+  background: url('../img/icon_back.png') no-repeat 5px 50% $color-branding-primary;;
+  background: url('../img/icon_back.png') no-repeat 5px 50% $color-branding-primary;;
+  background: url('../img/icon_back.png') no-repeat 5px 50% $color-branding-primary;;
+  background: url('../img/icon_back.png') no-repeat 5px 50% $color-branding-primary;;
+  background: url('../img/icon_back.png') no-repeat 5px 50% $color-branding-primary;;
   padding: 5px 10px 5px 25px;
 }
 
@@ -2248,22 +2389,24 @@ ul.droptrue {
     background: none;
     background-color: white;
     max-width: 250px;
-    &.can-subscribe {
+    span:not(.checkbox){
+      max-width: 200px;
+      display: inline-block;
+    }
+    /*&.can-subscribe {
       background-image: url('../img/icon-send-to-friend-bullet-point.png');
       background-repeat: no-repeat;
       background-position: 88% 7px;
       background-size: 15px;
-      span {
-        max-width: 170px;
-        display: inline-block;
-      }
+
       .checkbox.premeeting{
         right: 20px;
+        display: flex;
       }
       &.subscribed {
         background-image: url('../img/icon-send-to-friend-bullet-point.png');
       }
-    }
+    }*/
   }
 }
 
@@ -2289,13 +2432,15 @@ div.note.subscribe {
 
 .checkbox.follows,
 .checkbox_invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.can-subscribe {
   float: right;
 }
 
 .checkbox.follows,
 .checkbox.invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.can-subscribe {
   float: right;
   display: inline;
   position: relative;
@@ -2310,8 +2455,22 @@ div.note.subscribe {
   top: 2px;
   width: 16px;
   height: 16px;
+  display: flex;
+  align-items: center;
 }
-
+.checkbox.can-subscribe::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/icon-send-to-friend-bullet-point.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+}
 div.note.premeeting::before{
   content: '';
   position: absolute;
@@ -2332,18 +2491,25 @@ div.note.subscribe::before{
   width: 16px;
   height: 16px;
 }
-
+ul#follows {
+ .checkbox.premeeting {
+  right: 20px;
+ }
+}
 .checkbox_follows,
 .checkbox_invisible,
 .checkbox.premeeting {
-  float: right; }
+  float: right;
+}
 
 .checkbox_follows,
 .checkbox.invisible,
 .checkbox.premeeting {
   float: right;
   display: inline;
-  position: relative; }
+  position: relative;
+  display: flex;
+}
 /* ---------------------------- Dropdown Button START ---------------------------- */
 
 .dropbtn {
@@ -2463,8 +2629,8 @@ div.note.subscribe::before{
 
 /* member of in sidebar */
 .views-field.views-field-field-os2web-meetings-com-shname {
-  border: $border-solid;
   display: inline-block;
+
   margin-bottom: 3px;
   padding: 3px 5px;
   width: 100%;
@@ -2488,12 +2654,14 @@ div.note.subscribe::before{
   #users_filter.form-text {
     width: 100%;
     margin-bottom: 5px;
-    line-height: 20px;
+    font-size: 1.0em;
+    line-height: 1em;
+    padding: 5px 10px;
     background: $color-white url("../img/icon_search.png") no-repeat;
     background-position: right;
     background-size: 15px;
     margin-bottom: 0;
-    border: 1px solid darkgray;
+    border: none;
     border-radius: $border-radius;
    }
 }

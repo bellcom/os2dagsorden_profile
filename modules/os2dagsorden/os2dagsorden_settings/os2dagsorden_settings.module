@@ -84,6 +84,7 @@ function os2dagsorden_settings_export_to_file() {
   header("Content-Disposition:attachment;filename=os2dagsorden_settings.settings");
   ob_clean();
 
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_unpublish_button'] = variable_get('os2dagsorden_show_meeting_unpublish_button', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_committee'] = variable_get('os2dagsorden_show_meeting_committee', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_enddate'] = variable_get('os2dagsorden_show_meeting_enddate', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_type'] = variable_get('os2dagsorden_show_meeting_type', TRUE);
@@ -110,6 +111,9 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_download_title_additional'] = variable_get('os2dagsorden_meeting_description_download_title_additional', 'Hent tillægsdokument i PDF');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_title'] = variable_get('os2dagsorden_meeting_description_download_title_additional', 'Samlet dokument i PDF');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_full_title'] = variable_get('os2dagsorden_meeting_description_download_title_additional', 'Samlet dokument med bilag i PDF');
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text'] = variable_get('os2dagsorden_create_note_text', 'Lav note');
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text'] = variable_get('os2dagsorden_create_note_hide_text', FALSE);
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title'] = variable_get('os2dagsorden_create_note_text_use_title', FALSE);
 
   $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper'] = variable_get('os2dagsorden_shared_speaker_paper', TRUE);
 
@@ -210,6 +214,8 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_mine_idstillinger'] = variable_get('os2dagsorden_title_general_mine_idstillinger', 'Mine indstillinger');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_log_off'] = variable_get('os2dagsorden_title_general_log_off', 'Log af');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_search'] = variable_get('os2dagsorden_title_general_search', 'Søg');
+  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_prev_page'] = variable_get('os2dagsorden_title_general_prev_page', 'Forrige');
+  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_next_page'] = variable_get('os2dagsorden_title_general_next_page', 'Næste');
 
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_frontpage_placeholder']['os2dagsorden_title_frontpage_coming_meetings'] = variable_get('os2dagsorden_title_frontpage_coming_meetings', 'Kommende møder i mine udvalg');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_frontpage_placeholder']['os2dagsorden_title_frontpage_last_8_my_meetings'] = variable_get('os2dagsorden_title_frontpage_last_8_my_meetings', 'Seneste 8 møder i mine udvalg');
@@ -234,9 +240,12 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_agenda'] = variable_get('os2dagsorden_title_meeting_agenda', 'Dagsorden:');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_closed_agenda'] = variable_get('os2dagsorden_title_meeting_closed_agenda', 'Lukket Dagsorden:');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_committee'] = variable_get('os2dagsorden_title_meeting_committee', 'Udvalg');
+  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_print_all_speakerpapers'] = variable_get('os2dagsorden_title_meeting_print_all_speakerpapers', 'Print alle talepapirer');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir');
+  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE);
 
   $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name'] = variable_get('os2dagsorden_meeting_view_calendar_short_name');
+  $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_show_calendar_block_on_cal_pages'] = variable_get('os2dagsorden_meeting_show_calendar_block_on_cal_pages');
 
   $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_ip_whitelist'] = variable_get('os2dagsorden_token_login_ip_whitelist');
   $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_allowed_paths'] = variable_get('os2dagsorden_token_login_allowed_paths', '<front>');
@@ -322,7 +331,9 @@ function os2dagsorden_settings_views_pre_view(&$view, &$display_id, &$args) {
     $view->display_handler->options['fields']['field_os2web_meetings_date']['label'] = variable_get('os2dagsorden_title_meeting_date', 'Dato');
   }
   elseif ($view->name === 'kommende_m_der_i_mine_udvalg') {
-    $view->display_handler->options['fields']['php_2']['label'] = variable_get('os2dagsorden_title_meeting_meeting', 'Møde');
+    // This view has only one display, hence using different logic for setting the label.
+    $view->display_handler->default_display->options['fields']['php_2']['label']  = variable_get('os2dagsorden_title_meeting_meeting', 'Møde');
+    $view->display_handler->default_display->options['fields']['php_4']['label'] = variable_get('os2dagsorden_title_meeting_location', 'Lokation');
   }
   elseif ($view->name === 'meeting_details') {
     if ($view->display_handler->options['fields']['title']['id']) {

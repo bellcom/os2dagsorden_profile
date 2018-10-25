@@ -38,7 +38,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
   );
 
   // Adding general fields.
-  $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form);
+  $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form_state);
 
   // Pass the maximum file size in bytes - 2 MB.
   $two_mb_bytes = 2 * 1024 * 1024;
@@ -73,6 +73,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
     '#title' => t('Agenda'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
+    '#prefix' => '<div id="js-agenda-fs">',
+    '#suffix' => '</div>'
   );
 
   // Filling the fields if meeting_id is not empty.
@@ -109,13 +111,12 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
 
         // Ordering BPs by number.
         $i = 0;
-        while (isset($bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . '-' . $i])) {
+        while (isset($bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . $i])) {
           $i++;
         }
 
-        $bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . '-' . $i] = $bp;
+        $bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value']  . $i] = $bp;
       }
-
       ksort($bullet_points);
       foreach ($bullet_points as $bp) {
         $form['agenda'][] = array(
@@ -141,7 +142,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
           '#bp_nid' => $bp->nid,
           '#ajax' => array(
             'callback' => 'os2dagsorden_create_agenda_bullet_point_delete_ajax',
-            'wrapper' => 'edit-agenda',
+            'wrapper' => 'js-agenda-fs',
             'method' => 'replace',
             'effect' => 'fade',
           ),
@@ -196,7 +197,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
   }
 
   if (!isset($form['agenda'][0])) {
-    unset($form['agenda']);
+    $form['agenda']['#access'] = FALSE;
   }
 
   // Finishing form.
@@ -353,10 +354,8 @@ function os2dagsorden_create_agenda_meeting_submit_add_edit_bullet_point($form, 
  *   The current state of the form.
  */
 function os2dagsorden_create_agenda_meeting_submit_delete_bullet_point($form, &$form_state) {
-  $node = os2dagsorden_create_agenda_save_meeting($form, $form_state);
-
   $bp_id = $form_state['triggering_element']['#bp_nid'];
-  os2dagsorden_create_agenda_remove_bullet_point_from_meeting($node->nid, $bp_id);
+  os2dagsorden_create_agenda_remove_bullet_point_from_meeting($form_state['meeting_id'], $bp_id);
 
   node_delete($bp_id);
 

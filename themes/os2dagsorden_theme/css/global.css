@@ -185,22 +185,18 @@
     background-color: #ae477d;
     transition: background-color .3s ease-out; }
   .form-submit.nav-button {
-    background: #ae477d;
-    color: #fffffe;
-    padding: 5px 10px 5px 10px;
-    font-family: "Source Sans Pro";
-    font-size: 13px;
-    text-decoration: none;
-    text-transform: uppercase;
-    cursor: pointer; }
+    background: #9c1a5e;
+    border-style: solid;
+    border-width: 0px;
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    color: transparent;
+    text-decoration: none; }
     .form-submit.nav-button:hover {
-      background: #9c1a5e;
-      padding: 5px 10px 5px 10px;
-      font-family: "Source Sans Pro";
-      font-size: 13px;
-      text-decoration: none;
-      text-transform: uppercase;
-      cursor: pointer; }
+      background: #ae477d;
+      font-size: 18px; }
   .form-actions.form-wrapper .form-submit {
     margin-right: 10px; }
 
@@ -627,7 +623,6 @@ ul li.leaf {
 
 .view-header h3, .view-content h3 {
   color: #373636;
-  text-transform: capitalize;
   font-weight: 100;
   font-size: 18px;
   background-color: #f7f1f1;
@@ -648,6 +643,10 @@ div.date-heading h3 {
     text-decoration: none;
     font-family: Arial,Helvetica,sans-serif;
     background: none; }
+
+.page-meeting-bullet-point-bullet-point-attachment .node {
+  background: transparent;
+  border: none; }
 
 .view-id-events, .view-id-user_committee, .view-id-user_follow_committees, .view-id-kommende_m_der_i_mine_udvalg, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_, .block-views-exp-meetings-search-page .views-exposed-form, .node-form, .node, .view-display-id-page, .view.view-meetings-search.view-display-id-page_meetings_overview {
   background: #f7f1f1;
@@ -1249,6 +1248,9 @@ table ul.links {
 table .speaker-paper-link-container {
   width: 130px;
   min-width: 130px; }
+  table .speaker-paper-link-container.no-text {
+    width: 45px;
+    min-width: 45px; }
 
 /*meeting details table*/
 .view-meeting-details {
@@ -1386,7 +1388,7 @@ table .speaker-paper-link-container {
     .view-meeting-details .attachment .bullet-point-attachments .view-content .button.hide_show_all_attachments_text.opened:before {
       background: url("../img/arrow_right_black.png") no-repeat 50% top;
       position: absolute;
-      color: #fffffe;
+      color: transparent;
       font-family: "Material Icons";
       font-size: 20px;
       cursor: pointer;
@@ -1468,64 +1470,128 @@ div.speaker-paper-print {
   float: right;
   margin-right: 5px;
   position: relative;
-  top: -47px; }
+  top: -40px; }
 
-.view-speaking-paper .shared-with {
-  padding-top: 5px;
-  border-top: 1px solid #dedede;
-  margin-top: 5px;
-  font-style: italic; }
+.view-speaking-paper.view-display-id-page {
+  background: #fffffe;
+  border: none; }
+  .view-speaking-paper.view-display-id-page .shared-with {
+    padding-top: 5px;
+    border-top: 1px solid #dedede;
+    margin-top: 5px;
+    font-style: italic; }
+  .view-speaking-paper.view-display-id-page .item-list ul li {
+    margin: 0 0 0.25em 1.7em; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text {
+    left: -50px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text:before {
+      background: url("../img/arrow_right_black_down.png") no-repeat 50% top;
+      position: absolute;
+      cursor: pointer;
+      top: 13px;
+      left: 9px;
+      background-size: 10px;
+      content: "";
+      width: 20px;
+      height: 20px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text.opened:before {
+      background: url("../img/arrow_right_black.png") no-repeat 50% top;
+      position: absolute;
+      color: transparent;
+      font-family: "Material Icons";
+      font-size: 20px;
+      cursor: pointer;
+      top: 13px;
+      left: 9px;
+      background-size: 10px;
+      content: "";
+      width: 20px;
+      height: 20px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text:last-child {
+      bottom: 0; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button {
+    border-radius: 3px;
+    color: transparent;
+    width: 38px;
+    height: 38px;
+    z-index: 9999;
+    cursor: pointer;
+    left: -45px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button:before {
+      font-family: "Material Icons";
+      font-size: 20px;
+      position: absolute;
+      color: #fffffe;
+      content: "\E5CF";
+      top: 9px;
+      left: 9px; }
+    .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .button.opened:before {
+      font-family: "Material Icons";
+      font-size: 20px;
+      position: absolute;
+      color: #fffffe;
+      content: "\E5CE";
+      top: 9px;
+      left: 9px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .main-text {
+    padding-bottom: 5px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .views-field-title-1 {
+    margin-left: -5px;
+    margin-right: -5px;
+    padding-bottom: 10px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt .views-row {
+    padding-bottom: 10px; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt li a {
+    background-color: #f7f1f1;
+    color: #001D2F;
+    padding: 3px 10px 3px 10px;
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 14px;
+    border-color: #f7f1f1;
+    border-style: solid;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-radius: 3px 3px 0 0; }
+  .view-speaking-paper.view-display-id-page .ul-item-list-dagsordenspunkt li.bilag a:hover {
+    line-height: 30px;
+    font-weight: bold;
+    padding: 3px 10px 3px 10px; }
+  .view-speaking-paper.view-display-id-page div.attachment {
+    background: #fffffe; }
+    .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-delete-button {
+      margin-left: 10px; }
+    .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-edit-button a,
+    .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-delete-button a {
+      display: inline-block;
+      background-color: #9c1a5e;
+      border: 1px solid #ae477d;
+      border-radius: 3px;
+      color: #fffffe;
+      padding: 5px 20px 5px 20px;
+      font-family: "Source Sans Pro";
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color .1s ease-in;
+      line-height: initial; }
+      .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-edit-button a:hover,
+      .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 .speaking-paper-delete-button a:hover {
+        background-color: #ae477d;
+        transition: background-color .3s ease-out; }
+    .view-speaking-paper.view-display-id-page div.attachment .view-display-id-attachment_1 a {
+      display: block;
+      color: #333333;
+      padding: 3px 10px 3px 10px;
+      line-height: 30px;
+      font-family: Arial,Helvetica,sans-serif;
+      font-weight: bold;
+      font-size: 13px; }
 
-.view-speaking-paper .item-list ul li {
-  margin: 0 0 0.25em 1.7em; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .button.hide_show_all_attachments_text {
-  left: -50px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .button {
+.page-meeting-bullet-point .region-content-inner {
+  background: #fffffe;
   border-radius: 3px;
-  color: transparent;
-  width: 38px;
-  height: 38px;
-  z-index: 9999;
-  cursor: pointer;
-  left: -45px; }
-  .view-speaking-paper .ul-item-list-dagsordenspunkt .button:before {
-    font-family: "Material Icons";
-    font-size: 20px;
-    position: absolute;
-    color: #fffffe;
-    content: "\E5CF";
-    top: 9px;
-    left: 9px; }
-  .view-speaking-paper .ul-item-list-dagsordenspunkt .button.opened:before {
-    font-family: "Material Icons";
-    font-size: 20px;
-    position: absolute;
-    color: #fffffe;
-    content: "\E5CE";
-    top: 9px;
-    left: 9px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .main-text {
-  padding-bottom: 5px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .views-field-title-1 {
-  margin-left: -5px;
-  margin-right: -5px;
-  padding-bottom: 10px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .views-row {
-  padding-bottom: 10px; }
-
-.view-speaking-paper .ul-item-list-dagsordenspunkt .attachment .view-display-id-attachment_1 a {
-  display: block;
-  color: #333333;
-  padding: 3px 10px 3px 10px;
-  line-height: 30px;
-  font-family: Arial,Helvetica,sans-serif;
-  font-weight: bold;
-  font-size: 13px; }
+  border: 1px solid #f7f1f1; }
 
 .form-submit.nav-button {
   display: inline-block;
@@ -1536,21 +1602,43 @@ div.speaker-paper-print {
   .form-submit.nav-button.left {
     margin-right: 10px;
     margin-left: -7px;
-    float: left; }
+    float: left;
+    top: -5px; }
+    .form-submit.nav-button.left:before {
+      content: "\E314";
+      font-family: "Material Icons";
+      font-size: 20px;
+      position: absolute;
+      color: #fffffe;
+      cursor: pointer;
+      top: 5px;
+      left: 9px; }
   .form-submit.nav-button.right {
-    margin-right: -3px;
-    float: right; }
+    margin-right: -6px;
+    float: right;
+    top: -5px; }
+  .form-submit.nav-button:before {
+    content: "\E315";
+    font-family: "Material Icons";
+    font-size: 20px;
+    position: absolute;
+    color: #fffffe;
+    cursor: pointer;
+    top: 5px;
+    left: 9px; }
 
 /*meeting details table*/
 div.speaker-paper-all-print {
   float: right;
-  margin-right: 5px;
+  margin-right: 0;
   position: relative;
   top: 5px; }
 
 .view-display-id-attachment_print_all_speaker_papers, .view-display-id-attachment_print_all_speaker_papers_tillaeg {
-  position: absolute;
-  right: 5px; }
+  position: relative; }
+  .view-display-id-attachment_print_all_speaker_papers .view-content table.views-table tr td.views-field-php, .view-display-id-attachment_print_all_speaker_papers_tillaeg .view-content table.views-table tr td.views-field-php {
+    background: transparent;
+    padding-right: 0; }
 
 table .hide_show_button_container {
   width: 50px; }
@@ -1585,7 +1673,7 @@ table .ul-item-list-dagsordenspunkt .hide_show_all_attachments_text {
     table .ul-item-list-dagsordenspunkt .hide_show_all_attachments_text.button.opened:before {
       background: url("../img/arrow_right_black.png") no-repeat 50% top;
       position: absolute;
-      color: #fffffe;
+      color: transparent;
       font-family: "Material Icons";
       font-size: 20px;
       cursor: pointer;
@@ -1747,6 +1835,13 @@ a.annotator-wrapper {
     text-align: right;
     width: auto;
     z-index: 1; }
+    .annotator-pager .page-prev a {
+      padding: 5px 10px 5px 15px; }
+      .annotator-pager .page-prev a::before {
+        content: '«';
+        position: absolute;
+        left: 5px;
+        font-size: 14px; }
   .annotator-pager .page-next {
     background: none repeat scroll 0 0 transparent;
     border-radius: 5px 0 0 5px;
@@ -1760,8 +1855,15 @@ a.annotator-wrapper {
     text-align: right;
     width: auto;
     z-index: 1; }
+    .annotator-pager .page-next a {
+      padding: 5px 15px 5px 10px; }
+      .annotator-pager .page-next a::after {
+        content: '»';
+        position: absolute;
+        font-size: 14px;
+        right: 5px; }
   .annotator-pager .page-prev a, .annotator-pager .page-next a {
-    color: inherit;
+    color: #fffffe;
     font-size: 14px;
     text-decoration: none; }
 
@@ -1959,13 +2061,13 @@ a.annotator-wrapper {
   padding: 5px 20px 5px 20px; }
 
 .form-back {
-  background: #c0c0c0 url("../img/icon_back.png") no-repeat 5px 50%;
-  background: url("../img/icon_back.png") no-repeat 5px 50%, linear-gradient(top, #fcfcfc 0%, #c0c0c0 100%);
-  background: url("../img/icon_back.png") no-repeat 5px 50%, -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e7e7e7), to(#c0c0c0));
-  background: url("../img/icon_back.png") no-repeat 5px 50%, -webkit-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: url("../img/icon_back.png") no-repeat 5px 50%, -moz-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: url("../img/icon_back.png") no-repeat 5px 50%, -ms-linear-gradient(top, #fcfcfc, #c0c0c0);
-  background: url("../img/icon_back.png") no-repeat 5px 50%, -o-linear-gradient(top, #fcfcfc, #c0c0c0);
+  background: #9c1a5e url("../img/icon_back.png") no-repeat 5px 50%;
+  background: url("../img/icon_back.png") no-repeat 5px 50% #9c1a5e;
+  background: url("../img/icon_back.png") no-repeat 5px 50% #9c1a5e;
+  background: url("../img/icon_back.png") no-repeat 5px 50% #9c1a5e;
+  background: url("../img/icon_back.png") no-repeat 5px 50% #9c1a5e;
+  background: url("../img/icon_back.png") no-repeat 5px 50% #9c1a5e;
+  background: url("../img/icon_back.png") no-repeat 5px 50% #9c1a5e;
   padding: 5px 10px 5px 25px; }
 
 /* ---------------------------- Manual create agenda END---------------------------- */
@@ -2043,19 +2145,24 @@ ul.droptrue {
     padding: 5px;
     background: none;
     background-color: white;
-    max-width: 250px; }
-    ul.droptrue li.can-subscribe {
-      background-image: url("../img/icon-send-to-friend-bullet-point.png");
+    max-width: 250px;
+    /*&.can-subscribe {
+      background-image: url('../img/icon-send-to-friend-bullet-point.png');
       background-repeat: no-repeat;
       background-position: 88% 7px;
-      background-size: 15px; }
-      ul.droptrue li.can-subscribe span {
-        max-width: 170px;
-        display: inline-block; }
-      ul.droptrue li.can-subscribe .checkbox.premeeting {
-        right: 20px; }
-      ul.droptrue li.can-subscribe.subscribed {
-        background-image: url("../img/icon-send-to-friend-bullet-point.png"); }
+      background-size: 15px;
+
+      .checkbox.premeeting{
+        right: 20px;
+        display: flex;
+      }
+      &.subscribed {
+        background-image: url('../img/icon-send-to-friend-bullet-point.png');
+      }
+    }*/ }
+    ul.droptrue li span:not(.checkbox) {
+      max-width: 200px;
+      display: inline-block; }
 
 label.label_follows,
 label.label-participants {
@@ -2077,12 +2184,14 @@ div.note.subscribe {
 
 .checkbox.follows,
 .checkbox_invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.can-subscribe {
   float: right; }
 
 .checkbox.follows,
 .checkbox.invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.can-subscribe {
   float: right;
   display: inline;
   position: relative; }
@@ -2096,7 +2205,22 @@ div.note.subscribe {
   right: 20px;
   top: 2px;
   width: 16px;
-  height: 16px; }
+  height: 16px;
+  display: flex;
+  align-items: center; }
+
+.checkbox.can-subscribe::before {
+  content: '';
+  position: absolute;
+  background-image: url(../img/icon-send-to-friend-bullet-point.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center; }
 
 div.note.premeeting::before {
   content: '';
@@ -2118,6 +2242,9 @@ div.note.subscribe::before {
   width: 16px;
   height: 16px; }
 
+ul#follows .checkbox.premeeting {
+  right: 20px; }
+
 .checkbox_follows,
 .checkbox_invisible,
 .checkbox.premeeting {
@@ -2128,7 +2255,8 @@ div.note.subscribe::before {
 .checkbox.premeeting {
   float: right;
   display: inline;
-  position: relative; }
+  position: relative;
+  display: flex; }
 
 /* ---------------------------- Dropdown Button START ---------------------------- */
 .dropbtn {
@@ -2224,7 +2352,6 @@ div.note.subscribe::before {
 
 /* member of in sidebar */
 .views-field.views-field-field-os2web-meetings-com-shname {
-  border: 1px solid #fffffe;
   display: inline-block;
   margin-bottom: 3px;
   padding: 3px 5px;
@@ -2247,10 +2374,12 @@ div.note.subscribe::before {
   .user-filter-block #users_filter.form-text {
     width: 100%;
     margin-bottom: 5px;
-    line-height: 20px;
+    font-size: 1.0em;
+    line-height: 1em;
+    padding: 5px 10px;
     background: #fffffe url("../img/icon_search.png") no-repeat;
     background-position: right;
     background-size: 15px;
     margin-bottom: 0;
-    border: 1px solid darkgray;
+    border: none;
     border-radius: 3px; }
