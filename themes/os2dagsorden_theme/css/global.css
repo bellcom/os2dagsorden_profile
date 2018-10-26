@@ -631,27 +631,23 @@ ul li.leaf {
     height: 33px;
     margin-right: 10px;
     line-height: normal; }
-  .content #zoom_menu_container #zoom_in_button::before {
-    content: "\E8ff";
-    font-family: "Material Icons";
-    font-size: 30px;
-    top: 2px;
-    left: 3px;
-    position: absolute; }
+  .content #zoom_menu_container #zoom_reset_button::before,
+  .content #zoom_menu_container #zoom_in_button::before,
   .content #zoom_menu_container #zoom_out_button::before {
-    content: "\E900";
-    font-family: "Material Icons";
-    font-size: 30px;
-    top: 2px;
-    left: 3px;
-    position: absolute; }
+    content: ' ';
+    background-position: center;
+    -webkit-filter: invert(100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 33px;
+    height: 33px; }
+  .content #zoom_menu_container #zoom_in_button::before {
+    background: url("../img/zoom_in.png") no-repeat; }
+  .content #zoom_menu_container #zoom_out_button::before {
+    background: url("../img/zoom_out.png") no-repeat; }
   .content #zoom_menu_container #zoom_reset_button::before {
-    content: "\E56B";
-    font-family: "Material Icons";
-    font-size: 30px;
-    top: 2px;
-    left: 3px;
-    position: absolute; }
+    background: url("../img/icon_zoom_reset.png") no-repeat; }
 
 /*---------------------------- Show hide menu End ----------------------------*/
 /*---------------------------- Views Start ----------------------------*/
