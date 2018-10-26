@@ -615,11 +615,13 @@ ul li.leaf {
   border-width: 0;
   text-shadow: none;
   background-color: #ae477d;
-  border-radius: 3px; }
+  border-radius: 3px;
+  width: 33px;
+  height: 33px; }
 
 .content #zoom_menu_container {
   line-height: 0; }
-  .content #zoom_menu_container #zoom_in_button, .content #zoom_menu_container #zoom_out_button {
+  .content #zoom_menu_container #zoom_in_button, .content #zoom_menu_container #zoom_out_button, .content #zoom_menu_container #zoom_reset_button {
     position: relative;
     border-width: 0;
     text-shadow: none;
@@ -638,6 +640,13 @@ ul li.leaf {
     position: absolute; }
   .content #zoom_menu_container #zoom_out_button::before {
     content: "\E900";
+    font-family: "Material Icons";
+    font-size: 30px;
+    top: 2px;
+    left: 3px;
+    position: absolute; }
+  .content #zoom_menu_container #zoom_reset_button::before {
+    content: "\E56B";
     font-family: "Material Icons";
     font-size: 30px;
     top: 2px;

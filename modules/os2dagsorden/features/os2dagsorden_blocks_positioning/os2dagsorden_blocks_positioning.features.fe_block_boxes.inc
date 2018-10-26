@@ -14,9 +14,7 @@ function os2dagsorden_blocks_positioning_default_fe_block_boxes() {
   $fe_block_boxes->info = 'Os2dagsorden version number';
   $fe_block_boxes->format = 'php_code';
   $fe_block_boxes->machine_name = 'os2dagsorden_version_number';
-  $fe_block_boxes->body = '<?php 
-os2dagsorden_blocks_positioning_show_git_version();
-?>';
+  $fe_block_boxes->body = '<?php os2dagsorden_blocks_positioning_show_git_version();?>';
 
   $export['os2dagsorden_version_number'] = $fe_block_boxes;
 
@@ -24,7 +22,7 @@ os2dagsorden_blocks_positioning_show_git_version();
   $fe_block_boxes->info = 'zoom_menu';
   $fe_block_boxes->format = 'emails';
   $fe_block_boxes->machine_name = 'zoom_menu';
-  $fe_block_boxes->body = '<div id="zoom_menu_container"><button class="button" id="zoom_in_button"></button><button  class="button" id="zoom_out_button"  ></button></div>';
+  $fe_block_boxes->body = '<div id="zoom_menu_container"><button class="button" id="zoom_in_button"></button><button  class="button" id="zoom_out_button"  ></button><button  class="button" id="zoom_reset_button" ></button></div>';
 
   $export['zoom_menu'] = $fe_block_boxes;
 

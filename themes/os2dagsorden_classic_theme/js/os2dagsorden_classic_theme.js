@@ -841,11 +841,13 @@ jQuery(document).ready(function() {
     if(navigator.userAgent.indexOf("Chrome") != -1 ){
       var currentZoom = jQuery('body').css('zoom');
       var newZoom = parseFloat(currentZoom)  + 0.1;
+      if (newZoom > 5) return;
       jQuery('body').css('zoom', newZoom);
     }
     else if(navigator.userAgent.indexOf("Safari") != -1){
       var currentZoom = jQuery('body').css('zoom');
       var newZoom = parseFloat(currentZoom)  + 0.1;
+      if (newZoom > 5) return;
       jQuery('body').css('zoom', newZoom);
     }
     else if(navigator.userAgent.indexOf("Firefox") != -1 ){
@@ -856,31 +858,33 @@ jQuery(document).ready(function() {
         currentFFZoom  = jQuery('body').css('-moz-transform').match(/-?[\d\.]+/g)[0];
       }
       var newFFZoom = parseFloat(currentFFZoom)  + 0.1;
+      if (newFFZoom > 5) return;
       jQuery('body').css('-moz-transform', 'scale(' +  newFFZoom + ')');
     }
     else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )){
       if (jQuery('body').css('zoom') == 'normal') {
-        currentIFZoom  = '100%';
+        currentIEZoom  = '100%';
       }
       else {
-        currentIFZoom  = jQuery('body').css('zoom');
+        currentIEZoom  = jQuery('body').css('zoom');
       }
-      var newIFZoom = new Number(currentIFZoom.replace("%", ""));
+      var newIEZoom = new Number(currentIEZoom.replace("%", ""));
       newIFZoom = newIFZoom + 10;
-      jQuery('body').css('zoom', newIFZoom +'%');
+      if (newIEZoom > 500) return;
+      jQuery('body').css('zoom', newIEZoom +'%');
     }
   });
   jQuery("#zoom_out_button").click(function(){
     if(navigator.userAgent.indexOf("Chrome") != -1 ){
       var currentZoom = jQuery('body').css('zoom');
       var newZoom = parseFloat(currentZoom)  - 0.1;
-      if (newIEZoom <= 0) return;
+      if (newZoom < 1) return;
       jQuery('body').css('zoom', newZoom);
     }
     else if(navigator.userAgent.indexOf("Safari") != -1){
       var currentZoom = jQuery('body').css('zoom');
       var newZoom = parseFloat(currentZoom)  - 0.1;
-      if (newZoom <= 0) return;
+      if (newZoom < 1) return;
       jQuery('body').css('zoom', newZoom);
     }
     else if(navigator.userAgent.indexOf("Firefox") != -1 ){
@@ -891,7 +895,7 @@ jQuery(document).ready(function() {
         currentFFZoom  = jQuery('body').css('-moz-transform').match(/-?[\d\.]+/g)[0];
       }
       var newFFZoom = parseFloat(currentFFZoom)  - 0.1;
-      if (newFFZoom <= 0) return;
+      if (newFFZoom < 1) return;
       jQuery('body').css('-moz-transform', 'scale(' +  newFFZoom + ')');
     }
     else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )){
@@ -903,8 +907,22 @@ jQuery(document).ready(function() {
       }
       var newIEZoom = new Number(currentIEZoom.replace("%", ""));
       newIEZoom = newIEZoom - 10;
-      if (newIEZoom <= 0) return;
+      if (newIEZoom < 100) return;
       jQuery('body').css('zoom', newIEZoom +'%');
+    }
+  });
+jQuery("#zoom_reset_button").click(function(){
+    if(navigator.userAgent.indexOf("Chrome") != -1 ){
+      jQuery('body').css('zoom', 1);
+    }
+    else if(navigator.userAgent.indexOf("Safari") != -1){
+      jQuery('body').css('zoom', 1);
+    }
+    else if(navigator.userAgent.indexOf("Firefox") != -1 ){
+      jQuery('body').css('-moz-transform', 'scale(1)');
+    }
+    else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )){
+      jQuery('body').css('zoom', '100%');
     }
   });
 });
