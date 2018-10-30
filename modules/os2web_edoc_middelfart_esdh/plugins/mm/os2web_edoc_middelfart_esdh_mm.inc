@@ -312,6 +312,8 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
   $xml_item = array();
   $serialno_xpath = $xml->xpath('edoc:HandlingItem/edoc:SerialNo');
   $xml_item['number'] = (int) array_shift($serialno_xpath);
+  $handlingPlan_xpath = $xml->xpath('edoc:HandlingItem/edoc:HandlingPlan');
+  $xml_handlingPlans = array_shift($handlingPlan_xpath);
   $casePresentations_xpath = $xml->xpath('edoc:HandlingItem/edoc:CasePresentations');
   $xml_item_bullets = array_shift($casePresentations_xpath);
   $attachment_xpath = $xml->xpath('edoc:HandlingItem/edoc:Attachments');
@@ -346,6 +348,37 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
   );
 
   if ($item['access'] !== 'Lukket' || variable_get('os2web_edoc_middelfart_esdh_import_closed_agenda', FALSE)) {
+     // Process behandlingplans.
+    $behandlingplan_meetings = array();
+    $behandlingplan_decisions = array();
+
+    foreach ($xml_handlingPlans->xpath('edoc:Handling') as $key => $behandlingplan_xml) {
+      $title = (string) array_shift($behandlingplan_xml->xpath('edoc:CommitteeName'));
+      $date = (string) array_shift($behandlingplan_xml->xpath('edoc:MeetingDate'));
+      $date = date('d. F Y', strtotime($date));
+      $behandlingplan_meetings[$key] =  $title . ' ' . t('den') . ' ' . $date;
+      $behandlingplan_decisions[$key] = (string) array_shift($behandlingplan_xml->xpath('edoc:Decision'));
+    }
+    if (!empty($behandlingplan_meetings)) {
+      $bullet_body = '<strong>' . t('Behandlingplans') . ':</strong><br/>';
+      $bullet_body .= implode('<br/>', $behandlingplan_meetings);
+      if (!empty($behandlingplan_decisions)) {
+        $bullet_body .= '<br/><br/>';
+        foreach ($behandlingplan_decisions as $key => $decision) {
+          if (!empty($decision)) {
+            $bullet_body .= '<strong>' . $behandlingplan_meetings[$key] . '</strong><br/>';
+            $bullet_body .= $decision . '<br/>';
+          }
+        }
+      }
+      $bullet_title = t('Behandlingsplan');
+      $bullet_id = _os2web_edoc_middelfart_esdh_generate_id($bullet_title);
+      $item['bullets'][] = array(
+          'title' => $bullet_title,
+          'body' => _os2web_edoc_esdh_mm_improve_body_html($bullet_body, $meeting['uri']),
+          'sysid' => $bullet_id,
+        );
+    }
     // Process bullets.
     foreach ($xml_item_bullets->xpath('edoc:CasePresentation') as $bullet_xml) {
       $title_xpath = $bullet_xml->xpath('edoc:Title');
