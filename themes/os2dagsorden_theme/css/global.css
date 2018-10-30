@@ -604,7 +604,8 @@ ul li.leaf {
 
 /*---------------------------- Indicator Icons End ----------------------------*/
 /*---------------------------- Show hide menu Start ----------------------------*/
-#block-block-1 {
+#block-block-1,
+#block-block-3 {
   float: right;
   top: 20px;
   position: relative;
@@ -614,7 +615,39 @@ ul li.leaf {
   border-width: 0;
   text-shadow: none;
   background-color: #ae477d;
-  border-radius: 3px; }
+  border-radius: 3px;
+  width: 33px;
+  height: 33px; }
+
+.content #zoom_menu_container {
+  line-height: 0; }
+  .content #zoom_menu_container #zoom_in_button, .content #zoom_menu_container #zoom_out_button, .content #zoom_menu_container #zoom_reset_button {
+    position: relative;
+    border-width: 0;
+    text-shadow: none;
+    background-color: #ae477d;
+    border-radius: 3px;
+    width: 33px;
+    height: 33px;
+    margin-right: 10px;
+    line-height: normal; }
+  .content #zoom_menu_container #zoom_reset_button::before,
+  .content #zoom_menu_container #zoom_in_button::before,
+  .content #zoom_menu_container #zoom_out_button::before {
+    content: ' ';
+    background-position: center;
+    -webkit-filter: invert(100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 33px;
+    height: 33px; }
+  .content #zoom_menu_container #zoom_in_button::before {
+    background: url("../img/zoom_in.png") no-repeat; }
+  .content #zoom_menu_container #zoom_out_button::before {
+    background: url("../img/zoom_out.png") no-repeat; }
+  .content #zoom_menu_container #zoom_reset_button::before {
+    background: url("../img/icon_zoom_reset.png") no-repeat; }
 
 /*---------------------------- Show hide menu End ----------------------------*/
 /*---------------------------- Views Start ----------------------------*/

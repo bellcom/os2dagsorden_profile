@@ -27,3 +27,6 @@ function os2dagsorden_blocks_positioning_show_git_version() {
   $output .= '</table>';
   return $output;
 }
+function os2dagsorden_blocks_positioning_show_menu_zoom_block() {
+  return variable_get('os2dagsorden_frontpage_layout_show_hide_zoom_buttons', FALSE);
+}
