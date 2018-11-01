@@ -1003,10 +1003,12 @@ function os2dagsorden_meeting_views_meeting_details_fields_speaker_paper_link($m
     else {
       $q = $_GET['q'];
       $link = $base_url . '/node/add/os2web-meetings-spaper?edit[field_os2web_meetings_sp_bullet][und][0][target_id]=' . $bp_title . ' (' . $bp_id . ')' . '&destination=' . $q;
+
+      $text = variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir');
       if (!variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE)) {
-        print '<a href="' . $link . '"><div class="indicator-create-speaker-paper"></div>' . variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir') . '</a>';
+        print '<a href="' . $link . '" title="' . $text . '"><div class="indicator-create-speaker-paper"></div>' . $text . '</a>';
       } else {
-        print '<a href="' . $link . '"><div class="indicator-create-speaker-paper"></div>&nbsp;</a>';
+        print '<a href="' . $link . '" title="' . $text . '"><div class="indicator-create-speaker-paper"></div>&nbsp;</a>';
       }
     }
   }
