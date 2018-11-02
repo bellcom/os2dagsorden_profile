@@ -417,6 +417,7 @@ function hide_side_menu(user_defined){
   jQuery(document).ready(function() {
 	jQuery(".region-sidebar-second-inner").hide();
 	jQuery("#show_hide_menu_button").val("⇐");
+  jQuery("#show_hide_menu_button").text("⇐");
 	jQuery("#region-content").removeClass("grid-18");
 	jQuery("#region-content").addClass("grid-24");
     if (Drupal.settings.os2dagsorden_settings.sidepane_arrow_position != 'classic') {
@@ -442,6 +443,7 @@ function hide_side_menu(user_defined){
 function show_side_menu(user_defined){
 	jQuery(".region-sidebar-second-inner").show();
 	jQuery("#show_hide_menu_button").val("⇒");
+  jQuery("#show_hide_menu_button").text("⇒");
 	jQuery("#region-content").removeClass("grid-24");
 	jQuery("#region-content").addClass("grid-18");
     if (Drupal.settings.os2dagsorden_settings.sidepane_arrow_position != 'classic') {
@@ -836,6 +838,38 @@ function open_all_bilag_case_bullet_points(expand_bilags, expand_cases) {
   }
   });
 }
+  jQuery(document).ready(function() {
+    jQuery("body").append("<div id='ToolTipDiv' class='tip-darkgray'></div>");
+    jQuery("body").append("<div id='ToolTipDiv2' class='tip-darkgray'></div>");
+    jQuery("div.help-button").each(function() {
+
+      jQuery(this).click(function() {
+        var offset = jQuery(this).offset();
+       // alert(jQuery(this).attr('aria-label'));
+        if (jQuery("#ToolTipDiv").css('display') == 'block') {
+          jQuery("#ToolTipDiv").css({'position': 'absolute', 'bottom': '', 'right': ''});
+          if (jQuery("#ToolTipDiv").hasClass(jQuery(this).attr('id'))) {
+            alert('sdhjsd');
+            jQuery("#ToolTipDiv").fadeOut(400);
+            jQuery("#ToolTipDiv").attr('class', 'tip-darkgray');
+          }
+          else {
+            jQuery("#ToolTipDiv").css({'top': offset.top + 30, 'left': offset.left - 300, 'max-width': '300px'});
+            jQuery("#ToolTipDiv").attr('class', 'tip-darkgray');
+            jQuery("#ToolTipDiv").addClass(jQuery(this).attr('id'));
+            jQuery("#ToolTipDiv").html(jQuery(this).attr('aria-label')).fadeIn(400);
+          }
+        }
+        else {
+          jQuery("#ToolTipDiv").css({'top': offset.top + 30, 'left': offset.left - 300, 'max-width': '300px'});
+          jQuery("#ToolTipDiv").addClass(jQuery(this).attr('id'));
+          jQuery("#ToolTipDiv").html(jQuery(this).attr('aria-label')).fadeIn(400);
+
+        }
+
+      });
+    });
+  });
 jQuery(document).ready(function() {
   jQuery("#zoom_in_button").click(function(){
     if(navigator.userAgent.indexOf("Chrome") != -1 ){
@@ -868,8 +902,9 @@ jQuery(document).ready(function() {
       else {
         currentIEZoom  = jQuery('body').css('zoom');
       }
-      var newIEZoom = new Number(currentIEZoom.replace("%", ""));
-      newIFZoom = newIFZoom + 10;
+
+      newIEZoom = currentIEZoom.replace("%", "");
+      newIEZoom = parseFloat(newIEZoom) + 10;
       if (newIEZoom > 500) return;
       jQuery('body').css('zoom', newIEZoom +'%');
     }
@@ -905,9 +940,9 @@ jQuery(document).ready(function() {
       else {
         currentIEZoom  = jQuery('body').css('zoom');
       }
-      var newIEZoom = new Number(currentIEZoom.replace("%", ""));
-      newIEZoom = newIEZoom - 10;
-      if (newIEZoom < 100) return;
+      newIEZoom = currentIEZoom.replace("%", "");
+      newIEZoom = parseFloat(newIEZoom) - 10;
+      if (newIEZoom <= 100) return;
       jQuery('body').css('zoom', newIEZoom +'%');
     }
   });
@@ -925,40 +960,11 @@ jQuery("#zoom_reset_button").click(function(){
       jQuery('body').css('zoom', '100%');
     }
   });
+
 });
 // Help text clickable.
 
 (function($) {
-  $(document).ready(function() {
-    $("body").append("<div id='ToolTipDiv' class='tip-darkgray'></div>");
-    $("body").append("<div id='ToolTipDiv2' class='tip-darkgray'></div>");
-    $(".help-button").each(function() {
-      var offset = $(this).offset();
 
-      $(this).click(function() {
-        if ($("#ToolTipDiv").css('display') == 'block') {
-          $("#ToolTipDiv").css({'position': 'absolute', 'bottom': '', 'right': ''});
-          if ($("#ToolTipDiv").hasClass($(this).attr('id'))) {
-            $("#ToolTipDiv").fadeOut(400);
-            $("#ToolTipDiv").attr('class', 'tip-darkgray');
-          }
-          else {
-            $("#ToolTipDiv").css({'top': offset.top + 30, 'left': offset.left - 300, 'max-width': '300px'});
-            $("#ToolTipDiv").attr('class', 'tip-darkgray');
-            $("#ToolTipDiv").addClass($(this).attr('id'));
-            $("#ToolTipDiv").html($(this).attr('aria-label')).fadeIn(400)
-          }
-        }
-        else {
-
-          $("#ToolTipDiv").css({'top': offset.top + 30, 'left': offset.left - 300, 'max-width': '300px'});
-          $("#ToolTipDiv").addClass($(this).attr('id'));
-          $("#ToolTipDiv").html($(this).attr('aria-label')).fadeIn(400);
-
-        }
-
-      });
-    });
-  });
 });
 ( jQuery );

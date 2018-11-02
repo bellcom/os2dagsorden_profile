@@ -427,6 +427,18 @@ ul li.leaf {
   border-radius: $border-radius;
   width: 33px;
   height: 33px;
+  color: transparent;
+  &:before {
+    content: "\E3C7";
+    font-family: $font-icons;
+    font-size: 18px;
+    font-size: 30px;
+    left: 2px;
+    top: 2px;
+    position: absolute;
+    color: $color-white;
+  }
+  
 }
 .content #zoom_menu_container {
   line-height: 0;
