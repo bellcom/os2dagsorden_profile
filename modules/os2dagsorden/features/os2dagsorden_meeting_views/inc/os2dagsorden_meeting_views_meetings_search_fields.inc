@@ -199,6 +199,7 @@ function os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data)
       }
     }
   }
+  print '&nbsp;';
 }
 
 /**
