@@ -849,7 +849,6 @@ function open_all_bilag_case_bullet_points(expand_bilags, expand_cases) {
         if (jQuery("#ToolTipDiv").css('display') == 'block') {
           jQuery("#ToolTipDiv").css({'position': 'absolute', 'bottom': '', 'right': ''});
           if (jQuery("#ToolTipDiv").hasClass(jQuery(this).attr('id'))) {
-            alert('sdhjsd');
             jQuery("#ToolTipDiv").fadeOut(400);
             jQuery("#ToolTipDiv").attr('class', 'tip-darkgray');
           }
