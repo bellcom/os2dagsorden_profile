@@ -1248,11 +1248,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir'),
     '#title' => t('Nyt talepapir'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="os2dagsorden_title_meeting_new_speaker_paper_hide"]' => array('checked' => FALSE),
-      ),
-    )
+    //'#states' => array(
+    //  'visible' => array(
+    //    ':input[name="os2dagsorden_title_meeting_new_speaker_paper_hide"]' => array('checked' => FALSE),
+    //  ),
+    //)
   );
   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = array(
     '#type' => 'checkbox',
