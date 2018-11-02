@@ -516,25 +516,11 @@ div.date-heading h3 {
   table {
     &.views-table{
       tr td {
-        &:nth-child(4), &:nth-child(5) {
-          a {
-            border:  1px solid $color-white;
-            border-radius: $border-radius;
-          }
-        }
         &:nth-child(1) a{
           border:  1px solid $color-white;
           border-radius: $border-radius 0 0 $border-radius  ;
           border-left-width: 0;
         }
-        &:nth-child(3) a{
-          border:  1px solid $color-white;
-          border-radius: 0  $border-radius $border-radius 0;
-          border-right-width: 0;
-        }
-      }
-      th:nth-child(4) {
-        padding-left: 17px;
       }
     }
   }
@@ -1179,10 +1165,6 @@ table {
     td {
       padding: 7px 0;
       background: none;
-      &:nth-child(4){
-        padding-left:7px;
-        padding-right: 7px;
-      }
       a {
         display: block;
         position: relative;
