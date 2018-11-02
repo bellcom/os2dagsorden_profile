@@ -617,7 +617,17 @@ ul li.leaf {
   background-color: #ae477d;
   border-radius: 3px;
   width: 33px;
-  height: 33px; }
+  height: 33px;
+  color: transparent; }
+  .content #show_hide_menu_container #show_hide_menu_button:before {
+    content: "\E3C7";
+    font-family: "Material Icons";
+    font-size: 18px;
+    font-size: 30px;
+    left: 2px;
+    top: 2px;
+    position: absolute;
+    color: #fffffe; }
 
 .content #zoom_menu_container {
   line-height: 0; }
@@ -687,22 +697,10 @@ div.date-heading h3 {
   border: 1px solid #f7f1f1;
   padding: 5px 7px 0 7px; }
 
-.view-id-kommende_m_der_i_mine_udvalg table.views-table tr td:nth-child(4) a, .view-id-kommende_m_der_i_mine_udvalg table.views-table tr td:nth-child(5) a, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_ table.views-table tr td:nth-child(4) a, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_ table.views-table tr td:nth-child(5) a {
-  border: 1px solid #fffffe;
-  border-radius: 3px; }
-
 .view-id-kommende_m_der_i_mine_udvalg table.views-table tr td:nth-child(1) a, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_ table.views-table tr td:nth-child(1) a {
   border: 1px solid #fffffe;
   border-radius: 3px 0 0 3px;
   border-left-width: 0; }
-
-.view-id-kommende_m_der_i_mine_udvalg table.views-table tr td:nth-child(3) a, .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_ table.views-table tr td:nth-child(3) a {
-  border: 1px solid #fffffe;
-  border-radius: 0 3px 3px 0;
-  border-right-width: 0; }
-
-.view-id-kommende_m_der_i_mine_udvalg table.views-table th:nth-child(4), .view-id-seneste_8_m_der_i_de_st_ende_politiske_udvalg_ table.views-table th:nth-child(4) {
-  padding-left: 17px; }
 
 .node.brugerroller {
   background: none; }
@@ -1196,9 +1194,6 @@ table.views-table tbody tr {
   table.views-table tbody tr td {
     padding: 7px 0;
     background: none; }
-    table.views-table tbody tr td:nth-child(4) {
-      padding-left: 7px;
-      padding-right: 7px; }
     table.views-table tbody tr td a {
       display: block;
       position: relative;
@@ -1216,7 +1211,8 @@ table.views-table tbody tr {
       border-style: solid;
       border-color: #fffffe;
       border-top-width: 1px;
-      border-bottom-width: 1px; }
+      border-bottom-width: 1px;
+      min-height: 19px; }
       table.views-table tbody tr td a:hover {
         text-decoration: none; }
     table.views-table tbody tr td .bilag a {
