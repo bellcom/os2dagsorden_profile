@@ -1183,6 +1183,7 @@ table {
         border-color: $color-white;
         border-top-width: 1px;
         border-bottom-width: 1px;
+        min-height: 19px;
 
         &:hover {
           text-decoration: none;

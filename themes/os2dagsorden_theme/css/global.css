@@ -1201,7 +1201,8 @@ table.views-table tbody tr {
       border-style: solid;
       border-color: #fffffe;
       border-top-width: 1px;
-      border-bottom-width: 1px; }
+      border-bottom-width: 1px;
+      min-height: 19px; }
       table.views-table tbody tr td a:hover {
         text-decoration: none; }
     table.views-table tbody tr td .bilag a {
