@@ -65,7 +65,8 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   if ($meeting_full_access_granted) {
     // Meeting all notes.
     echo '<div class="controls-right breadcrumb-level">';
-    echo '<a target="_blank" href="' . $base_url . '?q=meeting/' . $meeting_id . '/notes" class="form-submit">Mødenoter</a>';
+    echo '<a target="_blank" href="' . $base_url . '?q=meeting/' . $meeting_id . '/notes" class="form-submit">' .
+        variable_get('os2dagsorden_meeting_show_notes_button', 'Mødernoter') . '</a>';
     echo '</div>';
   }
   // Descriptions full doc.
