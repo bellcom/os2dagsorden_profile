@@ -97,7 +97,7 @@ function _os2dagsorden_speaker_paper_send_message($uid, $node) {
   $body = str_replace($search, $replace, $body_template);
   $body = ucfirst($body);
 
-  $from = variable_get('system_mail');
+  $from = variable_get('site_mail');
   $message = array(
     'to' => $user->mail,
     'subject' => $subject,

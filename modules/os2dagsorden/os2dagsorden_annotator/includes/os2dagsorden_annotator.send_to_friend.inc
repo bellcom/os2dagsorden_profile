@@ -67,7 +67,7 @@ function os2dagsorden_annotator_send_notes_to_friend($meeting_id) {
 
   $body .= "</body></html>";
 
-  $from = variable_get('system_mail');
+  $from = variable_get('site_mail');
   $params = array(
     'subject' => $subject,
     'body' => $body,

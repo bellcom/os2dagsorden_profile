@@ -511,7 +511,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
         $body = str_replace($search, $replace, $body_template);
         $body = ucfirst($body);
 
-        $from = variable_get('system_mail');
+        $from = variable_get('site_mail');
         $params = array(
           'subject' => $subject,
           'body' => $body,

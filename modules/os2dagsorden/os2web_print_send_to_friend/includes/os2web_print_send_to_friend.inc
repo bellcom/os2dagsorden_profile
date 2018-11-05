@@ -151,7 +151,7 @@ function os2web_print_send_to_friend_send_to_friend($meeting_id, $bullet_point_i
 
   $body .= "</body></html>";
 
-  $from = variable_get('system_mail');
+  $from = variable_get('site_mail');
   $params = array(
     'subject' => $subject,
     'body' => $body,
