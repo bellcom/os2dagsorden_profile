@@ -373,7 +373,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
       }
       $bullet_title = t('Behandlingsplan');
       $bullet_id = _os2web_edoc_middelfart_esdh_generate_id($bullet_title);
-      $item['bullets'][] = array(
+      $behandlingsplan_item = array(
           'title' => $bullet_title,
           'body' => _os2web_edoc_esdh_mm_improve_body_html($bullet_body, $meeting['uri']),
           'sysid' => $bullet_id,
@@ -393,6 +393,9 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
           'body' => _os2web_edoc_esdh_mm_improve_body_html((string) $bullet_body, $meeting['uri']),
           'sysid' => $bullet_id,
         );
+        if (strtolower($bullet_title) === strtolower(variable_get('os2web_edoc_middelfart_esdh_bp_before_behandlingsplan', 'Høring')) && isset($behandlingsplan_item)) {
+          $item['bullets'][] = $behandlingsplan_item;
+        }
       }
     }
 

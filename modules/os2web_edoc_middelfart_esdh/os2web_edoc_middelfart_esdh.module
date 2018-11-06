@@ -70,6 +70,13 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#description' => 'Komma sepereret liste over udvalgs-id der er godkendt til publisering.',
     '#default_value' => variable_get('os2web_edoc_middelfart_esdh_approved_committees', OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_APPROVED),
   );
+  $form['meetings']['os2web_edoc_middelfart_esdh_bp_before_behandlingsplan'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Bullet point attachment title after which behandlingsplan field will be placed'),
+    '#maxlength' => 200,
+    '#description' => t('Title of bullet point attachment after which behandlingsplan field will be placed'),
+    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_bp_before_behandlingsplan', 'Høring'),
+  );
   $form['meetings']['os2web_edoc_middelfart_esdh_import_closed_agenda'] = array(
     '#type' => 'checkbox',
     '#title' => 'Import closed agenda',
