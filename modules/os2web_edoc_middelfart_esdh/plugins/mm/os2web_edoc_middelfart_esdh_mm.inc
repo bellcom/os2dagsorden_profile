@@ -360,7 +360,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
       $behandlingplan_decisions[$key] = (string) array_shift($behandlingplan_xml->xpath('edoc:Decision'));
     }
     if (!empty($behandlingplan_meetings)) {
-      $bullet_body = '<strong>' . t('Behandlingplans') . ':</strong><br/>';
+      $bullet_body = '<strong>' . t('Behandlingplan') . ':</strong><br/>';
       $bullet_body .= implode('<br/>', $behandlingplan_meetings);
       if (!empty($behandlingplan_decisions)) {
         $bullet_body .= '<br/><br/>';
