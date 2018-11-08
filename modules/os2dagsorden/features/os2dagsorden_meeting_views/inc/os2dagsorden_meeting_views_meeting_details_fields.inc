@@ -309,11 +309,12 @@ function os2dagsorden_meeting_views_meeting_details_admin_controls() {
       echo '<a href="' . $base_url . '?q=node/' . $meeting_id . '/edit" class="form-submit">Afpublicer møde</a>';
       echo '</div>';
     }
-
-    // Import form.
-    echo '<div class="controls-left">';
-    echo '<a href="' . $base_url . '?q=admin/config/os2web/esdh_provider" class="form-submit">Import form</a>';
-    echo '</div>';
+    if (variable_get('os2dagsorden_show_import_form_button', TRUE)) {
+      // Import form.
+      echo '<div class="controls-left">';
+      echo '<a href="' . $base_url . '?q=admin/config/os2web/esdh_provider" class="form-submit">Import form</a>';
+      echo '</div>';
+    }
   }
 }
 
