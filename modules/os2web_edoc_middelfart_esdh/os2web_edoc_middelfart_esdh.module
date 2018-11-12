@@ -74,8 +74,9 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#type' => 'textfield',
     '#title' => t('Bullet point attachment title after which behandlingsplan field will be placed'),
     '#maxlength' => 200,
-    '#description' => t('Title of bullet point attachment after which behandlingsplan field will be placed'),
-    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_bp_before_behandlingsplan', 'Høring'),
+    '#description' => t('Comma-separeted list of bullet point attachment\'s titles after which behandlingsplan field will be placed. '
+        . '<br/>If first BPA in the list is missing in the meeting, then behandlingsplan will be shown after second one in the list, etc.'),
+    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_bp_before_behandlingsplan', 'Høring,Økonomi,Sagsbeskrivelse,Forvaltningen foreslår'),
   );
   $form['meetings']['os2web_edoc_middelfart_esdh_import_closed_agenda'] = array(
     '#type' => 'checkbox',
