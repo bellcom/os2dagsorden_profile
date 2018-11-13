@@ -331,6 +331,8 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
   $caseIdentifier_xpath = $xml->xpath('edoc:HandlingItem/edoc:CaseIdentifier');
   $xml_item['case_id'] = (string) array_shift($caseIdentifier_xpath);
 
+  $behandlingsplan_place =  explode(',', variable_get('os2web_edoc_middelfart_esdh_bp_before_behandlingsplan', 'Høring,Økonomi,Sagsbeskrivelse,Forvaltningen foreslår'));
+
   if ($xml_item['access'] !== 'true') {
     $xml_item['access'] = 'Lukket';
   }
@@ -379,6 +381,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
           'sysid' => $bullet_id,
         );
     }
+    $bpa_indexes = array();
     // Process bullets.
     foreach ($xml_item_bullets->xpath('edoc:CasePresentation') as $bullet_xml) {
       $title_xpath = $bullet_xml->xpath('edoc:Title');
@@ -393,10 +396,17 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
           'body' => _os2web_edoc_esdh_mm_improve_body_html((string) $bullet_body, $meeting['uri']),
           'sysid' => $bullet_id,
         );
-        if (strtolower($bullet_title) === strtolower(variable_get('os2web_edoc_middelfart_esdh_bp_before_behandlingsplan', 'Høring')) && isset($behandlingsplan_item)) {
-          $item['bullets'][] = $behandlingsplan_item;
+      $key = array_search($bullet_title, $behandlingsplan_place);
+        if ($key !== FALSE) {
+           $bpa_indexes[$key] = count($item['bullets']);
         }
       }
+    }
+    //dpm($bpa_indexes);
+    if (!empty($bpa_indexes)) {
+      ksort($bpa_indexes);
+      $index = reset($bpa_indexes);
+      array_splice($item['bullets'], $index, 0, array($behandlingsplan_item));
     }
 
     // Process enclosures.
