@@ -455,7 +455,8 @@ HTML;
       _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
     '<div id="content"><div class="attachment-text">' . $text . '</div></div>' .
     _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
-    '</div>';
+    '</div>' .
+       _os2dagsorden_annotator_get_group_pager_html($pageAmount);
     // Is not an actual bilag.
   }
   else {
@@ -572,6 +573,34 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
   }
   $pager .= '</ul>
 	      </div>';
+  return $pager;
+}
+
+/**
+ * Renders the html for group pager for bilag.
+ *
+ * @param int $meeting_id
+ *   ID of the meeting.
+ * @param int $bullet_point_id
+ *   ID of the bullet point.
+ * @param int $bilag_id
+ *   ID of the attachment (bilag)
+ * @param int $pageLimit
+ *   Maximum numbers of pages in this bilag.
+ * @param bool $light
+ *   Is used in the light mode.
+ *
+ * @return string
+ *   The html code of pager.
+ */
+function _os2dagsorden_annotator_get_group_pager_html($pageLimit) {
+  // Value or 0 if not set.
+  $page = intval($_GET['page']);
+  if (($page - OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW >= 0) ||  ($page +  OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < $pageLimit)) {
+    $start_page =  $page + 1;
+    $end_page = ($page +  OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < $pageLimit) ? $page +  OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW : $pageLimit;
+    $pager = '<div class="annotator-group-pager">'. t('Sider @start - @end af @total', array('@start' => $start_page, '@end' => $end_page, '@total' => $pageLimit)) . '</div>';
+  }
   return $pager;
 }
 

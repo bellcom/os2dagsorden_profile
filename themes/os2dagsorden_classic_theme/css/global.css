@@ -1627,6 +1627,12 @@ a.annotator-wrapper {
   background: #bebebe;
   /*overflow: hidden;*/
 }
+
+.annotator-group-pager {
+  float: right;
+  margin-top: 10px;
+  font-weight: bold;
+}
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 
 /* ---------------------------- Breadcrumbs START---------------------------- */

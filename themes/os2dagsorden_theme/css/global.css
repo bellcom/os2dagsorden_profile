@@ -1905,6 +1905,11 @@ a.annotator-wrapper {
   background: #BEBEBE;
   /*overflow: hidden;*/ }
 
+.annotator-group-pager {
+  float: right;
+  padding-right: 20px;
+  font-weight: bold; }
+
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 /* ---------------------------- Breadcrumbs START---------------------------- */
 #breadcrumb .breadcrumb {
