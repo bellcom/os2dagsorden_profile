@@ -1287,6 +1287,13 @@ table .speaker-paper-link-container {
   border: 1px solid #f7f1f1;
   border-top: 0px;
   font-family: "Source Sans Pro"; }
+  .view-meeting-details .ul-item-list-dagsordenspunkt li.bilag {
+    position: relative; }
+    .view-meeting-details .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
+      position: absolute;
+      right: -65px;
+      top: 0;
+      line-height: 30px; }
   .view-meeting-details .form-submit {
     padding: 10px 50px 10px 50px;
     font-size: 16px; }
@@ -1621,6 +1628,14 @@ div.speaker-paper-print {
   background: #fffffe;
   border-radius: 3px;
   border: 1px solid #f7f1f1; }
+
+.page-meeting-bullet-point .ul-item-list-dagsordenspunkt li.bilag {
+  position: relative; }
+  .page-meeting-bullet-point .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
+    right: 15px;
+    position: absolute;
+    top: 0;
+    line-height: 30px; }
 
 .form-submit.nav-button {
   display: inline-block;

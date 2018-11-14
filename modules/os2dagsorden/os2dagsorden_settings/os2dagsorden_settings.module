@@ -115,6 +115,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text'] = variable_get('os2dagsorden_create_note_text', 'Lav note');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text'] = variable_get('os2dagsorden_create_note_hide_text', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title'] = variable_get('os2dagsorden_create_note_text_use_title', FALSE);
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = variable_get('os2dagsorden_show_bilag_pages_amount', FALSE);
 
   $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper'] = variable_get('os2dagsorden_shared_speaker_paper', TRUE);
 

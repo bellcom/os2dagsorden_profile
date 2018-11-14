@@ -1404,6 +1404,19 @@ table .item-list-dagsordenspunkt .hide_show_all_attachments_text {
   text-overflow: ellipsis;
 }
 
+.ul-item-list-dagsordenspunkt li.bilag {
+  position: relative;
+}
+
+.ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
+  position: absolute;
+  right: -65px;
+  top: 0;
+  line-height: 30px;
+}
+.page-meeting-bullet-point .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
+  right: 15px;
+}
 /*meeting details table end*/
 /* ---------------------------- Table Styles END---------------------------- */
 
@@ -1578,8 +1591,8 @@ a.annotator-wrapper {
   z-index: 1;
 }
 
-.annotator-pager .page-next a {  
-    padding: 5px 15px 5px 10px;     
+.annotator-pager .page-next a {
+    padding: 5px 15px 5px 10px;
 }
 
 .annotator-pager .page-next a::after {
@@ -1588,7 +1601,7 @@ a.annotator-wrapper {
   font-size: 14px;
   right: 5px;
 }
-.annotator-pager .page-prev a {  
+.annotator-pager .page-prev a {
   padding: 5px 10px 5px 15px;
 }
 
@@ -1606,7 +1619,7 @@ a.annotator-wrapper {
   font-size: 14px;
   right: 5px;
   top: 4px;
-} 
+}
 
 .annotator-pager .page-prev a,
 .annotator-pager .page-next a {
@@ -2034,7 +2047,7 @@ div.note.subscribe {
 }
 .checkbox_follows,
 .checkbox.invisible,
-.checkbox.premeeting, 
+.checkbox.premeeting,
 .checkbox.can-subscribe {
   float: right;
   display: inline;

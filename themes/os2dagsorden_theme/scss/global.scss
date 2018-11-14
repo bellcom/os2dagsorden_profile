@@ -438,7 +438,7 @@ ul li.leaf {
     position: absolute;
     color: $color-white;
   }
-  
+
 }
 .content #zoom_menu_container {
   line-height: 0;
@@ -1300,6 +1300,17 @@ table {
   border: 1px solid $color-background-primary;
   border-top: 0px;
   font-family: $font-basic;
+  .ul-item-list-dagsordenspunkt {
+    li.bilag {
+      position: relative;
+      .bilag-pages {
+        position: absolute;
+        right: -65px;
+        top: 0;
+        line-height: 30px;
+      }
+    }
+  }
   .form-submit {
     padding: 10px 50px 10px 50px;
     font-size: $font-size-button;
@@ -1734,6 +1745,15 @@ div.speaker-paper-print {
     background: $color-white;
     border-radius: $border-radius;
     border: 1px solid $color-background-primary;
+  }
+  .ul-item-list-dagsordenspunkt li.bilag {
+    position: relative;
+    .bilag-pages {
+      right: 15px;
+      position: absolute;
+      top: 0;
+      line-height: 30px;
+    }
   }
 }
 .form-submit.nav-button {

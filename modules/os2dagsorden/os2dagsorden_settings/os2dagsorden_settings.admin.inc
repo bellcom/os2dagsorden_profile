@@ -209,6 +209,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether bullet point <i>"Afgøres i"</i> will be shown'),
     '#default_value' => variable_get('os2dagsorden_show_bp_comname', FALSE),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show amount of pages in bilag file'),
+    '#default_value' => variable_get('os2dagsorden_show_bilag_pages_amount', FALSE),
+    '#description' => t('This decides whether amount of BPA pages will be shown on meeting page'),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable PDF download whitelist'),
@@ -1545,6 +1551,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bilag', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag']);
     variable_set('os2dagsorden_use_abbr', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_use_abbr']);
     variable_set('os2dagsorden_show_bp_comname', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_comname']);
+    variable_set('os2dagsorden_show_bilag_pages_amount', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount']);
     // FIXME: new variable.
     variable_set('os2dagsorden_pdf_download_whitelist_enabled', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled']);
     variable_set('os2dagsorden_pdf_download_whitelist', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist']);
