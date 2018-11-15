@@ -706,7 +706,9 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
   global $base_url;
 
   // Overriding title for bilag.
-  drupal_set_title("Mødenoter");
+  $meeting = node_load($meeting_id);
+  $meeting_date = date('d-m-Y', strtotime($meeting->field_os2web_meetings_date['und'][0]['value']));
+  drupal_set_title(t("Mødenoter: @title den @date", array('@title' => $meeting->title, '@date' => $meeting_date)));
 
   // Breadcrumb.
   $breadcrumb[] = l(t('Forsiden'), $base_url);
@@ -764,18 +766,16 @@ function _os2dagsorden_annotator_meeting_all_notes_generate_html($meeting_id) {
             $hash = $attachment_id['target_id'];
             $attachments[$hash] = $attachment_id;
           }
-
-          foreach ($attachments as $attachment_id) {
+          $annotation_lists = array();
+          $non_bilag_note_nr = 1;
+          $bilag_note_nr = 1;
+          foreach ($attachments as $key => $attachment_id) {
             $bilag = node_load($attachment_id['target_id']);
 
             // Getting annotations from storage.
             $annotations = os2dagsorden_annotator_get_notes_by_attachment_id($bilag->nid);
 
-            // Initiating variabes
-            // in a nice print format.
-            $annotation_list = '';
-            // Used for enumerating.
-            $note_nr = 1;
+           // Used for enumerating.
 
             while (!empty($annotations)) {
               // Flushing array indexing.
@@ -787,21 +787,40 @@ function _os2dagsorden_annotator_meeting_all_notes_generate_html($meeting_id) {
                   $first_note_ind = $i;
                 }
               }
-              $annotation_list .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $note_nr, TRUE,
+             // $annotation_lists[$key]['title'] = $bilag->title;
+              if (!empty($bilag->field_os2web_meetings_bpa_file['und'])) {
+                $annotation_lists['bilags'] .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $bilag_note_nr, TRUE, TRUE,
+               '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $bilag->nid , $bilag->title);
+                $bilag_note_nr++;
+              }
+              else {
+                $annotation_lists['non-bilags'] .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $non_bilag_note_nr, TRUE, FALSE,
                '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $bilag->nid);
-              $note_nr++;
-
+               $non_bilag_note_nr++;
+              }
               unset($annotations[$first_note_ind]);
             }
+          }
 
-            if (!empty($annotation_list)) {
-              $html .= '<h3>' . $bilag->title . ': [' . $bullet_point->title . ']</h3>';
-              $html .= $annotation_list . "<br/>";
+          if (!empty($annotation_lists)) {
+            $html .= '<div class="annotator-notes">';
+            $html .= '<h1 class="title">' . $bullet_point->title . '</h1>';
+            if (!empty($annotation_lists['non-bilags'])) {
+              $html .= '<div class="annotator-non-bilags-notes">';
+              $html .= '<h3>' . t('Fremstillingsnoter') . '</h3>';
+              $html .= $annotation_lists['non-bilags'];
+              $html .= '</div>';
             }
+            if (!empty($annotation_lists['bilags'])) {
+              $html .= '<div class="annotator-bilags-notes">';
+              $html .= '<h3>' . t('Bilagsnoter') . '</h3>';
+              $html .= $annotation_lists['bilags'];
+              $html .= '</div>';
+            }
+            $html .= '</div>';
           }
         }
       }
-
     }
   }
 
@@ -907,25 +926,29 @@ function _os2dagsorden_annotator_append_index($body, $note, $note_nr) {
  * @return string
  *   The footnote with note text.
  */
-function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE, $link = FALSE) {
-  $to_return = '<b>[' . $index . ']</b> ';
+function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE, $is_bilag = FALSE, $link = FALSE, $bilag_title = '') {
+  $to_return = '<div class="annotator-note">';
+  $to_return .= '<div class="annotator-note-index">' . $index . ').</div> ';
   if (!$print_text) {
-    $to_return .= $note->text . '<br/>';
+    $to_return .= '<div class="annotator-note-text">' .$note->text . '</div>';
   }
   else {
-    $sp = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    //$sp = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
     $xpath = $note->ranges[0]->start;
     $xpath_arr = explode('/', $xpath);
     $page_nr = trim($xpath_arr[2], 'div[]');
     if (!$page_nr) {
       $page_nr = 1;
     }
-
-    if (is_numeric($page_nr)) {
-      $to_return .= ' Side ' . $page_nr . '.';
+    $to_return .= '<div class="annotator-note-text">';
+    if (!empty($bilag_title) && is_numeric($page_nr)) {
+      $to_return .=  '<u><b>' . $bilag_title . '</b> Side ' . $page_nr . '</u></br>';
+      $to_return .= ' <b>' . $note->quote . '</b>:<br/><i>' . $note->text . '</i>';
+    }
+    else {
+      $to_return .= ' <b><u>' . $note->quote . '</u></b>:<br/><i>' . $note->text . '</i>';
     }
 
-    $to_return .= ' <b>' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i>';
     if (!empty($link)) {
       if (intval($page_nr) > OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) {
         // If pages per view is 5, then the page number will be 5, 10, 15 etc.
@@ -934,11 +957,12 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
       }
 
       global $base_url;
-      $to_return .= '<a target="_blank" href="' . $base_url . $link . '" class="no-print"> >>> </a>';
+      $to_return .= '<div class="annotator-note-link"><a target="_blank" href="' . $base_url . $link . '" class="no-print">' . t('Gå til note') . '</a> </div>';
 
     }
-    $to_return .= '<br/>';
+    $to_return .= '</div>';
   }
+  $to_return .= '</div>';
   return $to_return;
 }
 
