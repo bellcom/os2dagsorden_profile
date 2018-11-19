@@ -1360,6 +1360,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('Number of days before the meeting for which participants should see its contents'),
     '#default_value' => variable_get('os2dagsorden_timespan_open_meeting_content', 14),
   );
+   $form['os2dagsorden_external_committee']['os2dagsorden_external_committee_anonymize_button_behavior'] = array(
+    '#type' => 'radios',
+    '#title' => t('For user created meetings the "delete / anonymize" button will:'),
+    '#options' => array('delete' => 'delete', 'anonymize' => 'anonymize'),
+    '#default_value' => variable_get('os2dagsorden_external_committee_anonymize_button_behavior', 'anonymize'),
+    '#description' => t('This decides what "delete / anonymize" button will to do: clear meeting content or delete meeting'),
+  );
 
   // Sort items alphabetically.
   ksort($form);
@@ -1700,5 +1707,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
 
     variable_set('os2dagsorden_token_login_ip_whitelist', $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_ip_whitelist']);
     variable_set('os2dagsorden_token_login_allowed_paths', $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_allowed_paths']);
+
+    variable_set('os2dagsorden_external_committee_anonymize_button_behavior', $setting_array['os2dagsorden_external_committee']['os2dagsorden_external_committee_anonymize_button_behavior']);
   }
 }

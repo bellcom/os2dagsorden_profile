@@ -22,13 +22,20 @@ function os2dagsorden_meeting_views_meeting_details_agenda_and_edit_button() {
   global $base_url;
   $q = explode('/', $_GET['q']);
   $meeting_id = $q[1];
+
   if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
     $meeting = node_load($meeting_id);
     $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
     if (os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($committee_tid) === TRUE) {
+
       if (os2dagsorden_access_helper_check_user_can_delete_meeting_content($committee_tid) === TRUE) {
         print '<div class="controls-right">';
-        print '<a href="' . $base_url . '/agenda/' . $meeting_id . '/clear" class="form-submit">' . t('Anonymize') . '</a>';
+        if (variable_get('os2dagsorden_external_committee_anonymize_button_behavior', 'anonymize') === 'delete') {
+          print '<a href="' . $base_url . '/agenda/' . $meeting_id . '/delete" class="form-submit">' . t('Delete meeting') . '</a>';
+        }
+        else {
+          print '<a href="' . $base_url . '/agenda/' . $meeting_id . '/clear" class="form-submit">' . t('Anonymize') . '</a>';
+        }
         print '</div>';
       }
       // print '<div class="controls-right">';
