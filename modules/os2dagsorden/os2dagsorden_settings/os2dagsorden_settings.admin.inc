@@ -309,6 +309,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('Text that will be display on a Create note button'),
     '#default_value' => variable_get('os2dagsorden_create_note_text', 'Lav note'),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_search_switch_to_note_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Switch to note button text'),
+    '#maxlength' => 200,
+    '#description' => t('Text that will be display on a Switch to note button'),
+    '#default_value' => variable_get('os2dagsorden_search_switch_to_note_text', 'Skift til noter'),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text'] = array(
     '#type' => 'checkbox',
     '#title' => t('Create note button hide text'),
@@ -1557,6 +1564,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_meeting_description_generate_pdf_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_title']);
     variable_set('os2dagsorden_meeting_description_generate_pdf_full_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_full_title']);
     variable_set('os2dagsorden_create_note_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text']);
+    variable_set('os2dagsorden_search_switch_to_note_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_switch_to_note_text']);
     variable_set('os2dagsorden_create_note_hide_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text']);
     variable_set('os2dagsorden_create_note_text_use_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title']);
 
