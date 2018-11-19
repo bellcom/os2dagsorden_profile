@@ -435,7 +435,7 @@ function os2dagsorden_meeting_views_bullet_point_fields_print_link($bp_id, $sp_i
   print "<div class='speaker-paper-print'>";
   print '<input class="form-submit print-button" type="button" onclick="window.open(';
   print(" ' " . $base_url . '/print/bullet-point/' . $bp_id . '/speaker-paper/' . $sp_id . '/print' . " ' ");
-  print ')" value="Print Talepapir">';
+  print ')" value="' . t('Print @speaker_paper', array('@speaker_paper' => strtolower(variable_get('os2dagsorden_title_meeting_comments', 'Talepapir')))) . '">';
   print "</div>";
 }
 

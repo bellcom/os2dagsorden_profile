@@ -371,10 +371,11 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
     drupal_add_js('highlight_wrapper(".node","' . $search_param . '");', 'inline');
 
     $path_to_annotate = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
+    $button_text = variable_get('os2dagsorden_search_switch_to_note_text', 'Skift til noter');
     $html .= <<<HTML
         <div class="annotator-touch-widget annotator-touch-controls">
           <div class="annotator-touch-widget-inner">
-            <a class="annotator-button annotator-add annotator-focus" href="{$path_to_annotate}">Skift til noter</a>
+            <a class="annotator-button annotator-add annotator-focus" href="{$path_to_annotate}">{$button_text}</a>
           </div>
         </div>
 HTML;

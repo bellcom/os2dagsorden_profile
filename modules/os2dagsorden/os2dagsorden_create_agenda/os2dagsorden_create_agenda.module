@@ -79,6 +79,14 @@ function os2dagsorden_create_agenda_menu() {
     'title' => 'Anonymize agenda',
     'type' => MENU_LOCAL_TASK,
   );
+  $items['agenda/%/delete'] = array(
+    'page callback' => 'drupal_get_form',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(1),
+    'page arguments' => array('os2dagsorden_create_agenda_meeting_delete', 1),
+    'title' => 'Anonymize agenda',
+    'type' => MENU_LOCAL_TASK,
+  );
 
   return $items;
 }
@@ -173,4 +181,25 @@ function os2dagsorden_create_agenda_meeting_content_deletion_submit($form, &$for
     node_delete($bullet_point['target_id']);
   }
   drupal_goto('meeting/' . $meeting->nid);
+}
+
+/**
+ * Implements hook_form().
+ */
+function os2dagsorden_create_agenda_meeting_delete($form, &$form_state, $meeting_id) {
+  $meeting = node_load($meeting_id);
+  $msg = '<p>' . t('Are you sure that you want delete meeting %meeting', array('%meeting' => $meeting->title)) . '</p>';
+  $msg .= '<p>' . t('This action cannot be undone.') . '</p>';
+  $form_state['meeting_id'] = $meeting_id;
+  $header = t('Delete meeting %meeting', array("%meeting" => $meeting->title));
+  $button_text = (variable_get('os2dagsorden_external_committee_anonymize_button_behavior', 'anonymize') === 'delete') ? t('Delete meeting') : t('Anonymize');
+  return confirm_form($form, $header, "meeting/" . $meeting_id, $msg, $button_text, t('Cancel'));
+}
+
+/**
+ * Implements hook_FORM_submit().
+ */
+function os2dagsorden_create_agenda_meeting_delete_submit($form, &$form_state) {
+  node_delete($form_state['meeting_id']);
+  drupal_goto('/');
 }
