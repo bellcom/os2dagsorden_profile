@@ -658,8 +658,12 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_title($t
   $is_personal = $bp->field_os2web_meetings_bul_pers['und'][0]['value'];
 
   if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id)) {
-    print '<a href="' . $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" class="first-child poshy_tip"' . $tooltip . '>';
-
+    if ($is_closed && os2dagsorden_meeting_views_meeting_details_show_closed_bullet_point_content($meeting_id, $bp_id)) {
+      print '<a href="' . $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" target="_blank"  class="first-child poshy_tip"' . $tooltip . '>';
+    }
+    else {
+      print '<a href="' . $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" class="first-child poshy_tip"' . $tooltip . '>';
+    }
     os2dagsorden_meeting_views_meeting_details_fields_indicator_bullet_point_has_sp($bp_id);
 
     if ($is_closed) {
