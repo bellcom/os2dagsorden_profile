@@ -138,7 +138,7 @@ function os2dagsorden_speaker_paper_form_os2dagsorden_settings_settings_form_alt
 function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id === 'os2web_meetings_spaper_node_form') {
     // Setting title.
-    drupal_set_title(t('Create speaker paper'));
+    drupal_set_title(t('Create @speaker_paper', array('@speaker_paper' => variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'))));
 
     // Adding values into the body field, each time user is opening the speaker
     // paper form, e.g.
@@ -169,5 +169,16 @@ function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
         unset($form['field_os2web_meetings_sp_shared']['und']['#options'][$uid]);
       }
     }
+    $form['actions']['submit']['#submit'][] = 'os2dagsorden_speaker_paper_rewrite_status_message';
   }
+}
+
+/*
+ * Override status message on Talepapir node creation.b
+ */
+function os2dagsorden_speaker_paper_rewrite_status_message() {
+  $message = array_shift(drupal_get_messages('status'));
+  //To override message
+  $new_message  = str_replace('Talepapir', variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'), $message[0]);
+  drupal_set_message($new_message);
 }
