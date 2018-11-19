@@ -561,6 +561,16 @@ h1.title.brugerroller{
 
 .block-views-exp-meetings-search-page div.views-exposed-form {
   padding: 5px 15px 0 15px;
+  .views-exposed-widget.views-submit-button {
+    display: inline-block;
+    width: inherit;
+  }
+  .views-exposed-widget.views-reset-button {
+    display: inline-block;
+    width: inherit;
+    float: right;
+  }
+
 }
 
 div.attachment {
