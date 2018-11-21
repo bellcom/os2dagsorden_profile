@@ -24,7 +24,7 @@
  * @return mixed
  *   The created form.
  */
-function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_point_id) {
+function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
   $form[] = array(
     '#markup' => '<h1 class="title">' . t('Bullet point') . '</h1>',
   );
@@ -53,7 +53,7 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
     '#required' => TRUE,
     '#element_validate' => array('element_validate_number'),
     '#description' => t('The ordinal number of the bullet point'),
-    '#default_value' => os2dagsorden_create_agenda_bullet_point_find_last_number($form_state)
+    '#default_value' => os2dagsorden_create_agenda_bullet_point_find_last_number($form_state['meeting_id'])
   );
 
   $form['closed'] = array(
@@ -220,7 +220,6 @@ function os2dagsorden_create_agenda_save_bullet_point($form, &$form_state) {
   $number = $form_state['values']['number'];
   $closed = $form_state['values']['closed'];
   $personal = $form_state['values']['personal'];
-
   if (!$form_state['bullet_point_id']) {
     // Node creating.
     $node = new stdClass();
@@ -231,14 +230,12 @@ function os2dagsorden_create_agenda_save_bullet_point($form, &$form_state) {
   else {
     $node = node_load($form_state['bullet_point_id']);
   }
-
   $node->title = $title;
   $node->field_os2web_meetings_bul_number['und'][0]['value'] = $number;
   $node->field_os2web_meetings_bul_closed['und'][0]['value'] = $closed;
   $node->field_os2web_meetings_bul_pers['und'][0]['value'] = $personal;
 
   node_save($node);
-
   os2dagsorden_create_agenda_add_bullet_point_to_meeting($form_state['meeting_id'], $node->nid);
 
   return $node;
@@ -304,7 +301,9 @@ function os2dagsorden_create_agenda_remove_bpa_from_bullet_point($bullet_point_i
  */
 function os2dagsorden_create_agenda_bullet_point_submit($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_bullet_point($form, $form_state);
-
+  if (arg(3) == 'bullet-point') {
+    drupal_goto('/meeting/'. $form_state['meeting_id']);
+  }
   $form_state['page_num'] = 1;
   $form_state['rebuild'] = TRUE;
 }
@@ -358,6 +357,9 @@ function os2dagsorden_create_agenda_bullet_point_submit_delete_bpa($form, &$form
  *   The current state of the form.
  */
 function os2dagsorden_create_agenda_bullet_point_back($form, &$form_state) {
+  if (arg(3) == 'bullet-point') {
+    drupal_goto('/meeting/'. $form_state['meeting_id']);
+  }
   $form_state['page_num'] = 1;
   $form_state['rebuild'] = TRUE;
 }
@@ -371,10 +373,10 @@ function os2dagsorden_create_agenda_bullet_point_back($form, &$form_state) {
  * @return int
  *   The generated bullet point number.
  */
-function os2dagsorden_create_agenda_bullet_point_find_last_number($form_state) {
+function os2dagsorden_create_agenda_bullet_point_find_last_number($meeting_id) {
   $number = 1;
 
-  $meeting = node_load($form_state['meeting_id']);
+  $meeting = node_load($meeting_id);
 
   if (field_get_items('node', $meeting, 'field_os2web_meetings_bullets')) {
     $bullet_points = field_get_items('node', $meeting, 'field_os2web_meetings_bullets');
@@ -391,4 +393,18 @@ function os2dagsorden_create_agenda_bullet_point_find_last_number($form_state) {
   }
 
   return $number;
+}
+
+/**
+ * Helper functions to delete bullet point attachment via ajax.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_delete_bpa_ajax_call($meeting_id, $bp_id, $bpa_id) {
+  os2dagsorden_create_agenda_remove_bpa_from_bullet_point($bp_id, $bpa_id);
+  node_delete($bpa_id);
+  drupal_json_output(array('status' => 'OK', 'element' => 'bpa'));
 }
