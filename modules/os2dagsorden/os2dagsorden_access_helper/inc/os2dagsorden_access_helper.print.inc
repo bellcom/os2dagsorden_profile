@@ -25,31 +25,88 @@
  *   for nice printing of speaker paper.
  */
 function os2dagsorden_access_helper_print_speaker_paper($bullet_point_id, $speaker_paper_id) {
-  if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point_id, variable_get('os2dagsorden_shared_speaker_paper', TRUE))) {
-    $bullet_point = node_load($bullet_point_id);
+  $html = os2dagsorden_access_helper_print_speaker_paper_generate_html($bullet_point_id, $speaker_paper_id);
+  if (!empty($html)) {
     $speaker_paper = node_load($speaker_paper_id);
     drupal_set_title(t('Talepapir') . ' - ' . $speaker_paper->title);
-    $html = '<h3>' . $bullet_point->title . ' - Talepapir - ' . $speaker_paper->title . '</h3>';
-
-    $html .= $speaker_paper->body['und'][0]['value'];
+    return ('<div class="node">' . $html . '</div>');
   }
-
-  return ('<div class="node">' . $html . '</div>');
 }
 
 /**
- * Composes the print page for meeting's speaker papers for a current user.
+ * Generates HTML of meeting speaker papers.
+ *
+ * @param int $bullet_point_id
+ *   ID of the bullet point.
+ * @param int $speaker_paper_id
+ *   ID of the speaker paper.
+ *
+ * @return string
+ *   The html of the created page.
+ */
+function os2dagsorden_access_helper_print_speaker_paper_generate_html($bullet_point_id, $speaker_paper_id) {
+  $html = '';
+  if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point_id, variable_get('os2dagsorden_shared_speaker_paper', TRUE))) {
+    $bullet_point = node_load($bullet_point_id);
+    $speaker_paper = node_load($speaker_paper_id);
+
+    $html = '<h3>' . $bullet_point->title . ' - Talepapir - ' . $speaker_paper->title . '</h3>';
+
+    $html .= '<div class="speaker-paper-content">' . $speaker_paper->body['und'][0]['value'] . '</div>';
+  }
+  return $html;
+}
+/**
+ * Composes the view of all speaker papers for this meeting.
  *
  * @param int $meeting_id
- *   Id of a meeting.
+ *   ID of the meeting.
  *
- * @return mixed
- *   List of the speaker papers attached to that meeting.
+ * @return string
+ *   The html of the created page.
  */
-function os2dagsorden_access_helper_print_meeting_speaker_papers($meeting_id) {
-  global $user;
-  $speaker_papers_print = "";
+function os2dagsorden_access_helper_meeting_all_meeting_speaker_papers_view($meeting_id) {
+  global $base_url;
+
+  // Overriding title for bilag.
+  //drupal_set_title(variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'));
+
+  // Breadcrumb.
+  $breadcrumb[] = l(t('Forsiden'), $base_url);
+  $breadcrumb[] .= l(t('Mødedetaljer'), 'meeting/' . $meeting_id);
+  $breadcrumb[] .= '<span class="breadcrumb-active">' . variable_get('os2dagsorden_title_meeting_comments', 'Talepapir') .'</span>';
+  drupal_set_breadcrumb($breadcrumb);
+
   $meeting = node_load($meeting_id);
+  drupal_set_title(t('Talepapir') . ' - ' . $meeting->title);
+
+  // Help icon.
+  $html = '<div class="node">';
+  $html .= '<div id="content" class="view-content">';
+
+  // Print and send to friend.
+  $print_link = l(variable_get('os2dagsorden_title_meeting_print_all_speakerpapers'), "print/meeting/$meeting_id/speaker-papers/print", array('attributes' => array('target' => '_blank', 'class' => array('form-submit'))));
+
+  $html .= '<div class="controls-right no-print">' . $print_link . '</div>';
+  $html .= '<div class="clearfix"></div>';
+
+  $html .= os2dagsorden_access_helper_meeting_all_meeting_speaker_papers_generate_html($meeting);
+
+  $html .= '</div></div>';
+  return $html;
+}
+/**
+ * Generates HTML of meeting speaker papers.
+ *
+ * @param mixed $meeting
+ *   Meeting object.
+ *
+ * @return string
+ *   The html of the created page.
+ */
+function os2dagsorden_access_helper_meeting_all_meeting_speaker_papers_generate_html($meeting) {
+  global $user;
+  $html = "";
   $bullet_point_unique = array();
   if (isset($meeting->field_os2web_meetings_bullets['und'])) {
     foreach ($meeting->field_os2web_meetings_bullets['und'] as $bullet_point) {
@@ -68,10 +125,9 @@ function os2dagsorden_access_helper_print_meeting_speaker_papers($meeting_id) {
       if (isset($result['node'])) {
         $nids = array_keys($result['node']);
         foreach ($nids as $nid) {
-          $speaker_papers_print .= os2dagsorden_access_helper_print_speaker_paper($bullet_point, $nid);
+          $html .= os2dagsorden_access_helper_print_speaker_paper_generate_html($bullet_point, $nid);
         }
       }
-
       // Shared speaker papers.
       if (variable_get('os2dagsorden_shared_speaker_paper', TRUE)) {
         $query = new EntityFieldQuery();
@@ -84,12 +140,11 @@ function os2dagsorden_access_helper_print_meeting_speaker_papers($meeting_id) {
         if (isset($result['node'])) {
           $nids = array_keys($result['node']);
           foreach ($nids as $nid) {
-            $speaker_papers_print .= os2dagsorden_access_helper_print_speaker_paper($bullet_point, $nid);
+            $html .= os2dagsorden_access_helper_print_speaker_paper_generate_html($bullet_point, $nid);
           }
         }
       }
     }
   }
-  drupal_set_title(t('Talepapirer') . ' - ' . $meeting->title);
-  return $speaker_papers_print;
+  return $html;
 }
