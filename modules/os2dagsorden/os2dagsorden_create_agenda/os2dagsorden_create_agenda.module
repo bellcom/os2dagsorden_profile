@@ -65,11 +65,16 @@ function os2dagsorden_create_agenda_menu() {
     'page arguments' => array(2, 4),
     'type' => MENU_CALLBACK,
   );
-   $items['agenda/meeting/%/bullet-point/%/attachment/%/delete'] = array(
+  $items['agenda/meeting/%/bullet-point/%/attachment/%/delete'] = array(
     'page callback' => 'os2dagsorden_create_agenda_delete_bpa_ajax_call',
     'access callback' => '_os2dagsorden_create_agenda_meeting_access',
     'access arguments' => array(2),
     'page arguments' => array(2, 4, 6),
+    'type' => MENU_CALLBACK,
+  );
+  $items['agenda/meeting/bullet-point/sort'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_sort_bpa_ajax_call',
+    'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
   $items['node/%/agenda'] = array(
