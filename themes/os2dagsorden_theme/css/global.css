@@ -673,6 +673,9 @@ ul li.leaf {
   margin-top: 5px;
   margin-bottom: 5px; }
 
+.view-content .speaker-paper-content {
+  padding: 0 7px 10px 7px; }
+
 .block-views-exp-meetings-search-page .views-exposed-form .views-exposed-widget .form-submit {
   margin-top: 0; }
 
