@@ -729,7 +729,8 @@ h1.title.brugerroller {
   .block-views-exp-meetings-search-page div.views-exposed-form .views-exposed-widget.views-reset-button {
     display: inline-block;
     width: inherit;
-    float: right; }
+    float: right;
+    padding-right: 0; }
 
 div.attachment {
   background: #f7f1f1; }
