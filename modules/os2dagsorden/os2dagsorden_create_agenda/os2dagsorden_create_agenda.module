@@ -37,7 +37,46 @@ function os2dagsorden_create_agenda_menu() {
     'page arguments' => array(2),
     'type' => MENU_CALLBACK,
   );
-
+  $items['agenda/meeting/%/bullet-point/%'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_meeting_page',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(2),
+    'page arguments' => array(2, 4),
+    'type' => MENU_CALLBACK,
+  );
+  $items['agenda/meeting/%/bullet-point'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_meeting_page',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(2),
+    'page arguments' => array(2),
+    'type' => MENU_CALLBACK,
+  );
+  $items['agenda/meeting/%/bullet-point/%/attachment/%'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_meeting_page',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(2),
+    'page arguments' => array(2, 4, 6),
+    'type' => MENU_CALLBACK,
+  );
+  $items['agenda/meeting/%/bullet-point/%/delete'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_delete_bullet_point_ajax_call',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(2),
+    'page arguments' => array(2, 4),
+    'type' => MENU_CALLBACK,
+  );
+  $items['agenda/meeting/%/bullet-point/%/attachment/%/delete'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_delete_bpa_ajax_call',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(2),
+    'page arguments' => array(2, 4, 6),
+    'type' => MENU_CALLBACK,
+  );
+  $items['agenda/meeting/bullet-point/sort'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_sort_bpa_ajax_call',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   $items['node/%/agenda'] = array(
     'page callback' => '_os2dagsorden_create_agenda_redirect',
     'access callback' => '_os2dagsorden_create_agenda_meeting_access',
@@ -130,12 +169,12 @@ function _os2dagsorden_create_agenda_simple_redirect($meeting_id = NULL) {
  * @return mixed
  *   The meeting form.
  */
-function os2dagsorden_create_agenda_meeting_page($meeting_id = NULL) {
+function os2dagsorden_create_agenda_meeting_page($meeting_id = NULL, $bp_id = NULL, $bpa_id = NULL) {
   if ($_GET['simple']) {
     return drupal_get_form('os2dagsorden_create_agenda_meeting_simple', $meeting_id);
   }
   else {
-    return drupal_get_form('os2dagsorden_create_agenda_meeting', $meeting_id);
+    return drupal_get_form('os2dagsorden_create_agenda_meeting', $meeting_id, $bp_id, $bpa_id);
   }
 }
 

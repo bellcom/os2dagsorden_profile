@@ -24,13 +24,25 @@
   * @return mixed
   *   The created form.
   */
-function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id) {
+function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $bp_id = NULL, $bpa_id = NULL) {
   if (!empty($form_state['page_num']) && $form_state['page_num'] === 2) {
     return os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_point_id);
   }
   elseif (!empty($form_state['page_num']) && $form_state['page_num'] === 3) {
     return os2dagsorden_create_agenda_bpa($form, $form_state);
   }
+  elseif (isset($bpa_id)) {
+    $form_state['meeting_id'] = $meeting_id;
+    $form_state['bullet_point_id'] = $bp_id;
+    $form_state['bpa_id'] =  $bpa_id;
+    return os2dagsorden_create_agenda_bpa($form, $form_state, $bp_id, $meeting_id);
+  }
+  elseif (isset($bp_id) || arg(3) == 'bullet-point') {
+     $form_state['meeting_id'] = $meeting_id;
+    $form_state['bullet_point_id'] = $bp_id;
+    return os2dagsorden_create_agenda_bullet_point($form, $form_state);
+  }
+
   $form_state['page_num'] = 1;
 
   $form[] = array(
@@ -259,7 +271,7 @@ function os2dagsorden_create_agenda_bullet_point_delete_ajax($form, $form_state)
  */
 function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
   $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
- 
+
   $input = $form_state['input'];
   // File extraction.
   $description_opened = $form_state['values']['description_opened'];
@@ -361,6 +373,20 @@ function os2dagsorden_create_agenda_meeting_submit_delete_bullet_point($form, &$
 
   $form_state['page_num'] = 1;
   $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Helper functions to delete bullet point via ajax.
+ *
+ * @param mixed $meeting_id
+ *   The meeting nid.
+ * @param mixed $bullet_point_id
+ *   The bullet point nid.
+ */
+function os2dagsorden_create_agenda_delete_bullet_point_ajax_call($meeting_id, $bullet_point_id) {
+  os2dagsorden_create_agenda_remove_bullet_point_from_meeting($meeting_id, $bullet_point_id);
+  node_delete($bullet_point_id);
+  drupal_json_output(array('status' => 'OK', 'element' => 'bp'));
 }
 
 /**

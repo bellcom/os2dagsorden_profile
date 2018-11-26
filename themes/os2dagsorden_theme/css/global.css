@@ -673,6 +673,9 @@ ul li.leaf {
   margin-top: 5px;
   margin-bottom: 5px; }
 
+.view-content .speaker-paper-content {
+  padding: 0 7px 10px 7px; }
+
 .block-views-exp-meetings-search-page .views-exposed-form .views-exposed-widget .form-submit {
   margin-top: 0; }
 
@@ -726,7 +729,8 @@ h1.title.brugerroller {
   .block-views-exp-meetings-search-page div.views-exposed-form .views-exposed-widget.views-reset-button {
     display: inline-block;
     width: inherit;
-    float: right; }
+    float: right;
+    padding-right: 0; }
 
 div.attachment {
   background: #f7f1f1; }
@@ -1104,6 +1108,9 @@ pager li.pager-first {
   float: right;
   margin: 15px 6px 0px 10px; }
 
+.controls-right.agenda-level.create-agenda {
+  margin-bottom: 12px; }
+
 .controls-left {
   float: left;
   margin: 5px 10px 10px 0; }
@@ -1464,6 +1471,30 @@ table .speaker-paper-link-container {
         background: #fffffe;
         border: none;
         padding: 7px 0; }
+        .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container {
+          width: 52px;
+          min-width: 52px; }
+          .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a {
+            display: inline-block;
+            padding: 3px 3px 0 3px;
+            line-height: 15px;
+            border-radius: none; }
+            .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-edit-agenda {
+              position: relative;
+              background: url("../img/icon_edit.png") no-repeat 50% top;
+              min-width: 16px;
+              min-height: 16px;
+              width: 16px;
+              height: 16px;
+              padding: 2px 2px 0 2px; }
+            .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-delete-agenda {
+              position: relative;
+              background: url("../img/icon_delete.png") no-repeat 50% top;
+              min-width: 16px;
+              min-height: 16px;
+              width: 16px;
+              height: 16px;
+              padding: 2px 2px 0 2px; }
         .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td a {
           display: block;
           position: relative;
@@ -1483,8 +1514,35 @@ table .speaker-paper-link-container {
           overflow: hidden;
           text-overflow: ellipsis;
           border-radius: 3px 3px 0 0; }
+        .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt li {
+          position: relative; }
         .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt a {
           background-color: #f7f1f1; }
+        .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment-modify-links-container {
+          position: absolute;
+          top: 0;
+          right: 0; }
+          .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment-modify-links-container a {
+            display: inline-block;
+            background: transparent;
+            border: none;
+            padding: 3px; }
+            .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment-modify-links-container a .indicator-edit-agenda {
+              position: relative;
+              background: url("../img/icon_edit.png") no-repeat 50% top;
+              min-width: 16px;
+              min-height: 16px;
+              width: 16px;
+              height: 16px;
+              padding: 2px 2px 0 2px; }
+            .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment-modify-links-container a .indicator-delete-agenda {
+              position: relative;
+              background: url("../img/icon_delete.png") no-repeat 50% top;
+              min-width: 16px;
+              min-height: 16px;
+              width: 16px;
+              height: 16px;
+              padding: 2px 2px 0 2px; }
         .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment_text_container .attachment-text a {
           background-color: inherit;
           display: inline;
@@ -2058,6 +2116,9 @@ a.annotator-wrapper {
 
 .create-agenda-list-item {
   padding-bottom: 10px; }
+
+.ui-sortable .create-agenda-list-item {
+  cursor: all-scroll; }
 
 .create-agenda-edit-delete-container {
   padding-right: 15px; }
