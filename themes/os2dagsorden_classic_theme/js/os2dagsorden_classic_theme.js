@@ -962,9 +962,8 @@ jQuery("#zoom_reset_button").click(function(){
   jQuery('#views-exposed-form-meetings-search-page input#edit-reset').click(function(event){
     event.preventDefault();
     jQuery(this.form).clearForm();
-   console.log(Drupal.settings.os2dagsorden_settings.search_startdate);
-   jQuery('#edit-from-date-value-datepicker-popup-0').val(Drupal.settings.os2dagsorden_settings.search_startdate);
-   jQuery('#edit-to-date-value-datepicker-popup-0').val(Drupal.settings.os2dagsorden_settings.search_enddate)
+    jQuery('#edit-from-date-value-datepicker-popup-0').val(Drupal.settings.os2dagsorden_settings.search_startdate);
+    jQuery('#edit-to-date-value-datepicker-popup-0').val(Drupal.settings.os2dagsorden_settings.search_enddate)
     jQuery('#edit-field-os2web-meetings-committee-tid-depth').val('All');
   });
 
