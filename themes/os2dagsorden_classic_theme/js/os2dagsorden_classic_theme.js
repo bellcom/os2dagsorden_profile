@@ -959,12 +959,14 @@ jQuery("#zoom_reset_button").click(function(){
       jQuery('body').css('zoom', '100%');
     }
   });
-
   jQuery('#views-exposed-form-meetings-search-page input#edit-reset').click(function(event){
     event.preventDefault();
     jQuery(this.form).clearForm();
+    jQuery('#edit-from-date-value-datepicker-popup-0').val(Drupal.settings.os2dagsorden_settings.search_startdate);
+    jQuery('#edit-to-date-value-datepicker-popup-0').val(Drupal.settings.os2dagsorden_settings.search_enddate)
     jQuery('#edit-field-os2web-meetings-committee-tid-depth').val('All');
   });
+
 
 });
 // Help text clickable.
