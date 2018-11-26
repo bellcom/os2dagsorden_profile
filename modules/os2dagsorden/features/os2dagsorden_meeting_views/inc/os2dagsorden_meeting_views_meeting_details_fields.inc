@@ -559,7 +559,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_print_all_speaker_pap
     print "<div class='speaker-paper-all-print'>";
     print '<input class="form-submit print-button" type="button" onclick="window.open(';
     print(" ' " . $base_url . '/meeting/' . $nid . '/speaker-papers/print' . " ' ");
-    print ')" value="' . variable_get('os2dagsorden_title_meeting_print_all_speakerpapers', 'Print alle talepapirer') . '">';
+    print ')" value="' . variable_get('os2dagsorden_title_meeting_see_all_speakerpapers', 'Se alle talepapirer') . '">';
 
     print "</div>";
   }
