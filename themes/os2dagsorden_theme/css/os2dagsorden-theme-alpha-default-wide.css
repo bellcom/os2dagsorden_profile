@@ -84,3 +84,6 @@ ul.droptrue li {
   display: inline-block;
   float: initial;
   margin-left: 0; }
+
+.block-views-exp-meetings-search-page div.views-exposed-form .views-exposed-widget.views-reset-button {
+  float: right; }
