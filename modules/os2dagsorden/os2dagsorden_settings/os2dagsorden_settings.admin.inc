@@ -30,7 +30,6 @@ define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
  */
 function os2dagsorden_settings_settings_form($form, $form_state) {
   $output = os2dagsorden_blocks_positioning_show_git_version();
-
   $info_path = drupal_get_path('profile', 'os2dagsorden') . '/os2dagsorden.info';
   $info = drupal_parse_info_file($info_path);
   $version = (isset($info['version'])) ? $info['version'] : 'no version';
@@ -880,7 +879,20 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('os2dagsorden_gs_conversion_gs_path', ""),
     );
   }
-
+   if (module_exists('os2dagsorden_pdf2png_conversion')) {
+    $form['os2dagsorden_pdf2png_conversion_settings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('Sedja Console converter settings'),
+    );
+    $form['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_pdf2png_conversion_sedja_console_path'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Path to Sejda-console'),
+      '#description' => t('Absolute path to sejda-console'),
+      '#default_value' => variable_get('os2dagsorden_pdf2png_conversion_sedja_console_path', ""),
+    );
+  }
   // Clear cache settings.
   $form['os2dagsorden_clear_cache_after_import'] = array(
     '#type' => 'fieldset',
