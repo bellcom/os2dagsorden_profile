@@ -246,7 +246,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_committee'] = variable_get('os2dagsorden_title_meeting_committee', 'Udvalg');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_see_all_speakerpapers'] = variable_get('os2dagsorden_title_meeting_see_all_speakerpapers', 'Se alle talepapirer');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_print_all_speakerpapers'] = variable_get('os2dagsorden_title_meeting_print_all_speakerpapers', 'Print alle talepapirer');
-  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_meeting_show_notes_button'] = variable_get('os2dagsorden_meeting_show_notes_button', 'Mødernoter');
+  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_meeting_notes_title'] = variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE);
 

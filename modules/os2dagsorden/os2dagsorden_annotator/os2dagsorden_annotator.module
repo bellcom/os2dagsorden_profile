@@ -678,12 +678,12 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
   global $base_url;
 
   // Overriding title for bilag.
-  drupal_set_title("Mødenoter");
+  drupal_set_title(variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter'));
 
   // Breadcrumb.
   $breadcrumb[] = l(t('Forsiden'), $base_url);
   $breadcrumb[] .= l(t('Mødedetaljer'), 'meeting/' . $meeting_id);
-  $breadcrumb[] .= '<span class="breadcrumb-active">Mødenoter</span>';
+  $breadcrumb[] .= '<span class="breadcrumb-active">' . variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter') . '</span>';
   drupal_set_breadcrumb($breadcrumb);
 
   // Help icon.
