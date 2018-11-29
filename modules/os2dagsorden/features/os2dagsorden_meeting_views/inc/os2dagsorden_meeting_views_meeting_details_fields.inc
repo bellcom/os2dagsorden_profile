@@ -756,10 +756,12 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_attachme
 
           $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/bullet-point-attachment/' . $attachment->nid;
           print '<a href="' . $link . '" class="first-child last-child"><div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>' . $attachment->title . '</a>';
+          if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
           print '<div class="attachment-modify-links-container"> '
             . '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '" class="edit-meeting-btn"><div class="indicator-edit-agenda"></div>&nbsp;</a>'
             . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '/delete" class="edit-meeting-btn form-submit-delete"><div class="indicator-delete-agenda"></div>'
             . '&nbsp;</a></div>';
+          }
           // Attachment text - if any.
           if (!empty($attachment->field_os2web_meetings_bpa_body['und'][0]['value'])) {
             print '<div class="attachment_text_container">';
@@ -845,11 +847,12 @@ function _os2dagsorden_meeting_views_meeting_details_bilag_cases($elements, $mee
       }
       print '<div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>';
       print $attachment->title . '</a>';
-      print '<div class="attachment-modify-links-container"> '
-            . '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '" class="edit-meeting-btn"><div class="indicator-edit-agenda"></div>&nbsp;</a>'
-            . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '/delete" class="edit-meeting-btn form-submit-delete"><div class="indicator-delete-agenda"></div>'
-            . '&nbsp;</a></div>';
-
+      if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
+        print '<div class="attachment-modify-links-container"> '
+              . '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '" class="edit-meeting-btn"><div class="indicator-edit-agenda"></div>&nbsp;</a>'
+              . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '/delete" class="edit-meeting-btn form-submit-delete"><div class="indicator-delete-agenda"></div>'
+              . '&nbsp;</a></div>';
+      }
       // Attachment text - if any.
       if (variable_get('os2dagsorden_show_bilag', TRUE)) {
         if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0])) {
@@ -928,10 +931,12 @@ function _os2dagsorden_meeting_views_meeting_details_bilag_cases_bullet_point($b
     else {
       print '<a class="first-child last-child">' . $attachment->title . '</a>';
     }
-    print '<div class="attachment-modify-links-container"> '
-            . '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '" class="edit-meeting-btn"><div class="indicator-edit-agenda"></div>&nbsp;</a>'
-            . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '/delete" class="edit-meeting-btn form-submit-delete"><div class="indicator-delete-agenda"></div>'
-            . '&nbsp;</a></div>';
+    if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
+      print '<div class="attachment-modify-links-container"> '
+              . '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '" class="edit-meeting-btn"><div class="indicator-edit-agenda"></div>&nbsp;</a>'
+              . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/attachment/' . $attachment->nid . '/delete" class="edit-meeting-btn form-submit-delete"><div class="indicator-delete-agenda"></div>'
+              . '&nbsp;</a></div>';
+    }
     print '</div>';
   }
 
