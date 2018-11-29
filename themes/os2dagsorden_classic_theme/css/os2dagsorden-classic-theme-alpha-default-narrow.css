@@ -46,3 +46,10 @@
 .block-views .view-user-logout-menu li div.right {
   float: right;
 }
+.annotator-outline-pager {
+  display: none;
+}
+
+.has-outline-pager {
+  width: 100%;
+}

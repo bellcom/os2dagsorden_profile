@@ -423,10 +423,19 @@ HTML;
 
     // Bilag has converter to HTML version of file, getting the text out of it.
     if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
+      $pageAmount = $bilag->field_os2web_meetings_bpa_pages['und'][0]['value'];
       $file_uri = $bilag->field_os2web_meetings_bpa_html['und'][0]['uri'];
       $body_file = file_get_contents($file_uri);
+      if (module_exists("os2dagsorden_pdf2png_conversion") && (int) $pageAmount > 1) {
+        $pdf_file_uri = $bilag->field_os2web_meetings_bpa_file['und'][0]['uri'];
+        $images_folder = os2dagsorden_pdf2png_conversion_get_image_folder_uri($pdf_file_uri);
+        if (file_exists($images_folder)) {
+          $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
+          $outline_pager = _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageStart, $pageEnd, $pageAmount, $current_bilag_url);
+        }
+      }
       $text = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
-      $pageAmount = $bilag->field_os2web_meetings_bpa_pages['und'][0]['value'];
+
     }
 
     // Restricting PDF download.
@@ -452,11 +461,16 @@ HTML;
 
     // Composing html output.
     $html .= '</div><div class="clearfix"></div>' .
+      _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount);
+    if ($outline_pager) {
+     $html .= '<div class = "annotator-outline-pager">' . $outline_pager . '</div><div id="content" class = "has-outline-pager">';
+    }
+    else {
+       $html .= '<div id="content">';
+    }
+    $html .= '<div class="attachment-text">' . $text . '</div></div>' .
       _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
-    '<div id="content"><div class="attachment-text">' . $text . '</div></div>' .
-    _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
-    '</div>' .
-       _os2dagsorden_annotator_get_group_pager_html($pageAmount);
+      '</div>' . _os2dagsorden_annotator_get_group_pager_html($pageAmount);
     // Is not an actual bilag.
   }
   else {
@@ -987,4 +1001,28 @@ function os2dagsorden_annotator_node_delete($node) {
       ->condition('bilag_id', $node->nid, '=')
       ->execute();
   }
+}
+
+function _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageStart, $pageEnd, $pageAmount, $current_bilag_url) {
+  $images_folder_realpath = drupal_realpath($images_folder);
+  $images = file_scan_directory($images_folder_realpath, '/.*.png$/i', array('key' => 'name'));
+  $output = '';
+
+  if (isset($images) && !empty($images)) {
+    ksort($images, SORT_NUMERIC);
+    $output = '<ul>';
+    foreach ($images  as  $key => $image) {
+      if ($key < $pageStart || $key > $pageEnd) {
+        $page = floor($key / OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
+        $link = $current_bilag_url  . '?page=' . $page . '#pf'. $key;
+      }
+      else {
+        $link = '#pf' . $key;
+      }
+      $output .= '<li> <a href="'. $link . '"><img src = "' . file_create_url(rawurldecode($images_folder) . '/' . $key . '.png') . '">'
+          . '<span class="page-number"> ' . $key . '</span></li>';
+    }
+    $output .= '</ul>';
+  }
+  return $output;
 }

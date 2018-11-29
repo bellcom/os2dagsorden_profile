@@ -1646,6 +1646,45 @@ a.annotator-wrapper {
   margin-top: 10px;
   font-weight: bold;
 }
+
+.annotator-outline-pager {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  width: 15%;
+  vertical-align: top;
+}
+
+.annotator-outline-pager ul li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.annotator-outline-pager ul li a {
+  display: block;
+}
+.annotator-outline-pager ul li a span.page-number {
+  display: block;
+  text-align: center;
+  font-weight: 700
+}
+
+.annotator-outline-pager ul li a img {
+  width: 100px;
+  height: auto;
+}
+
+.has-outline-pager {
+  display: inline-block;
+}
+
+.annotator-outline-pager {
+  display: none;
+}
+
+.has-outline-pager {
+  width: 100%;
+}
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 
 /* ---------------------------- Breadcrumbs START---------------------------- */
