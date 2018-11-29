@@ -28,7 +28,7 @@ function os2dagsorden_access_helper_print_speaker_paper($bullet_point_id, $speak
   $html = os2dagsorden_access_helper_print_speaker_paper_generate_html($bullet_point_id, $speaker_paper_id);
   if (!empty($html)) {
     $speaker_paper = node_load($speaker_paper_id);
-    drupal_set_title(t('Talepapir') . ' - ' . $speaker_paper->title);
+    drupal_set_title(variable_get('os2dagsorden_title_meeting_comments', 'Talepapir') . ' - ' . $speaker_paper->title);
     return ('<div class="node">' . $html . '</div>');
   }
 }
@@ -50,7 +50,7 @@ function os2dagsorden_access_helper_print_speaker_paper_generate_html($bullet_po
     $bullet_point = node_load($bullet_point_id);
     $speaker_paper = node_load($speaker_paper_id);
 
-    $html = '<h3>' . $bullet_point->title . ' - Talepapir - ' . $speaker_paper->title . '</h3>';
+    $html = '<h3>' . $bullet_point->title . ' - ' . variable_get('os2dagsorden_title_meeting_comments', 'Talepapir') . ' - ' . $speaker_paper->title . '</h3>';
 
     $html .= '<div class="speaker-paper-content">' . $speaker_paper->body['und'][0]['value'] . '</div>';
   }
@@ -78,7 +78,7 @@ function os2dagsorden_access_helper_meeting_all_meeting_speaker_papers_view($mee
   drupal_set_breadcrumb($breadcrumb);
 
   $meeting = node_load($meeting_id);
-  drupal_set_title(t('Talepapir') . ' - ' . $meeting->title);
+  drupal_set_title(variable_get('os2dagsorden_title_meeting_comments', 'Talepapir') . ' - ' . $meeting->title);
 
   // Help icon.
   $html = '<div class="node">';
