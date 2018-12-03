@@ -25,7 +25,7 @@ function os2dagsorden_pdf2png_conversion_schema() {
         'length' => 1024,
         'serialize' => TRUE,
       ),
-      'bstatus' => array(
+      'status' => array(
         'description' => 'The information about the job',
         'type' => 'varchar',
         'length' => 1024,
