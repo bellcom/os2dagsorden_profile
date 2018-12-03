@@ -15,10 +15,6 @@
  * In the end of the function uses print_pdf_dispose_content to return the file
  * with correct headers.
  *
- * @param int $meeting_id
- *   Meeting ID.
- * @param bool $with_attachments
- *   TRUE if attachments must be added, otherwise - FALSE.
  */
 function os2dagsorden_meeting_views_meetings_overview_pdf_generate() {
   require_once DRUPAL_ROOT . '/profiles/os2dagsorden/libraries/mpdf/vendor/autoload.php';
@@ -64,7 +60,7 @@ function os2dagsorden_meeting_views_meetings_overview_pdf_generate() {
   $view->execute();
   $results = $view->result;
 
-  foreach($results as $result) {
+  foreach ($results as $result) {
     $meeting = node_load($result->nid);
     $rendered_meeting = node_view($meeting, 'os2dagsorden_meeting_overview');
     $mpdf->WriteHTML(render($rendered_meeting));
