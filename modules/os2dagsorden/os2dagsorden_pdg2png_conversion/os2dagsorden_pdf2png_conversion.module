@@ -7,7 +7,6 @@
 
 define('OS2DAGSORDEN_PDF2PNG_CONVERSION_DEFAULT_CONVERSION_LIMIT', 100);
 
-
 /**
  * Runs through all the files.
  *
@@ -32,7 +31,7 @@ function os2dagsorden_pdf2png_conversion_convert() {
 }
 
 /**
- * Does the actual conversion of a single file into PNG
+ * Does the actual conversion of a single file into PNG.
  *
  * Internally calls Sedja Console shell command to do the job.
  *
@@ -71,7 +70,7 @@ function os2dagsorden_pdf2png_conversion_convert_single($fid, $uri) {
 
   // Successful conversion?
   if (count(file_scan_directory($image_dir_realpath, '/.*.png$/i'))) {
-    $image_dir_uri =  pathinfo($uri, PATHINFO_DIRNAME) . '/' . $file_realpath_pathinfo['filename'] . '_images';
+    $image_dir_uri = pathinfo($uri, PATHINFO_DIRNAME) . '/' . $file_realpath_pathinfo['filename'] . '_images';
     db_update('os2dagsorden_pdf2png_conversion_files')
       ->fields(array(
         'png_files_folder' => $image_dir_uri,
@@ -135,8 +134,6 @@ function os2dagsorden_pdf2png_conversion_schedule_if_bpa($fid) {
   }
 }
 
-//TODO Hook delete
-
 /**
  * Implements hook_file_download().
  *
@@ -146,10 +143,10 @@ function os2dagsorden_pdf2png_conversion_schedule_if_bpa($fid) {
 function os2dagsorden_pdf2png_conversion_file_download($uri) {
   $folder_uri = pathinfo($uri, PATHINFO_DIRNAME);
   $result = db_select('os2dagsorden_pdf2png_conversion_files', 'o')
-      ->fields('o', array('fid'))
-      ->condition('png_files_folder', $folder_uri)
-      ->execute()
-      ->fetchField();
+    ->fields('o', array('fid'))
+    ->condition('png_files_folder', $folder_uri)
+    ->execute()
+    ->fetchField();
   if (isset($result) && !empty($result)) {
     $info = image_get_info($uri);
     return array(
@@ -161,20 +158,19 @@ function os2dagsorden_pdf2png_conversion_file_download($uri) {
 /**
  * Helper function that return URI to image folder.
  *
- * @param int $fid
+ * @param int $pdf_file_uri
  *   The ID of the file.
  *
- * @return bool
- *   TRUE if file is already converted, otherwise FALSE.
+ * @return mixed
+ *   URL to image folder, FALSE if folder is not found.
  */
-
 function os2dagsorden_pdf2png_conversion_get_image_folder_uri($pdf_file_uri) {
   $result = db_select('os2dagsorden_pdf2png_conversion_files', 'o')
-      ->fields('o', array('png_files_folder') )
-      ->condition('uri', $pdf_file_uri)
-      ->condition('status', 'Converted')
-      ->execute()
-      ->fetchField();
+    ->fields('o', array('png_files_folder'))
+    ->condition('uri', $pdf_file_uri)
+    ->condition('status', 'Converted')
+    ->execute()
+    ->fetchField();
   return $result;
 }
 

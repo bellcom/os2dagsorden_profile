@@ -879,7 +879,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('os2dagsorden_gs_conversion_gs_path', ""),
     );
   }
-   if (module_exists('os2dagsorden_pdf2png_conversion')) {
+  if (module_exists('os2dagsorden_pdf2png_conversion')) {
     $form['os2dagsorden_pdf2png_conversion_settings'] = array(
       '#type' => 'fieldset',
       '#collapsible' => TRUE,
@@ -1129,7 +1129,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_general_next_page', 'Næste'),
     '#title' => t('Næste'),
   );
-   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_prev_page'] = array(
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_prev_page'] = array(
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_general_prev_page', 'Forrige'),
     '#title' => t('Forrige'),

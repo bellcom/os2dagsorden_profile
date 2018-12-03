@@ -42,4 +42,3 @@ function os2dagsorden_pdf2png_conversion_schema() {
   );
   return $schema;
 }
-
