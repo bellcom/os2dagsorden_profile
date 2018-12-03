@@ -2246,6 +2246,11 @@ div.note.subscribe::before{
   background: none;
   border: none;
   padding-left: 0;
+  font-size: 16px;
+
+}
+.annotator-notes h1.title .bp-title {
+  padding-left: 50px;
 
 }
 .annotator-note {
@@ -2269,6 +2274,10 @@ div.note.subscribe::before{
   position: relative;
   padding-left: 10px;
   padding-bottom: 10px;
+ }
+ .annotator-note div.annotator-note-text .note-text {
+   display: inline-block;
+   padding-left: 45px;
  }
 .annotator-note div.annotator-note-link {
   padding-right: 10px;

@@ -839,7 +839,12 @@ function _os2dagsorden_meeting_views_meeting_details_bilag_cases($elements, $mee
 
           print '</div>';
           if (variable_get('os2dagsorden_show_bilag_pages_amount', FALSE)) {
-            print '<div class = "bilag-pages">' . t('Sider @pages', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+            if ((int) $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'] > 1) {
+              print '<div class = "bilag-pages">' . t(' @pages sider', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+            }
+            else {
+              print '<div class = "bilag-pages">' . t(' @pages side', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+            }
           }
         }
       }

@@ -605,7 +605,7 @@ function _os2dagsorden_annotator_get_group_pager_html($pageLimit) {
     $start_page = $page + 1;
     $end_page = ($page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < $pageLimit) ? $page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW : $pageLimit;
     $pager = '<div class="annotator-group-pager">'
-        . t('Sider @start - @end af @total',
+        . t('Side @start - @end af @total',
             array(
               '@start' => $start_page,
               '@end' => $end_page,
@@ -817,7 +817,15 @@ function _os2dagsorden_annotator_meeting_all_notes_generate_html($meeting_id) {
 
           if (!empty($annotation_lists)) {
             $html .= '<div class="annotator-notes">';
-            $html .= '<h1 class="title">' . $bullet_point->title . '</h1>';
+            $title = $bullet_point->title;
+            if (preg_match_all('/Punkt ([0-9]*)/i', $title, $matches) === 1) {
+              $title = str_replace($matches[0], '', $title);
+              $number = array_pop($matches[1]);
+              $html .= '<h1 class="title"><span class="bp-number">' . $number . '</span><span class="bp-title">' . $title . '</span></h1>';
+            }
+            else {
+              $html .= '<h1 class="title"><>' . $title . '</h1>';
+            }
             if (!empty($annotation_lists['non-bilags'])) {
               $html .= '<div class="annotator-non-bilags-notes">';
               $html .= '<h3>' . t('Fremstillingsnoter') . '</h3>';
@@ -941,7 +949,7 @@ function _os2dagsorden_annotator_append_index($body, $note, $note_nr) {
  */
 function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE, $is_bilag = FALSE, $link = FALSE, $bilag_title = '') {
   $to_return = '<div class="annotator-note">';
-  $to_return .= '<div class="annotator-note-index">' . $index . ').</div> ';
+  $to_return .= '<div class="annotator-note-index">' . $index . '.</div> ';
   if (!$print_text) {
     $to_return .= '<div class="annotator-note-text">' . $note->text . '</div>';
   }
@@ -955,10 +963,10 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
     $to_return .= '<div class="annotator-note-text">';
     if (!empty($bilag_title) && is_numeric($page_nr)) {
       $to_return .= '<u><b>' . $bilag_title . '</b> Side ' . $page_nr . '</u></br>';
-      $to_return .= ' <b>' . $note->quote . '</b>:<br/><i>' . $note->text . '</i>';
+      $to_return .= '<span class="note-text"> <b>' . $note->quote . '</b>:<br/><i>' . $note->text . '</i></span>';
     }
     else {
-      $to_return .= ' <b><u>' . $note->quote . '</u></b>:<br/><i>' . $note->text . '</i>';
+      $to_return .= '<b><u>' . $note->quote . '</u></b>:<br/><i>' . $note->text . '</i>';
     }
 
     if (!empty($link)) {
