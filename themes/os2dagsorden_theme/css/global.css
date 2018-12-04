@@ -2485,3 +2485,8 @@ ul#follows .checkbox.premeeting {
     margin-bottom: 0;
     border: none;
     border-radius: 3px; }
+
+.views-exposed-widgets .restricted-search-text {
+  text-align: center;
+  font-size: 16px;
+  color: #C70039; }

@@ -215,6 +215,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t("This decides whether PDF download for meeting and attachments is allowed only to whitelisted IP's"),
     '#default_value' => variable_get('os2dagsorden_pdf_download_whitelist_enabled', FALSE),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_search_restrict_search_function'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Restrict search function when on a meeting page'),
+    '#default_value' => variable_get('os2dagsorden_search_restrict_search_function', FALSE),
+    '#description' => t('This decides whether on meeting page the free text search will be only searching in the meeting you are on'),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist'] = array(
     '#type' => 'textfield',
     '#title' => t('PDF download whitelist'),
@@ -1592,6 +1598,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bullet_case_nr', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr']);
     variable_set('os2dagsorden_attachments_pages_per_view_desktop', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop']);
     variable_set('os2dagsorden_attachments_pages_per_view_mobile', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile']);
+    variable_set('os2dagsorden_search_restrict_search_function', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_restrict_search_function']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_title', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title']);
