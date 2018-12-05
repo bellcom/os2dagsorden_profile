@@ -453,7 +453,8 @@ function os2dagsorden_meeting_views_bullet_point_fields_create_new_speaker_paper
   $text = variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir');
   if (!variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE)) {
     print '<a href="' . $link . '" title="' . $text . '"><div class="indicator-create-speaker-paper"></div>' . $text . '</a>';
-  } else {
+  }
+  else {
     print '<a href="' . $link . '" title="' . $text . '"><div class="indicator-create-speaker-paper"></div>&nbsp;</a>';
   }
 }
@@ -516,17 +517,16 @@ function os2dagsorden_meeting_views_bullet_point_fields_filter($sp_id) {
 /**
  * Generates link for edit bullet point.
  *
- *  @param int $meeting_id
+ * @param int $meeting_id
  *   Nid of the meeting.
  * @param int $bp_id
  *   Nid of the bullet point.
- *
  */
 function os2dagsorden_meeting_views_bullet_point_modify_links($meeting_id, $bp_id) {
   if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
-    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'" class="edit-meeting-btn">'
+    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" class="edit-meeting-btn">'
         . '<div class="indicator-edit-agenda"></div>&nbsp;</a>'
-        . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' .  $bp_id .'/delete" class="edit-meeting-btn form-submit-delete">'
+        . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/delete" class="edit-meeting-btn form-submit-delete">'
         . '<div class="indicator-delete-agenda"></div>&nbsp;</a>';
   }
 }

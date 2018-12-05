@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_blocks_positioning.features.fe_block_boxes.inc

@@ -205,9 +205,11 @@ function os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data)
 /**
  * Extracts bullet point id from metadata.
  *
- * @param $meta_data
+ * @param mixed $meta_data
+ *   Search metadata.
  *
  * @return string
+ *   Bullet point ID.
  */
 function _os2dagsorden_meeting_views_meetings_search_extract_bp_id($meta_data) {
   $search_token_pos_s = strripos($meta_data, '[search_token]');
@@ -228,9 +230,11 @@ function _os2dagsorden_meeting_views_meetings_search_extract_bp_id($meta_data) {
 /**
  * Extracts bullet point attachment id from metadata.
  *
- * @param $meta_data
+ * @param mixed $meta_data
+ *   Search metadata.
  *
  * @return string
+ *   Bullet point attachment ID.
  */
 function _os2dagsorden_meeting_views_meetings_search_extract_bpa_id($meta_data) {
   $search_token_pos_s = strripos($meta_data, '[search_token]');
