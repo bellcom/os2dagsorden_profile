@@ -1648,10 +1648,8 @@ a.annotator-wrapper {
 }
 
 .annotator-outline-pager {
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
   top: 0;
-  width: 15%;
+  width: 10%;
   vertical-align: top;
 }
 

@@ -1041,7 +1041,7 @@ function _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageSta
         $link = '#pf' . $key;
       }
       $output .= '<li> <a href="' . $link . '"><img src = "' . file_create_url(rawurldecode($images_folder) . '/' . $key . '.png') . '">'
-          . '<span class="page-number"> ' . $key . '</span></li>';
+          . '<span class="page-number"> ' . $key . '</span></a></li>';
     }
     $output .= '</ul>';
   }

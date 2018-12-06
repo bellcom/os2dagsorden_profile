@@ -83,7 +83,10 @@ ul.droptrue li.can-subscribe span {
 .annotator-outline-pager {
   display: inline-block;
 }
+.annotator-outline-pager li {
+  margin-left: -10px;
+}
 
 .has-outline-pager {
-  width: 85%;
+  width: 90%;
 }
