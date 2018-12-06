@@ -16,7 +16,7 @@
 module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.common');
 module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.send_to_friend');
 
-define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad'));
+define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]));
 define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5));
 
 /**
@@ -962,11 +962,11 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
     }
     $to_return .= '<div class="annotator-note-text">';
     if (!empty($bilag_title) && is_numeric($page_nr)) {
-      $to_return .= '<u><b>' . $bilag_title . '</b> Side ' . $page_nr . '</u></br>';
-      $to_return .= '<span class="note-text"> <b>' . $note->quote . '</b>:<br/><i>' . $note->text . '</i></span>';
+      $to_return .= '<div class="annotator-note-text-block"><u><b>' . $bilag_title . '</b> Side ' . $page_nr . '</u></br>';
+      $to_return .= '<span class="note-text"> <b>' . $note->quote . '</b>:<br/><i>' . $note->text . '</i></span></div>';
     }
     else {
-      $to_return .= '<b><u>' . $note->quote . '</u></b>:<br/><i>' . $note->text . '</i>';
+      $to_return .= '<div class="annotator-note-text-block"><b><u>' . $note->quote . '</u></b>:<br/><i>' . $note->text . '</i></div>';
     }
 
     if (!empty($link)) {
