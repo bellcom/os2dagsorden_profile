@@ -469,7 +469,10 @@ HTML;
     }
     $html .= '<div class="attachment-text">' . $text . '</div></div>' .
       _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
-      '</div>' . _os2dagsorden_annotator_get_group_pager_html($pageAmount);
+      '</div>';
+    if (variable_get('os2dagsorden_show_group_pager_on_bpa_page', FALSE)) {
+      $html .= _os2dagsorden_annotator_get_group_pager_html($pageAmount);
+    }
     // Is not an actual bilag.
   }
   else {
