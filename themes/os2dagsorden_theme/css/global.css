@@ -2432,3 +2432,49 @@ ul#follows .checkbox.premeeting {
     margin-bottom: 0;
     border: none;
     border-radius: 3px; }
+/* ---------------------------- Notes page START ------------------------------- */
+.annotator-notes .annotator-non-bilags-notes .annotator-note:last-child div.annotator-note-text,
+.annotator-notes .annotator-bilags-notes .annotator-note:last-child div.annotator-note-text {
+  border-bottom: none; }
+
+.annotator-notes {
+  margin-top: 20px; }
+.annotator-notes h1.title {
+  background: none;
+  border: none;
+  padding-left: 0;
+  font-size: 16px;
+  text-transform: none; }
+.annotator-notes h1.title .bp-title {
+  padding-left: 50px; }
+.annotator-notes .annotator-note {
+  padding-left: 30px;
+  padding-top: 5px;
+  display: block; }
+.annotator-notes h3 {
+  background-color: #e3d6d6; }
+.annotator-notes .annotator-note div {
+  display: inline-block; }
+.annotator-notes .annotator-note div.annotator-note div {
+  vertical-align: top; }
+.annotator-notes .annotator-note div.annotator-note-text {
+  border-bottom: 1px solid;
+  vertical-align: top;
+  width: 95%;
+  margin: auto;
+  vertical-align: middle;
+  position: relative;
+  padding-left: 10px;
+padding-bottom: 10px; }
+.annotator-notes .annotator-note div.annotator-note-text .note-text {
+  display: inline-block;
+  padding-left: 45px; }
+.annotator-notes .annotator-note div.annotator-note-text div.annotator-note-text-block {
+  width: 90%; }
+.annotator-notes .annotator-note div.annotator-note-link {
+  padding-right: 10px;
+  vertical-align: middle;
+  position: absolute;
+  right: 0; }
+.annotator-notes .annotator-note div.annotator-note-index {
+  vertical-align: top; }
