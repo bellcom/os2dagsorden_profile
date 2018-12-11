@@ -25,8 +25,13 @@
  * @return bool
  *   True of false.
  */
-function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $committee_tid = NULL) {
-  $user = os2dagsorden_access_helper_get_user();
+function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $committee_tid = NULL, $uid = NULL) {
+  if (!$uid) {
+    $user = os2dagsorden_access_helper_get_user();
+  }
+  else {
+    $user = user_load($uid);
+  }
   if (!$user->uid) {
     return FALSE;
   }
@@ -53,19 +58,18 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
   // Has os2dagsorden limited role, perform committees check.
   if (in_array('os2dagsorden limited', $user->roles)) {
     // Is part of the committee.
-    if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees())) {
+    if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
       return TRUE;
     }
 
     // Follow PP.
-    if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+    if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_pp_committees($uid))) {
       return TRUE;
     }
 
     // None of the above.
     return FALSE;
   }
-
   if (is_object($meeting)) {
     $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
 
@@ -257,9 +261,13 @@ function os2dagsorden_access_helper_check_user_can_see_personal_agenda($meeting_
  * @return bool
  *   True of false.
  */
-function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id) {
-  $user_ent = os2dagsorden_access_helper_get_user();
-  global $user;
+function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id, $uid = NULL) {
+  if (!$uid) {
+    $user_ent = os2dagsorden_access_helper_get_user();
+  }
+  else {
+    $user_ent = user_load($uid);
+  }
 
   if (!$user_ent->uid) {
     return FALSE;
@@ -268,7 +276,7 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
   $meeting = node_load($meeting_id);
   $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
 
-  if (!os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting)) {
+  if (!os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting, $uid)) {
     return FALSE;
   }
   elseif (!node_access('view', $meeting)) {
@@ -286,22 +294,22 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
     }
     // Is closed.
     if ((intval($is_closed) == 1)) {
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
         return TRUE;
       }
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees($uid))) {
         return TRUE;
       }
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees($uid))) {
         return TRUE;
       }
     }
     // Is personal.
     if ((intval($is_personal) == 1)) {
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees())) {
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
         return TRUE;
       }
-      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+      if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees($uid))) {
         return TRUE;
       }
     }
@@ -503,8 +511,13 @@ function os2dagsorden_access_helper_check_user_can_see_speaker_paper($sp_id, $in
  * @return bool
  *   True of false.
  */
-function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting) {
-  $user = os2dagsorden_access_helper_get_user();
+function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting, $uid) {
+  if (!$uid) {
+    $user = os2dagsorden_access_helper_get_user();
+  }
+  else {
+    $user = user_load($uid);
+  }
 
   if (os2dagsorden_create_agenda_is_user_committee_admin($meeting->field_os2web_meetings_committee['und'][0]['tid'])) {
     return TRUE;
@@ -595,17 +608,17 @@ function os2dagsorden_access_helper_check_user_can_delete_meeting_content($commi
  * @return bool
  *   True of false.
  */
-function os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting) {
+function os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting, $uid = NULL) {
   $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
   $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
   if (os2dagsorden_access_helper_is_external_committee($meeting_committee_id) === TRUE) {
-    if (!os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting)) {
+    if (!os2dagsorden_access_helper_check_user_can_see_meeting_in_external_committee($meeting, $uid)) {
       return FALSE;
     }
   }
   // Forbidding access to premeeting.
   if (strpos($meeting_type, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING) === 0) {
-    if (!in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_premeeting_member_of_committees())) {
+    if (!in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_premeeting_member_of_committees($uid))) {
       return FALSE;
     }
   }

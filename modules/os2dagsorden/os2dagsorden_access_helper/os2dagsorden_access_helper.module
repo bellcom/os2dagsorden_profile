@@ -32,11 +32,10 @@ function os2dagsorden_access_helper_menu() {
     'access callback' => 'os2dagsorden_access_helper_check_user_can_see_speaker_paper',
     'type' => MENU_CALLBACK,
   );
-
   $items['meeting/%/speaker-papers/print'] = array(
     'title' => 'Print Talepapirer',
     'type' => MENU_CALLBACK,
-    'page callback' => 'os2dagsorden_access_helper_print_meeting_speaker_papers',
+    'page callback' => 'os2dagsorden_access_helper_meeting_all_meeting_speaker_papers_view',
     'access arguments' => array('access content'),
     'page arguments' => array(1),
   );
@@ -529,7 +528,7 @@ function os2dagsorden_access_helper_node_access($node, $op, $account) {
   }
   elseif ($node->type === 'os2web_meetings_meeting') {
     if ($op === 'view' || in_array('administrator++', $account->roles)) {
-      if (os2dagsorden_access_helper_check_user_can_see_meeting($node)) {
+      if (os2dagsorden_access_helper_check_user_can_see_meeting($node, null, $account->uid)) {
         return NODE_ACCESS_ALLOW;
       }
       else {
@@ -540,7 +539,7 @@ function os2dagsorden_access_helper_node_access($node, $op, $account) {
   elseif ($node->type === 'os2web_meetings_bullet') {
     if ($op === 'view' || in_array('administrator++', $account->roles)) {
       $meeting = os2dagsorden_access_helper_get_meeting_by_bullet_point($node->nid);
-      if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting->nid, $node->nid)) {
+      if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting->nid, $node->nid, $account->uid)) {
         return NODE_ACCESS_ALLOW;
       }
       else {

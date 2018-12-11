@@ -2235,6 +2235,7 @@ div.note.subscribe::before{
   border-radius: 3px;
   padding: 5px;
 }
+
 /* ---------------------------- Notes page START ------------------------------- */
 .annotator-notes .annotator-non-bilags-notes .annotator-note:last-child div.annotator-note-text,
 .annotator-notes .annotator-bilags-notes .annotator-note:last-child div.annotator-note-text {
@@ -2291,3 +2292,8 @@ div.note.subscribe::before{
   right: 0;
 }
 /* ---------------------------- Notes page END --------------------------------- */
+.views-exposed-widgets .restricted-search-text {
+  text-align: center;
+  font-size: 16px;
+  color: #C70039;
+}

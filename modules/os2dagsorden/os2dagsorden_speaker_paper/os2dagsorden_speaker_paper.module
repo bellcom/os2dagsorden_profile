@@ -138,7 +138,7 @@ function os2dagsorden_speaker_paper_form_os2dagsorden_settings_settings_form_alt
 function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id === 'os2web_meetings_spaper_node_form') {
     // Setting title.
-    drupal_set_title(t('Create speaker paper'));
+    drupal_set_title(t('Create @speaker_paper', array('@speaker_paper' => variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'))));
 
     // Adding values into the body field, each time user is opening the speaker
     // paper form, e.g.
@@ -147,9 +147,17 @@ function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
     global $user;
     $form['body']['und'][0]['#default_value'] .= empty($user->field_user_full_name['und'][0]['value']) ? $user->name : $user->field_user_full_name['und'][0]['value'];
     $form['body']['und'][0]['#default_value'] .= ', ' . date('d-m-Y') . ':';
+    $target_bp = $_GET['edit']['field_os2web_meetings_sp_bullet']['und'][0]['target_id'];
+    // Get nid of target BP
+    $result = preg_match('/\(([0-9]+)\)/',  $target_bp, $matches);
+    if ($result > 0) {
+     $bp_nid = $matches[$result];
+     $bullet_point =  node_load($bp_nid);
+    }
 
     // Modifying the shared with field, adding shared with user full name.
     foreach ($form['field_os2web_meetings_sp_shared']['und']['#options'] as $uid => $user_login_name) {
+
       // Eliminating all _none and 0 Anonym options.
       if (intval($uid) > 0) {
         $share_with_user = user_load($uid);
@@ -164,10 +172,26 @@ function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
             $form['field_os2web_meetings_sp_shared']['und']['#options'][$uid] = "$user_full_name ($user_login_name)";
           }
         }
+        $meeting = os2dagsorden_access_helper_get_meeting_by_bullet_point($bp_nid);
+        if (os2dagsorden_access_helper_node_access($meeting, 'view', $share_with_user) === NODE_ACCESS_DENY
+            || os2dagsorden_access_helper_node_access($bullet_point, 'view', $share_with_user) === NODE_ACCESS_DENY) {
+          unset($form['field_os2web_meetings_sp_shared']['und']['#options'][$uid]);
+        }
       }
       else {
         unset($form['field_os2web_meetings_sp_shared']['und']['#options'][$uid]);
       }
     }
+    $form['actions']['submit']['#submit'][] = 'os2dagsorden_speaker_paper_rewrite_status_message';
   }
+}
+
+/*
+ * Override status message on Talepapir node creation.b
+ */
+function os2dagsorden_speaker_paper_rewrite_status_message() {
+  $message = array_shift(drupal_get_messages('status'));
+  //To override message
+  $new_message  = str_replace('Talepapir', variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'), $message[0]);
+  drupal_set_message($new_message);
 }

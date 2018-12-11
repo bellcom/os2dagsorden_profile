@@ -114,11 +114,12 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_full_title'] = variable_get('os2dagsorden_meeting_description_download_title_additional', 'Samlet dokument med bilag i PDF');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text'] = variable_get('os2dagsorden_create_note_text', 'Lav note');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text'] = variable_get('os2dagsorden_create_note_hide_text', FALSE);
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_switch_to_note_text'] = variable_get('os2dagsorden_search_switch_to_note_text', 'Skift til noter');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title'] = variable_get('os2dagsorden_create_note_text_use_title', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = variable_get('os2dagsorden_show_bilag_pages_amount', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page'] = variable_get('os2dagsorden_show_group_pager_on_bpa_page', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_notes_page_layout'] = variable_get('os2dagsorden_notes_page_standart_layout', TRUE);
-
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_restrict_search_function'] = variable_set('os2dagsorden_search_restrict_search_function', FALSE);
   $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper'] = variable_get('os2dagsorden_shared_speaker_paper', TRUE);
 
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_all_bullets'] = variable_get('os2dagsorden_expand_all_bullets', FALSE);
@@ -246,8 +247,9 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_agenda'] = variable_get('os2dagsorden_title_meeting_agenda', 'Dagsorden:');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_closed_agenda'] = variable_get('os2dagsorden_title_meeting_closed_agenda', 'Lukket Dagsorden:');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_committee'] = variable_get('os2dagsorden_title_meeting_committee', 'Udvalg');
+  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_see_all_speakerpapers'] = variable_get('os2dagsorden_title_meeting_see_all_speakerpapers', 'Se alle talepapirer');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_print_all_speakerpapers'] = variable_get('os2dagsorden_title_meeting_print_all_speakerpapers', 'Print alle talepapirer');
-  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_meeting_show_notes_button'] = variable_get('os2dagsorden_meeting_show_notes_button', 'Mødernoter');
+  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_meeting_notes_title'] = variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE);
 
@@ -256,6 +258,8 @@ function os2dagsorden_settings_export_to_file() {
 
   $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_ip_whitelist'] = variable_get('os2dagsorden_token_login_ip_whitelist');
   $setting_array['os2dagsorden_token_login_settings']['os2dagsorden_token_login_allowed_paths'] = variable_get('os2dagsorden_token_login_allowed_paths', '<front>');
+
+  $setting_array['os2dagsorden_external_committee']['os2dagsorden_external_committee_anonymize_button_behavior'] = variable_get('os2dagsorden_external_committee_anonymize_button_behavior', 'anonymize');
 
   print os2dagsorden_settings_write_ini_file($setting_array, TRUE);
 }

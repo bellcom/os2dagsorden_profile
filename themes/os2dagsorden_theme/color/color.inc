@@ -18,6 +18,7 @@ $info['fields'] = array(
   'color-branding-primary' => t('Primary Branding color'),
   'color-background-primary' => t('Primary background color'),
   'color-background-secondary' => t('Secondary background color'),
+  'color-annotator-button' => t('Background for annotator button'),
 );
 
 // Color schemes for the site.
@@ -34,6 +35,7 @@ $info['schemes'] = array(
       'color-branding-primary' => '#9c1a5e',
       'color-background-primary' => '#f7f1f1',
       'color-background-secondary' => '#e3d6d6',
+      'color-annotator-button' =>  '#e6e600'//'#3865f9'
     ),
     // Scheme title.
   ),
@@ -47,6 +49,7 @@ $info['schemes'] = array(
       'color-branding-primary' => '#9c1a5e',
       'color-background-primary' => '#f7f1f1',
       'color-background-secondary' => '#e3d6d6',
+      'color-annotator-button' => '#e6e600'
     ),
     // Define the default scheme.
   ),
@@ -61,6 +64,7 @@ $info['schemes'] = array(
       'color-branding-primary' => '#2c8abe',
       'color-background-primary' => '#fbfcfd',
       'color-background-secondary' => '#f2f4fb',
+      'color-annotator-button' => '#e6e600'
     ),
   ),
 );

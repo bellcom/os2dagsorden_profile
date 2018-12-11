@@ -43,6 +43,8 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
   drupal_add_js(array('os2dagsorden_settings' => array('body_font_size' => variable_get('os2dagsorden_body_text_size', '13'))), array('type' => 'setting'));
   drupal_add_js(array('os2dagsorden_settings' => array('title_font_size' => variable_get('os2dagsorden_title_text_size', '13'))), array('type' => 'setting'));
   drupal_add_js(array('os2dagsorden_settings' => array('sidepane_arrow_position' => variable_get('os2dagsorden_right_sidebar_arrow_position_radios', 'classic'))), array('type' => 'setting'));
+  drupal_add_js(array('os2dagsorden_settings' => array('search_startdate' => date('d-m-Y', strtotime('-' . variable_get('os2dagsorden_search_startdate', 1) . ' months')))), array('type' => 'setting'));
+  drupal_add_js(array('os2dagsorden_settings' => array('search_enddate' => date('d-m-Y', strtotime('+' . variable_get('os2dagsorden_search_enddate', 1) . ' months')))), array('type' => 'setting'));
 
   os2dagsorden_classic_theme_hide_menu_on_pages();
 
@@ -59,7 +61,9 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
       $expand_attachment = variable_get('os2dagsorden_expand_attachment', TRUE);
       $expand_attachment_onload = variable_get('os2dagsorden_expand_attachment_onload', FALSE);
       drupal_add_js('bullet_point_add_expand_behaviour("' . $base_path . '?q=", ' . $expand_attachment . ',  ' . $os2dagsorden_expand_all_bullets . ' , ' . $expand_attachment_onload . ')', 'inline');
-
+      if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js');
+      }
       $expand_bilags = variable_get('os2dagsorden_expand_bilags', "true");
       $expand_cases = variable_get('os2dagsorden_expand_cases', "false");
       drupal_add_js('open_all_bilag_case_bullet_points(' . $expand_bilags . ',' . $expand_cases . ')', 'inline');
@@ -281,7 +285,18 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
   if ($form['#id'] === 'views-exposed-form-meetings-search-page') {
     $form['from_date']['value']['#date_format'] = 'd-m-Y';
     $form['to_date']['value']['#date_format'] = 'd-m-Y';
+    $args = arg();
 
+    if (variable_get('os2dagsorden_search_restrict_search_function', FALSE) && $args[0] === 'meeting' && isset($args[1])) {
+       $meeting =  node_load($args[1]);
+      $form_state['view']->args = array($meeting->nid);
+      $old_value = date_create_from_format("Y-m-d H:i:s", $meeting->field_os2web_meetings_date['und'][0]['value']);
+      $old_value = $old_value->format('d-m-Y');
+      $form_state['input']['from_date']['value']['date'] = $old_value;
+      $form_state['input']['to_date']['value']['date'] = $old_value;
+      $form_state['input']['field_os2web_meetings_committee_tid_depth'] = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+    }
+    else {
     if (!is_array($_SESSION['views']['meetings_search']['page']['from_date']['value'])) {
       if (!empty($_SESSION['views']['meetings_search']['page']['from_date']['value'])) {
         $old_value = $_SESSION['views']['meetings_search']['page']['from_date']['value'];
@@ -300,6 +315,7 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
         $old_value = $old_value->format('d-m-Y');
         $_SESSION['views']['meetings_search']['page']['to_date']['value']['date'] = $old_value;
       }
+    }
     }
   }
   elseif ($form['#id'] === 'user-login-form') {

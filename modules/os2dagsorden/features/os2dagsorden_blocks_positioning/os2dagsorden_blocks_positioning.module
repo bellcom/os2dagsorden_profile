@@ -27,6 +27,13 @@ function os2dagsorden_blocks_positioning_show_git_version() {
   $output .= '</table>';
   return $output;
 }
+
+/**
+ * Checks if zoom block should be shown.
+ *
+ * @return bool
+ *   TRUE if zoom block should be shown, FALSE otherwise.
+ */
 function os2dagsorden_blocks_positioning_show_menu_zoom_block() {
   return variable_get('os2dagsorden_frontpage_layout_show_hide_zoom_buttons', FALSE);
 }

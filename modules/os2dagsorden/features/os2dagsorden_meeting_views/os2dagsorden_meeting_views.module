@@ -24,7 +24,7 @@ function os2dagsorden_meeting_views_menu() {
     'description' => 'Giver en søge oversigt hvor man kan vælge et udvalg of få udtrukket, f.eks. alle beslutnings sektioner pa møderne. Listen kan generes for en periode også',
     'page callback' => 'os2dagsorden_meeting_views_meetings_overview_callback',
     'access callback' => 'os2dagsorden_access_helper_user_has_role',
-    'access arguments' =>  array('administrator+', 'administrator++'),
+    'access arguments' => array('administrator+', 'administrator++'),
     'type' => MENU_NORMAL_ITEM,
   );
   $items['meetings-overview/pdf'] = array(
@@ -32,7 +32,7 @@ function os2dagsorden_meeting_views_menu() {
     'type' => MENU_CALLBACK,
     'page callback' => 'os2dagsorden_meeting_views_meetings_overview_pdf_generate',
     'access callback' => 'os2dagsorden_access_helper_user_has_role',
-    'access arguments' =>  array('administrator+', 'administrator++'),
+    'access arguments' => array('administrator+', 'administrator++'),
   );
 
   return $items;
@@ -107,7 +107,7 @@ function os2dagsorden_meeting_views_views_pre_build(&$view) {
   }
 }
 
-/***
+/**
  * Updates the submit time and handles reset logic.
  *
  * @param $form
@@ -116,7 +116,8 @@ function os2dagsorden_meeting_views_views_pre_build(&$view) {
 function os2dagsorden_meeting_views_meetings_overview_submit(&$form, &$form_state) {
   if ($form_state['triggering_element']['#name'] === 'search') {
     $_SESSION['views']['meetings_search']['page_meetings_overview']['submit_time'] = time();
-  } elseif ($form_state['triggering_element']['#name'] === 'reset' && $_GET['reset']) {
+  }
+  elseif ($form_state['triggering_element']['#name'] === 'reset' && $_GET['reset']) {
     unset($_SESSION['views']['meetings_search']['page_meetings_overview']);
 
     $form_state['rebuild'] = TRUE;

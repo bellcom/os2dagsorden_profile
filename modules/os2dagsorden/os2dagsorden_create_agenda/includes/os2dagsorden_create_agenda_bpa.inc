@@ -99,10 +99,9 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
       $form['add_attachment']['#default_tab'] = 'edit-bilag';
     }
   }
-
   $form[] = array(
     '#type' => 'submit',
-    '#value' => t('Return to bullet point'),
+    '#value' => (arg(5) == 'attachment') ? t('Return to meeting') : t('Return to bullet point'),
     '#attributes' => array(
       'class' => array('form-back'),
     ),
@@ -114,7 +113,7 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
   );
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Save & return to bullet point'),
+    '#value' => (arg(5) ==  'attachment') ?t('Save & return to meeting') : t('Save & return to bullet point'),
     '#attributes' => array(
       'class' => array('form-save-submit'),
     ),
@@ -260,7 +259,9 @@ function os2dagsorden_create_agenda_add_bpa_to_bullet_point($bullet_point_id, $b
  */
 function os2dagsorden_create_agenda_bpa_submit($form, &$form_state) {
   os2dagsorden_create_agenda_save_bpa($form, $form_state);
-
+  if (arg(5) == 'attachment') {
+    drupal_goto('/meeting/'. $form_state['meeting_id']);
+  }
   $form_state['page_num'] = 2;
   $form_state['rebuild'] = TRUE;
 }
@@ -277,6 +278,9 @@ function os2dagsorden_create_agenda_bpa_submit($form, &$form_state) {
  *   The current state of the form.
  */
 function os2dagsorden_create_agenda_bpa_back($form, &$form_state) {
+  if (arg(5) == 'attachment') {
+    drupal_goto('/meeting/'. $form_state['meeting_id']);
+  }
   $form_state['page_num'] = 2;
   $form_state['rebuild'] = TRUE;
 }

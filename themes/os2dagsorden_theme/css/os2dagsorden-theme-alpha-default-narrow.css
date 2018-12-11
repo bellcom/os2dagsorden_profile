@@ -64,3 +64,6 @@ div.content ul.menu li #menu-byradet {
   display: inline-block; }
   .block-views .view-user-logout-menu li div.right {
     float: none; }
+
+.block-views-exp-meetings-search-page div.views-exposed-form .views-exposed-widget.views-reset-button {
+  float: left; }
