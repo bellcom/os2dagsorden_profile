@@ -117,6 +117,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title'] = variable_get('os2dagsorden_create_note_text_use_title', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = variable_get('os2dagsorden_show_bilag_pages_amount', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page'] = variable_get('os2dagsorden_show_group_pager_on_bpa_page', FALSE);
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_notes_page_layout'] = variable_get('os2dagsorden_notes_page_standart_layout', TRUE);
 
   $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper'] = variable_get('os2dagsorden_shared_speaker_paper', TRUE);
 
@@ -140,7 +141,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch'] = variable_get('os2dagsorden_collapse_menu_touch', TRUE);
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch_pages'] = variable_get('os2dagsorden_collapse_menu_touch_pages', 'meetings/print');
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_show_search_block_title'] = variable_get('os2dagsorden_show_search_block_title', 'true');
-  $setting_array['os2dagsorden_frontpage_layout']['  os2dagsorden_frontpage_layout_show_hide_zoom_buttons'] = variable_get('  os2dagsorden_frontpage_layout_show_hide_zoom_buttons', FALSE);
+  $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_frontpage_layout_show_hide_zoom_buttons'] = variable_get('  os2dagsorden_frontpage_layout_show_hide_zoom_buttons', FALSE);
 
   $setting_array['os2dagsorden_body_text_layout']['os2dagsorden_body_text_size'] = variable_get('os2dagsorden_body_text_size', '13');
   $setting_array['os2dagsorden_title_text_layout']['os2dagsorden_title_text_size'] = variable_get('os2dagsorden_title_text_size', '13');

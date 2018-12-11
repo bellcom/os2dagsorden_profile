@@ -332,6 +332,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_create_note_text_use_title', FALSE),
     '#description' => t('The text will also be put into the title HTML attribute of a button (available on mouse hover)'),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_notes_page_standart_layout'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use standart notes page layout'),
+    '#default_value' => variable_get('os2dagsorden_notes_page_standart_layout', TRUE),
+    '#description' => t('This desides what layout will be used for notes page'),
+  );
 
   // Expand or not expand bilag on bullet point expand
   // Meetig view settings.
@@ -1585,6 +1591,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_create_note_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text']);
     variable_set('os2dagsorden_create_note_hide_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text']);
     variable_set('os2dagsorden_create_note_text_use_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title']);
+    variable_set('s2dagsorden_notes_page_standart_layout', $setting_array['os2dagsorden_meeting_view_settings']['s2dagsorden_notes_page_layout']);
 
     variable_set('os2dagsorden_shared_speaker_paper', $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper']);
 
