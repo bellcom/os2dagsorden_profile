@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -17,7 +16,7 @@
 module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.common');
 module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_annotator.send_to_friend');
 
-define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad'));
+define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]));
 define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5));
 
 /**
@@ -424,10 +423,19 @@ HTML;
 
     // Bilag has converter to HTML version of file, getting the text out of it.
     if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
+      $pageAmount = $bilag->field_os2web_meetings_bpa_pages['und'][0]['value'];
       $file_uri = $bilag->field_os2web_meetings_bpa_html['und'][0]['uri'];
       $body_file = file_get_contents($file_uri);
+      if (module_exists("os2dagsorden_pdf2png_conversion") && (int) $pageAmount > 1) {
+        $pdf_file_uri = $bilag->field_os2web_meetings_bpa_file['und'][0]['uri'];
+        $images_folder = os2dagsorden_pdf2png_conversion_get_image_folder_uri($pdf_file_uri);
+        if (file_exists($images_folder)) {
+          $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
+          $outline_pager = _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageStart, $pageEnd, $current_bilag_url);
+        }
+      }
       $text = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
-      $pageAmount = $bilag->field_os2web_meetings_bpa_pages['und'][0]['value'];
+
     }
 
     // Restricting PDF download.
@@ -453,10 +461,19 @@ HTML;
 
     // Composing html output.
     $html .= '</div><div class="clearfix"></div>' .
+      _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount);
+    if ($outline_pager) {
+      $html .= '<div class = "annotator-outline-pager">' . $outline_pager . '</div><div id="content" class = "has-outline-pager">';
+    }
+    else {
+      $html .= '<div id="content">';
+    }
+    $html .= '<div class="attachment-text">' . $text . '</div></div>' .
       _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
-    '<div id="content"><div class="attachment-text">' . $text . '</div></div>' .
-    _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
-    '</div>';
+      '</div>';
+    if (variable_get('os2dagsorden_show_group_pager_on_bpa_page', FALSE)) {
+      $html .= _os2dagsorden_annotator_get_group_pager_html($pageAmount);
+    }
     // Is not an actual bilag.
   }
   else {
@@ -555,7 +572,7 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
     $prev_page_link = $current_bilag_url;
   }
 
-  if ($page +  OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < $pageLimit) {
+  if ($page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < $pageLimit) {
     $next_page_link = $current_bilag_url . '?page=' . ($page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW);
   }
 
@@ -573,6 +590,34 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
   }
   $pager .= '</ul>
 	      </div>';
+  return $pager;
+}
+
+/**
+ * Renders the html for group pager for bilag.
+ *
+ * @param int $pageLimit
+ *   Maximum numbers of pages in this bilag.
+ *
+ * @return string
+ *   The html code of pager.
+ */
+function _os2dagsorden_annotator_get_group_pager_html($pageLimit) {
+  // Value or 0 if not set.
+  $page = intval($_GET['page']);
+  if (($page - OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW >= 0) ||  ($page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < $pageLimit)) {
+    $start_page = $page + 1;
+    $end_page = ($page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW < $pageLimit) ? $page + OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW : $pageLimit;
+    $pager = '<div class="annotator-group-pager">'
+        . t('Side @start - @end af @total',
+            array(
+              '@start' => $start_page,
+              '@end' => $end_page,
+              '@total' => $pageLimit
+            )
+          )
+        . '</div>';
+  }
   return $pager;
 }
 
@@ -678,7 +723,14 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id) {
   global $base_url;
 
   // Overriding title for bilag.
-  drupal_set_title(variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter'));
+  if (variable_get('os2dagsorden_notes_page_standart_layout', TRUE)) {
+    drupal_set_title(variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter'));
+  }
+  else {
+    $meeting = node_load($meeting_id);
+    $meeting_date = date('d-m-Y', strtotime($meeting->field_os2web_meetings_date['und'][0]['value']));
+    drupal_set_title(t("@note: @title den @date", array('@note'=>variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter'), '@title' => $meeting->title, '@date' => $meeting_date)));
+  }
 
   // Breadcrumb.
   $breadcrumb[] = l(t('Forsiden'), $base_url);
@@ -736,18 +788,18 @@ function _os2dagsorden_annotator_meeting_all_notes_generate_html($meeting_id) {
             $hash = $attachment_id['target_id'];
             $attachments[$hash] = $attachment_id;
           }
-
-          foreach ($attachments as $attachment_id) {
+          $annotation_lists = array();
+          $annotation_list = '';
+          $non_bilag_note_nr = 1;
+          $bilag_note_nr = 1;
+          $note_nr = 1;
+          foreach ($attachments as $key => $attachment_id) {
             $bilag = node_load($attachment_id['target_id']);
 
             // Getting annotations from storage.
             $annotations = os2dagsorden_annotator_get_notes_by_attachment_id($bilag->nid);
 
-            // Initiating variabes
-            // in a nice print format.
-            $annotation_list = '';
             // Used for enumerating.
-            $note_nr = 1;
 
             while (!empty($annotations)) {
               // Flushing array indexing.
@@ -759,21 +811,59 @@ function _os2dagsorden_annotator_meeting_all_notes_generate_html($meeting_id) {
                   $first_note_ind = $i;
                 }
               }
-              $annotation_list .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $note_nr, TRUE,
-               '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $bilag->nid);
-              $note_nr++;
+              if (variable_get('os2dagsorden_notes_page_standart_layout', TRUE)) {
+                $annotation_list = _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $note_nr, TRUE,
+                  '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $bilag->nid);
+                $note_nr++;
+                unset($annotations[$first_note_ind]);
 
-              unset($annotations[$first_note_ind]);
-            }
-
-            if (!empty($annotation_list)) {
-              $html .= '<h3>' . $bilag->title . ': [' . $bullet_point->title . ']</h3>';
-              $html .= $annotation_list . "<br/>";
+                if (!empty($annotation_list)) {
+                  $html .= '<h3>' . $bilag->title . ': [' . $bullet_point->title . ']</h3>';
+                  $html .= $annotation_list . "<br/>";
+                }
+              }
+              else {
+                  if (!empty($bilag->field_os2web_meetings_bpa_file['und'])) {
+                    $annotation_lists['bilags'] .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $bilag_note_nr, TRUE,
+                        '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $bilag->nid, $bilag->title);
+                    $bilag_note_nr++;
+                  }
+                  else {
+                    $annotation_lists['non-bilags'] .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $non_bilag_note_nr, TRUE,
+                    '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $bilag->nid);
+                    $non_bilag_note_nr++;
+                  }
+                  unset($annotations[$first_note_ind]);
+                }
             }
           }
+          if (!variable_get('os2dagsorden_notes_page_standart_layout', TRUE) && !empty($annotation_lists)) {
+            $html .= '<div class="annotator-notes">';
+            $title = $bullet_point->title;
+            if (preg_match_all('/Punkt ([0-9]*)/i', $title, $matches) === 1) {
+              $title = str_replace($matches[0], '', $title);
+              $number = array_pop($matches[1]);
+              $html .= '<h1 class="title"><span class="bp-number">' . $number . '</span><span class="bp-title">' . $title . '</span></h1>';
+           }
+           else {
+              $html .= '<h1 class="title"><>' . $title . '</h1>';
+          }
+          if (!empty($annotation_lists['non-bilags'])) {
+            $html .= '<div class="annotator-non-bilags-notes">';
+            $html .= '<h3>' . t('Fremstillingsnoter') . '</h3>';
+            $html .= $annotation_lists['non-bilags'];
+            $html .= '</div>';
+          }
+          if (!empty($annotation_lists['bilags'])) {
+            $html .= '<div class="annotator-bilags-notes">';
+            $html .= '<h3>' . t('Bilagsnoter') . '</h3>';
+            $html .= $annotation_lists['bilags'];
+            $html .= '</div>';
+          }
+          $html .= '</div>';
+         }
         }
       }
-
     }
   }
 
@@ -879,7 +969,8 @@ function _os2dagsorden_annotator_append_index($body, $note, $note_nr) {
  * @return string
  *   The footnote with note text.
  */
-function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE, $link = FALSE) {
+function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE, $link = FALSE, $bilag_title = '') {
+  if (variable_get('os2dagsorden_notes_page_standart_layout', TRUE)) {
   $to_return = '<b>[' . $index . ']</b> ';
   if (!$print_text) {
     $to_return .= $note->text . '<br/>';
@@ -911,6 +1002,44 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
     }
     $to_return .= '<br/>';
   }
+  }
+  else {
+    $to_return = '<div class="annotator-note">';
+    $to_return .= '<div class="annotator-note-index">' . $index . '.</div> ';
+    if (!$print_text) {
+      $to_return .= '<div class="annotator-note-text">' . $note->text . '</div>';
+    }
+    else {
+      $xpath = $note->ranges[0]->start;
+      $xpath_arr = explode('/', $xpath);
+      $page_nr = trim($xpath_arr[2], 'div[]');
+      if (!$page_nr) {
+        $page_nr = 1;
+      }
+      $to_return .= '<div class="annotator-note-text">';
+      if (!empty($bilag_title) && is_numeric($page_nr)) {
+        $to_return .= '<div class="annotator-note-text-block"><u><b>' . $bilag_title . '</b> Side ' . $page_nr . '</u></br>';
+        $to_return .= '<span class="note-text"> <b>' . $note->quote . '</b>:<br/><i>' . $note->text . '</i></span></div>';
+      }
+      else {
+        $to_return .= '<div class="annotator-note-text-block"><b><u>' . $note->quote . '</u></b>:<br/><i>' . $note->text . '</i></div>';
+      }
+
+      if (!empty($link)) {
+        if (intval($page_nr) > OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) {
+          // If pages per view is 5, then the page number will be 5, 10, 15 etc.
+          $link .= '?page=' . intval($page_nr /
+              OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
+        }
+
+        global $base_url;
+        $to_return .= '<div class="annotator-note-link"><a target="_blank" href="' . $base_url . $link . '" class="no-print">' . t('Gå til note') . '</a> </div>';
+
+      }
+      $to_return .= '</div>';
+    }
+    $to_return .= '</div>';
+  }
   return $to_return;
 }
 
@@ -935,4 +1064,43 @@ function os2dagsorden_annotator_node_delete($node) {
       ->condition('bilag_id', $node->nid, '=')
       ->execute();
   }
+}
+
+/**
+ * Renders the html for outline pager for bilag.
+ *
+ * @param string $images_folder
+ *   URI to folder with image files.
+ * @param int $pageStart
+ *   First page number.
+ * @param int $pageEnd
+ *   Last page number.
+ * @param string $current_bilag_url
+ *   URL to current BPA page.
+ *
+ * @return string
+ *   The html code of outline pager.
+ */
+function _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageStart, $pageEnd, $current_bilag_url) {
+  $images_folder_realpath = drupal_realpath($images_folder);
+  $images = file_scan_directory($images_folder_realpath, '/.*.png$/i', array('key' => 'name'));
+  $output = '';
+
+  if (isset($images) && !empty($images)) {
+    ksort($images, SORT_NUMERIC);
+    $output = '<ul>';
+    foreach ($images as $key => $image) {
+      if ($key < $pageStart || $key > $pageEnd) {
+        $page = floor($key / OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
+        $link = $current_bilag_url . '?page=' . $page . '#pf' . $key;
+      }
+      else {
+        $link = '#pf' . $key;
+      }
+      $output .= '<li> <a href="' . $link . '"><img src = "' . file_create_url(rawurldecode($images_folder) . '/' . $key . '.png') . '">'
+          . '<span class="page-number"> ' . $key . '</span></a></li>';
+    }
+    $output .= '</ul>';
+  }
+  return $output;
 }

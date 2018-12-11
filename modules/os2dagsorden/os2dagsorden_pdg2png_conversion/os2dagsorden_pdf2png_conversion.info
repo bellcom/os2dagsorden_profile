@@ -1,0 +1,4 @@
+name = OS2Dagsorden PDF to PNG Conversion
+description = This is a helped module to convert all bilag PDF files to PNG depends of sejda_console
+package = OS2Dagsorden
+core = 7.x

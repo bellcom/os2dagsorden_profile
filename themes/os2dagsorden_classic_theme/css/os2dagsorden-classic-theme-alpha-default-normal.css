@@ -48,3 +48,11 @@ ul.droptrue li.can-subscribe span {
 .block-views .view-user-logout-menu li div.right {
   float: none;
 }
+
+.annotator-outline-pager {
+  display: inline-block;
+}
+
+.has-outline-pager {
+  width: 85%;
+}

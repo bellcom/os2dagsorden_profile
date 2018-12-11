@@ -30,7 +30,6 @@ define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
  */
 function os2dagsorden_settings_settings_form($form, $form_state) {
   $output = os2dagsorden_blocks_positioning_show_git_version();
-
   $info_path = drupal_get_path('profile', 'os2dagsorden') . '/os2dagsorden.info';
   $info = drupal_parse_info_file($info_path);
   $version = (isset($info['version'])) ? $info['version'] : 'no version';
@@ -209,6 +208,18 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether bullet point <i>"Afgøres i"</i> will be shown'),
     '#default_value' => variable_get('os2dagsorden_show_bp_comname', FALSE),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show amount of pages in bilag file'),
+    '#default_value' => variable_get('os2dagsorden_show_bilag_pages_amount', FALSE),
+    '#description' => t('This decides whether amount of BPA pages will be shown on meeting page'),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show group pager on bullet point attachment page'),
+    '#default_value' => variable_get('os2dagsorden_show_group_pager_on_bpa_page', FALSE),
+    '#description' => t('This decides whether "group" of pages will be shown on the bottom of BPA apge'),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable PDF download whitelist'),
@@ -333,6 +344,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#title' => t('Create note button put text to title attribute'),
     '#default_value' => variable_get('os2dagsorden_create_note_text_use_title', FALSE),
     '#description' => t('The text will also be put into the title HTML attribute of a button (available on mouse hover)'),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_notes_page_standart_layout'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use standart notes page layout'),
+    '#default_value' => variable_get('os2dagsorden_notes_page_standart_layout', TRUE),
+    '#description' => t('This desides what layout will be used for notes page'),
   );
 
   // Expand or not expand bilag on bullet point expand
@@ -887,7 +904,20 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('os2dagsorden_gs_conversion_gs_path', ""),
     );
   }
-
+  if (module_exists('os2dagsorden_pdf2png_conversion')) {
+    $form['os2dagsorden_pdf2png_conversion_settings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('Sedja Console converter settings'),
+    );
+    $form['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_pdf2png_conversion_sedja_console_path'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Path to Sejda-console'),
+      '#description' => t('Absolute path to sejda-console'),
+      '#default_value' => variable_get('os2dagsorden_pdf2png_conversion_sedja_console_path', ""),
+    );
+  }
   // Clear cache settings.
   $form['os2dagsorden_clear_cache_after_import'] = array(
     '#type' => 'fieldset',
@@ -1124,7 +1154,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_general_next_page', 'Næste'),
     '#title' => t('Næste'),
   );
-   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_prev_page'] = array(
+  $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_prev_page'] = array(
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_general_prev_page', 'Forrige'),
     '#title' => t('Forrige'),
@@ -1570,6 +1600,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bilag', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag']);
     variable_set('os2dagsorden_use_abbr', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_use_abbr']);
     variable_set('os2dagsorden_show_bp_comname', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_comname']);
+    variable_set('os2dagsorden_show_bilag_pages_amount', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount']);
+    variable_set('os2dagsorden_show_group_pager_on_bpa_page', $setting_array['os2dagsorden_meeting_view_settings']['oos2dagsorden_show_group_pager_on_bpa_page']);
     // FIXME: new variable.
     variable_set('os2dagsorden_pdf_download_whitelist_enabled', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled']);
     variable_set('os2dagsorden_pdf_download_whitelist', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist']);
@@ -1585,6 +1617,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_search_switch_to_note_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_switch_to_note_text']);
     variable_set('os2dagsorden_create_note_hide_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text']);
     variable_set('os2dagsorden_create_note_text_use_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title']);
+    variable_set('s2dagsorden_notes_page_standart_layout', $setting_array['os2dagsorden_meeting_view_settings']['s2dagsorden_notes_page_layout']);
 
     variable_set('os2dagsorden_shared_speaker_paper', $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper']);
 

@@ -81,6 +81,14 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
     }
   }
 
+  // PNG  conversion.
+  if (module_exists("os2dagsorden_pdf2png_conversion")) {
+    // If is PDF, schedule for HTML conversion.
+    if (file_get_mimetype($file->uri) === 'application/pdf') {
+      os2dagsorden_pdf2png_conversion_schedule($file->fid);
+    }
+  }
+
   return $node->nid;
 }
 

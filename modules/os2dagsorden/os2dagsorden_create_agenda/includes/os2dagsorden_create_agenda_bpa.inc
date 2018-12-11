@@ -210,6 +210,11 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
   // Schedule file for html conversion.
   if ($bilag) {
     os2dagsorden_pdf2htmlex_schedule_if_bpa($bilag->fid);
+        // PNG  conversion.
+  if (module_exists("os2dagsorden_pdf2png_conversion")) {
+    // If is PDF, schedule for HTML conversion.
+     os2dagsorden_pdf2png_conversion_schedule_if_bpa($file->fid);
+   }
   }
 
   return $node;

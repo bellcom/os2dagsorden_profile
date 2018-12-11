@@ -1404,6 +1404,19 @@ table .item-list-dagsordenspunkt .hide_show_all_attachments_text {
   text-overflow: ellipsis;
 }
 
+.ul-item-list-dagsordenspunkt li.bilag {
+  position: relative;
+}
+
+.ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
+  position: absolute;
+  right: -65px;
+  top: 0;
+  line-height: 30px;
+}
+.page-meeting-bullet-point .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
+  right: 15px;
+}
 /*meeting details table end*/
 /* ---------------------------- Table Styles END---------------------------- */
 
@@ -1578,8 +1591,8 @@ a.annotator-wrapper {
   z-index: 1;
 }
 
-.annotator-pager .page-next a {  
-    padding: 5px 15px 5px 10px;     
+.annotator-pager .page-next a {
+    padding: 5px 15px 5px 10px;
 }
 
 .annotator-pager .page-next a::after {
@@ -1588,7 +1601,7 @@ a.annotator-wrapper {
   font-size: 14px;
   right: 5px;
 }
-.annotator-pager .page-prev a {  
+.annotator-pager .page-prev a {
   padding: 5px 10px 5px 15px;
 }
 
@@ -1606,7 +1619,7 @@ a.annotator-wrapper {
   font-size: 14px;
   right: 5px;
   top: 4px;
-} 
+}
 
 .annotator-pager .page-prev a,
 .annotator-pager .page-next a {
@@ -1626,6 +1639,49 @@ a.annotator-wrapper {
   position: relative;
   background: #bebebe;
   /*overflow: hidden;*/
+}
+
+.annotator-group-pager {
+  float: right;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.annotator-outline-pager {
+  top: 0;
+  width: 10%;
+  vertical-align: top;
+}
+
+.annotator-outline-pager ul li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.annotator-outline-pager ul li a {
+  display: block;
+}
+.annotator-outline-pager ul li a span.page-number {
+  display: block;
+  text-align: center;
+  font-weight: 700
+}
+
+.annotator-outline-pager ul li a img {
+  width: 100px;
+  height: auto;
+}
+
+.has-outline-pager {
+  display: inline-block;
+}
+
+.annotator-outline-pager {
+  display: none;
+}
+
+.has-outline-pager {
+  width: 100%;
 }
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 
@@ -2028,7 +2084,7 @@ div.note.subscribe {
 }
 .checkbox_follows,
 .checkbox.invisible,
-.checkbox.premeeting, 
+.checkbox.premeeting,
 .checkbox.can-subscribe {
   float: right;
   display: inline;
@@ -2180,6 +2236,62 @@ div.note.subscribe::before{
   padding: 5px;
 }
 
+/* ---------------------------- Notes page START ------------------------------- */
+.annotator-notes .annotator-non-bilags-notes .annotator-note:last-child div.annotator-note-text,
+.annotator-notes .annotator-bilags-notes .annotator-note:last-child div.annotator-note-text {
+  border-bottom: none;
+}
+.annotator-notes {
+  margin-top: 20px;
+}
+.annotator-notes h1.title {
+  background: none;
+  border: none;
+  padding-left: 0;
+  font-size: 16px;
+  text-transform: none;
+
+}
+.annotator-notes h1.title .bp-title {
+  padding-left: 50px;
+
+}
+.annotator-note {
+  padding-left: 30px;
+  padding-top: 5px;
+  display: block;
+
+}
+.annotator-note div {
+  display: inline-block;
+}
+.annotator-note div.annotator-note-index {
+  vertical-align: top;
+}
+.annotator-note div.annotator-note-text {
+  border-bottom: 1px solid;
+  vertical-align: top;
+  width: 95%;
+  margin: auto;
+  vertical-align: middle;
+  position: relative;
+  padding-left: 10px;
+  padding-bottom: 10px;
+ }
+ .annotator-note div.annotator-note-text .note-text {
+   display: inline-block;
+   padding-left: 45px;
+ }
+ .annotator-note div.annotator-note-text div.annotator-note-text-block {
+   width: 90%;
+ }
+.annotator-note div.annotator-note-link {
+  padding-right: 10px;
+  vertical-align: middle;
+  position: absolute;
+  right: 0;
+}
+/* ---------------------------- Notes page END --------------------------------- */
 .views-exposed-widgets .restricted-search-text {
   text-align: center;
   font-size: 16px;

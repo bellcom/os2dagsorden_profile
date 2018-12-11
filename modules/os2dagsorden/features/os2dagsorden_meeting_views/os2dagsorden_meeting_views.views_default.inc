@@ -389,15 +389,6 @@ os2dagsorden_meeting_views_coming_meetings_help_text();
       'empty_column' => 1,
     ),
   );
-  /* Overskrift: breadcrumb override */
-  $handler->display->display_options['header']['php']['id'] = 'php';
-  $handler->display->display_options['header']['php']['table'] = 'views';
-  $handler->display->display_options['header']['php']['field'] = 'php';
-  $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
-  $handler->display->display_options['header']['php']['empty'] = TRUE;
-  $handler->display->display_options['header']['php']['php_output'] = '<?php
-os2dagsorden_meeting_views_meeting_details_breadcrumb();
-?>';
   /* Relationship: Indhold: Forfatter */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -1449,6 +1440,7 @@ os2dagsorden_meeting_views_meeting_details_fields_bullet_point_attachments_with_
 ?>';
   $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
+
   /* Felt: Edit Link */
   $handler->display->display_options['fields']['php_7']['id'] = 'php_7';
   $handler->display->display_options['fields']['php_7']['table'] = 'views';
@@ -1465,6 +1457,7 @@ os2dagsorden_meeting_views_bullet_point_modify_links($meeting_id, $bp_id);
 ?>';
   $handler->display->display_options['fields']['php_7']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_7']['php_click_sortable'] = '';
+
   /* Felt: CaseIdentifier link */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';

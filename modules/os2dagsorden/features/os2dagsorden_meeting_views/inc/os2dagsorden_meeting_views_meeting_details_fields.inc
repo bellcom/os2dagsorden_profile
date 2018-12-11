@@ -10,9 +10,24 @@
  */
 function os2dagsorden_meeting_views_meeting_details_breadcrumb() {
   global $base_url;
+  $q = explode('/', $_GET['q']);
+  $meeting_id = $q[1];
   $breadcrumb[] = l(t('Forsiden'), $base_url);
   $breadcrumb[] .= '<span class="breadcrumb-active">Mødedetaljer</span>';
+
   drupal_set_breadcrumb($breadcrumb);
+
+  // User has no access to agenda.
+  $meeting = node_load($meeting_id);
+    $meeting_full_access_granted = os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting);
+
+  if ($meeting_full_access_granted) {
+    // Meeting all notes.
+    echo '<div class="controls-right breadcrumb-level">';
+    echo '<a target="_blank" href="' . $base_url . '?q=meeting/' . $meeting_id . '/notes" class="form-submit">' .
+        variable_get('os2dagsorden_meeting_show_notes_button', 'Mødernoter') . '</a>';
+    echo '</div>';
+  }
 }
 
 /**
@@ -65,14 +80,6 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
     return;
   }
   $meeting_full_access_granted = os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting);
-
-  if ($meeting_full_access_granted) {
-    // Meeting all notes.
-    echo '<div class="controls-right breadcrumb-level">';
-    echo '<a target="_blank" href="' . $base_url . '?q=meeting/' . $meeting_id . '/notes" class="form-submit">' .
-        variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter') . '</a>';
-    echo '</div>';
-  }
   // Descriptions full doc.
   $has_full_doc = FALSE;
   $has_full_doc_attachments = FALSE;
@@ -861,6 +868,14 @@ function _os2dagsorden_meeting_views_meeting_details_bilag_cases($elements, $mee
           print('<a class="first-child last-child" href="' . $link . '" target="_blank">Læs mere...</a>');
 
           print '</div>';
+          if (variable_get('os2dagsorden_show_bilag_pages_amount', FALSE)) {
+            if ((int) $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'] > 1) {
+              print '<div class = "bilag-pages">' . t(' @pages sider', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+            }
+            else {
+              print '<div class = "bilag-pages">' . t(' @pages side', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+            }
+          }
         }
       }
     }

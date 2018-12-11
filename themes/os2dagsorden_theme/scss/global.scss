@@ -1318,6 +1318,17 @@ table {
   border: 1px solid $color-background-primary;
   border-top: 0px;
   font-family: $font-basic;
+  .ul-item-list-dagsordenspunkt {
+    li.bilag {
+      position: relative;
+      .bilag-pages {
+        position: absolute;
+        right: -65px;
+        top: 0;
+        line-height: 30px;
+      }
+    }
+  }
   .form-submit {
     padding: 10px 50px 10px 50px;
     font-size: $font-size-button;
@@ -1813,6 +1824,15 @@ div.speaker-paper-print {
     border-radius: $border-radius;
     border: 1px solid $color-background-primary;
   }
+  .ul-item-list-dagsordenspunkt li.bilag {
+    position: relative;
+    .bilag-pages {
+      right: 15px;
+      position: absolute;
+      top: 0;
+      line-height: 30px;
+    }
+  }
 }
 .form-submit.nav-button {
   display: inline-block;
@@ -2172,6 +2192,12 @@ a.annotator-wrapper {
     background: #BEBEBE;
     /*overflow: hidden;*/
   }
+}
+
+.annotator-group-pager {
+  float: right;
+  padding-right: 20px;
+  font-weight: bold;
 }
 
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
@@ -2791,6 +2817,62 @@ ul#follows {
    }
 }
 
+/* ---------------------------- Notes page START ------------------------------- */
+.annotator-notes .annotator-non-bilags-notes .annotator-note:last-child div.annotator-note-text,
+.annotator-notes .annotator-bilags-notes .annotator-note:last-child div.annotator-note-text {
+  border-bottom: none;
+}
+.annotator-notes {
+  margin-top: 20px;
+  h1.title {
+    background: none;
+    border: none;
+    padding-left: 0;
+    font-size: 16px;
+    text-transform: none;
+    .bp-title {
+      padding-left: 50px;
+    }
+  }
+  h3 {
+    background-color: $color-background-secondary;
+  }
+  .annotator-note {
+    padding-left: 30px;
+    padding-top: 5px;
+    display: block;    
+    div {
+      display: inline-block;
+      &.annotator-note div {
+        vertical-align: top;
+      }
+      &.annotator-note-text {
+        border-bottom: 1px solid;
+        vertical-align: top;
+        width: 95%;
+        margin: auto;
+        vertical-align: middle;
+        position: relative;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        .note-text {
+          display: inline-block;
+          padding-left: 45px;
+        }
+        div.annotator-note-text-block {
+          width: 90%;
+        }
+      }
+      &.annotator-note-link {
+        padding-right: 10px;
+        vertical-align: middle;
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
+}
+/* ---------------------------- Notes page END --------------------------------- */
 .views-exposed-widgets .restricted-search-text {
     text-align: center;
     font-size: 16px;

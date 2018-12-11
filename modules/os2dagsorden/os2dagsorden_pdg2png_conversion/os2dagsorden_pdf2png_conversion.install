@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Os2dagsorden_gs_conversion.install.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function os2dagsorden_pdf2png_conversion_schema() {
+  $schema['os2dagsorden_pdf2png_conversion_files'] = array(
+    'description' => 'This table is used as schedule for PDF -> PNG with Sejda console',
+    'fields' => array(
+      'fid' => array(
+        'description' => 'The file entity fid.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'uri' => array(
+        'description' => 'The URI of the file',
+        'type' => 'varchar',
+        'length' => 1024,
+        'serialize' => TRUE,
+      ),
+      'status' => array(
+        'description' => 'The information about the job',
+        'type' => 'varchar',
+        'length' => 1024,
+        'serialize' => TRUE,
+      ),
+      'png_files_folder' => array(
+        'description' => 'The URI of folder with converted images',
+        'type' => 'varchar',
+        'length' => 1024,
+        'serialize' => TRUE,
+      ),
+    ),
+    'primary key' => array('fid'),
+  );
+  return $schema;
+}
