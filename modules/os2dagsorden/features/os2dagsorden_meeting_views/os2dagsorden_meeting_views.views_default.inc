@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_meeting_views.views_default.inc
@@ -1274,9 +1273,11 @@ os2dagsorden_meeting_views_meeting_details_fields_participants_afbud($row->nid);
     'title' => 'title',
     'php_4' => 'php_4',
     'php_3' => 'php_4',
+    'php_7' => 'php_7',
     'php' => 'php',
     'php_6' => 'php_6',
     'php_5' => 'php_5',
+    'php_1' => 'php_1',
     'php_2' => 'php_2',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
@@ -1317,6 +1318,11 @@ os2dagsorden_meeting_views_meeting_details_fields_participants_afbud($row->nid);
       'separator' => '',
       'empty_column' => 0,
     ),
+    'php_7' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
     'php' => array(
       'align' => '',
       'separator' => '',
@@ -1331,6 +1337,11 @@ os2dagsorden_meeting_views_meeting_details_fields_participants_afbud($row->nid);
       'align' => '',
       'separator' => '',
       'empty_column' => 1,
+    ),
+    'php_1' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
     ),
     'php_2' => array(
       'align' => '',
@@ -1440,7 +1451,6 @@ os2dagsorden_meeting_views_meeting_details_fields_bullet_point_attachments_with_
 ?>';
   $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
-
   /* Felt: Edit Link */
   $handler->display->display_options['fields']['php_7']['id'] = 'php_7';
   $handler->display->display_options['fields']['php_7']['table'] = 'views';
@@ -1449,6 +1459,7 @@ os2dagsorden_meeting_views_meeting_details_fields_bullet_point_attachments_with_
   $handler->display->display_options['fields']['php_7']['label'] = '';
   $handler->display->display_options['fields']['php_7']['element_class'] = 'bullet-point-modify-links-container';
   $handler->display->display_options['fields']['php_7']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php_7']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['php_7']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_7']['php_output'] = '<?php 
 $meeting_id = $row->nid_1;
@@ -1457,7 +1468,6 @@ os2dagsorden_meeting_views_bullet_point_modify_links($meeting_id, $bp_id);
 ?>';
   $handler->display->display_options['fields']['php_7']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_7']['php_click_sortable'] = '';
-
   /* Felt: CaseIdentifier link */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
