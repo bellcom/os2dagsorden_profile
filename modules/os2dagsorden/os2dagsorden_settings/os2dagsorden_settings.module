@@ -98,6 +98,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_bullet_case_id_link_url'] = variable_get('os2dagsorden_bullet_case_id_link_url', "");
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_comments'] = variable_get('os2dagsorden_show_comments', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_closed_bullet_point_content'] = variable_get('os2dagsorden_show_closed_bullet_point_content', FALSE);
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_open_closed_bullet_in_new_tab'] = variable_set('os2dagsorden_open_closed_bullet_in_new_tab', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag'] = variable_get('os2dagsorden_show_bilag', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_sager_group_title'] = variable_get('os2dagsorden_sager_group_title', 'Sager');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_use_abbr'] = variable_get('os2dagsorden_use_abbr', TRUE);
