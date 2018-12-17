@@ -182,6 +182,8 @@ function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
         unset($form['field_os2web_meetings_sp_shared']['und']['#options'][$uid]);
       }
     }
+    $form['#attached']['js'] = array(drupal_get_path('module', 'os2dagsorden_speaker_paper') . '/js/os2dagsorden_speaker_paper.js');
+
     $form['actions']['submit']['#submit'][] = 'os2dagsorden_speaker_paper_rewrite_status_message';
   }
 }

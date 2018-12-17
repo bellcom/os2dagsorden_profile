@@ -190,6 +190,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether a closed bullet point content will shown the same way as open bullet point - directly on the meeting view.'),
     '#default_value' => variable_get('os2dagsorden_show_closed_bullet_point_content', FALSE),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_open_closed_bullet_in_new_tab'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Open closed bullet points in new tab'),
+    '#description' => t('This decides whether a closed bullet point will open in new browser window.'),
+    '#default_value' => variable_get('os2dagsorden_open_closed_bullet_in_new_tab', FALSE),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show bullet point attachment (bilag) on meeting view and bullet point attachment views'),
@@ -1597,6 +1603,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_bullet_case_id_link_url', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_bullet_case_id_link_url']);
     variable_set('os2dagsorden_show_comments', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_comments']);
     variable_set('os2dagsorden_show_closed_bullet_point_content', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_closed_bullet_point_content']);
+    variable_set('os2dagsorden_open_closed_bullet_in_new_tab', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_open_closed_bullet_in_new_tab']);
     variable_set('os2dagsorden_show_bilag', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag']);
     variable_set('os2dagsorden_use_abbr', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_use_abbr']);
     variable_set('os2dagsorden_show_bp_comname', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_comname']);
