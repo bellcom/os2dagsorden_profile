@@ -6,7 +6,7 @@
  */
 
 /**
- * Implements hook_action_info().
+ * Implements hook_rules_action_info().
  */
 function os2web_rules_rules_action_info() {
   $account = array(
@@ -22,11 +22,12 @@ function os2web_rules_rules_action_info() {
       ),
     ),
   );
-  return $account;
+return $account;
 }
 
 /**
- * Action Implementation: Show a configureable message.
+ * Rule that reads all user roles and assigns them to taxonomies with the same name.
+ * Mapping of the user roles is done via simplesaml SSO module role mapping tool 
  *
  * @ingroup rules
  */
@@ -34,42 +35,49 @@ function os2web_rules_rules_action_drupal_message($account) {
   // Loading user object for correct saving of user info.
   $user = user_load($account->uid);
 
-  // We only need parts of the account data set inherited from the condition.
-  $data = $account->data['ldap_authorizations']['drupal_role'];
-  // Looping over the drupal roles and assigning taxonomies of the same name.
-  // Case insensitive.
-  foreach ($data as $key => $val) {
-    drupal_set_message(print_r($key, TRUE));
-    $committeetaxid = taxonomy_get_term_by_name($key, "os2web_meetings_tax_committee");
-    $tid = key($committeetaxid);
-    // Only handle tids with data.
-    if ($tid) {
-      $user_is_part_of_committee = FALSE;
-      if (isset($user->field_user_committee['und'])) {
-        foreach ($user->field_user_committee['und'] as $committee_id) {
-          if ($tid === $committee_id['tid']) {
-            $user_is_part_of_committee = TRUE;
-          }
-        }
-      }
+  // Logging for admin to se that the rule is engaged
+  watchdog('OS2web LDAP Roles', 'rule triggered');
 
-      if (!$user_is_part_of_committee) {
-        $user->field_user_committee['und'][]['tid'] = $tid;
-        watchdog('OS2web LDAP Roles', 'User: %user assigned role: %role.', array('%role' => $key, '%user' => $user));
-      }
-      else {
-        watchdog('OS2web LDAP Roles', 'User: %user NOT assigned role: %role. Role already added.', array(
-          '%role' => $key,
-          '%user' => $user,
-        ));
-      }
-    }
-    else {
-      // Sending logging information to wachdog for the customer to monitor.
-      watchdog('OS2web LDAP Roles', 'User: %user NOT assigned role: %role.', array('%role' => $key, '%user' => $user));
+  // We only need parts of the account data set inherited from the condition.
+  $data = $account->roles;
+
+  // Loading the taxonomy of choice - we use the machine name
+  $termnames = array();
+  $vocabulary = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee');
+  $terms = taxonomy_get_tree($vocabulary->vid);
+  foreach ($terms as $termname) {
+    $termnames[$termname->name]['tid'] = $termname->tid;
+    $termnames[$termname->name]['name'] = $termname->name;
+  }
+
+  // Loading the taxonomies that the user is already assigned to 
+  $user_committees = $user->field_user_committee['und'];
+  foreach ($user_committees as $user_committee) {
+    $committee_id = $user_committee['tid']; 
+    $user_comm = taxonomy_term_load($committee_id); // load term object
+    $term_uri = taxonomy_term_uri($user_comm); // get array with path (maybe not needed - but usefull)
+    $term_title = taxonomy_term_title($user_comm); // set the title for the taxonomy
+    if($term_title) {
+      $term_committee[$term_title]['tid'] = $committee_id; // Title is the key as we only have the text to map from
+      $term_committee[$term_title]['name'] = $term_title;  // So user role and taxonomy name must be the same. 
     }
   }
+
+  // Looping over the drupal roles and assigning taxonomies of the same name.
+  // Case insensitive.
+  foreach ($data as $role_tid => $role_name) {
+    $user_is_part_of_committee = FALSE;
+    if (array_key_exists($role_name,$term_committee)) {
+        drupal_set_message("brugeren er allerede tilmeldt udvalget ". $rolename);
+    }
+    else {
+      if (array_key_exists($role_name,$termnames)) {
+        drupal_set_message("brugeren er nu tilknyttet udvalget ". $role_name . " og id " . $termnames[$role_name]['tid']);
+        $user->field_user_committee['und'][]['tid'] = $termnames[$role_name]['tid']; 
+      }
+    }
+  }  
+
   // Saving the user session with changes.
   user_save($user);
-
 }

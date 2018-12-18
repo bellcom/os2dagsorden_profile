@@ -886,7 +886,7 @@ function _simplesamlphp_auth_rolepopulation($rolemap) {
   // Check if valid local session exists..
   if ($_simplesamlphp_auth_as->isAuthenticated()) {
     $attributes = $_simplesamlphp_auth_saml_attributes;
-
+    #print_r($attributes);
     if (empty($rolemap)) return $roles;
 
     _simplesaml_auth_debug(t('Evaluate rolemap: %rolemap', array('%rolemap' => $rolemap)));
@@ -897,7 +897,10 @@ function _simplesamlphp_auth_rolepopulation($rolemap) {
       _simplesaml_auth_debug(t('Evaluate role rule: %rolerule', array('%rolerule' => $rolerule)));
 
       $roleruledecompose = explode(':', $rolerule);
-
+      //$roleruledecompose = explode('#', $rolerule);
+      $samlcounter = count($roleruledecompose);
+      // Changed by skifter to be able to have http:// 
+      $roleruledecompose[1] = str_replace("¤",":", $roleruledecompose[1]);
       $roleid = $roleruledecompose[0];
       $roleruleevaluations = explode(';', $roleruledecompose[1]);
 
@@ -976,7 +979,6 @@ function _simplesamlphp_auth_destroy_drupal_session() {
  */
 function simplesamlphp_auth_is_authenticated() {
   global $_simplesamlphp_auth_as;
-
   // Assume that the user isn't authenticated until proven otherwise.
   $authenticated = FALSE;
 
@@ -1005,7 +1007,6 @@ function simplesamlphp_auth_get_attributes($attribute = NULL) {
   global $_simplesamlphp_auth_saml_attributes;
 
   if (isset($attribute)) {
-
     // Initially, assume that there's nothing to return.
     $result = NULL;
 
