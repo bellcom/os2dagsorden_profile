@@ -137,6 +137,7 @@ function os2dagsorden_speaker_paper_form_os2dagsorden_settings_settings_form_alt
  */
 function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id === 'os2web_meetings_spaper_node_form') {
+    global $base_url;
     // Setting title.
     drupal_set_title(t('Create @speaker_paper', array('@speaker_paper' => variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'))));
 
@@ -151,9 +152,14 @@ function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
     // Get nid of target BP
     $result = preg_match('/\(([0-9]+)\)/',  $target_bp, $matches);
     if ($result > 0) {
-     $bp_nid = $matches[$result];
-     $bullet_point =  node_load($bp_nid);
+      $bp_nid = $matches[$result];
+      $bullet_point =  node_load($bp_nid);
     }
+    else if(isset($form['#entity']->nid)){
+      $bp_nid = $form['#entity']->field_os2web_meetings_sp_bullet['und'][0]['target_id'];
+      $bullet_point =  node_load($bp_nid);
+    }
+    $meeting = os2dagsorden_access_helper_get_meeting_by_bullet_point($bp_nid);
 
     // Modifying the shared with field, adding shared with user full name.
     foreach ($form['field_os2web_meetings_sp_shared']['und']['#options'] as $uid => $user_login_name) {
@@ -182,6 +188,14 @@ function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
         unset($form['field_os2web_meetings_sp_shared']['und']['#options'][$uid]);
       }
     }
+
+    // Breadcrumb.
+    $breadcrumb[] = l(t('Forsiden'), $base_url);
+    $breadcrumb[] .= l(t('Mødedetaljer'), 'meeting/' . $meeting->nid);
+    $breadcrumb[] .= l($bullet_point->title, 'meeting/' . $meeting->nid . '/bullet-point/' . $bp_nid);
+    $breadcrumb[] .= '<span class="breadcrumb-active">' . t('Create @speaker_paper', array('@speaker_paper' => variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'))) . '</span>';
+
+    drupal_set_breadcrumb($breadcrumb);
     $form['#attached']['js'] = array(drupal_get_path('module', 'os2dagsorden_speaker_paper') . '/js/os2dagsorden_speaker_paper.js');
 
     $form['actions']['submit']['#submit'][] = 'os2dagsorden_speaker_paper_rewrite_status_message';
