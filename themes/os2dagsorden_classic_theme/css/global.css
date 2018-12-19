@@ -1083,6 +1083,12 @@ pager li.pager-first,
   right: -7px;
   top: -41px;
 }
+.controls-right.breadcrumb-level a {
+  margin-left: 10px;
+}
+.controls-right.agenda-level.speaker-paper {
+  margin-top: 0; 
+}
 
 /*----------------------------Omega globals override END----------------------------*/
 
@@ -1339,7 +1345,7 @@ div.speaker-paper-all-print {
   float: right;
   margin-right: 5px;
   position: relative;
-  top: 5px;
+  top: 2.5px;
 }
 
 .view-display-id-attachment_print_all_speaker_papers,
@@ -1719,6 +1725,9 @@ a.annotator-wrapper {
   text-shadow: 0 1px 0 #eeeeee;
 }
 
+.controls-right.breadcrumb-level a {
+  margin-left: 10px;
+}
 
 /* ---------------------------- Breadcrumbs END---------------------------- */
 
@@ -2296,4 +2305,64 @@ div.note.subscribe::before{
   text-align: center;
   font-size: 16px;
   color: #C70039;
+}
+
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container {
+  width: 52px;
+  min-width: 52px;
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a {
+    display: inline-block;
+    padding: 3px 3px 0 3px;
+    line-height: 15px;
+    border-radius: none; 
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-edit-agenda {
+    position: relative;
+    background: url("../img/icon_edit.png") no-repeat 50% top;
+    min-width: 16px;
+    min-height: 16px;
+    width: 16px;
+    height: 16px;
+    padding: 2px 2px 0 2px; 
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-delete-agenda {
+    position: relative;
+    background: url("../img/icon_delete.png") no-repeat 50% top;
+    min-width: 16px;
+    min-height: 16px;
+    width: 16px;
+    height: 16px;
+    padding: 2px 2px 0 2px; 
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment-modify-links-container {
+  position: absolute;
+  top: 0;
+  right: 0; }
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment-modify-links-container a {
+  display: inline-block;
+  background: transparent;
+  border: none;
+  padding: 3px; 
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment-modify-links-container a .indicator-edit-agenda {
+  position: relative;
+  background: url("../img/icon_edit.png") no-repeat 50% top;
+  min-width: 16px;
+  min-height: 16px;
+  width: 16px;
+  height: 16px;
+  padding: 2px 2px 0 2px;
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt .attachment-modify-links-container a .indicator-delete-agenda {
+  position: relative;
+  background: url("../img/icon_delete.png") no-repeat 50% top;
+  min-width: 16px;
+  min-height: 16px;
+  width: 16px;
+  height: 16px;
+  padding: 2px 2px 0 2px;
+}
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt li {
+  position: relative;
 }

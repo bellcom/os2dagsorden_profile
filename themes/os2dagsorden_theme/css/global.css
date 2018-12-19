@@ -1119,8 +1119,8 @@ pager li.pager-first {
   position: absolute;
   right: 0;
   top: -51px; }
-  .controls-right.breadcrumb-level a {
-    margin-left: 10px; }
+.controls-right.breadcrumb-level a {
+  margin-left: 10px; }
 
 /*----------------------------Omega globals override END----------------------------*/
 /*----------------------------Tabs override start----------------------------*/
