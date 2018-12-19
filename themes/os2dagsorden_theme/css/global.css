@@ -1108,8 +1108,8 @@ pager li.pager-first {
   float: right;
   margin: 15px 6px 0px 10px; }
 
-.controls-right.agenda-level.create-agenda {
-  margin-bottom: 12px; }
+.controls-right.agenda-level.speaker-paper {
+  margin-top: 0; }
 
 .controls-left {
   float: left;
@@ -1119,6 +1119,8 @@ pager li.pager-first {
   position: absolute;
   right: 0;
   top: -51px; }
+  .controls-right.breadcrumb-level a {
+    margin-left: 10px; }
 
 /*----------------------------Omega globals override END----------------------------*/
 /*----------------------------Tabs override start----------------------------*/
@@ -2513,48 +2515,46 @@ ul#follows .checkbox.premeeting {
 
 .annotator-notes {
   margin-top: 20px; }
-.annotator-notes h1.title {
-  background: none;
-  border: none;
-  padding-left: 0;
-  font-size: 16px;
-  text-transform: none; }
-.annotator-notes h1.title .bp-title {
-  padding-left: 50px; }
-.annotator-notes .annotator-note {
-  padding-left: 30px;
-  padding-top: 5px;
-  display: block; }
-.annotator-notes h3 {
-  background-color: #e3d6d6; }
-.annotator-notes .annotator-note div {
-  display: inline-block; }
-.annotator-notes .annotator-note div.annotator-note div {
-  vertical-align: top; }
-.annotator-notes .annotator-note div.annotator-note-text {
-  border-bottom: 1px solid;
-  vertical-align: top;
-  width: 95%;
-  margin: auto;
-  vertical-align: middle;
-  position: relative;
-  padding-left: 10px;
-padding-bottom: 10px; }
-.annotator-notes .annotator-note div.annotator-note-text .note-text {
-  display: inline-block;
-  padding-left: 45px; }
-.annotator-notes .annotator-note div.annotator-note-text div.annotator-note-text-block {
-  width: 90%; }
-.annotator-notes .annotator-note div.annotator-note-link {
-  padding-right: 10px;
-  vertical-align: middle;
-  position: absolute;
-  right: 0; }
-.annotator-notes .annotator-note div.annotator-note-index {
-  vertical-align: top; }
+  .annotator-notes h1.title {
+    background: none;
+    border: none;
+    padding-left: 0;
+    font-size: 16px;
+    text-transform: none; }
+    .annotator-notes h1.title .bp-title {
+      padding-left: 50px; }
+  .annotator-notes h3 {
+    background-color: #e3d6d6; }
+  .annotator-notes .annotator-note {
+    padding-left: 30px;
+    padding-top: 5px;
+    display: block; }
+    .annotator-notes .annotator-note div {
+      display: inline-block; }
+      .annotator-notes .annotator-note div.annotator-note div {
+        vertical-align: top; }
+      .annotator-notes .annotator-note div.annotator-note-text {
+        border-bottom: 1px solid;
+        vertical-align: top;
+        width: 95%;
+        margin: auto;
+        vertical-align: middle;
+        position: relative;
+        padding-left: 10px;
+        padding-bottom: 10px; }
+        .annotator-notes .annotator-note div.annotator-note-text .note-text {
+          display: inline-block;
+          padding-left: 45px; }
+        .annotator-notes .annotator-note div.annotator-note-text div.annotator-note-text-block {
+          width: 90%; }
+      .annotator-notes .annotator-note div.annotator-note-link {
+        padding-right: 10px;
+        vertical-align: middle;
+        position: absolute;
+        right: 0; }
 
+/* ---------------------------- Notes page END --------------------------------- */
 .views-exposed-widgets .restricted-search-text {
   text-align: center;
   font-size: 16px;
   color: #C70039; }
-

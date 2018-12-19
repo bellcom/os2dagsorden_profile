@@ -532,7 +532,7 @@ function os2dagsorden_meeting_views_bullet_point_fields_filter($sp_id) {
  */
 function os2dagsorden_meeting_views_bullet_point_modify_links($meeting_id, $bp_id) {
   if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
-    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" class="edit-meeting-btn">'
+    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" class="edit-meeting-btn" rel="lightframe[|width:800px; height:500px; scrolling: auto;]">'
         . '<div class="indicator-edit-agenda"></div>&nbsp;</a>'
         . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/delete" class="edit-meeting-btn form-submit-delete">'
         . '<div class="indicator-delete-agenda"></div>&nbsp;</a>';

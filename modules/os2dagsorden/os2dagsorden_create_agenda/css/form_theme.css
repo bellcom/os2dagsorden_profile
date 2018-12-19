@@ -11,3 +11,21 @@
   clear: none;
   float: left;
 }
+html body {
+  min-width: 0px !important;
+}
+
+#region-page-top,
+#section-header,
+#breadcrumb,
+#region-sidebar-first,
+#region-sidebar-second,
+#zone-user-wrapper,
+#zone-menu-wrapper,
+#section-footer,
+#zone-postscript-wrapper {
+  display: none;
+}
+.region-content {
+  width: 100% !important;
+}

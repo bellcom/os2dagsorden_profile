@@ -99,7 +99,7 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
       $form['add_attachment']['#default_tab'] = 'edit-bilag';
     }
   }
-  $form[] = array(
+  /*$form[] = array(
     '#type' => 'submit',
     '#value' => (arg(5) == 'attachment') ? t('Return to meeting') : t('Return to bullet point'),
     '#attributes' => array(
@@ -107,22 +107,38 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
     ),
     '#submit' => array('os2dagsorden_create_agenda_bpa_back'),
     '#limit_validation_errors' => array(),
-  );
+  );*
   $form[] = array(
     '#markup' => '&nbsp;',
-  );
-  $form['submit'] = array(
+  );*/
+   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => (arg(5) ==  'attachment') ?t('Save & return to meeting') : t('Save & return to bullet point'),
+    //'#value' => (arg(5) ==  'attachment') ?t('Save & return to meeting') : t('Save & return to bullet point'),
+    '#value' => (arg(5) ==  'attachment') ? t('Save') : t('Save & return to bullet point'),
     '#attributes' => array(
       'class' => array('form-save-submit'),
     ),
     '#validate' => array('os2dagsorden_create_agenda_bpa_validate'),
     '#submit' => array('os2dagsorden_create_agenda_bpa_submit'),
   );
+  if (arg(5) ==  'attachment') {
+    $form['submit']['#ajax'] = array(
+      'callback' => 'os2dagsorden_create_agenda_bpa_create_ajax',
+      'wrapper' => 'os2dagsorden-create-agenda-meeting',
+      'method' => 'replace',
+      'effect' => 'fade',
+    );
+  }
 
   $form[] = array(
     '#markup' => '</div>',
+  );
+
+  $form['#attached']['css'] = array(
+    drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
+  );
+  $form['#attached']['js'] = array(
+    drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js',
   );
 
   return $form;
@@ -283,4 +299,23 @@ function os2dagsorden_create_agenda_bpa_back($form, &$form_state) {
   }
   $form_state['page_num'] = 2;
   $form_state['rebuild'] = TRUE;
+}
+/**
+ * Callback for creating bullet point attachment.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_bpa_create_ajax($form, &$form_state){
+  if(!empty(form_get_errors())) {
+    return $form;
+  }
+  else {
+    $commands = array();
+    $commands[] = array  (
+      'command' => 'closeLightboxPopup');
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
 }

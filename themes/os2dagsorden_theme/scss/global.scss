@@ -1072,7 +1072,11 @@ pager li.pager-first {
   margin: 15px 6px 0px 10px;
 }
 .controls-right.agenda-level.create-agenda {
-  margin-bottom: 12px;
+  //margin-bottom: 12px;
+}
+
+.controls-right.agenda-level.speaker-paper {
+  margin-top: 0b;
 }
 
 .controls-left {
@@ -1084,6 +1088,9 @@ pager li.pager-first {
   position: absolute;
   right: 0;
   top: -51px;
+  a {
+    margin-left: 10px;
+  }
 }
 
 /*----------------------------Omega globals override END----------------------------*/

@@ -227,6 +227,12 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     ),
     '#value' => t('Save meeting'),
     '#submit' => array('os2dagsorden_create_agenda_meeting_submit'),
+    '#ajax' => array(
+      'callback' => 'os2dagsorden_create_agenda_meeting_create_ajax',
+      'wrapper' => 'os2dagsorden-create-agenda-meeting',
+      'method' => 'replace',
+      'effect' => 'fade',
+    )
   );
   $form[] = array(
     '#markup' => '&nbsp;',
@@ -410,4 +416,26 @@ function os2dagsorden_create_agenda_remove_bullet_point_from_meeting($meeting_id
 
   $meeting->field_os2web_meetings_bullets['und'] = array_values($meeting->field_os2web_meetings_bullets['und']);
   node_save($meeting);
+}
+
+/**
+ * Callback for creating meeting.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_meeting_create_ajax($form, &$form_state){
+  global $base_url;
+  if(!empty(form_get_errors())) {
+    return $form;
+  }
+  else {
+    $commands = array();
+    $commands[] = array  (
+      'command' => 'closeLightboxAndRedirect',
+      'redirect' => $base_url . '/' . $form_state['redirect']);
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
 }

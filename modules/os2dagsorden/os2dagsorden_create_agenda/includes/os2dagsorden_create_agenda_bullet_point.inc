@@ -155,7 +155,7 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
   }
 
   // Finishing form.
-  $form[] = array(
+  /*$form[] = array(
     '#type' => 'submit',
     '#value' => t('Return to meeting'),
     '#attributes' => array(
@@ -163,18 +163,24 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     ),
     '#submit' => array('os2dagsorden_create_agenda_bullet_point_back'),
     '#limit_validation_errors' => array(),
-  );
-  $form[] = array(
+  );*/
+  /*$form[] = array(
     '#markup' => '&nbsp;',
-  );
+  );*/
   $form['save_bullet_point'] = array(
     '#type' => 'submit',
-    '#value' => t('Save & return to meeting'),
+    '#value' => t('Save'),
     '#attributes' => array(
       'class' => array('form-save-submit'),
     ),
     '#validate' => array('os2dagsorden_create_agenda_bullet_point_validate'),
     '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit'),
+    '#ajax' => array(
+      'callback' => 'os2dagsorden_create_agenda_bullet_point_create_ajax',
+      'wrapper' => 'os2dagsorden-create-agenda-meeting',
+      'method' => 'replace',
+      'effect' => 'fade',
+    )
   );
   $form[] = array(
     '#markup' => '&nbsp;',
@@ -194,7 +200,12 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
   $form[] = array(
     '#markup' => '</div>',
   );
-
+  $form['#attached']['css'] = array(
+    drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
+  );
+  $form['#attached']['js'] = array(
+    drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js',
+  );
   return $form;
 }
 
@@ -208,6 +219,25 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
  */
 function os2dagsorden_create_agenda_bpa_delete_ajax($form, $form_state) {
   return $form['bpas'];
+}
+/**
+ * Callback for creating bullet point.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_bullet_point_create_ajax ($form, &$form_state){
+  if(!empty(form_get_errors())) {
+    return $form;
+  }
+  else {
+    $commands = array();
+    $commands[] = array  (
+      'command' => 'closeLightboxPopup');
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
 }
 
 /**
@@ -343,11 +373,11 @@ function os2dagsorden_create_agenda_bullet_point_submit($form, &$form_state) {
   if (isset($form_state['values']['bilags'])) {
     os2dagsorden_create_agenda_save_bilag_files($node->nid, $form_state);
   }
-  if (arg(3) == 'bullet-point') {
+ /* if (arg(3) == 'bullet-point') {
     drupal_goto('/meeting/'. $form_state['meeting_id']);
   }
   $form_state['page_num'] = 1;
-  $form_state['rebuild'] = TRUE;
+  $form_state['rebuild'] = TRUE;*/
 }
 
 /**

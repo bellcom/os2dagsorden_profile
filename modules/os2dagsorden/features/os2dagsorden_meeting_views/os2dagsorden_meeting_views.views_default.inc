@@ -1211,6 +1211,7 @@ os2dagsorden_meeting_views_meeting_details_fields_participants_afbud($row->nid);
   $handler = $view->new_display('attachment', 'Print all speaker papers', 'attachment_print_all_speaker_papers');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Print alle talepapirer';
+  $handler->display->display_options['enabled'] = FALSE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
@@ -1362,6 +1363,16 @@ os2dagsorden_meeting_views_meeting_details_fields_participants_afbud($row->nid);
 os2dagsorden_meeting_views_meeting_details_fields_dagsorden_header();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: PHP */
+  $handler->display->display_options['empty']['php']['id'] = 'php';
+  $handler->display->display_options['empty']['php']['table'] = 'views';
+  $handler->display->display_options['empty']['php']['field'] = 'php';
+  $handler->display->display_options['empty']['php']['empty'] = TRUE;
+  $handler->display->display_options['empty']['php']['php_output'] = '<?php 
+os2dagsorden_meeting_views_meeting_details_fields_create_bullet_point_button();
+?>
+';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: bullet point */
   $handler->display->display_options['relationships']['field_os2web_meetings_bullets_target_id']['id'] = 'field_os2web_meetings_bullets_target_id';

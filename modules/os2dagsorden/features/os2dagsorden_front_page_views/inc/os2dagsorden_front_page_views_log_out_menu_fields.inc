@@ -17,7 +17,7 @@ function os2dagsorden_front_page_views_fields_text_log_off() {
  */
 function os2dagsorden_front_page_views_fields_create_meering() {
   if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
-    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting" class="create-meeting-btn button">' . variable_get('os2dagsorden_title_general_create_meeting', 'Tilføj møde') . '</a>';
+    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting" class="create-meeting-btn button" rel="lightframe[|width:800px; height:500px; scrolling: auto;]">' . variable_get('os2dagsorden_title_general_create_meeting', 'Tilføj møde') . '</a>';
   }
 }
 
