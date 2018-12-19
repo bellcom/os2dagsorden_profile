@@ -7,8 +7,7 @@
         parent.Lightbox.end();
       }
        Drupal.ajax.prototype.commands.closeLightboxAndRedirect = function(ajax, response, status){
-        alert(response.redirect);
-         parent.location.href = response.redirect;
+        parent.location.href = response.redirect;
         parent.Lightbox.end();
       }
 
