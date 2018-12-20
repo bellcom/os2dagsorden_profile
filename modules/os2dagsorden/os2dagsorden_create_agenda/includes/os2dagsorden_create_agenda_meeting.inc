@@ -37,6 +37,11 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     $form_state['bpa_id'] =  $bpa_id;
     return os2dagsorden_create_agenda_bpa($form, $form_state, $bp_id, $meeting_id);
   }
+  elseif(arg(5) == 'attachment'){
+    $form_state['meeting_id'] = $meeting_id;
+    $form_state['bullet_point_id'] = $bp_id;
+    return os2dagsorden_create_agenda_bpa($form, $form_state, $bp_id, $meeting_id);
+  }
   elseif (isset($bp_id) || arg(3) == 'bullet-point') {
      $form_state['meeting_id'] = $meeting_id;
     $form_state['bullet_point_id'] = $bp_id;

@@ -229,13 +229,15 @@ function os2dagsorden_create_agenda_bpa_delete_ajax($form, $form_state) {
  *   The current state of the form.
  */
 function os2dagsorden_create_agenda_bullet_point_create_ajax ($form, &$form_state){
+  global $base_url;
   if(!empty(form_get_errors())) {
     return $form;
   }
   else {
     $commands = array();
     $commands[] = array  (
-      'command' => 'closeLightboxPopup');
+      'command' => 'closeLightboxAndRedirect',
+      'redirect' => $base_url . '/meeting/' . $form_state['meeting_id']);
     return array('#type' => 'ajax', '#commands' => $commands);
   }
 }

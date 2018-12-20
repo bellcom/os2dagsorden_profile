@@ -1119,8 +1119,8 @@ pager li.pager-first {
   position: absolute;
   right: 0;
   top: -51px; }
-.controls-right.breadcrumb-level a {
-  margin-left: 10px; }
+  .controls-right.breadcrumb-level a {
+    margin-left: 10px; }
 
 /*----------------------------Omega globals override END----------------------------*/
 /*----------------------------Tabs override start----------------------------*/
@@ -1481,8 +1481,8 @@ table .speaker-paper-link-container {
         border: none;
         padding: 7px 0; }
         .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container {
-          width: 52px;
-          min-width: 52px; }
+          width: 78px;
+          min-width: 78px; }
           .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a {
             display: inline-block;
             padding: 3px 3px 0 3px;
@@ -1499,6 +1499,14 @@ table .speaker-paper-link-container {
             .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-delete-agenda {
               position: relative;
               background: url("../img/icon_delete.png") no-repeat 50% top;
+              min-width: 16px;
+              min-height: 16px;
+              width: 16px;
+              height: 16px;
+              padding: 2px 2px 0 2px; }
+            .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-add-agenda {
+              position: relative;
+              background: url("../img/icon_add.png") no-repeat 50% top;
               min-width: 16px;
               min-height: 16px;
               width: 16px;
@@ -2558,3 +2566,13 @@ ul#follows .checkbox.premeeting {
   text-align: center;
   font-size: 16px;
   color: #C70039; }
+
+.lightbox2-alt-layout-data #bottomNav {
+  margin-bottom: 0; }
+
+#imageData #bottomNav {
+  height: 0; }
+
+.lightbox2-alt-layout-data #bottomNavClose,
+.lightbox2-alt-layout #bottomNavClose {
+  margin-top: 0; }
