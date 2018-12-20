@@ -68,15 +68,15 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     '#field_suffix' => '<div class="indicator-form-personal"></div>',
   );
 
-  $allowed_extensions = 'doc docx pdf';
-
   $form['bilags'] = array(
-    '#type' => 'file',
+    '#type' => 'plupload',
     '#name' => 'files[]',
     '#title' => t('Upload bilags files'),
-    '#description' => t('@allowed_extensions only, 20MB Max Size', array('@allowed_extensions' => $allowed_extensions)),
-    '#attributes' => array('multiple' => 'multiple'),
-    );
+    '#autoupload' => TRUE,
+    '#upload_validators' => array(
+      'file_validate_extensions' => array('doc docx pdf'),
+    )
+  );
 
   $form['bpas'] = array(
     '#type' => 'fieldset',
@@ -370,7 +370,9 @@ function os2dagsorden_create_agenda_bullet_point_validate($form, &$form_state) {
  */
 function os2dagsorden_create_agenda_bullet_point_submit($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_bullet_point($form, $form_state);
+  dpm($form_state);
   if (isset($form_state['values']['bilags'])) {
+  //  dpm($form_state['values']['bilags']);
     os2dagsorden_create_agenda_save_bilag_files($node->nid, $form_state);
   }
  /* if (arg(3) == 'bullet-point') {
@@ -496,6 +498,14 @@ function os2dagsorden_create_agenda_save_bilag_files($bp_id, $form_state) {
   $bilags = $form_state['values']['bilags'];
 
   foreach ($bilags as $bilag) {
+    if ($bilag['status'] == 'done') {
+      $source = $bilag['tmppath'];
+      $destination = file_stream_wrapper_uri_normalize('temporary://' . $bilag['name']);
+      $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
+      $bilag = plupload_file_uri_to_object($destination);
+      file_save($bilag);
+
+
     $node = new stdClass();
     $node->type = "os2web_meetings_bullet_attach";
     $node->language = LANGUAGE_NONE;
@@ -508,6 +518,7 @@ function os2dagsorden_create_agenda_save_bilag_files($bp_id, $form_state) {
     node_save($node);
     os2dagsorden_create_agenda_add_bpa_to_bullet_point($bp_id, $node->nid);
     os2dagsorden_pdf2htmlex_schedule_if_bpa($bilag->fid);
+    }
   }
 }
 
