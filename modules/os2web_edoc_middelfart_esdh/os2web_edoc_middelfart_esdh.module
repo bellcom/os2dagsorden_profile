@@ -78,6 +78,13 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
         . '<br/>If first BPA in the list is missing in the meeting, then behandlingsplan will be shown after second one in the list, etc.'),
     '#default_value' => variable_get('os2web_edoc_middelfart_esdh_bp_before_behandlingsplan', 'Høring,Økonomi,Sagsbeskrivelse,Forvaltningen foreslår'),
   );
+  $form['meetings']['os2web_edoc_middelfart_esdh_behandlingsplan_decision_exclude'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Decisions that should be not imported'),
+    '#maxlength' => 200,
+    '#description' => t('Comma-separeted list of Decisions\'s that should be not imported.'),
+    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_behandlingsplan_decision_exclude', 'Beslutning ikke frigivet'),
+  );
   $form['meetings']['os2web_edoc_middelfart_esdh_import_closed_agenda'] = array(
     '#type' => 'checkbox',
     '#title' => 'Import closed agenda',
