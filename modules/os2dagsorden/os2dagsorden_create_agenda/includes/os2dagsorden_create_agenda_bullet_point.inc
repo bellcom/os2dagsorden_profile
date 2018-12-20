@@ -370,9 +370,7 @@ function os2dagsorden_create_agenda_bullet_point_validate($form, &$form_state) {
  */
 function os2dagsorden_create_agenda_bullet_point_submit($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_bullet_point($form, $form_state);
-  dpm($form_state);
   if (isset($form_state['values']['bilags'])) {
-  //  dpm($form_state['values']['bilags']);
     os2dagsorden_create_agenda_save_bilag_files($node->nid, $form_state);
   }
  /* if (arg(3) == 'bullet-point') {
