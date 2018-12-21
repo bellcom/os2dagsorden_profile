@@ -357,9 +357,13 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
     foreach ($xml_handlingPlans->xpath('edoc:Handling') as $key => $behandlingplan_xml) {
       $title = (string) array_shift($behandlingplan_xml->xpath('edoc:CommitteeName'));
       $date = (string) array_shift($behandlingplan_xml->xpath('edoc:MeetingDate'));
-      $date = date('d. F Y', strtotime($date));
+      $date = format_date(strtotime($date), 'os2dagsorden_long_date');
+      $decision = (string) array_shift($behandlingplan_xml->xpath('edoc:Decision'));
+      $excluded_decisions = explode(',', variable_get('os2web_edoc_middelfart_esdh_behandlingsplan_decision_exclude', 'Beslutning ikke frigivet'));
       $behandlingplan_meetings[$key] =  $title . ' ' . t('den') . ' ' . $date;
-      $behandlingplan_decisions[$key] = (string) array_shift($behandlingplan_xml->xpath('edoc:Decision'));
+      if (!in_array($decision, $excluded_decisions)) {
+        $behandlingplan_decisions[$key] = (string) array_shift($behandlingplan_xml->xpath('edoc:Decision'));
+      }
     }
     if (!empty($behandlingplan_meetings)) {
       $bullet_body = '<strong>' . t('Behandlingsplan') . ':</strong><br/>';
