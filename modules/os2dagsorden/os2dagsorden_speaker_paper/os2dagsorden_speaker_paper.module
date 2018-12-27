@@ -149,15 +149,15 @@ function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
     $form['body']['und'][0]['#default_value'] .= empty($user->field_user_full_name['und'][0]['value']) ? $user->name : $user->field_user_full_name['und'][0]['value'];
     $form['body']['und'][0]['#default_value'] .= ', ' . date('d-m-Y') . ':';
     $target_bp = $_GET['edit']['field_os2web_meetings_sp_bullet']['und'][0]['target_id'];
-    // Get nid of target BP
-    $result = preg_match('/\(([0-9]+)\)/',  $target_bp, $matches);
+    // Get nid of target BP.
+    $result = preg_match('/\(([0-9]+)\)/', $target_bp, $matches);
     if ($result > 0) {
       $bp_nid = $matches[$result];
-      $bullet_point =  node_load($bp_nid);
+      $bullet_point = node_load($bp_nid);
     }
-    else if(isset($form['#entity']->nid)){
+    elseif (isset($form['#entity']->nid)) {
       $bp_nid = $form['#entity']->field_os2web_meetings_sp_bullet['und'][0]['target_id'];
-      $bullet_point =  node_load($bp_nid);
+      $bullet_point = node_load($bp_nid);
     }
     $meeting = os2dagsorden_access_helper_get_meeting_by_bullet_point($bp_nid);
 
@@ -202,12 +202,12 @@ function os2dagsorden_speaker_paper_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
-/*
- * Override status message on Talepapir node creation.b
+/**
+ * Override status message on Talepapir node creation.
  */
 function os2dagsorden_speaker_paper_rewrite_status_message() {
   $message = array_shift(drupal_get_messages('status'));
-  //To override message
-  $new_message  = str_replace('Talepapir', variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'), $message[0]);
+  // To override message.
+  $new_message = str_replace('Talepapir', variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'), $message[0]);
   drupal_set_message($new_message);
 }

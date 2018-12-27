@@ -306,10 +306,10 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases($elements, $meetin
     }
     if (variable_get('os2dagsorden_show_bilag_pages_amount', FALSE)) {
       if ((int) $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'] > 1) {
-        print '<div class = "bilag-pages">' . t(' @pages sider', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+        print '<div class = "bilag-pages">' . t(' @pages sider', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>';
       }
       else {
-        print '<div class = "bilag-pages">' . t(' @pages side', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+        print '<div class = "bilag-pages">' . t(' @pages side', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>';
       }
     }
     print '</li>';

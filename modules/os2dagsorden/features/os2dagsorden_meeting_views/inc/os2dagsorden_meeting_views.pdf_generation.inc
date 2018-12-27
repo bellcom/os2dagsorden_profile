@@ -14,7 +14,6 @@
  *
  * In the end of the function uses print_pdf_dispose_content to return the file
  * with correct headers.
- *
  */
 function os2dagsorden_meeting_views_meetings_overview_pdf_generate() {
   require_once DRUPAL_ROOT . '/profiles/os2dagsorden/libraries/mpdf/vendor/autoload.php';
