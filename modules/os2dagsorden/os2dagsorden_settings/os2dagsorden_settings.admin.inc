@@ -1308,11 +1308,6 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir'),
     '#title' => t('Nyt talepapir'),
-    //'#states' => array(
-    //  'visible' => array(
-    //    ':input[name="os2dagsorden_title_meeting_new_speaker_paper_hide"]' => array('checked' => FALSE),
-    //  ),
-    //)
   );
   $form['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = array(
     '#type' => 'checkbox',
@@ -1407,7 +1402,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('Number of days before the meeting for which participants should see its contents'),
     '#default_value' => variable_get('os2dagsorden_timespan_open_meeting_content', 14),
   );
-   $form['os2dagsorden_external_committee']['os2dagsorden_external_committee_anonymize_button_behavior'] = array(
+  $form['os2dagsorden_external_committee']['os2dagsorden_external_committee_anonymize_button_behavior'] = array(
     '#type' => 'radios',
     '#title' => t('For user created meetings the "delete / anonymize" button will:'),
     '#options' => array('delete' => 'delete', 'anonymize' => 'anonymize'),

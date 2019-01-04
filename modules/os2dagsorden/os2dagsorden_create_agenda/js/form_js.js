@@ -1,6 +1,17 @@
 (function ($) {
   Drupal.behaviors.confirm = {
     attach: function (context, settings) {
+      if (Drupal.ajax) {
+        Drupal.ajax.prototype.commands.closeLightboxPopup = function(ajax, response, status){
+        parent.location.reload();
+        parent.Lightbox.end();
+      }
+       Drupal.ajax.prototype.commands.closeLightboxAndRedirect = function(ajax, response, status){
+        parent.location.href = response.redirect;
+        parent.Lightbox.end();
+      }
+
+    }
       $('.create-agenda-edit-delete-container.form-submit-delete').once('form-submit-delete-processed').each(function (index) {
         var events = $(this).clone(true).data('events');// Get the jQuery events.
         $(this).unbind('mousedown'); // Remove the click events.

@@ -56,6 +56,7 @@ function os2dagsorden_access_helper_print_speaker_paper_generate_html($bullet_po
   }
   return $html;
 }
+
 /**
  * Composes the view of all speaker papers for this meeting.
  *
@@ -68,13 +69,10 @@ function os2dagsorden_access_helper_print_speaker_paper_generate_html($bullet_po
 function os2dagsorden_access_helper_meeting_all_meeting_speaker_papers_view($meeting_id) {
   global $base_url;
 
-  // Overriding title for bilag.
-  //drupal_set_title(variable_get('os2dagsorden_title_meeting_comments', 'Talepapir'));
-
   // Breadcrumb.
   $breadcrumb[] = l(t('Forsiden'), $base_url);
   $breadcrumb[] .= l(t('Mødedetaljer'), 'meeting/' . $meeting_id);
-  $breadcrumb[] .= '<span class="breadcrumb-active">' . variable_get('os2dagsorden_title_meeting_comments', 'Talepapir') .'</span>';
+  $breadcrumb[] .= '<span class="breadcrumb-active">' . variable_get('os2dagsorden_title_meeting_comments', 'Talepapir') . '</span>';
   drupal_set_breadcrumb($breadcrumb);
 
   $meeting = node_load($meeting_id);
@@ -95,6 +93,7 @@ function os2dagsorden_access_helper_meeting_all_meeting_speaker_papers_view($mee
   $html .= '</div></div>';
   return $html;
 }
+
 /**
  * Generates HTML of meeting speaker papers.
  *

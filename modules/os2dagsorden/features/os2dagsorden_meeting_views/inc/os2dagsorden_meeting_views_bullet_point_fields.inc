@@ -306,10 +306,10 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases($elements, $meetin
     }
     if (variable_get('os2dagsorden_show_bilag_pages_amount', FALSE)) {
       if ((int) $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'] > 1) {
-        print '<div class = "bilag-pages">' . t(' @pages sider', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+        print '<div class = "bilag-pages">' . t(' @pages sider', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>';
       }
       else {
-        print '<div class = "bilag-pages">' . t(' @pages side', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>' ;
+        print '<div class = "bilag-pages">' . t(' @pages side', array('@pages' => $attachment->field_os2web_meetings_bpa_pages['und'][0]['value'])) . '</div>';
       }
     }
     print '</li>';
@@ -532,9 +532,11 @@ function os2dagsorden_meeting_views_bullet_point_fields_filter($sp_id) {
  */
 function os2dagsorden_meeting_views_bullet_point_modify_links($meeting_id, $bp_id) {
   if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
-    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" class="edit-meeting-btn">'
+    print '<a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" class="edit-meeting-btn" rel="lightframe[|width:800px; height:500px; scrolling: auto;]">'
         . '<div class="indicator-edit-agenda"></div>&nbsp;</a>'
         . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/delete" class="edit-meeting-btn form-submit-delete">'
-        . '<div class="indicator-delete-agenda"></div>&nbsp;</a>';
+        . '<div class="indicator-delete-agenda"></div>&nbsp;</a>'
+        . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/attachment" class="edit-meeting-btn" rel="lightframe[|width:800px; height:500px; scrolling: auto;]">'
+        . '<div class="indicator-add-agenda"></div>&nbsp;</a>';
   }
 }

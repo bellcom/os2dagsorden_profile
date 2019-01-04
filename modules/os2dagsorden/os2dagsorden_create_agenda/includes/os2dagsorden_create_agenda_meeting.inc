@@ -34,11 +34,16 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
   elseif (isset($bpa_id)) {
     $form_state['meeting_id'] = $meeting_id;
     $form_state['bullet_point_id'] = $bp_id;
-    $form_state['bpa_id'] =  $bpa_id;
+    $form_state['bpa_id'] = $bpa_id;
+    return os2dagsorden_create_agenda_bpa($form, $form_state, $bp_id, $meeting_id);
+  }
+  elseif (arg(5) == 'attachment') {
+    $form_state['meeting_id'] = $meeting_id;
+    $form_state['bullet_point_id'] = $bp_id;
     return os2dagsorden_create_agenda_bpa($form, $form_state, $bp_id, $meeting_id);
   }
   elseif (isset($bp_id) || arg(3) == 'bullet-point') {
-     $form_state['meeting_id'] = $meeting_id;
+    $form_state['meeting_id'] = $meeting_id;
     $form_state['bullet_point_id'] = $bp_id;
     return os2dagsorden_create_agenda_bullet_point($form, $form_state);
   }
@@ -61,7 +66,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#title' => t('Description opened:'),
     '#type' => 'managed_file',
     '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($two_mb_bytes) . '</strong>')) . '<br/>' .
-      t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
+    t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
     '#upload_location' => 'private://manual_agendas',
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
@@ -72,7 +77,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#title' => t('Description closed:'),
     '#type' => 'managed_file',
     '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($two_mb_bytes) . '</strong>')) . '<br/>' .
-      t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
+    t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
     '#upload_location' => 'private://manual_agendas',
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
@@ -127,7 +132,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
           $i++;
         }
 
-        $bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value']  . $i] = $bp;
+        $bullet_points[$bp->field_os2web_meetings_bul_number['und'][0]['value'] . $i] = $bp;
       }
       ksort($bullet_points);
       foreach ($bullet_points as $bp) {
@@ -225,10 +230,16 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#attributes' => array(
       'class' => array('form-save-submit'),
     ),
-    '#value' => t('Save meeting'),
+    '#value' => t('Save'),
     '#submit' => array('os2dagsorden_create_agenda_meeting_submit'),
+    '#ajax' => array(
+      'callback' => 'os2dagsorden_create_agenda_meeting_create_ajax',
+      'wrapper' => 'os2dagsorden-create-agenda-meeting',
+      'method' => 'replace',
+      'effect' => 'fade',
+    )
   );
-  $form[] = array(
+  /*$form[] = array(
     '#markup' => '&nbsp;',
   );
   $form['save_meeting_and_add_bullet_point'] = array(
@@ -238,7 +249,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     ),
     '#value' => t('Save & Add bullet point'),
     '#submit' => array('os2dagsorden_create_agenda_meeting_submit_add_edit_bullet_point'),
-  );
+  );*/
   $form[] = array(
     '#markup' => '</div>',
   );
@@ -410,4 +421,27 @@ function os2dagsorden_create_agenda_remove_bullet_point_from_meeting($meeting_id
 
   $meeting->field_os2web_meetings_bullets['und'] = array_values($meeting->field_os2web_meetings_bullets['und']);
   node_save($meeting);
+}
+
+/**
+ * Callback for creating meeting.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_meeting_create_ajax($form, &$form_state) {
+  global $base_url;
+  if (!empty(form_get_errors())) {
+    return $form;
+  }
+  else {
+    $commands = array();
+    $commands[] = array(
+      'command' => 'closeLightboxAndRedirect',
+      'redirect' => $base_url . '/' . $form_state['redirect']
+    );
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
 }

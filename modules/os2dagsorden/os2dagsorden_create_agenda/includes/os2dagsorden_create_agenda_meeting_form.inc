@@ -125,33 +125,6 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
     '#multiple' => FALSE,
   );
 
- /* $user_select = array();
-  $users = entity_load('user');
-  foreach ($users as $user) {
-    if ((int)$user->uid === 0) {
-      continue;
-    }
-    $user_select[$user->uid] = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
-  }
-  $form['participants'] = array(
-    '#type' => 'select',
-    '#title' => t('Participants:'),
-    '#required' => FALSE,
-    '#options' => $user_select,
-    '#multiple' => TRUE,
-    '#attributes' => array('class' => array('improved-multi-select')),
-  );
-
-   $form['referents'] = array(
-    '#type' => 'select',
-    '#title' => t('Referent:'),
-    '#required' => FALSE,
-    '#options' => $user_select,
-    '#multiple' => TRUE,
-    '#attributes' => array('class' => array('improved-multi-select')),
-  );
-*/
-
   // Finishing form.
   $form['#attached']['css'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
@@ -202,7 +175,7 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
       $value = end($value);
       // Name.
       $username = substr($value, 1, strlen($value) - 2);
-       $account = user_load_by_name($username);
+      $account = user_load_by_name($username);
       $selection[] = $account->uid;
     }
     $form['referents']['#default_value'] = $selection;
@@ -308,18 +281,6 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
 
   $node->field_os2web_meetings_location['und'][0]['tid'] = $loc_tid;
 
-  /*if ($participants) {
-    $participant_str = '';
-    foreach ($participants as $participant => $value) {
-      $user = user_load($value);
-      $participant_str .= $user->field_user_full_name['und'][0]['value'] . " ($user->name), ";
-    }
-    // Removing last coma.
-    $node->field_os2web_meetings_partic['und'][0]['value'] = substr($participant_str, 0, strlen($participant_str) - 2);
-  }
-  else {
-    $node->field_os2web_meetings_partic['und'][0]['value'] = '';
-  }*/
   // Unsetting internal members.
   $node->field_os2web_meetings_partic_int['und'] = array();
   if ($internal_participants) {

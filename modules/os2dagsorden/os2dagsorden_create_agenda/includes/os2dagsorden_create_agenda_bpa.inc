@@ -75,7 +75,7 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
     '#title' => t('Bilag file:'),
     '#group' => 'add_attachment',
     '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($twenty_mb_bytes) . '</strong>')) . '<br/>' .
-      t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
+    t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
       'file_validate_size' => array($twenty_mb_bytes),
@@ -99,30 +99,33 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
       $form['add_attachment']['#default_tab'] = 'edit-bilag';
     }
   }
-  $form[] = array(
-    '#type' => 'submit',
-    '#value' => (arg(5) == 'attachment') ? t('Return to meeting') : t('Return to bullet point'),
-    '#attributes' => array(
-      'class' => array('form-back'),
-    ),
-    '#submit' => array('os2dagsorden_create_agenda_bpa_back'),
-    '#limit_validation_errors' => array(),
-  );
-  $form[] = array(
-    '#markup' => '&nbsp;',
-  );
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => (arg(5) ==  'attachment') ?t('Save & return to meeting') : t('Save & return to bullet point'),
+    '#value' => (arg(5) == 'attachment') ? t('Save') : t('Save & return to bullet point'),
     '#attributes' => array(
       'class' => array('form-save-submit'),
     ),
     '#validate' => array('os2dagsorden_create_agenda_bpa_validate'),
     '#submit' => array('os2dagsorden_create_agenda_bpa_submit'),
   );
+  if (arg(5) == 'attachment') {
+    $form['submit']['#ajax'] = array(
+      'callback' => 'os2dagsorden_create_agenda_bpa_create_ajax',
+      'wrapper' => 'os2dagsorden-create-agenda-meeting',
+      'method' => 'replace',
+      'effect' => 'fade',
+    );
+  }
 
   $form[] = array(
     '#markup' => '</div>',
+  );
+
+  $form['#attached']['css'] = array(
+    drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
+  );
+  $form['#attached']['js'] = array(
+    drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js',
   );
 
   return $form;
@@ -210,11 +213,11 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
   // Schedule file for html conversion.
   if ($bilag) {
     os2dagsorden_pdf2htmlex_schedule_if_bpa($bilag->fid);
-        // PNG  conversion.
-  if (module_exists("os2dagsorden_pdf2png_conversion")) {
-    // If is PDF, schedule for HTML conversion.
-     os2dagsorden_pdf2png_conversion_schedule_if_bpa($file->fid);
-   }
+    // PNG  conversion.
+    if (module_exists("os2dagsorden_pdf2png_conversion")) {
+      // If is PDF, schedule for HTML conversion.
+      os2dagsorden_pdf2png_conversion_schedule_if_bpa($file->fid);
+    }
   }
 
   return $node;
@@ -260,7 +263,7 @@ function os2dagsorden_create_agenda_add_bpa_to_bullet_point($bullet_point_id, $b
 function os2dagsorden_create_agenda_bpa_submit($form, &$form_state) {
   os2dagsorden_create_agenda_save_bpa($form, $form_state);
   if (arg(5) == 'attachment') {
-    drupal_goto('/meeting/'. $form_state['meeting_id']);
+    drupal_goto('/meeting/' . $form_state['meeting_id']);
   }
   $form_state['page_num'] = 2;
   $form_state['rebuild'] = TRUE;
@@ -279,8 +282,27 @@ function os2dagsorden_create_agenda_bpa_submit($form, &$form_state) {
  */
 function os2dagsorden_create_agenda_bpa_back($form, &$form_state) {
   if (arg(5) == 'attachment') {
-    drupal_goto('/meeting/'. $form_state['meeting_id']);
+    drupal_goto('/meeting/' . $form_state['meeting_id']);
   }
   $form_state['page_num'] = 2;
   $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Callback for creating bullet point attachment.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_bpa_create_ajax($form, &$form_state) {
+  if (!empty(form_get_errors())) {
+    return $form;
+  }
+  else {
+    $commands = array();
+    $commands[] = array('command' => 'closeLightboxPopup');
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
 }

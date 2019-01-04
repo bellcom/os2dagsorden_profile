@@ -110,8 +110,8 @@ function os2dagsorden_meeting_views_views_pre_build(&$view) {
 /**
  * Updates the submit time and handles reset logic.
  *
- * @param $form
- * @param $form_state
+ * @param mixed $form
+ * @param mixed $form_state
  */
 function os2dagsorden_meeting_views_meetings_overview_submit(&$form, &$form_state) {
   if ($form_state['triggering_element']['#name'] === 'search') {
@@ -129,6 +129,13 @@ function os2dagsorden_meeting_views_meetings_overview_submit(&$form, &$form_stat
 
 /**
  * Implements hook_view_node().
+ *
+ * @param mixed $node
+ *   The node that is being assembled for rendering.
+ * @param mixed $view_mode
+ *   The $view_mode parameter from node_view().
+ * @param string $langcode
+ *   The language code used for rendering.
  */
 function os2dagsorden_meeting_views_node_view($node, $view_mode, $langcode) {
   if ($node->type === 'os2web_meetings_meeting' && $view_mode === 'os2dagsorden_meeting_overview') {

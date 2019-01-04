@@ -1072,7 +1072,11 @@ pager li.pager-first {
   margin: 15px 6px 0px 10px;
 }
 .controls-right.agenda-level.create-agenda {
-  margin-bottom: 12px;
+  //margin-bottom: 12px;
+}
+
+.controls-right.agenda-level.speaker-paper {
+  margin-top: 0b;
 }
 
 .controls-left {
@@ -1084,6 +1088,9 @@ pager li.pager-first {
   position: absolute;
   right: 0;
   top: -51px;
+  a {
+    margin-left: 10px;
+  }
 }
 
 /*----------------------------Omega globals override END----------------------------*/
@@ -1554,8 +1561,8 @@ table {
               border: none;
               padding: 7px 0;
               &.bullet-point-modify-links-container {
-                width: 52px;
-                min-width: 52px;
+                width: 78px;
+                min-width: 78px;
                 a {
                   display: inline-block;
                   padding: 3px 3px 0 3px;
@@ -1573,6 +1580,15 @@ table {
                   .indicator-delete-agenda {
                     position: relative;
                     background: url('../img/icon_delete.png') no-repeat 50% top;
+                    min-width: 16px;
+                    min-height: 16px;
+                    width: 16px;
+                    height: 16px;
+                    padding: 2px 2px 0 2px;
+                  }
+                  .indicator-add-agenda {
+                    position: relative;
+                    background: url('../img/icon_add.png') no-repeat 50% top;
                     min-width: 16px;
                     min-height: 16px;
                     width: 16px;
@@ -2877,4 +2893,17 @@ ul#follows {
     text-align: center;
     font-size: 16px;
     color: #C70039;
+}
+
+.lightbox2-alt-layout-data {
+  #bottomNav {
+    margin-bottom: 0;
+  }
+}
+#imageData #bottomNav {
+  height: 0;
+}
+.lightbox2-alt-layout-data #bottomNavClose,
+.lightbox2-alt-layout #bottomNavClose {
+    margin-top: 0;
 }
