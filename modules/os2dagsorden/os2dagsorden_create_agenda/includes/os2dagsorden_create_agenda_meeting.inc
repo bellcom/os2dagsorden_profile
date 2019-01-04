@@ -59,29 +59,33 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
 
   // Pass the maximum file size in bytes - 2 MB.
   $two_mb_bytes = 2 * 1024 * 1024;
-  $allowed_extensions = 'doc docx pdf';
 
   // Adding other fields.
   $form['description_opened'] = array(
     '#title' => t('Description opened:'),
-    '#type' => 'managed_file',
-    '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($two_mb_bytes) . '</strong>')) . '<br/>' .
-    t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
-    '#upload_location' => 'private://manual_agendas',
+    '#type' => 'plupload',
+    '#name' => 'files[]',
+    '#autoupload' => TRUE,
     '#upload_validators' => array(
-      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_extensions' => array('doc docx pdf'),
       'file_validate_size' => array($two_mb_bytes),
     ),
+    '#plupload_settings' => array(
+      'multi_selection' => false,
+    ),
   );
+
   $form['description_closed'] = array(
     '#title' => t('Description closed:'),
-    '#type' => 'managed_file',
-    '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($two_mb_bytes) . '</strong>')) . '<br/>' .
-    t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
-    '#upload_location' => 'private://manual_agendas',
+    '#type' => 'plupload',
+    '#name' => 'files[]',
+    '#autoupload' => TRUE,
     '#upload_validators' => array(
-      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_extensions' => array('doc docx pdf'),
       'file_validate_size' => array($two_mb_bytes),
+    ),
+    '#plupload_settings' => array(
+      'multi_selection' => false,
     ),
   );
 
@@ -288,14 +292,22 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
   $description_opened = $form_state['values']['description_opened'];
   $description_closed = $form_state['values']['description_closed'];
 
-  if ($description_opened != 0) {
-    // Resaving file permanently.
-    $description_opened = file_load($description_opened);
-    $description_opened->status = FILE_STATUS_PERMANENT;
-    $description_opened->display = 1;
-    file_save($description_opened);
-
-    $node->field_os2web_meetings_full_doc['und'][0] = (array) $description_opened;
+  if (!empty($description_opened)) {
+   foreach ($description_opened as $description_file) {
+    if ($description_file['status'] == 'done') {
+      // Resaving file permanently.
+      $source = $description_file['tmppath'];
+      $destination = file_stream_wrapper_uri_normalize('temporary://' . $description_file['name']);
+      $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
+      $description_file = plupload_file_uri_to_object($destination);
+      file_save($description_file);
+      $description_file->status = FILE_STATUS_PERMANENT;
+      $description_file->display = 1;
+      file_save($description_file);
+      $node->field_os2web_meetings_full_doc['und'][0] = (array) $description_file;
+      break;
+     }
+    }
   }
   else {
     if (field_get_items('node', $node, 'field_os2web_meetings_full_doc')) {
@@ -306,14 +318,22 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
     }
   }
 
-  if ($description_closed != 0) {
-    // Resaving file permanently.
-    $description_closed = file_load($description_closed);
-    $description_closed->status = FILE_STATUS_PERMANENT;
-    $description_closed->display = 1;
-    file_save($description_closed);
-
-    $node->field_os2web_meetings_full_doc_c['und'][0] = (array) $description_closed;
+  if (!empty($description_closed)) {
+    foreach ($description_closed as $description_file) {
+      if ($description_file['status'] == 'done') {
+        // Resaving file permanently.
+        $source = $description_file['tmppath'];
+        $destination = file_stream_wrapper_uri_normalize('temporary://' . $description_file['name']);
+        $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
+        $description_file = plupload_file_uri_to_object($destination);
+        file_save($description_file);
+        $description_file->status = FILE_STATUS_PERMANENT;
+        $description_file->display = 1;
+        file_save($description_file);
+        $node->field_os2web_meetings_full_doc_c['und'][0] = (array) $description_file;
+        break;
+      }
+    }
   }
   else {
     if (field_get_items('node', $node, 'field_os2web_meetings_full_doc_c')) {

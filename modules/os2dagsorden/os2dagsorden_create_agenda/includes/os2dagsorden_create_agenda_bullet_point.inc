@@ -169,17 +169,6 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
       'effect' => 'fade',
     )
   );
-  $form[] = array(
-    '#markup' => '&nbsp;',
-  );
-  $form['save_bullet_point_and_add_bpa'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save & Add bullet point attachment'),
-    '#attributes' => array(
-      'class' => array('form-add-submit'),
-    ),
-    '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_add_edit_bpa'),
-  );
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js',
   );
