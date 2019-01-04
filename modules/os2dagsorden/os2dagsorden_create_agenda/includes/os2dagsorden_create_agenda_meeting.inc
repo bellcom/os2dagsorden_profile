@@ -230,7 +230,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#attributes' => array(
       'class' => array('form-save-submit'),
     ),
-    '#value' => t('Save meeting'),
+    '#value' => t('Save'),
     '#submit' => array('os2dagsorden_create_agenda_meeting_submit'),
     '#ajax' => array(
       'callback' => 'os2dagsorden_create_agenda_meeting_create_ajax',
@@ -239,7 +239,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
       'effect' => 'fade',
     )
   );
-  $form[] = array(
+  /*$form[] = array(
     '#markup' => '&nbsp;',
   );
   $form['save_meeting_and_add_bullet_point'] = array(
@@ -249,7 +249,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     ),
     '#value' => t('Save & Add bullet point'),
     '#submit' => array('os2dagsorden_create_agenda_meeting_submit_add_edit_bullet_point'),
-  );
+  );*/
   $form[] = array(
     '#markup' => '</div>',
   );
