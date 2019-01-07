@@ -84,6 +84,14 @@ function os2dagsorden_create_agenda_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  $items['agenda/meeting/%/bullet-point/create_from_file'] = array(
+    'page callback' => 'drupal_get_form',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(2),
+    'page arguments' => array('os2dagsorden_create_agenda_bullet_point_from_file_form'),
+    'file' => 'includes/os2dagsorden_create_agenda_bullet_point.inc',
+    'type' => MENU_CALLBACK,
+  );
   $items['node/%/agenda'] = array(
     'page callback' => '_os2dagsorden_create_agenda_redirect',
     'access callback' => '_os2dagsorden_create_agenda_meeting_access',
