@@ -1372,7 +1372,7 @@ os2dagsorden_meeting_views_meeting_details_fields_dagsorden_header();
   $handler->display->display_options['empty']['php']['empty'] = TRUE;
   $handler->display->display_options['empty']['php']['php_output'] = '<?php 
 os2dagsorden_meeting_views_meeting_details_fields_create_bullet_point_button();
-os2dagsorden_meeting_views_meeting_details_fields_create_bullet_point_button();
+os2dagsorden_meeting_views_meeting_details_fields_create_all_bullet_points_button();
 ?>
 ';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
