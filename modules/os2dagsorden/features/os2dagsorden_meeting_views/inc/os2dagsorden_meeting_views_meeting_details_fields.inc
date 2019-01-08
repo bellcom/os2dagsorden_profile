@@ -619,6 +619,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_dagsorden_header() {
     print '</div>';
   }
   os2dagsorden_meeting_views_meeting_details_fields_create_bullet_point_button();
+  os2dagsorden_meeting_views_meeting_details_fields_create_all_bullet_points_button();
 
   print '<h3>' . variable_get('os2dagsorden_title_meeting_agenda', 'Dagsorden:') . '</h3>';
 }
@@ -1233,6 +1234,18 @@ function os2dagsorden_meeting_views_meeting_details_fields_create_bullet_point_b
   if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
     print '<div class="controls-right agenda-level create-agenda">';
     print '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point" class="form-submit" rel="lightframe[|width:800px; height:500px; scrolling: auto;]">' . t('Operet punkt') . '</a>';
+    print '</div>';
+  }
+}
+
+/**
+ * Open create BP button.
+ */
+function os2dagsorden_meeting_views_meeting_details_fields_create_all_bullet_points_button() {
+  $meeting_id = arg(1);
+  if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
+    print '<div class="controls-right agenda-level create-agenda">';
+    print '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/create_from_file" class="form-submit" rel="lightframe[|width:800px; height:500px; scrolling: auto;]">' . t('Opret fra filer') . '</a>';
     print '</div>';
   }
 }
