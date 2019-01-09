@@ -41,6 +41,7 @@ function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
         'meeting_xml' => $manifest['uri'],
         'meeting_name' => $agenda['title'],
         'meeting_xml_changed' => ($manifest_real_path !== FALSE) ? filemtime($manifest_real_path) : NULL,
+        'agenda_processed' => $_SERVER['REQUEST_TIME'],
         'agenda_xml' => $agenda['agenda_xml'],
         'agenda_xmlid' => $agenda['agenda_xmlid'],
         'agenda_access' => ($agenda['agenda_access'] === 'Lukket') ? 0 : 1,
@@ -64,6 +65,7 @@ function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
         'meeting_name' => $agenda['title'],
         'meeting_sysid' => $agenda['meeting_id'],
         'meeting_xml_changed' => ($manifest_real_path !== FALSE) ? filemtime($manifest_real_path) : NULL,
+        'agenda_discovered' => $_SERVER['REQUEST_TIME'],
         'agenda_sysid' => $agenda['meeting_sub_id'],
         'agenda_xml' => $agenda['agenda_xml'],
         'agenda_xmlid' => $agenda['agenda_xmlid'],
@@ -165,6 +167,7 @@ function os2web_esdh_provider_index_meeting_update_status($meeting_xmlid, $agend
   $query = db_update('os2web_esdh_provider_import')
     ->fields(array(
       'import_status' => $status,
+      'agenda_processed' => $_SERVER['REQUEST_TIME'],
     ))
     ->condition('meeting_xmlid', $meeting_xmlid, '=');
 
@@ -189,6 +192,7 @@ function os2web_esdh_provider_index_meeting_update_nid($meeting_xmlid, $agenda_s
   $query = db_update('os2web_esdh_provider_import')
     ->fields(array(
       'nid' => $nid,
+      'agenda_processed' => $_SERVER['REQUEST_TIME'],
     ))
     ->condition('meeting_xmlid', $meeting_xmlid, '=');
 

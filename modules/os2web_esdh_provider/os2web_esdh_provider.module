@@ -54,6 +54,14 @@ function os2web_esdh_provider_menu() {
     'access callback' => TRUE,
     'file' => 'os2web_esdh_provider.cpapi.inc',
   );
+  $items['admin/config/os2web/esdh_queue_status'] = array(
+    'title' => 'ESDH queue status',
+    'access arguments' => array('administer os2web'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_os2web_esdh_provider_queue_status_form'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'os2web_esdh_provider.admin.inc',
+  );
 
   return $items;
 }

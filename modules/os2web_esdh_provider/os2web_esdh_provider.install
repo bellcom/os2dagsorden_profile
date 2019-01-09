@@ -159,6 +159,16 @@ function os2web_esdh_provider_schema() {
         'type' => 'int',
         'unsigned' => TRUE,
       ),
+      'agenda_discovered' => array(
+        'description' => 'Timestamp of when agenda XML was first discovered on server',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ),
+      'agenda_processed' => array(
+        'description' => 'Timestamp of when agenda XML was finished processing on server',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ),
       'committeed_id' => array(
         'description' => 'ID of the committee',
         'type' => 'int',
@@ -173,4 +183,59 @@ function os2web_esdh_provider_schema() {
     'primary key' => array('meeting_xmlid', 'agenda_sysid'),
   );
   return $schema;
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Adds agenda_discovered, agenda_processed columns.
+ */
+function os2web_esdh_provider_update_7101() {
+  // Column agenda_discovered.
+  $spec = array(
+    'description' => 'Timestamp of when agenda XML was first discovered on server',
+    'type' => 'int',
+    'unsigned' => TRUE,
+  );
+  db_add_field('os2web_esdh_provider_import', 'agenda_discovered', $spec);
+
+  // Column agenda_processed.
+  $spec = array(
+    'description' => 'Timestamp of when agenda XML was finished processing on server',
+    'type' => 'int',
+    'unsigned' => TRUE,
+  );
+  db_add_field('os2web_esdh_provider_import', 'agenda_processed', $spec);
+
+  // Filling the discovered and processed dates.
+  $query = db_select('os2web_esdh_provider_import', 'i');
+  $query->leftJoin('node', 'n', 'n.nid=i.nid');
+
+  $results = $query
+    ->fields('i', array('nid', 'import_status', 'meeting_xmlid'))
+    ->fields('n', array('created'))
+    ->execute()->fetchAll();
+
+  foreach ($results as $result) {
+    if ($result->created) {
+      $query = db_update('os2web_esdh_provider_import');
+
+      // Updating all, setting discovered.
+      $query->fields(array(
+        'agenda_discovered' => $result->created,
+      ));
+      $query->condition('meeting_xmlid', $result->meeting_xmlid, '=');
+      $query->execute();
+
+      // Updating imported only, setting processed.
+      if (strcmp($result->import_status, 'Imported') === 0) {
+        $query = db_update('os2web_esdh_provider_import');
+        $query->fields(array(
+          'agenda_processed' => $result->created,
+        ))
+          ->condition('nid', $result->nid, '=');
+        $query->execute();
+      }
+    }
+  }
 }
