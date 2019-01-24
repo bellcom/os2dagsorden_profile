@@ -54,7 +54,6 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
       }
     }
   }
-
   // Has os2dagsorden limited role, perform committees check.
   if (in_array('os2dagsorden limited', $user->roles)) {
     // Is part of the committee.
@@ -70,9 +69,9 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
     // None of the above.
     return FALSE;
   }
+
   if (is_object($meeting)) {
     $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
-
     // Is meeting unpublished?
     if ($meeting->status == 0 && !_os2dagsorden_access_helper_check_user_is_committee_admin($meeting_type, $committee_tid, $user->uid)) {
       return FALSE;
@@ -99,23 +98,23 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
 
       if ($in_hidden_list) {
         // Is part of the committee.
-        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees())) {
+        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
           return TRUE;
         }
 
         // Follow PP.
-        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_pp_committees($uid))) {
           return TRUE;
         }
 
         // Follow Plus.
-        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
+        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_plus_committees($uid))) {
           return TRUE;
         }
-
         // None of the above, access denied.
         return FALSE;
       }
+
     }
   }
 

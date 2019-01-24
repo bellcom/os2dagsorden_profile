@@ -371,6 +371,9 @@ function os2dagsorden_access_helper_node_save($node) {
         foreach ($uids as $uid) {
           // Checking is there has been a notification for the same meeting,
           // to the same user, with the same status in the previous hour.
+          if (os2dagsorden_access_helper_check_user_can_see_meeting($node, $committee_id, $uid ) === FALSE) {
+            continue;
+          }
           $query = db_select('os2dagsorden_notification_emails', 'ne');
           $query->fields('ne')
             ->condition('uid', $uid)
