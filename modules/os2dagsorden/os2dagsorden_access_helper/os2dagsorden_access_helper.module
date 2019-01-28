@@ -202,7 +202,7 @@ function os2dagsorden_access_helper_logout() {
   }
 
   unset($_GET['destination']);
-  if ($show_message) {
+  if ($show_message && !variable_get('os2dagsorden_title_general_hide_logout_message', FALSE)) {
     drupal_set_message("Du har nu logget af OS2dagsorden. Vi anbefaler, at du lukker alle browservinduer.");
   }
   drupal_goto();
