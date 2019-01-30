@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_rules_and_permissions.features.user_permission.inc
