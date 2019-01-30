@@ -51,6 +51,10 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
       OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_CANCELLED => t('Aflyst'),
       OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT => t('Referat'),
       OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN => t('Dagsorden'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN_PLUS => t('Dagsorden+'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT_PLUS => t('Referat+'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING => t('Formøde'),
+      OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING_PLUS => t('Formøde+')
     ),
     '#multiple' => FALSE,
     '#default_value' => OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED,
