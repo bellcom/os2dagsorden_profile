@@ -246,6 +246,10 @@ function _os2web_acadre_esdh_import_meeting($info) {
       $meeting['title'] = $meeting['committee'] . " " . $meeting['title'];
     }
 
+    if (variable_get('os2web_acadre_use_committee_for_title', FALSE)) {
+      $meeting['title'] = $meeting['committee'];
+    }
+
     // Fix dates:
     $date_obj = date_create($meeting['meeting_date_start']);
     date_timezone_set($date_obj, timezone_open('UTC'));
