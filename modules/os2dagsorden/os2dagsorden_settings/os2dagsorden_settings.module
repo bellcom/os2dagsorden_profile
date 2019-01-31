@@ -188,7 +188,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_user_default_committee_category'] = variable_get('os2dagsorden_user_default_committee_category');
   $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_committee_forbidden_allowed_categories_mode'] = variable_get('os2dagsorden_committee_forbidden_allowed_categories_mode', 'forbidden');
   $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_committee_default_forbidden_cat'] = variable_get('os2dagsorden_committee_default_forbidden_cat');
-
+/*
   if (module_exists('ultimate_cron')) {
     $conf = ultimate_cron_get_settings("os2dagsorden_importer_cron");
     $setting_array['os2dagsorden_cron_job_freq']['os2dagsorden_importer_cron'] = isset($conf['rules']) ? implode(';', $conf['rules']) : variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE);
@@ -199,7 +199,7 @@ function os2dagsorden_settings_export_to_file() {
     $conf = ultimate_cron_get_settings("os2dagsorden_adlib_api_cron");
     $setting_array['os2dagsorden_cron_job_freq']['os2dagsorden_adlib_api_cron'] = isset($conf['rules']) ? implode(';', $conf['rules']) : variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE);
   }
-
+*/
   if (module_exists('os2dagsorden_importer')) {
     $setting_array['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_use_local_copy'] = variable_get('os2dagsorden_pws_use_local_copy');
     $setting_array['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_v_meetings_url'] = variable_get('os2dagsorden_pws_v_meetings_url');
