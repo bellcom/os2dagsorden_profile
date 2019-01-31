@@ -79,6 +79,12 @@ function os2web_acadre_esdh_form_os2web_settings_settings_form_alter(&$form, &$f
     '#title' => t('Add committee name to meeting title'),
     '#description' => 'This decides whether a committee name will be added to meeting title',
   );
+  $form['os2web_mm']['os2web_acadre_use_committee_for_title'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('os2web_acadre_use_committee_for_title', FALSE),
+    '#title' => t('Use committee name for meeting title'),
+    '#description' => 'This decides whether a committee name will be used for meeting title',
+  );
   $form['os2web_mm']['os2web_meetings_import_closed_agenda'] = array(
     '#type' => 'checkbox',
     '#title' => t('Import closed agenda'),
