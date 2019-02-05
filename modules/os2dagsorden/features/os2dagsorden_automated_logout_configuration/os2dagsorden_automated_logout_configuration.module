@@ -6,3 +6,20 @@
  */
 
 include_once 'os2dagsorden_automated_logout_configuration.features.inc';
+
+/*
+ * Implements hook_init.
+ */
+function os2dagsorden_automated_logout_configuration_init() {
+  if (!variable_get('os2dagsorden_automated_logout_show_autologout_inactivity_message', TRUE)
+      && variable_get('autologout_inactivity_message', 'You have been logged out due to inactivity.') != '' ) {
+    $messages = drupal_get_messages('status');
+    $key = array_search(variable_get('autologout_inactivity_message', 'You have been logged out due to inactivity.'), $messages['status']);
+    if (isset($key) && $key !== FALSE) {
+      unset($messages['status'][$key]);
+    }
+    foreach($messages['status'] as $message) {
+      drupal_set_message($message, 'status');
+    }
+  }
+}

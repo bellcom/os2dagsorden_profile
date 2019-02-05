@@ -281,6 +281,10 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_external_committee']['os2dagsorden_timespan_open_meeting_content'] = variable_get('os2dagsorden_timespan_open_meeting_content', 'anonymize');
 
   $setting_array['os2dagsorden_right_sidebar_arrow_position']['os2dagsorden_right_sidebar_arrow_position_radios'] = variable_get('os2dagsorden_right_sidebar_arrow_position_radios', 'classic');
+
+  if (module_exists('os2dagsorden_automated_logout_configuration')) {
+    $setting_array['os2dagsorden_automated_logout_configuration_settings']['os2dagsorden_automated_logout_show_autologout_inactivity_message'] =  variable_get('os2dagsorden_automated_logout_show_autologout_inactivity_message', TRUE);
+  }
   print os2dagsorden_settings_write_ini_file($setting_array, TRUE);
 }
 

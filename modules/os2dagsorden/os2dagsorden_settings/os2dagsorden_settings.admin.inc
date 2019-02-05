@@ -924,6 +924,21 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('os2dagsorden_pdf2png_conversion_sedja_console_path', ""),
     );
   }
+
+  if (module_exists('os2dagsorden_automated_logout_configuration')) {
+    $form['os2dagsorden_automated_logout_configuration_settings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('Automated logout configuration settings'),
+    );
+    $form['os2dagsorden_automated_logout_configuration_settings']['os2dagsorden_automated_logout_show_autologout_inactivity_message'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('os2dagsorden_automated_logout_show_autologout_inactivity_message', TRUE),
+      '#title' => t('Show autologout message'),
+      '#description' => t('This decides whether a autologut message will be shown'),
+    );
+  }
   // Clear cache settings.
   $form['os2dagsorden_clear_cache_after_import'] = array(
     '#type' => 'fieldset',
@@ -1777,5 +1792,9 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
 
     variable_set('os2dagsorden_external_committee_anonymize_button_behavior', $setting_array['os2dagsorden_external_committee']['os2dagsorden_external_committee_anonymize_button_behavior']);
     variable_set('os2dagsorden_timespan_open_meeting_content', $setting_array['os2dagsorden_external_committee']['os2dagsorden_timespan_open_meeting_content']);
+
+    if (module_exists('os2dagsorden_automated_logout_configuration')) {
+      variable_get('os2dagsorden_automated_logout_show_autologout_inactivity_message', $setting_array['os2dagsorden_automated_logout_configuration_settings']['os2dagsorden_automated_logout_show_autologout_inactivity_message']);
+    }
   }
 }
