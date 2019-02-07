@@ -1646,8 +1646,6 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_print_pdf_show_commitee', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_print_pdf_show_commitee']);
     variable_set('os2dagsorden_search_restrict_search_function', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_restrict_search_function']);
 
-    variable_set('os2dagsorden_shared_speaker_paper', $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper']);
-
     variable_set('os2dagsorden_hide_meeting_details', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_hide_meeting_details']);
     variable_set('os2dagsorden_expand_all_bullets', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_all_bullets']);
     variable_set('os2dagsorden_expand_attachment_onload', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_attachment_onload']);
@@ -1659,12 +1657,15 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bullet_case_nr', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr']);
     variable_set('os2dagsorden_attachments_pages_per_view_desktop', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop']);
     variable_set('os2dagsorden_attachments_pages_per_view_mobile', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile']);
+    variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_title', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_committee', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_committee']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_location', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_location']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_is_closed', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_is_closed']);
+    variable_set('os2dagsorden_meetings_views_last_8_meeting_title_len', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_meeting_title_len']);
+    variable_set('os2dagsorden_meetings_views_last_8_meeting_location_len', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_meeting_location_len']);
 
     variable_set('os2dagsorden_collapse_menu', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu']);
     variable_set('os2dagsorden_collapse_menu_touch', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch']);
@@ -1754,7 +1755,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_title_general_search', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_search']);
     variable_set('os2dagsorden_title_general_prev_page', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_prev_page']);
     variable_set('os2dagsorden_title_general_next_page', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_next_page']);
-     variable_set('os2dagsorden_title_general_hide_logout_message', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_hide_logout_message']);
+    variable_set('os2dagsorden_title_general_hide_logout_message', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_hide_logout_message']);
+    variable_set('os2dagsorden_title_general_create_meeting', $settings_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_create_meeting']);
 
     variable_set('os2dagsorden_title_frontpage_coming_meetings', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_frontpage_placeholder']['os2dagsorden_title_frontpage_coming_meetings']);
     variable_set('os2dagsorden_title_frontpage_last_8_my_meetings', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_frontpage_placeholder']['os2dagsorden_title_frontpage_last_8_my_meetings']);
@@ -1783,6 +1785,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_title_meeting_new_speaker_paper', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper']);
     variable_set('os2dagsorden_title_meeting_new_speaker_paper_hide', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide']);
     variable_set('os2dagsorden_meeting_notes_title', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_meeting_notes_title']);
+    variable_set('os2dagsorden_title_meeting_referent', $settings_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_referent']);
 
     variable_set('os2dagsorden_meeting_view_calendar_short_name', $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name']);
     variable_set('os2dagsorden_meeting_show_calendar_block_on_cal_pages', $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_show_calendar_block_on_cal_pages']);
@@ -1794,7 +1797,10 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_timespan_open_meeting_content', $setting_array['os2dagsorden_external_committee']['os2dagsorden_timespan_open_meeting_content']);
 
     if (module_exists('os2dagsorden_automated_logout_configuration')) {
-      variable_get('os2dagsorden_automated_logout_show_autologout_inactivity_message', $setting_array['os2dagsorden_automated_logout_configuration_settings']['os2dagsorden_automated_logout_show_autologout_inactivity_message']);
+      variable_set('os2dagsorden_automated_logout_show_autologout_inactivity_message', $setting_array['os2dagsorden_automated_logout_configuration_settings']['os2dagsorden_automated_logout_show_autologout_inactivity_message']);
     }
+    variable_set('quick_guide_upload_fid', $setting_array['upload_guide']['quick_guide_upload_fid']);
+    variable_set('print_pdf_page_orientation', $setting_array['os2dagsorden_meeting_view_settings']['print_pdf_page_orientation']);
+    variable_set('os2dagsorden_right_sidebar_arrow_position_radios', $setting_array['os2dagsorden_right_sidebar_arrow_position']['os2dagsorden_right_sidebar_arrow_position_radios']);
   }
 }

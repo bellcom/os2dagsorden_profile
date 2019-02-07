@@ -122,7 +122,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = variable_get('os2dagsorden_show_bilag_pages_amount', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page'] = variable_get('os2dagsorden_show_group_pager_on_bpa_page', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_notes_page_standart_layout'] = variable_get('os2dagsorden_notes_page_standart_layout', TRUE);
-  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_restrict_search_function'] = variable_set('os2dagsorden_search_restrict_search_function', FALSE);
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_restrict_search_function'] = variable_get('os2dagsorden_search_restrict_search_function', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['print_pdf_page_orientation'] = variable_get('print_pdf_page_orientation', PRINT_PDF_PAGE_ORIENTATION_DEFAULT);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_print_pdf_show_commitee'] = variable_get('os2dagsorden_print_pdf_show_commitee', FALSE);
   $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper'] = variable_get('os2dagsorden_shared_speaker_paper', TRUE);
@@ -146,6 +146,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_location'] = variable_get('os2dagsorden_meetings_views_last_8_show_meeting_location', TRUE);
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_is_closed'] = variable_get('os2dagsorden_meetings_views_last_8_show_meeting_is_closed', FALSE);
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_meeting_title_len'] = variable_get('os2dagsorden_meetings_views_last_8_meeting_title_len', 25);
+  $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_meeting_location_len'] = variable_get('os2dagsorden_meetings_views_last_8_meeting_location_len', 25);
 
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu'] = variable_get('os2dagsorden_collapse_menu', TRUE);
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch'] = variable_get('os2dagsorden_collapse_menu_touch', TRUE);
@@ -270,6 +271,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_meeting_notes_title'] = variable_get('os2dagsorden_meeting_notes_title', 'Mødernoter');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper', 'Nyt talepapir');
   $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide'] = variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE);
+  $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_general_placeholder']['os2dagsorden_title_general_create_meeting'] = variable_get('os2dagsorden_title_general_create_meeting', 'Tilføj møde');
 
   $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name'] = variable_get('os2dagsorden_meeting_view_calendar_short_name');
   $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_show_calendar_block_on_cal_pages'] = variable_get('os2dagsorden_meeting_show_calendar_block_on_cal_pages');
@@ -285,6 +287,7 @@ function os2dagsorden_settings_export_to_file() {
   if (module_exists('os2dagsorden_automated_logout_configuration')) {
     $setting_array['os2dagsorden_automated_logout_configuration_settings']['os2dagsorden_automated_logout_show_autologout_inactivity_message'] =  variable_get('os2dagsorden_automated_logout_show_autologout_inactivity_message', TRUE);
   }
+  $setting_array['upload_guide']['quick_guide_upload_fid'] = variable_get('quick_guide_upload_fid');
   print os2dagsorden_settings_write_ini_file($setting_array, TRUE);
 }
 
