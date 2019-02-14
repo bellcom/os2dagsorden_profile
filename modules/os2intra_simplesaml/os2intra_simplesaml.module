@@ -210,16 +210,20 @@ function os2intra_simplesaml_init() {
     }
 
     // Redirect to Nemid Login.
-    if (!in_array($remote_ip, $custom_ips)) {
-      if (!$_SESSION['nemlogin_pid'] && strpos($_GET['q'], 'nemid') !== 0) {
-        // Unsetting session in case it had any nemid errors.
-        unset($_SESSION['nemid_login']);
-
-        // Redirecting only if module exists and path is valid.
-        if (module_exists('drupal_nemid_login')) {
-          drupal_goto('nemid', array('query' => array('destination' => current_path())));
+    if (isset($remote_ip) && in_array($custom_ips)) {
+      if (!in_array($remote_ip, $custom_ips)) {
+        if (!isset($_SESSION['nemlogin_pid']) && strpos($_GET['q'], 'nemid') !== 0) {
+          // Unsetting session in case it had any nemid errors.
+          if (isset($_SESSION['nemid_login'])) {
+            unset($_SESSION['nemid_login']);
+          }
+;
+          // Redirecting only if module exists and path is valid.
+          if (module_exists('drupal_nemid_login')) {
+            drupal_goto('nemid', array('query' => array('destination' => current_path())));
+          }
         }
-      }
+     }
     }
   }
 }
