@@ -770,3 +770,26 @@ function os2web_esdh_provider_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];
   $message['body'][] = $params['body'];
 }
+
+/*
+ * Return agenda access.
+ *
+ * @param int $nid
+ *   Node ID of the meeting.
+ *
+ * @param int $meeting_sub_id
+ *   Agenda sysid.
+ *
+ * @return int
+ *   Agenda access.
+ */
+function _os2web_esdh_provider_get_agenda_access($nid, $meeting_sub_id) {
+  $access = db_select('os2web_esdh_provider_import', 'o')
+    ->fields('o', array('agenda_access'))
+    ->condition('nid', $nid, '=')
+    ->condition('agenda_sysid', $meeting_sub_id, '=')
+    ->execute()
+    ->fetchField();
+  return (int) $access;
+}
+
