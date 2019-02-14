@@ -787,7 +787,7 @@ function _acadre_esdh_mm_improve_body_html($data) {
   }
   /* $data = preg_replace('/(<a.+?>)(.{0,' . $url_strip_count . '}).*?(<\/a>)/is', '$1$2...$3', $data);*/
   $doc = new DOMDocument();
-  $doc->loadHTML($data);
+  $doc->loadHTML($data, LIBXML_NOWARNING);
   $elements = $doc->getElementsByTagName('img');
   if ($elements->length > 0) {
     foreach ($elements as $element) {
