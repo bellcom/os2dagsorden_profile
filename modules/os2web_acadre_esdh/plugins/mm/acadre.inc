@@ -787,12 +787,12 @@ function _acadre_esdh_mm_improve_body_html($data) {
   }
   /* $data = preg_replace('/(<a.+?>)(.{0,' . $url_strip_count . '}).*?(<\/a>)/is', '$1$2...$3', $data);*/
   $doc = new DOMDocument();
-  $doc->loadHTML($data, LIBXML_NOWARNING);
+  $doc->loadHTML($data);
   $elements = $doc->getElementsByTagName('img');
   if ($elements->length > 0) {
     foreach ($elements as $element) {
       $file = $element->getAttribute('src');
-      if (strpos($file, 'http://') === FALSE) {
+      if ((strpos($file, 'http://') === FALSE) && (preg_match('/^data:image\/(\w+);base64,/', $img_data, $type) === FALSE )){
         $file = str_replace('"', '', $file);
         $uri_parts = explode('\\', $file);
         $filename = trim(array_pop($uri_parts));
