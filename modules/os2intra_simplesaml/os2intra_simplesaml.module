@@ -169,6 +169,8 @@ function os2intra_simplesaml_init() {
   // Do not run this from CLI.
   // Only proceed if user is NOT logged in and is NOT using drush uli for admin.
   if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
+    $custom_ips = array();
+    $remote_ip = ip_address();
     if (variable_get('os2intra_simplesaml_simplesaml_enable')) {
       $simplesaml_redirect = FALSE;
       $redirected_ips = variable_get('os2intra_simplesaml_redirected_ips');
@@ -179,7 +181,6 @@ function os2intra_simplesaml_init() {
       }
       else {
         $custom_ips = explode(',', $redirected_ips);
-        $remote_ip = ip_address();
 
         // If the client request is from one of the IP's, login using
         // SimpleSAMLphp; otherwise use nemid login.
@@ -210,20 +211,18 @@ function os2intra_simplesaml_init() {
     }
 
     // Redirect to Nemid Login.
-    if (isset($remote_ip) && in_array($custom_ips)) {
-      if (!in_array($remote_ip, $custom_ips)) {
-        if (!isset($_SESSION['nemlogin_pid']) && strpos($_GET['q'], 'nemid') !== 0) {
-          // Unsetting session in case it had any nemid errors.
-          if (isset($_SESSION['nemid_login'])) {
-            unset($_SESSION['nemid_login']);
-          }
-;
-          // Redirecting only if module exists and path is valid.
-          if (module_exists('drupal_nemid_login')) {
-            drupal_goto('nemid', array('query' => array('destination' => current_path())));
-          }
+    if (!in_array($remote_ip, $custom_ips)) {
+      if (!isset($_SESSION['nemlogin_pid']) && strpos($_GET['q'], 'nemid') !== 0) {
+        // Unsetting session in case it had any nemid errors.
+        if (isset($_SESSION['nemid_login'])) {
+          unset($_SESSION['nemid_login']);
         }
-     }
+
+        // Redirecting only if module exists and path is valid.
+        if (module_exists('drupal_nemid_login')) {
+          drupal_goto('nemid', array('query' => array('destination' => current_path())));
+        }
+      }
     }
   }
 }
