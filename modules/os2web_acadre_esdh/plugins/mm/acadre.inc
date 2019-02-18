@@ -792,7 +792,7 @@ function _acadre_esdh_mm_improve_body_html($data) {
   if ($elements->length > 0) {
     foreach ($elements as $element) {
       $file = $element->getAttribute('src');
-      if (strpos($file, 'http://') === FALSE) {
+      if ((strpos($file, 'http://') === FALSE) && (preg_match('/^data:image\/(\w+);base64,/', $img_data, $type) === FALSE )){
         $file = str_replace('"', '', $file);
         $uri_parts = explode('\\', $file);
         $filename = trim(array_pop($uri_parts));

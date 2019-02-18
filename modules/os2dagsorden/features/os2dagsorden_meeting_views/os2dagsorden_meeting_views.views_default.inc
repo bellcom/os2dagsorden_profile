@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_meeting_views.views_default.inc
@@ -1211,7 +1210,7 @@ os2dagsorden_meeting_views_meeting_details_fields_participants_afbud($row->nid);
   /* Display: Print all speaker papers */
   $handler = $view->new_display('attachment', 'Print all speaker papers', 'attachment_print_all_speaker_papers');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Print alle talepapirer';
+  $handler->display->display_options['title'] = 'Print alle dispositioner';
   $handler->display->display_options['enabled'] = FALSE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['access'] = FALSE;
@@ -1862,7 +1861,7 @@ os2dagsorden_meeting_views_meeting_details_fields_speaker_paper_link($meeting_id
   /* Display: Tillæg Print all speaker papers */
   $handler = $view->new_display('attachment', 'Tillæg Print all speaker papers', 'attachment_print_all_speaker_papers_tillaeg');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Print alle talepapirer';
+  $handler->display->display_options['title'] = 'Print alle dispositioner';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
@@ -2184,7 +2183,7 @@ os2dagsorden_meeting_views_meeting_details_fields_speaker_paper_link($meeting_id
     t('Referent'),
     t('Afbud / Fraværende'),
     t('Print all speaker papers'),
-    t('Print alle talepapirer'),
+    t('Print alle dispositioner'),
     t('Dagsorden'),
     t('<?php
 os2dagsorden_meeting_views_meeting_details_fields_dagsorden_header();
@@ -2531,7 +2530,7 @@ os2dagsorden_meeting_views_meetings_search_fields_committee($row->nid)
   $handler->display->display_options['filters']['field_os2web_meetings_date_value']['field'] = 'field_os2web_meetings_date_value';
   $handler->display->display_options['filters']['field_os2web_meetings_date_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_os2web_meetings_date_value']['expose']['operator_id'] = 'field_os2web_meetings_date_value_op';
-  $handler->display->display_options['filters']['field_os2web_meetings_date_value']['expose']['label'] = 'Date -  start date (field_os2web_meetings_date)';
+  $handler->display->display_options['filters']['field_os2web_meetings_date_value']['expose']['label'] = 'Dato - start dato (field_os2web_meetings_date) ';
   $handler->display->display_options['filters']['field_os2web_meetings_date_value']['expose']['operator'] = 'field_os2web_meetings_date_value_op';
   $handler->display->display_options['filters']['field_os2web_meetings_date_value']['expose']['identifier'] = 'field_os2web_meetings_date_value';
   $handler->display->display_options['filters']['field_os2web_meetings_date_value']['form_type'] = 'date_popup';
@@ -2550,7 +2549,7 @@ os2dagsorden_meeting_views_meetings_search_fields_committee($row->nid)
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Søg';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
-  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Gendan';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Nulstil';
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Felt: Indhold: Nid */
@@ -2760,7 +2759,7 @@ os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data);
     5 => 0,
     3 => 0,
   );
-  $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['label'] = 'Date -  start date (field_os2web_meetings_date)';
+  $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['label'] = 'Dato - start dato (field_os2web_meetings_date) ';
   $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['identifier'] = 'field_os2web_meetings_date_value_1';
   $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['remember'] = FALSE;
   $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['group_items'] = array(
@@ -2983,7 +2982,7 @@ os2dagsorden_meeting_views_meetings_search_fields_location($row->nid);
     5 => 0,
     3 => 0,
   );
-  $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['label'] = 'Date -  start date (field_os2web_meetings_date)';
+  $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['label'] = 'Dato - start dato (field_os2web_meetings_date) ';
   $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['identifier'] = 'field_os2web_meetings_date_value_1';
   $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['remember'] = FALSE;
   $handler->display->display_options['filters']['field_os2web_meetings_date_value_1']['group_info']['group_items'] = array(
@@ -3054,8 +3053,9 @@ os2dagsorden_meeting_views_meetings_search_help_text();
     t('Udvalg'),
     t('[field_os2web_meetings_committee]'),
     t('Placering'),
-    t('Date -  start date (field_os2web_meetings_date)'),
+    t('Dato - start dato (field_os2web_meetings_date) '),
     t('Meetings search'),
+    t('Nulstil'),
     t('Status'),
     t('Lokation'),
     t('Fra dato:'),
@@ -4058,7 +4058,7 @@ os2dagsorden_meeting_views_bullet_point_fields_create_new_speaker_paper();
   $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_os2web_meetings_sp_bullet_node';
   $handler->display->display_options['fields']['title_1']['label'] = '';
   $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['title_1']['alter']['text'] = 'talepapir - [title_1]. forfatter: [field_user_full_name]';
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = 'Bemærkning til: "[title_1]", af: [field_user_full_name] ';
   $handler->display->display_options['fields']['title_1']['alter']['path'] = '#';
   $handler->display->display_options['fields']['title_1']['alter']['prefix'] = 'Talepapir -';
   $handler->display->display_options['fields']['title_1']['element_type'] = 'h3';
@@ -4178,7 +4178,7 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
     t('Page'),
     t('Speaker paper'),
     t('[name]'),
-    t('talepapir - [title_1]. forfatter: [field_user_full_name]'),
+    t('Bemærkning til: "[title_1]", af: [field_user_full_name] '),
     t('Talepapir -'),
   );
   $export['speaking_paper'] = $view;
