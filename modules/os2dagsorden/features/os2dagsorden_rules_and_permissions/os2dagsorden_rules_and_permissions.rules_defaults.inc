@@ -33,6 +33,7 @@ function os2dagsorden_rules_and_permissions_default_rules_configuration() {
   $items['rules_os2web_set_committee_from_simplesaml'] = entity_import('rules_config', '{ "rules_os2web_set_committee_from_simplesaml" : {
       "LABEL" : "OS2web set committee from simplesaml",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "REQUIRES" : [ "php", "rules", "simplesamlphp_auth" ],
       "ON" : { "simplesamlphp_auth_rules_event_login" : [] },
