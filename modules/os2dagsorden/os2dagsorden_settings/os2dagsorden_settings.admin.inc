@@ -249,6 +249,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       ),
     ),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Both links to open and closed agendas are enabled for downloading'),
+    '#default_value' => variable_get('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE),
+    '#description' => t('This decides whether on meeting page will be shown links for downloading both open and closed agendas, if user has permissions to see them, '
+        . 'or only link for only downloding agenda with current status'),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_sager_group_title'] = array(
     '#type' => 'textfield',
     '#title' => t('Sager group title'),
@@ -1645,7 +1652,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_notes_page_standart_layout', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_notes_page_layout']);
     variable_set('os2dagsorden_print_pdf_show_commitee', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_print_pdf_show_commitee']);
     variable_set('os2dagsorden_search_restrict_search_function', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_search_restrict_search_function']);
-
+    variable_set('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links']);
     variable_set('os2dagsorden_hide_meeting_details', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_hide_meeting_details']);
     variable_set('os2dagsorden_expand_all_bullets', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_all_bullets']);
     variable_set('os2dagsorden_expand_attachment_onload', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_attachment_onload']);
