@@ -251,10 +251,10 @@ function _os2web_acadre_esdh_import_meeting($info) {
     }
 
     // Fix dates:
-    $date_obj = date_create($meeting['meeting_date_start']);
+    $date_obj = date_create($meeting['meeting_date_start'], new DateTimeZone(date_default_timezone()));
     date_timezone_set($date_obj, timezone_open('UTC'));
     $meeting['meeting_date_start'] = date_format($date_obj, 'Y-m-d H:i');
-    $date_obj = date_create($meeting['meeting_date_finish']);
+    $date_obj = date_create($meeting['meeting_date_finish'], new DateTimeZone(date_default_timezone()));
     date_timezone_set($date_obj, timezone_open('UTC'));
     $meeting['meeting_date_finish'] = date_format($date_obj, 'Y-m-d H:i');
 

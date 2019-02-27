@@ -162,8 +162,8 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
           "-11-",
           "-12-",
         ), $meeting_date_when);
-      $date_obj = date_create($meeting_date_when);
-      // date_timezone_set($date_obj, timezone_open('UTC'));.
+      $date_obj = date_create($meeting_date_when, new DateTimeZone(date_default_timezone()));
+      date_timezone_set($date_obj, timezone_open('UTC'));
       $meeting_date_when = date_format($date_obj, 'Y-m-d H:i');
 
       $meeting = array(
