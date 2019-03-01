@@ -415,6 +415,8 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
         }
       }
     }
+    $cases = array();
+    $enclosures = array();
     foreach ($xml->xpath("table[@name='Case']") as $case_xml) {
       foreach ($case_xml->xpath("table[@name='Files']/table[@name='File']") as $case_file) {
         $filename_in = _get_value_from_xml($case_file->xpath("fields/field[@name='FileName']"));
@@ -431,11 +433,12 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
               foreach ($files as $file) {
                 // Avoiding part1 file import - don't need it.
                 if (strpos(basename($file), 'eml.part1') === FALSE) {
-                  $item['enclosures'][] = array(
+                  $cases = array(
                     'uri' => $folder_path . '/' . basename($file),
                     'title' => 'Email:' . _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
                     'filetype' => '.PDF',
                     'type' => 'Sager',
+                    'sort' => _get_value_from_xml($case_file->xpath("fields/field[@name='sort']"), 'int'),
                     'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
                   );
                 }
@@ -445,11 +448,12 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
               $enclosure_real_path = drupal_realpath($folder_path . '/' . $filename_in);
               if ($enclosure_real_path !== FALSE && _os2web_acadre_esdh_similar_file_exists($enclosure_real_path)) {
                 $uri = _os2web_acadre_esdh_pdf_file_path($folder_path, $filename_in);
-                $item['enclosures'][] = array(
+                $cases= array(
                   'uri' => $uri,
                   'title' => 'Email:' . _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
                   'filetype' => "." . _get_value_from_xml($case_file->xpath("fields/field[@name='DocumentExtension']")),
                   'type' => 'Sager',
+                  'sort' => _get_value_from_xml($case_file->xpath("fields/field[@name='sort']"), 'int'),
                   'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
                 );
               }
@@ -457,16 +461,18 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
           }
           else {
             $uri = _os2web_acadre_esdh_pdf_file_path($folder_path, $filename_in);
-            $item['enclosures'][] = array(
+            $cases = array(
               'uri' => $uri,
               'title' => _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
               'filetype' => "." . _get_value_from_xml($case_file->xpath("fields/field[@name='DocumentExtension']")),
               'type' => 'Sager',
+              'sort' => _get_value_from_xml($case_file->xpath("fields/field[@name='sort']"), 'int'),
               'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
             );
           }
         }
       }
+      usort($cases, "_acadre_esdh_mm_sort_enclosures");
     }
     // Process enclosures.
     foreach ($xml->xpath("table[@name='enclosure']") as $enclosure) {
@@ -486,11 +492,12 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
             foreach ($files as $file) {
               // Avoiding part1 file import - don't need it.
               if (strpos(basename($file), 'eml.part1') === FALSE) {
-                $item['enclosures'][] = array(
+                $enclosures = array(
                   'uri' => $folder_path . '/' . basename($file),
                   'title' => 'Email:' . _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
                   'filetype' => '.PDF',
                   'type' => 'Bilag',
+                  'sort' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sort']"), 'int'),
                   'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
                 );
               }
@@ -500,12 +507,13 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
             $enclosure_real_path = drupal_realpath($folder_path . '/' . $filename_in);
             if ($enclosure_real_path !== FALSE && _os2web_acadre_esdh_similar_file_exists($enclosure_real_path)) {
               $uri = _os2web_acadre_esdh_pdf_file_path($folder_path, $filename_in);
-              $item['enclosures'][] = array(
+              $enclosures = array(
                 'sysid' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sysid']"), 'int'),
                 'uri' => $uri,
                 'title' => 'Email:' . _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
                 'filetype' => _get_value_from_xml($enclosure->xpath("fields/field[@name='EnclosureFileType']")),
                 'type' => 'Bilag',
+                'sort' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sort']"), 'int'),
                 'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
               );
             }
@@ -514,17 +522,20 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
         }
         else {
           $uri = _os2web_acadre_esdh_pdf_file_path($folder_path, $filename_in);
-          $item['enclosures'][] = array(
+          $enclosures[] = array(
             'sysid' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sysid']"), 'int'),
             'uri' => $uri,
             'title' => _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
             'filetype' => _get_value_from_xml($enclosure->xpath("fields/field[@name='EnclosureFileType']")),
             'type' => 'Bilag',
+            'sort' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sort']"), 'int'),
             'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
           );
         }
       }
+      usort($enclosures, "_acadre_esdh_mm_sort_enclosures");
     }
+    $item['enclosures'] = array_merge($cases, $enclosures);
   }
   $item += os2web_esdh_provider_default_item();
   return $item;
@@ -869,4 +880,14 @@ function _get_value_from_xml($xml_raw, $convert_to = 'string') {
   elseif ($convert_to === 'int') {
     return (int) array_shift($xml_raw);
   }
+}
+
+/**
+ * Helper function to sort enclousers array.
+ *
+ */
+function _acadre_esdh_mm_sort_enclosures($item1, $item2) {
+  if (!isset($item1["sort"]) && !isset($item2["sort"]))  return 0;
+  if ($item1["sort"] == $item2["sort"]) return 0;
+  return ($item1["sort"] < $item2["sort"])? -1: 1;
 }
