@@ -91,7 +91,12 @@ function os2web_acadre_esdh_form_os2web_settings_settings_form_alter(&$form, &$f
     '#description' => t('This decides if closed agenda is or is not to be imported'),
     '#default_value' => variable_get('os2web_meetings_import_closed_agenda', FALSE),
   );
-
+  $form['os2web_mm']['os2web_acadre_unpublish_additional_agenda'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('os2web_acadre_unpublish_additional_agenda', FALSE),
+    '#title' => t('To unpublish additional agenda when Refarat version imported'),
+    '#description' => 'This decides whether a additional agenda will be set to unpublish when referat version of agenda imported',
+  );
   $form['os2web_mm']['os2web_acadre_location_field'] = array(
     '#type' => 'radios',
     '#title' => t('Get the address for the meeting from'),

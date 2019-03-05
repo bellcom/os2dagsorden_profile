@@ -2149,6 +2149,12 @@ os2dagsorden_meeting_views_meeting_details_fields_speaker_paper_link($meeting_id
   $handler->display->display_options['filters']['type']['value'] = array(
     'os2web_meetings_meeting' => 'os2web_meetings_meeting',
   );
+  /* Filter criterion: Indhold: Udgivet */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'node';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['relationship'] = 'reverse_field_os2web_meetings_addendum_node';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
   $handler->display->display_options['displays'] = array(
     'page' => 'page',
     'default' => 0,

@@ -700,10 +700,24 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
         else {
           $addendum_to = FALSE;
         }
+        $node_was_changed = FALSE;
+        if (variable_get('os2web_acadre_unpublish_additional_agenda', FALSE)
+            && ($primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat' || $primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat_plus')){
+          $query = db_query("SELECT status FROM {node} WHERE nid = :d", array(":d"=>$node->nid));
+          $result = $query->fetchObject();
 
+          if ((int) $result->status === NODE_PUBLISHED){
+            $node->status = NODE_NOT_PUBLISHED;
+            $node_was_changed = TRUE;
+          }
+        }
         // Save time by only updating what is needed.
         if ($addendum_to != $primary->nid) {
           $node->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
+          $node_was_changed = TRUE;
+          //node_save($node);
+        }
+        if ($node_was_changed) {
           node_save($node);
         }
       }
