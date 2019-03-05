@@ -79,15 +79,19 @@ function _os2dagsorden_acadre_service_importer_create_meeting($xml_data, $tid) {
     $node->field_os2web_meetings_location[$node->language][0]['tid'] = _os2dagsorden_acadre_service_importer_get_location($xml_data['location']);
 
     if (!empty($xml_data['meeting_start_date'])) {
-      $node->field_os2web_meetings_date[$node->language][0]['value'] = $xml_data['meeting_start_date'];
+      $start_date_obj = date_create($xml_data['meeting_start_date'], new DateTimeZone(date_default_timezone()));
+      date_timezone_set($start_date_obj , timezone_open('UTC'));
+      $node->field_os2web_meetings_date[$node->language][0]['value'] = date_format($start_date_obj , 'Y-m-d H:i');
     }
 
     if (!empty($xml_data['meeting_end_date'])) {
-      $node->field_os2web_meetings_date[$node->language][0]['value2'] = $xml_data['meeting_end_date'];
+      $end_date_obj = date_create($xml_data['meeting_end_date'], new DateTimeZone(date_default_timezone()));
+      date_timezone_set($end_date_obj, timezone_open('UTC'));
+      $node->field_os2web_meetings_date[$node->language][0]['value2'] = date_format($end_date_obj, 'Y-m-d H:i');
       // To represent that there is no end date.
     }
     else {
-      $node->field_os2web_meetings_date[$node->language][0]['value2'] = $xml_data['meeting_start_date'];
+      $node->field_os2web_meetings_date[$node->language][0]['value2'] = date_format($start_date_obj , 'Y-m-d H:i');
     }
 
     node_submit($node);
