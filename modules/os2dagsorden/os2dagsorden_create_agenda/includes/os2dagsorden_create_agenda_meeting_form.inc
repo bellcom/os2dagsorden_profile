@@ -282,7 +282,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
 
   if (!empty($end_date)) {
     $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time, new DateTimeZone(date_default_timezone()));
-    date_timezone_set($start_datetime, timezone_open('UTC'));
+    date_timezone_set($end_datetime, timezone_open('UTC'));
     $node->field_os2web_meetings_date['und'][0]['value2'] = $end_datetime->format('Y-m-d H:i:s');
     // Same as start date - default.
   }
