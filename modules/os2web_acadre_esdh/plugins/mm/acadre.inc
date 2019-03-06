@@ -671,73 +671,116 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
       $meetings[$meeting_id[0]['value']][$meeting_system_id[0]['value']] = $node->nid;
     }
   }
+  if (variable_get('os2web_acadre_do_not_attach_addtional_agenda', FALSE) === FALSE) {
+    $debug && error_log('MM Import - Update addendums on ' . count($meetings) . ' nodes - ' . timer_read('_os2web_acadre_esdh_mm_order_addendums') . 'ms - ' . memory_get_usage());
+    // Run through the meeting array, to determine the addendums.
+    foreach ($meetings as $m_id => $meeting) {
+      // Lowest system id first.
+      ksort($meeting);
+      if (in_array($m_id, $rev_meetings)) {
+        $meeting = array_reverse($meeting);
+      }
+      // Lowest system id is primary.
+      $primary = $nodes[array_shift($meeting)];
+      $addendum_to = field_get_items('node', $primary, 'field_os2web_meetings_addendum');
+      if (!empty($addendum_to[0]['nid'])) {
+        $primary->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
+        node_save($primary);
+      }
+      while ($next = array_shift($meeting)) {
+        // Set up references for addendum agendas.
+        $node = $nodes[$next];
+        if ($primary) {
+          $addendum_to = field_get_items('node', $node, 'field_os2web_meetings_addendum');
 
-  $debug && error_log('MM Import - Update addendums on ' . count($meetings) . ' nodes - ' . timer_read('_os2web_acadre_esdh_mm_order_addendums') . 'ms - ' . memory_get_usage());
-  // Run through the meeting array, to determine the addendums.
-  foreach ($meetings as $m_id => $meeting) {
-    // Lowest system id first.
-    ksort($meeting);
-    if (in_array($m_id, $rev_meetings)) {
-      $meeting = array_reverse($meeting);
-    }
-    // Lowest system id is primary.
-    $primary = $nodes[array_shift($meeting)];
-    $addendum_to = field_get_items('node', $primary, 'field_os2web_meetings_addendum');
-    if (!empty($addendum_to[0]['nid'])) {
-      $primary->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
-      node_save($primary);
-    }
-    while ($next = array_shift($meeting)) {
-      // Set up references for addendum agendas.
-      $node = $nodes[$next];
-      if ($primary) {
-        $addendum_to = field_get_items('node', $node, 'field_os2web_meetings_addendum');
+          if (is_array($addendum_to)) {
+            $addendum_to = array_shift($addendum_to);
+            $addendum_to = array_shift($addendum_to);
+          }
+          else {
+            $addendum_to = FALSE;
+          }
+          $node_was_changed = FALSE;
+          if (variable_get('os2web_acadre_unpublish_additional_agenda', FALSE)
+              && ($primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat' || $primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat_plus')){
+            $query = db_query("SELECT status FROM {node} WHERE nid = :d", array(":d"=>$node->nid));
+            $result = $query->fetchObject();
 
-        if (is_array($addendum_to)) {
-          $addendum_to = array_shift($addendum_to);
-          $addendum_to = array_shift($addendum_to);
-        }
-        else {
-          $addendum_to = FALSE;
-        }
-        $node_was_changed = FALSE;
-        if (variable_get('os2web_acadre_unpublish_additional_agenda', FALSE)
-            && ($primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat' || $primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat_plus')){
-          $query = db_query("SELECT status FROM {node} WHERE nid = :d", array(":d"=>$node->nid));
-          $result = $query->fetchObject();
-
-          if ((int) $result->status === NODE_PUBLISHED){
-            $node->status = NODE_NOT_PUBLISHED;
+            if ((int) $result->status === NODE_PUBLISHED){
+              $node->status = NODE_NOT_PUBLISHED;
+              $node_was_changed = TRUE;
+            }
+          }
+          // Save time by only updating what is needed.
+          if ($addendum_to != $primary->nid) {
+            $node->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
             $node_was_changed = TRUE;
+            //node_save($node);
+          }
+          if ($node_was_changed) {
+            node_save($node);
           }
         }
-        // Save time by only updating what is needed.
-        if ($addendum_to != $primary->nid) {
-          $node->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
-          $node_was_changed = TRUE;
-          //node_save($node);
-        }
-        if ($node_was_changed) {
-          node_save($node);
-        }
-      }
-      else {
-        error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-        error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: wanted to delete $node->nid");
-      }
-      // Remove node from final nids_with_addendums.
-      unset($nids_with_addendums[$node->nid]);
-      if ($drush === TRUE) {
-        if ($primary) {
-          drush_log("Updated meeting $m_id..", 'ok');
-        }
         else {
-          drush_log("Removed stale addendum $m_id..", 'ok');
+          error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+          error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: wanted to delete $node->nid");
+        }
+        // Remove node from final nids_with_addendums.
+        unset($nids_with_addendums[$node->nid]);
+        if ($drush === TRUE) {
+          if ($primary) {
+            drush_log("Updated meeting $m_id..", 'ok');
+          }
+          else {
+            drush_log("Removed stale addendum $m_id..", 'ok');
+          }
         }
       }
     }
   }
+  else {
+    // Run through the meeting array, to determine the addendums.
+    foreach ($meetings as $m_id => $meeting) {
+      // Lowest system id first.
+      ksort($meeting);
+      if (in_array($m_id, $rev_meetings)) {
+        $meeting = array_reverse($meeting);
+      }
+      // Lowest system id is primary.
+      $primary = $nodes[array_shift($meeting)];
+      $addendum_to = field_get_items('node', $primary, 'field_os2web_meetings_addendum');
+      if (!empty($addendum_to[0]['nid'])) {
+        $primary->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
+        node_save($primary);
+      }
+      while ($next = array_shift($meeting)) {
+        // Set up references for addendum agendas.
+        $node = $nodes[$next];
+        $node_was_changed = FALSE;
+        if ($primary) {
+          $addendum_to = field_get_items('node', $node, 'field_os2web_meetings_addendum');
+          if (is_array($addendum_to)) {
+            $node->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
+            $node_was_changed = TRUE;
+          }
+          if (variable_get('os2web_acadre_unpublish_additional_agenda', FALSE)
+              && ($primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat' || $primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat_plus')){
+            $query = db_query("SELECT status FROM {node} WHERE nid = :d", array(":d"=>$node->nid));
+            $result = $query->fetchObject();
 
+            if ((int) $result->status === NODE_PUBLISHED){
+              $node->status = NODE_NOT_PUBLISHED;
+              $node_was_changed = TRUE;
+            }
+          }
+          // Save time by only updating what is needed.
+          if ($node_was_changed) {
+            node_save($node);
+          }
+        }
+      }
+    }
+  } 
   $debug && error_log('MM Import - Start reset addendums on ' . count($nids_with_addendums) . ' nodes - ' . timer_read('_os2web_acadre_esdh_mm_order_addendums') . 'ms - ' . memory_get_usage());
   // Remove any addendums from nodes which hasnt been proccessed.
   foreach ($nids_with_addendums as $nid) {
