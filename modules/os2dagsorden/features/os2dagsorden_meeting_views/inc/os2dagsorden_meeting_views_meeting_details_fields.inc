@@ -370,11 +370,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_enddate($meeting_id) 
   if (variable_get('os2dagsorden_show_meeting_enddate', TRUE)) {
     $meeting = node_load($meeting_id);
     $date = field_get_items('node', $meeting, 'field_os2web_meetings_date');
-    $reset = date_default_timezone_get();
-    date_default_timezone_set("UTC");
-    strtotime($date[0]["value2"]);
-    print format_date(strtotime($date[0]["value2"]), $type = 'short', '', $date[0]['timezone']);
-    date_default_timezone_set($reset);
+    print format_date(strtotime($date[0]["value2"] . 'UTC'), $type = 'short', '');
   }
 }
 
