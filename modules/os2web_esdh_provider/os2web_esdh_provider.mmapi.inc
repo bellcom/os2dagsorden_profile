@@ -988,8 +988,8 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
         }
       }
     }
-    foreach ($bullet_nids as $nid) {
-      $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $nid;
+    foreach ($bullet_nids as $key => $nid) {
+      $node->field_os2web_meetings_attach[LANGUAGE_NONE][$key]['target_id'] = $nid;
     }
   }
   else {
@@ -1013,15 +1013,15 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
           if ($enclosure_node) {
             $enclosures_nids[] = $enclosure_node->nid;
             if ((int) $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['filesize'] !== $file->filesize) {
-              $node->field_os2web_meetings_bpa_file[$node->language][] = (array) $file;
+              $old_bpa_fid = $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['fid'];
+              $enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0] = (array) $file;
               // PDF conversion.
               if (module_exists("os2dagsorden_pdf2htmlex")) {
                 // If is PDF, schedule for HTML conversion.
                 if (file_get_mimetype($file->uri) === 'application/pdf') {
-                  os2dagsorden_pdf2htmlex_schedule($file->fid, $node->nid);
+                  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_node->nid);
                 }
               }
-
               // PNG  conversion.
               if (module_exists("os2dagsorden_pdf2png_conversion")) {
                 // If is PDF, schedule for HTML conversion.
@@ -1029,6 +1029,14 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
                   os2dagsorden_pdf2png_conversion_schedule($file->fid);
                 }
               }
+              node_save($enclosure_node);
+              if (isset($old_bpa_fid)) {
+                file_delete(file_load($old_bpa_fid));
+              }
+            }
+            else {
+              //delete unneeded file;
+              file_delete($file);
             }
           }
           else {
