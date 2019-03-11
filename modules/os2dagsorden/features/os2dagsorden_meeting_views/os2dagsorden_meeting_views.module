@@ -82,7 +82,7 @@ function os2dagsorden_meeting_views_views_pre_render(&$view) {
     $view->query->pager->total_items = $count;
     $view->query->pager->update_page_info();
   }
-}
+  }
 
 /**
  * Implements hook_views_pre_build().
@@ -103,6 +103,11 @@ function os2dagsorden_meeting_views_views_pre_build(&$view) {
           $view->exposed_data = array();
         }
       }
+    }
+  }
+  if ($view->name == 'meeting_details' && variable_get('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', FALSE)) {
+    if (isset($view->display['attachment_8'])) {
+      unset($view->display['attachment_8']);
     }
   }
 }
