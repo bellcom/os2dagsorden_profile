@@ -790,6 +790,8 @@ function _os2web_esdh_provider_import_file($file_meta) {
   }
 
   $uri_out = $pinfo['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename($fname . '.' . strtolower($pinfo['extension']));
+
+  //Generate unique filename
   $real_path = drupal_realpath($uri_out);
   if ($real_path !== FALSE && _os2web_esdh_provider_similar_file_exists($real_path)) {
     $file_counter = 0;
@@ -805,6 +807,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
     } while (_os2web_esdh_provider_similar_file_exists(drupal_realpath($uri_out)));
   }
 
+  // create pdf file URL based on initial file url.
   $new_pinfo = pathinfo($uri_out);
   $uri_pdf = $pinfo['dirname'] . '/' . $new_pinfo['filename'] . '.pdf';
 
@@ -823,44 +826,31 @@ function _os2web_esdh_provider_import_file($file_meta) {
   $uri_out_real_path = drupal_realpath($uri_out);
   $uri_in_real_path = drupal_realpath($uri_in);
 
-  if ($pdf_real_path !== FALSE && _os2web_esdh_provider_similar_file_exists($pdf_real_path)) {
-    // We have an already converted pdf file.
-    $uri = $uri_pdf;
-    $convert = FALSE;
-  }
-  elseif ($uri_out_real_path !== FALSE && _os2web_esdh_provider_similar_file_exists($uri_out_real_path)) {
-    // File already copied.
-    $convert = TRUE;
-    $uri = $uri_out;
-  }
-  else {
-    // Completely unprocessed file.
-    $uri_old = $uri_in;
-    if ($uri_in_real_path !== FALSE) {
-      $uri_in = _os2web_esdh_provider_similar_file_exists($uri_in_real_path);
-      if (strlen($uri_out) > 255) {
-        $pi = pathinfo($uri_out);
-        if (isset($pi['extension'])) {
-          $uri_out = $pi['dirname'] . '/' . substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255)) . '.' . $pi['extension'];
-        }
-        else {
-          $uri_out = $pi['dirname'] . '/' . substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255));
-        }
+  // Start file import.
+  $uri_old = $uri_in;
+  if ($uri_in_real_path !== FALSE) {
+    $uri_in = _os2web_esdh_provider_similar_file_exists($uri_in_real_path);
+    if (strlen($uri_out) > 255) {
+      $pi = pathinfo($uri_out);
+      if (isset($pi['extension'])) {
+        $uri_out = $pi['dirname'] . '/' . substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255)) . '.' . $pi['extension'];
+      }
+      else {
+        $uri_out = $pi['dirname'] . '/' . substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255));
       }
     }
+  }
 
-    if ($uri_in === FALSE || FALSE === file_unmanaged_copy($uri_in, $uri_out, FILE_EXISTS_REPLACE)) {
-      // Bummed out on copy.
-      watchdog('acadre MM', 'File copy failed for %infile -> %outfile. Check folder permissions.', array(
-        '%infile' => $uri_old,
-        '%outfile' => $uri_out,
-      ), WATCHDOG_WARNING);
-      return FALSE;
-    }
-    else {
-      $convert = TRUE;
-      $uri = $uri_out;
-    }
+  if ($uri_in === FALSE || FALSE === file_unmanaged_copy($uri_in, $uri_out, FILE_EXISTS_REPLACE)) {
+    // Bummed out on copy.
+    watchdog('acadre MM', 'File copy failed for %infile -> %outfile. Check folder permissions.', array(
+      '%infile' => $uri_old,
+      '%outfile' => $uri_out,
+    ), WATCHDOG_WARNING);
+    return FALSE;
+  }
+  else {
+    $uri = $uri_out;
   }
 
   if (FALSE === $uri || empty($uri)) {
@@ -891,6 +881,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
     ->condition('uri', $uri)
     ->execute()->fetchField();
 
+  // create file object.
   $file = new stdClass();
   if ($fid) {
     $file->fid = $fid;
@@ -904,20 +895,29 @@ function _os2web_esdh_provider_import_file($file_meta) {
   $file->status = FILE_STATUS_PERMANENT;
   $file = file_save($file);
 
-  if (module_exists('os2web_pdf_conversion_manager')) {
-    _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($file->fid);
+  // check if we alredy have pdf file.
+  $convert = TRUE;
+  if ($pdf_real_path !== FALSE && _os2web_esdh_provider_similar_file_exists($pdf_real_path)) {
+    $convert = FALSE;
   }
 
-  // Schedule for PDF conversion.
-  if ($convert && module_exists('os2web_adlib_api')) {
-    drupal_load('module', 'os2web_adlib_api');
-    os2web_adlib_api_convert_to_pdf($file->fid);
-    watchdog('os2web_adlib_api', 'File %filename (fid: %fid) queued for PDF conversion.', array(
-      '%filename' => $file->filename,
-      '%fid' => $file->fid,
-    ), WATCHDOG_INFO);
-  }
+  // If file is not PDF, schedule for conversion.
+  if ($convert) {
+    // Schedule for PDF conversion.
+    if (module_exists('os2web_pdf_conversion_manager')) {
+      _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($file->fid);
+    }
 
+    // Schedule for PDF conversion via adlib.
+    if ( module_exists('os2web_adlib_api')) {
+      drupal_load('module', 'os2web_adlib_api');
+      os2web_adlib_api_convert_to_pdf($file->fid);
+      watchdog('os2web_adlib_api', 'File %filename (fid: %fid) queued for PDF conversion.', array(
+        '%filename' => $file->filename,
+        '%fid' => $file->fid,
+      ), WATCHDOG_INFO);
+   }
+  }
   err_debug('File imported.');
   err_debug('End Import of file');
   return $file;
