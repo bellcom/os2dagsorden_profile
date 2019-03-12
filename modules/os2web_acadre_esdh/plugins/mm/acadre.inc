@@ -305,7 +305,6 @@ function _os2web_acadre_esdh_import_meeting($info) {
         'title' => $meeting['title'],
       );
     }
-
     // Getting type.
     // If agenda_name is Formoøde, it means we are dealing with Premeeting.
     if ($meeting['agenda_name'] == 'Formøde') {
@@ -671,7 +670,6 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
       $meetings[$meeting_id[0]['value']][$meeting_system_id[0]['value']] = $node->nid;
     }
   }
-
   $debug && error_log('MM Import - Update addendums on ' . count($meetings) . ' nodes - ' . timer_read('_os2web_acadre_esdh_mm_order_addendums') . 'ms - ' . memory_get_usage());
   // Run through the meeting array, to determine the addendums.
   foreach ($meetings as $m_id => $meeting) {
@@ -700,10 +698,23 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
         else {
           $addendum_to = FALSE;
         }
+        $node_was_changed = FALSE;
+        if (variable_get('os2web_acadre_unpublish_additional_agenda', FALSE)
+            && ($primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat' || $primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat_plus')){
+          $query = db_query("SELECT status FROM {node} WHERE nid = :d", array(":d"=>$node->nid));
+          $result = $query->fetchObject();
 
+          if ((int) $result->status === NODE_PUBLISHED){
+            $node->status = NODE_NOT_PUBLISHED;
+            $node_was_changed = TRUE;
+          }
+        }
         // Save time by only updating what is needed.
         if ($addendum_to != $primary->nid) {
           $node->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
+          $node_was_changed = TRUE;
+        }
+        if ($node_was_changed) {
           node_save($node);
         }
       }

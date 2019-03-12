@@ -10,8 +10,8 @@
  */
 function os2dagsorden_meeting_views_coming_meetings_help_text() {
   print '<div class="help-button" id="os2dagsorden_meeting_views_coming_meetings_help" aria-label="' . variable_get('os2dagsorden_upcoming_meetings_help_text', 'Her vises de kommende 5 møder i "Mine udvalg".
-  Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene 
-  "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før 
+  Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene
+  "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før
   status er angivet til Dagsorden eller Dagsorden+.') . '"></div>';
 }
 
