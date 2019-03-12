@@ -791,7 +791,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
 
   $uri_out = $pinfo['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename($fname . '.' . strtolower($pinfo['extension']));
 
-  //Generate unique filename
+  // Generate unique filename.
   $real_path = drupal_realpath($uri_out);
   if ($real_path !== FALSE && _os2web_esdh_provider_similar_file_exists($real_path)) {
     $file_counter = 0;
@@ -807,7 +807,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
     } while (_os2web_esdh_provider_similar_file_exists(drupal_realpath($uri_out)));
   }
 
-  // create pdf file URL based on initial file url.
+  // Create pdf file URL based on initial file url.
   $new_pinfo = pathinfo($uri_out);
   $uri_pdf = $pinfo['dirname'] . '/' . $new_pinfo['filename'] . '.pdf';
 
@@ -823,7 +823,6 @@ function _os2web_esdh_provider_import_file($file_meta) {
 
   $uri = FALSE;
   $pdf_real_path = drupal_realpath($uri_pdf);
-  $uri_out_real_path = drupal_realpath($uri_out);
   $uri_in_real_path = drupal_realpath($uri_in);
 
   // Start file import.
@@ -881,7 +880,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
     ->condition('uri', $uri)
     ->execute()->fetchField();
 
-  // create file object.
+  // Create file object.
   $file = new stdClass();
   if ($fid) {
     $file->fid = $fid;
@@ -895,7 +894,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
   $file->status = FILE_STATUS_PERMANENT;
   $file = file_save($file);
 
-  // check if we alredy have pdf file.
+  // Check if we alredy have pdf file.
   $convert = TRUE;
   if ($pdf_real_path !== FALSE && _os2web_esdh_provider_similar_file_exists($pdf_real_path)) {
     $convert = FALSE;
