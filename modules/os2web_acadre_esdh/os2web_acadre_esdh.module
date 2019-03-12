@@ -97,12 +97,6 @@ function os2web_acadre_esdh_form_os2web_settings_settings_form_alter(&$form, &$f
     '#title' => t('To unpublish additional agenda when Refarat version imported'),
     '#description' => 'This decides whether a additional agenda will be set to unpublish when referat version of agenda imported',
   );
-   $form['os2web_mm']['os2web_acadre_do_not_attach_addtional_agenda'] = array(
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('os2web_acadre_do_not_attach_addtional_agenda', FALSE),
-    '#title' => t("Don't attach tillægsdagsordener to meeting"),
-    '#description' => ('This decides whether a additional agenda will be attached to the meeting')
-  );
   $form['os2web_mm']['os2web_acadre_location_field'] = array(
     '#type' => 'radios',
     '#title' => t('Get the address for the meeting from'),
