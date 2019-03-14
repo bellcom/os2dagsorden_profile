@@ -637,6 +637,7 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
   field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_system_id']['field_id']));
   field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_full_doc']['field_id']));
   field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_full_doc_c']['field_id']));
+  field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_comments']['field_id']));
 
   // Should the sub_id or system_id be used in SORT
   // to determine dagsorden/tillæg.
@@ -678,8 +679,18 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
     if (in_array($m_id, $rev_meetings)) {
       $meeting = array_reverse($meeting);
     }
-    // Lowest system id is primary.
-    $primary = $nodes[array_shift($meeting)];
+    if (variable_get('os2web_acadre_additional_agenda_determination_method', 'true') === 'false') {
+    foreach($meeting as $id => $value) {
+      if ($nodes[$value]->field_os2web_meetings_comments[LANGUAGE_NONE][0]['value'] !== 'Tillægsdagsorden') {
+        $primary = $nodes[$value];
+        unset($meeting[$id]);
+        break;
+      }
+     }
+    }
+    else {
+      $primary = $nodes[array_shift($meeting)];
+    }
     $addendum_to = field_get_items('node', $primary, 'field_os2web_meetings_addendum');
     if (!empty($addendum_to[0]['nid'])) {
       $primary->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
