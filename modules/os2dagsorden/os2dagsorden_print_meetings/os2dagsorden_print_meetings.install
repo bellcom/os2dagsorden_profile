@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Os2dagsorden_print_meetings.
+ *
+ * PHP version 5
+ *
+ * @category OS2Dagsorden
+ * @package OS2Dagsorden_print_meetings
+ *  Install file
+ */
+
+function os2dagsorden_print_meetings_install() {
+  variable_set ('print_pdf_pdf_tool', 'print_pdf_mpdf|profiles/os2dagsorden/libraries/mpdf/mpdf.php');
+}

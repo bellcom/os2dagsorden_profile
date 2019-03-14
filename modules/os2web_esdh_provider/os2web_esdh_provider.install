@@ -246,21 +246,43 @@ function os2web_esdh_provider_update_7101() {
  * Change meeting date to UTC.
  */
 function os2web_esdh_provider_update_7102() {
-  $query = new EntityFieldQuery;
-  $query->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', 'os2web_meetings_meeting');
+  if (date_default_timezone() == 'UTC') {
+    $query = new EntityFieldQuery;
+    $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'os2web_meetings_meeting');
 
-  $result = $query->execute();
-  foreach($result['node'] as $key => $value ){
-    $node = node_load($key);
-    $date_start = $node->field_os2web_meetings_date[LANGUAGE_NONE][0]['value'];
-    $date_start_obj = date_create($date_start, new DateTimeZone(date_default_timezone()));
-    date_timezone_set($date_start_obj, timezone_open('UTC'));
-    $node->field_os2web_meetings_date[LANGUAGE_NONE][0]['value'] = date_format($date_start_obj, 'Y-m-d H:i');;
-    $date_end = $node->field_os2web_meetings_date[LANGUAGE_NONE][0]['value2'];
-    $date_end_obj = date_create($date_end, new DateTimeZone(date_default_timezone()));
-    date_timezone_set($date_end_obj, timezone_open('UTC'));
-    $node->field_os2web_meetings_date[LANGUAGE_NONE][0]['value2'] = date_format($date_end_obj, 'Y-m-d H:i');
-    node_save($node);
+    $result = $query->execute();
+    $meetings = node_load_multiple(array_keys($result['node']));
+
+    foreach($meetings as $meeting){
+      // Creating meeting shadow to speed up saving.
+      $node = new stdClass();
+      $node->nid = $meeting->nid; // Enter the nid taken. Make sure it exists.
+      $node->type = 'os2web_meetings_meeting';
+
+      // Start date.
+      $date_start = $meeting->field_os2web_meetings_date[LANGUAGE_NONE][0]['value'];
+      $date_start_obj = date_create($date_start, new DateTimeZone('Europe/Copenhagen'));
+      date_timezone_set($date_start_obj, timezone_open('UTC'));
+      // Setting updated start date to shadow node.
+      $node->field_os2web_meetings_date[LANGUAGE_NONE][0]['value'] = date_format($date_start_obj, 'Y-m-d H:i');;
+
+      // End date date.
+      $date_end = $meeting->field_os2web_meetings_date[LANGUAGE_NONE][0]['value2'];
+      $date_end_obj = date_create($date_end, new DateTimeZone('Europe/Copenhagen'));
+      date_timezone_set($date_end_obj, timezone_open('UTC'));
+      // Setting updated end date to shadow node.
+      $node->field_os2web_meetings_date[LANGUAGE_NONE][0]['value2'] = date_format($date_end_obj, 'Y-m-d H:i');
+
+      // Forcing fields updates.
+      field_attach_update('node', $node);
+      field_attach_presave('node', $node);
+      // Clear the static loading cache.
+      entity_get_controller('node')->resetCache(array($node->nid));
+    }
+
+    return 'All meetings date have been converted from Europe/Copenhagen to UTC timezone. Do not forget to change your timezone to Europe/Copenhagen setting at: /admin/config/regional/settings !';
+  } else {
+    return 'The currently used timezone is not UTC. This hook is therefore skipped.';
   }
 }
