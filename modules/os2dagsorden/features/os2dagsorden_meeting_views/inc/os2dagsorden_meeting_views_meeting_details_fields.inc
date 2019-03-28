@@ -370,11 +370,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_enddate($meeting_id) 
   if (variable_get('os2dagsorden_show_meeting_enddate', TRUE)) {
     $meeting = node_load($meeting_id);
     $date = field_get_items('node', $meeting, 'field_os2web_meetings_date');
-    $reset = date_default_timezone_get();
-    date_default_timezone_set("UTC");
-    strtotime($date[0]["value2"]);
-    print format_date(strtotime($date[0]["value2"]), $type = 'short', '', $date[0]['timezone']);
-    date_default_timezone_set($reset);
+    print format_date(strtotime($date[0]["value2"] . 'UTC'), $type = 'short', '');
   }
 }
 
@@ -401,8 +397,13 @@ function os2dagsorden_meeting_views_meeting_details_fields_type($meeting_id) {
     $meeting = node_load($meeting_id);
     $meeting_type = field_get_items('node', $meeting, 'field_os2web_meetings_type');
     $options = field_info_field('field_os2web_meetings_type');
-
+    $addendum_to = field_get_items('node', $meeting, 'field_os2web_meetings_addendum');
+    if (!empty($addendum_to[0]['nid']) && variable_get('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', FALSE)) {
+      print (substr($options['settings']['allowed_values'][$meeting_type[0]['value']], -1) === '+') ? 'Tillægsdagsorden+' : 'Tillægsdagsorden';
+    }
+    else {
     print $options['settings']['allowed_values'][$meeting_type[0]['value']];
+    }
   }
 }
 
@@ -604,7 +605,7 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
   else {
     $access_granted = node_access('view', $meeting);
   }
-
+return TRUE;
   return $access_granted;
 }
 

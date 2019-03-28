@@ -187,7 +187,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
       'id' => 'member_of_hidden',
     ),
   );
-  $user_can_change_follow_commitee = ((int)$current_user->uid === 1 || !empty(array_intersect(array('os2dagsorden', 'administrator++', 'administrator+', 'administrator'), $current_user->roles)));
+  $user_can_change_follow_commitee = ((int)$current_user->uid === 1 || !user_has_role(user_role_load_by_name("os2dagsorden limited")->rid));
   $form['follows_div'] = array(
     '#access' => $user_can_change_follow_commitee,
     '#type' => 'item',

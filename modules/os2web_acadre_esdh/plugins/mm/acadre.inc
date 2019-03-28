@@ -305,7 +305,6 @@ function _os2web_acadre_esdh_import_meeting($info) {
         'title' => $meeting['title'],
       );
     }
-
     // Getting type.
     // If agenda_name is Formoøde, it means we are dealing with Premeeting.
     if ($meeting['agenda_name'] == 'Formøde') {
@@ -638,6 +637,7 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
   field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_system_id']['field_id']));
   field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_full_doc']['field_id']));
   field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_full_doc_c']['field_id']));
+  field_attach_load('node', $nodes, FIELD_LOAD_CURRENT, array('field_id' => $fields['field_os2web_meetings_comments']['field_id']));
 
   // Should the sub_id or system_id be used in SORT
   // to determine dagsorden/tillæg.
@@ -671,7 +671,6 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
       $meetings[$meeting_id[0]['value']][$meeting_system_id[0]['value']] = $node->nid;
     }
   }
-
   $debug && error_log('MM Import - Update addendums on ' . count($meetings) . ' nodes - ' . timer_read('_os2web_acadre_esdh_mm_order_addendums') . 'ms - ' . memory_get_usage());
   // Run through the meeting array, to determine the addendums.
   foreach ($meetings as $m_id => $meeting) {
@@ -680,8 +679,18 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
     if (in_array($m_id, $rev_meetings)) {
       $meeting = array_reverse($meeting);
     }
-    // Lowest system id is primary.
-    $primary = $nodes[array_shift($meeting)];
+    if (variable_get('os2web_acadre_additional_agenda_determination_method', 'true') === 'false') {
+    foreach($meeting as $id => $value) {
+      if ($nodes[$value]->field_os2web_meetings_comments[LANGUAGE_NONE][0]['value'] !== 'Tillægsdagsorden') {
+        $primary = $nodes[$value];
+        unset($meeting[$id]);
+        break;
+      }
+     }
+    }
+    else {
+      $primary = $nodes[array_shift($meeting)];
+    }
     $addendum_to = field_get_items('node', $primary, 'field_os2web_meetings_addendum');
     if (!empty($addendum_to[0]['nid'])) {
       $primary->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
@@ -700,10 +709,23 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
         else {
           $addendum_to = FALSE;
         }
+        $node_was_changed = FALSE;
+        if (variable_get('os2web_acadre_unpublish_additional_agenda', FALSE)
+            && ($primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat' || $primary->field_os2web_meetings_type[LANGUAGE_NONE][0]['value'] === 'Referat_plus')){
+          $query = db_query("SELECT status FROM {node} WHERE nid = :d", array(":d"=>$node->nid));
+          $result = $query->fetchObject();
 
+          if ((int) $result->status === NODE_PUBLISHED){
+            $node->status = NODE_NOT_PUBLISHED;
+            $node_was_changed = TRUE;
+          }
+        }
         // Save time by only updating what is needed.
         if ($addendum_to != $primary->nid) {
           $node->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
+          $node_was_changed = TRUE;
+        }
+        if ($node_was_changed) {
           node_save($node);
         }
       }
