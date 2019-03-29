@@ -91,7 +91,12 @@ function os2web_acadre_esdh_form_os2web_settings_settings_form_alter(&$form, &$f
     '#description' => t('This decides if closed agenda is or is not to be imported'),
     '#default_value' => variable_get('os2web_meetings_import_closed_agenda', FALSE),
   );
-
+  $form['os2web_mm']['os2web_acadre_unpublish_additional_agenda'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('os2web_acadre_unpublish_additional_agenda', FALSE),
+    '#title' => t('To unpublish additional agenda when Refarat version imported'),
+    '#description' => 'This decides whether a additional agenda will be set to unpublish when referat version of agenda imported',
+  );
   $form['os2web_mm']['os2web_acadre_location_field'] = array(
     '#type' => 'radios',
     '#title' => t('Get the address for the meeting from'),
@@ -106,7 +111,13 @@ function os2web_acadre_esdh_form_os2web_settings_settings_form_alter(&$form, &$f
     '#options' => array('true' => t('the name field'), 'false' => t('the description field')),
     '#description' => t('This decides from which field meeting comments gets'),
   );
-
+  $form['os2web_mm']['os2web_acadre_additional_agenda_determination_method'] = array(
+    '#type' => 'radios',
+    '#title' => t('The method to determinate the additional agenda'),
+    '#default_value' => variable_get('os2web_acadre_additional_agenda_determination_method', 'true'),
+    '#options' => array('true' => t('The meeting system ID'), 'false' => t('The comment field')),
+    '#description' => t('This decides how the additional agenda will be determinated: by meeting system ID or by contents of comment field'),
+  );
   $form['os2web_mm']['os2web_acadre_add_committee_to_title'] = array(
     '#type' => 'checkbox',
     '#default_value' => variable_get('os2web_acadre_add_committee_to_title', FALSE),

@@ -156,9 +156,14 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
   $form['status']['#default_value'] = $status_field['value'];
 
   $date_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_date'));
-  $form['start_date']['#default_value'] = $date_field['value'];
+
+  $date_start_obj = date_create($date_field['value'], new DateTimeZone('UTC'));
+  date_timezone_set($date_start_obj, timezone_open(date_default_timezone()));
+  $form['start_date']['#default_value'] = date_format($date_start_obj, 'Y-m-d H:i:s');
   if ($date_field['value2'] != $date_field['value']) {
-    $form['end_date']['#default_value'] = $date_field['value2'];
+    $date_end_obj = date_create($date_field['value2'], new DateTimeZone('UTC'));
+    date_timezone_set($date_end_obj, timezone_open(date_default_timezone()));
+    $form['end_date']['#default_value'] = date_format($date_end_obj, 'Y-m-d H:i:s');
   }
 
   $committee_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_committee'));
@@ -270,12 +275,14 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   // Node population.
   $node->title = $title;
   $node->field_os2web_meetings_type['und'][0]['value'] = $status;
-  $start_datetime = date_create_from_format("d/m/Y H:i", $start_date . ' ' . $start_time);
+  $start_datetime = date_create_from_format("d/m/Y H:i", $start_date . ' ' . $start_time, new DateTimeZone(date_default_timezone()));
+  date_timezone_set($start_datetime, timezone_open('UTC'));
   $node->field_os2web_meetings_date['und'][0]['value'] = $start_datetime->format('Y-m-d H:i:s');
   $node->field_os2web_meetings_committee['und'][0]['tid'] = $com_tid;
 
   if (!empty($end_date)) {
-    $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time);
+    $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time, new DateTimeZone(date_default_timezone()));
+    date_timezone_set($end_datetime, timezone_open('UTC'));
     $node->field_os2web_meetings_date['und'][0]['value2'] = $end_datetime->format('Y-m-d H:i:s');
     // Same as start date - default.
   }

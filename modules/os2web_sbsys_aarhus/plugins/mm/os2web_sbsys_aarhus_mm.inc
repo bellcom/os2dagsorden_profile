@@ -137,11 +137,11 @@ function os2web_sbsys_aarhus_mm_import_meeting($meeting) {
       $pdf = array_pop($dir_parts) . ".pdf";
 
       // Fix dates.
-      $date_obj = date_create($meeting_date_when);
+      $date_obj = date_create($meeting_date_when, new DateTimeZone(date_default_timezone()));
       date_timezone_set($date_obj, timezone_open('UTC'));
       $meeting_date_when = date_format($date_obj, 'Y-m-d H:i');
 
-      $date_obj1 = date_create($meeting_date_until);
+      $date_obj1 = date_create($meeting_date_until, new DateTimeZone(date_default_timezone()));
       date_timezone_set($date_obj1, timezone_open('UTC'));
       $meeting_date_until = date_format($date_obj1, 'Y-m-d H:i');
 
