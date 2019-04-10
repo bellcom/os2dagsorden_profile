@@ -227,16 +227,18 @@ function os2dagsorden_statistics_page_build(&$page) {
   if (preg_match('#^/meeting/#', $url['path']) === 1) {
     $path_parts = explode('/', $url['path']);
     $meeting = node_load($path_parts[2]);
-    $committee = field_get_items('node', $meeting, 'field_os2web_meetings_committee');
-    db_insert('os2dagsorden_statistics_content_tracker')
-      ->fields(array(
-        'url' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '',
-        'uid' => $user->uid,
-        'nid' => $meeting->nid,
-        'committee' => $committee[0]['tid'],
-        'timestamp' => REQUEST_TIME,
-      ))
-      ->execute();
+    if ($meeting) {
+      $committee = field_get_items('node', $meeting, 'field_os2web_meetings_committee');
+      db_insert('os2dagsorden_statistics_content_tracker')
+        ->fields(array(
+          'url' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '',
+          'uid' => $user->uid,
+          'nid' => $meeting->nid,
+          'committee' => $committee[0]['tid'],
+          'timestamp' => REQUEST_TIME,
+        ))
+        ->execute();
+    }
   }
 }
 
