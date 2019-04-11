@@ -32,13 +32,7 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
 
   node_object_prepare($node);
 
-  if (variable_get('os2dagsorden_add_type_prefix', 'true') === 'true'  && !isset($enclosure['is_bp_summary'])) {
-    $node->title = $enclosure['type'] . ': ' . (($enclosure['title']) ? $enclosure['title'] : 'Indhold');
-  }
-  else {
-    $node->title = ($enclosure['title']) ? $enclosure['title'] : 'Indhold';
-  }
-
+  $node->title = os2dagsorden_esdh_provider_process_enclosure_create_title($enclosure);
   watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] [BPA: !bpa] Initialized BPA import: !title',
     array(
       '!id' => $_os2dagsorden_esdh_provider_processing_meeting_id,
@@ -47,9 +41,6 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
       '!title' => $node->title,
     ), WATCHDOG_INFO);
 
-  if (strlen($node->title) > 254) {
-    $node->title = substr($node->title, 0, 254);
-  }
   if (isset($enclosure['sysid'])) {
     $node->field_os2web_meetings_bpa_id[$node->language][0]['value'] = $enclosure['sysid'];
   }
@@ -435,4 +426,52 @@ function os2dagsorden_esdh_provider_reassign_notes($attachments_to_delete_nids, 
       }
     }
   }
+}
+
+/**
+ * Created title of BPA.
+ *
+ *@param mixed $enclosure
+ *   The bullet point attachment entity.
+ *
+ * @return string
+ *  The BPA title.
+ */
+function os2dagsorden_esdh_provider_process_enclosure_create_title($enclosure) {
+  if (variable_get('os2dagsorden_add_type_prefix', 'true') === 'true'  && !isset($enclosure['is_bp_summary'])) {
+    $title = $enclosure['type'] . ': ' . (($enclosure['title']) ? $enclosure['title'] : 'Indhold');
+  }
+  else {
+    $title = ($enclosure['title']) ? $enclosure['title'] : 'Indhold';
+  }
+
+  if (strlen($title) > 254) {
+    $title = substr($title, 0, 254);
+  }
+
+  return $title;
+}
+
+/**
+ * Returns the corresponding enclosure if exists.
+ *
+ * Bases on the name.
+ *
+ * @param mixed $enclosure
+ *   The bullet point attachment entity.
+ * @param mixed $attachment_nids
+ *   The array of bullet point attachments nids.
+ *
+ * @return mixed
+ *   The bullet point attachment node or NULL
+ */
+function os2dagsorden_esdh_provider_find_corresponding_enclosure($enclosure, $enclosure_nids) {
+  foreach ($enclosure_nids as $enclosure_nid) {
+    $enclosure_node = node_load($enclosure_nid);
+    $title = os2dagsorden_esdh_provider_process_enclosure_create_title($enclosure);
+    if (strcasecmp($title, $enclosure_node->title) === 0) {
+      return $enclosure_node;
+    }
+  }
+  return NULL;
 }
