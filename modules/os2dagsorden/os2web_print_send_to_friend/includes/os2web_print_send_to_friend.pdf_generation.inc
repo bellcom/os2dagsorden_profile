@@ -94,7 +94,15 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
  */
 function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting, $mpdf) {
   $start_date = $meeting->field_os2web_meetings_date['und'][0]['value'];
+  $start_date_obj = date_create($start_date, new DateTimeZone('UTC'));
+  date_timezone_set($start_date_obj, new DateTimeZone(date_default_timezone()));
+  $start_date = date_format($start_date_obj, 'Y-m-d H:i:s');
+
   $end_date = $meeting->field_os2web_meetings_date['und'][0]['value2'];
+  $end_date_obj = date_create($end_date, new DateTimeZone('UTC'));
+  date_timezone_set($end_date_obj, new DateTimeZone(date_default_timezone()));
+  $end_date = date_format($end_date_obj, 'Y-m-d H:i:s');
+
   $committee = taxonomy_term_load($meeting->field_os2web_meetings_committee['und'][0]['tid']);
   $location = taxonomy_term_load($meeting->field_os2web_meetings_location['und'][0]['tid']);
 

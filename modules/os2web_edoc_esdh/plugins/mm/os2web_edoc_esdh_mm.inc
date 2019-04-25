@@ -151,7 +151,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
         $meeting_agendas_items = $meeting_agenda->xpath('MeetingAgendaItems');
 
         // Fix dates.
-        $date_obj = date_create($meeting_date);
+        $date_obj = date_create($meeting_date, new DateTimeZone(date_default_timezone()));
         date_timezone_set($date_obj, timezone_open('UTC'));
         $meeting_date = date_format($date_obj, 'Y-m-d H:i');
 

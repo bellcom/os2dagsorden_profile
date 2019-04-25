@@ -287,8 +287,13 @@ function os2dagsorden_meeting_views_meetings_search_fields_status($meeting_id) {
     $meeting = node_load($meeting_id);
     $meeting_type = field_get_items('node', $meeting, 'field_os2web_meetings_type');
     $options = field_info_field(field_os2web_meetings_type);
-
+    $addendum_to = field_get_items('node', $meeting, 'field_os2web_meetings_addendum');
+    if (!empty($addendum_to[0]['nid'])) {
+      print (substr($options['settings']['allowed_values'][$meeting_type[0]['value']], -1) === '+') ? 'Tillægsdagsorden+' : 'Tillægsdagsorden';
+    }
+    else {
     print $options['settings']['allowed_values'][$meeting_type[0]['value']];
+    }
   }
 }
 

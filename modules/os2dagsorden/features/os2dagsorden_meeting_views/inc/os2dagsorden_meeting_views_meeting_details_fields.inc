@@ -93,6 +93,14 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   $has_full_doc_attachments = FALSE;
   $has_add_doc = FALSE;
   $has_add_doc_attachments = FALSE;
+  $pdf_documents_lists_order = array (
+    'full_doc',
+    'att_doc',
+    'full_doc_c',
+    'att_doc_c',
+    'full_doc_p',
+    'att_doc_p'
+  );
 
   echo '<div class="controls-right dropdown">';
   echo '<a class="dropbtn form-submit" type="button" data-toggle="dropdown">'
@@ -101,31 +109,35 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   echo '<div class="dropdown-content">';
 
   if (os2dagsorden_access_helper_check_pdf_download_enabled()) {
+    $pdf_documents_links = array();
     // Closed version - if not empty.
     $user_can_see_personal_agendas = os2dagsorden_access_helper_check_user_can_see_personal_agenda($meeting->nid);
     $user_can_see_closed_agendas = os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid);
+    if (module_exists('os2web_esdh_provider')) {
+      $agenda_access = _os2web_esdh_provider_get_agenda_access($meeting->nid, $meeting->field_os2web_meetings_sub_id['und'][0]['value']);
+    }
 
-    if ($user_can_see_personal_agendas) {
+   if ($user_can_see_personal_agendas) {
       if (!empty($meeting->field_os2web_meetings_full_doc_p['und'][0]['uri'])) {
-        echo '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_full_doc_p['und'][0]['uri']) .
+        $pdf_documents_links['full_doc_p'] = '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_full_doc_p['und'][0]['uri']) .
           '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title', 'Samlet dokument') . ' (person)</a>';
         $has_full_doc = TRUE;
       }
     }
 
-    if ($user_can_see_closed_agendas) {
+    if ($user_can_see_closed_agendas && ((!isset($agenda_access) || $agenda_access === 0) || variable_get('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE))) {
       if (!empty($meeting->field_os2web_meetings_full_doc_c['und'][0]['uri'])) {
-        echo '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_full_doc_c['und'][0]['uri']) .
+        $pdf_documents_links['full_doc_c'] = '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_full_doc_c['und'][0]['uri']) .
           '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title', 'Samlet dokument') . ' (lukket)</a>';
         $has_full_doc = TRUE;
       }
     }
     if ($meeting_full_access_granted) {
       // Only if closed/personal has not been printed yet.
-      if (!$has_full_doc) {
+      if (!$has_full_doc || variable_get('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE)) {
         // Opened version - if not empty.
         if (!empty($meeting->field_os2web_meetings_full_doc['und'][0]['uri'])) {
-          echo '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_full_doc['und'][0]['uri']) .
+          $pdf_documents_links['full_doc'] = '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_full_doc['und'][0]['uri']) .
             '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title', 'Samlet dokument') . '</a>';
           $has_full_doc = TRUE;
         }
@@ -136,144 +148,158 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
     // personal version - if not empty.
     if ($user_can_see_personal_agendas) {
       if (!empty($meeting->field_os2web_meetings_att_doc_p['und'][0]['uri'])) {
-        echo '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_att_doc_p['und'][0]['uri']) .
+        $pdf_documents_links['att_doc_p'] = '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_att_doc_p['und'][0]['uri']) .
           '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title', 'Samlet dokument med bilag') . ' (person)</a>';
         $has_full_doc_attachments = TRUE;
       }
     }
 
     // Closed version - if not empty.
-    if ($user_can_see_closed_agendas) {
+    if ($user_can_see_closed_agendas && ((!isset($agenda_access) || $agenda_access === 0) || variable_get('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE))) {
       if (!empty($meeting->field_os2web_meetings_att_doc_c['und'][0]['uri'])) {
-        echo '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_att_doc_c['und'][0]['uri']) .
+        $pdf_documents_links['att_doc_c'] = '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_att_doc_c['und'][0]['uri']) .
           '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title', 'Samlet dokument med bilag') . ' (lukket)</a>';
         $has_full_doc_attachments = TRUE;
       }
     }
     if ($meeting_full_access_granted) {
       // Only if closed/personal has not been printed yet.
-      if (!$has_full_doc_attachments) {
+      if (!$has_full_doc_attachments || variable_get('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE)) {
         // Opened version - if not empty.
         if (!empty($meeting->field_os2web_meetings_att_doc['und'][0]['uri'])) {
-          echo '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_att_doc['und'][0]['uri']) .
+          $pdf_documents_links['att_doc'] = '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_att_doc['und'][0]['uri']) .
             '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title', 'Samlet dokument med bilag') . '</a>';
           $has_full_doc_attachments = TRUE;
         }
       }
     }
+    foreach($pdf_documents_lists_order as $doc_type) {
+      if (isset($pdf_documents_links[$doc_type])) {
+        echo $pdf_documents_links[$doc_type];
+      }
+    }
     // Descriptions full doc with attachments END
     // descriptions (additional)
-    $additional_descriptions = array();
-    if (!empty($meeting->field_os2web_meetings_add_doc_p['und'])) {
-      foreach ($meeting->field_os2web_meetings_add_doc_p['und'] as $file) {
-        $additional_descriptions[$file['description']]['personal'] = $file;
-      }
-    }
-    if (!empty($meeting->field_os2web_meetings_add_doc_c['und'])) {
-      foreach ($meeting->field_os2web_meetings_add_doc_c['und'] as $file) {
-        $additional_descriptions[$file['description']]['closed'] = $file;
-      }
-    }
-    if (!empty($meeting->field_os2web_meetings_add_doc['und'])) {
-      foreach ($meeting->field_os2web_meetings_add_doc['und'] as $file) {
-        $additional_descriptions[$file['description']]['opened'] = $file;
-      }
-    }
-
-    $additional_descriptions_with_att = array();
-
-    $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'node')
-      ->fieldCondition('field_os2web_meetings_addendum', 'nid', $meeting_id, '=');
-    $result = $query->execute();
-    if (isset($result['node'])) {
-      $additional_meetings = array_keys($result['node']);
-
-      foreach ($additional_meetings as $additional_meeting_id) {
-        $additional_meeting = node_load($additional_meeting_id);
-
-        // Plain.
-        if (!empty($additional_meeting->field_os2web_meetings_full_doc['und'][0]['uri'])) {
-          $additional_descriptions[]['opened'] = $additional_meeting->field_os2web_meetings_full_doc['und'][0];
-        }
-        if (!empty($additional_meeting->field_os2web_meetings_full_doc_c['und'][0]['uri'])) {
-          $additional_descriptions[]['closed'] = $additional_meeting->field_os2web_meetings_full_doc_c['und'][0];
-        }
-        if (!empty($additional_meeting->field_os2web_meetings_full_doc_p['und'][0]['uri'])) {
-          $additional_descriptions[]['personal'] = $additional_meeting->field_os2web_meetings_full_doc_p['und'][0];
-        }
-
-        // With attachments.
-        if (!empty($additional_meeting->field_os2web_meetings_att_doc['und'][0]['uri'])) {
-          $additional_descriptions_with_att[]['opened'] = $additional_meeting->field_os2web_meetings_att_doc['und'][0];
-        }
-        if (!empty($additional_meeting->field_os2web_meetings_att_doc_c['und'][0]['uri'])) {
-          $additional_descriptions_with_att[]['closed'] = $additional_meeting->field_os2web_meetings_att_doc_c['und'][0];
-        }
-        if (!empty($additional_meeting->field_os2web_meetings_att_doc_p['und'][0]['uri'])) {
-          $additional_descriptions_with_att[]['personal'] = $additional_meeting->field_os2web_meetings_att_doc_p['und'][0];
+    if (variable_get('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', FALSE) == FALSE) {
+      $additional_descriptions = array();
+      if (!empty($meeting->field_os2web_meetings_add_doc_p['und'])) {
+        foreach ($meeting->field_os2web_meetings_add_doc_p['und'] as $file) {
+          $additional_descriptions[$file['description']]['personal'] = $file;
         }
       }
-    }
-
-    ksort($additional_descriptions);
-    ksort($additional_descriptions_with_att);
-
-    foreach ($additional_descriptions as $add_desc) {
-      // Personal version additional - if not empty.
-      if ($user_can_see_closed_agendas) {
-        if (!empty($add_desc['personal'])) {
-          echo '<a target="_blank" href="' . file_create_url($add_desc['personal']['uri']) .
-            '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title_additional', 'Tillægsdokument') . ' (person)</a>';
-          $has_add_doc = TRUE;
+      if (!empty($meeting->field_os2web_meetings_add_doc_c['und'])) {
+        foreach ($meeting->field_os2web_meetings_add_doc_c['und'] as $file) {
+          $additional_descriptions[$file['description']]['closed'] = $file;
         }
       }
-      // Closed version additional - if not empty.
-      if ($user_can_see_closed_agendas) {
-        if (!empty($add_desc['closed'])) {
-          echo '<a target="_blank" href="' . file_create_url($add_desc['closed']['uri']) .
-            '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title_additional', 'Tillægsdokument') . ' (lukket)</a>';
-          $has_add_doc = TRUE;
+      if (!empty($meeting->field_os2web_meetings_add_doc['und'])) {
+        foreach ($meeting->field_os2web_meetings_add_doc['und'] as $file) {
+          $additional_descriptions[$file['description']]['opened'] = $file;
         }
       }
-      if ($meeting_full_access_granted) {
-        // Only if closed/personal has not been printed yet.
-        if (!$has_add_doc) {
-          // Opened version additional - if not empty.
-          if (!empty($add_desc['opened'])) {
-            echo '<a target="_blank" href="' . file_create_url($add_desc['opened']['uri']) .
-              '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title_additional', 'Tillægsdokument') . '</a>';
-            $has_add_doc = TRUE;
+
+      $additional_descriptions_with_att = array();
+
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->fieldCondition('field_os2web_meetings_addendum', 'nid', $meeting_id, '=');
+      $result = $query->execute();
+      if (isset($result['node'])) {
+        $additional_meetings = array_keys($result['node']);
+
+        foreach ($additional_meetings as $additional_meeting_id) {
+          $additional_meeting = node_load($additional_meeting_id);
+
+          // Plain.
+          if (!empty($additional_meeting->field_os2web_meetings_full_doc['und'][0]['uri'])) {
+            $additional_descriptions[]['opened'] = $additional_meeting->field_os2web_meetings_full_doc['und'][0];
+          }
+          if (!empty($additional_meeting->field_os2web_meetings_full_doc_c['und'][0]['uri'])) {
+            $additional_descriptions[]['closed'] = $additional_meeting->field_os2web_meetings_full_doc_c['und'][0];
+          }
+          if (!empty($additional_meeting->field_os2web_meetings_full_doc_p['und'][0]['uri'])) {
+            $additional_descriptions[]['personal'] = $additional_meeting->field_os2web_meetings_full_doc_p['und'][0];
+          }
+
+          // With attachments.
+          if (!empty($additional_meeting->field_os2web_meetings_att_doc['und'][0]['uri'])) {
+            $additional_descriptions_with_att[]['opened'] = $additional_meeting->field_os2web_meetings_att_doc['und'][0];
+          }
+          if (!empty($additional_meeting->field_os2web_meetings_att_doc_c['und'][0]['uri'])) {
+            $additional_descriptions_with_att[]['closed'] = $additional_meeting->field_os2web_meetings_att_doc_c['und'][0];
+          }
+          if (!empty($additional_meeting->field_os2web_meetings_att_doc_p['und'][0]['uri'])) {
+            $additional_descriptions_with_att[]['personal'] = $additional_meeting->field_os2web_meetings_att_doc_p['und'][0];
           }
         }
       }
-    }
 
-    foreach ($additional_descriptions_with_att as $add_desc) {
-      // Personal version additional - if not empty.
-      if ($user_can_see_personal_agendas) {
-        if (!empty($add_desc['personal'])) {
-          echo '<a target="_blank" href="' . file_create_url($add_desc['personal']['uri']) .
-            '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title_additional', 'Tillægsdokument med bilag') . ' (person)</a>';
-          $has_add_doc_attachments = TRUE;
+      ksort($additional_descriptions);
+      ksort($additional_descriptions_with_att);
+      $additional_descriptions_pdf_files = array();
+      foreach ($additional_descriptions as $add_desc) {
+        // Personal version additional - if not empty.
+        if ($user_can_see_personal_agendas) {
+          if (!empty($add_desc['personal'])) {
+            $additional_descriptions_pdf_files['full_doc_p'][] = '<a target="_blank" href="' . file_create_url($add_desc['personal']['uri']) .
+              '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title_additional', 'Tillægsdokument') . ' (person)</a>';
+            $has_add_doc = TRUE;
+          }
+        }
+        // Closed version additional - if not empty.
+        if ($user_can_see_closed_agendas && (!isset($agenda_access) || $agenda_access === 0)) {
+          if (!empty($add_desc['closed'])) {
+            $additional_descriptions_pdf_files['full_doc_c'][] = '<a target="_blank" href="' . file_create_url($add_desc['closed']['uri']) .
+              '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title_additional', 'Tillægsdokument') . ' (lukket)</a>';
+            $has_add_doc = TRUE;
+          }
+        }
+        if ($meeting_full_access_granted) {
+          // Only if closed/personal has not been printed yet.
+          if (!$has_add_doc) {
+            // Opened version additional - if not empty.
+            if (!empty($add_desc['opened'])) {
+              $additional_descriptions_pdf_files['full_doc'][] = '<a target="_blank" href="' . file_create_url($add_desc['opened']['uri']) .
+                '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_download_title_additional', 'Tillægsdokument') . '</a>';
+              $has_add_doc = TRUE;
+            }
+          }
         }
       }
-      // Closed version additional - if not empty.
-      if ($user_can_see_closed_agendas) {
-        if (!empty($add_desc['closed'])) {
-          echo '<a target="_blank" href="' . file_create_url($add_desc['closed']['uri']) .
-            '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title_additional', 'Tillægsdokument med bilag') . ' (lukket)</a>';
-          $has_add_doc_attachments = TRUE;
-        }
-      }
-      if ($meeting_full_access_granted) {
-        // Only if closed/personal has not been printed yet.
-        if (!$has_add_doc_attachments) {
-          // Opened version additional - if not empty.
-          if (!empty($add_desc['opened'])) {
-            echo '<a target="_blank" href="' . file_create_url($add_desc['opened']['uri']) .
-              '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title_additional', 'Tillægsdokument med bilag') . '</a>';
+
+      foreach ($additional_descriptions_with_att as $add_desc) {
+        // Personal version additional - if not empty.
+        if ($user_can_see_personal_agendas) {
+          if (!empty($add_desc['personal'])) {
+            $additional_descriptions_pdf_files['att_doc_p'][] = '<a target="_blank" href="' . file_create_url($add_desc['personal']['uri']) .
+              '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title_additional', 'Tillægsdokument med bilag') . ' (person)</a>';
             $has_add_doc_attachments = TRUE;
+          }
+        }
+        // Closed version additional - if not empty.
+        if ($user_can_see_closed_agendas) {
+          if (!empty($add_desc['closed'])) {
+            $additional_descriptions_pdf_files['att_doc_c'][] = '<a target="_blank" href="' . file_create_url($add_desc['closed']['uri']) .
+              '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title_additional', 'Tillægsdokument med bilag') . ' (lukket)</a>';
+            $has_add_doc_attachments = TRUE;
+          }
+        }
+        if ($meeting_full_access_granted) {
+          // Only if closed/personal has not been printed yet.
+          if (!$has_add_doc_attachments) {
+            // Opened version additional - if not empty.
+            if (!empty($add_desc['opened'])) {
+              $additional_descriptions_pdf_files['att_doc'][] = '<a target="_blank" href="' . file_create_url($add_desc['opened']['uri']) .
+                '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title_additional', 'Tillægsdokument med bilag') . '</a>';
+              $has_add_doc_attachments = TRUE;
+            }
+          }
+        }
+      }
+      foreach($pdf_documents_lists_order as $doc_type) {
+        if (isset($additional_descriptions_pdf_files[$doc_type]) && is_array($additional_descriptions_pdf_files[$doc_type])) {
+          foreach($additional_descriptions_pdf_files[$doc_type] as $pdf_doc) {
+            echo $pdf_doc;
           }
         }
       }
@@ -367,11 +393,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_enddate($meeting_id) 
   if (variable_get('os2dagsorden_show_meeting_enddate', TRUE)) {
     $meeting = node_load($meeting_id);
     $date = field_get_items('node', $meeting, 'field_os2web_meetings_date');
-    $reset = date_default_timezone_get();
-    date_default_timezone_set("UTC");
-    strtotime($date[0]["value2"]);
-    print format_date(strtotime($date[0]["value2"]), $type = 'short', '', $date[0]['timezone']);
-    date_default_timezone_set($reset);
+    print format_date(strtotime($date[0]["value2"] . 'UTC'), $type = 'short', '');
   }
 }
 
@@ -398,8 +420,13 @@ function os2dagsorden_meeting_views_meeting_details_fields_type($meeting_id) {
     $meeting = node_load($meeting_id);
     $meeting_type = field_get_items('node', $meeting, 'field_os2web_meetings_type');
     $options = field_info_field('field_os2web_meetings_type');
-
+    $addendum_to = field_get_items('node', $meeting, 'field_os2web_meetings_addendum');
+    if (!empty($addendum_to[0]['nid']) && variable_get('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', FALSE)) {
+      print (substr($options['settings']['allowed_values'][$meeting_type[0]['value']], -1) === '+') ? 'Tillægsdagsorden+' : 'Tillægsdagsorden';
+    }
+    else {
     print $options['settings']['allowed_values'][$meeting_type[0]['value']];
+    }
   }
 }
 
@@ -601,7 +628,7 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
   else {
     $access_granted = node_access('view', $meeting);
   }
-
+return TRUE;
   return $access_granted;
 }
 
@@ -1249,3 +1276,4 @@ function os2dagsorden_meeting_views_meeting_details_fields_create_all_bullet_poi
     print '</div>';
   }
 }
+

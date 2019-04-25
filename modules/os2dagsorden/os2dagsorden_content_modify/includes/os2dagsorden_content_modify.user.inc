@@ -134,6 +134,13 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
     '#value' => t('Save'),
     '#submit' => array('os2dagsorden_content_modify_user_submit'),
   );
+  $form['cancel'] = array(
+    '#type' => 'button',
+    '#value' => t('Cancel'),
+    '#prefix' => '&nbsp; &nbsp; &nbsp;',
+    '#attributes' => array('class' => array('form-submit'), 'onClick' => 'history.go(-1); event.preventDefault();'),
+	);
+
   $form[] = array(
   // <div class="node clearfix">.
     '#markup' => '</div>',
@@ -180,7 +187,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
       'id' => 'member_of_hidden',
     ),
   );
-  $user_can_change_follow_commitee = ((int)$current_user->uid === 1 || !empty(array_intersect(array('os2dagsorden', 'administrator++', 'administrator+', 'administrator'), $current_user->roles)));
+  $user_can_change_follow_commitee = ((int)$current_user->uid === 1 || !user_has_role(user_role_load_by_name("os2dagsorden limited")->rid));
   $form['follows_div'] = array(
     '#access' => $user_can_change_follow_commitee,
     '#type' => 'item',

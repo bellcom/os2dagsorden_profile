@@ -286,15 +286,16 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
     $form['from_date']['value']['#date_format'] = 'd-m-Y';
     $form['to_date']['value']['#date_format'] = 'd-m-Y';
     $args = arg();
-
     if (variable_get('os2dagsorden_search_restrict_search_function', FALSE) && $args[0] === 'meeting' && isset($args[1])) {
-       $meeting =  node_load($args[1]);
-      $form_state['view']->args = array($meeting->nid);
-      $old_value = date_create_from_format("Y-m-d H:i:s", $meeting->field_os2web_meetings_date['und'][0]['value']);
-      $old_value = $old_value->format('d-m-Y');
-      $form_state['input']['from_date']['value']['date'] = $old_value;
-      $form_state['input']['to_date']['value']['date'] = $old_value;
-      $form_state['input']['field_os2web_meetings_committee_tid_depth'] = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+      $meeting =  node_load($args[1]);
+      if ($meeting && $meeting->type == 'os2web_meetings_meeting') {
+        $form_state['view']->args = array($meeting->nid);
+        $old_value = date_create_from_format("Y-m-d H:i:s", $meeting->field_os2web_meetings_date['und'][0]['value']);
+        $old_value = $old_value->format('d-m-Y');
+        $form_state['input']['from_date']['value']['date'] = $old_value;
+        $form_state['input']['to_date']['value']['date'] = $old_value;
+        $form_state['input']['field_os2web_meetings_committee_tid_depth'] = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+      }
     }
     else {
     if (!is_array($_SESSION['views']['meetings_search']['page']['from_date']['value'])) {

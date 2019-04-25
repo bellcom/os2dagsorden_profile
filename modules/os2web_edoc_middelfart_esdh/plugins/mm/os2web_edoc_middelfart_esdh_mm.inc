@@ -186,10 +186,10 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           $meeting_agendas_items = $meeting_agenda->xpath('edoc:AgendaElements');
 
           // Fix dates.
-          $date_obj = date_create($meeting_date_start);
+          $date_obj = date_create($meeting_date_start, new DateTimeZone(date_default_timezone()));
           date_timezone_set($date_obj, timezone_open('UTC'));
           $meeting_date_start = date_format($date_obj, 'Y-m-d H:i');
-          $date_obj = date_create($meeting_date_end);
+          $date_obj = date_create($meeting_date_end, new DateTimeZone(date_default_timezone()));
           date_timezone_set($date_obj, timezone_open('UTC'));
           $meeting_date_end = date_format($date_obj, 'Y-m-d H:i');
 

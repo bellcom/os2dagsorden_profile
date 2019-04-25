@@ -67,6 +67,13 @@ function os2dagsorden_content_modify_user_batch_edit_form($form, $form_state, $u
     '#submit' => array('os2dagsorden_content_modify_user_batch_submit'),
   );
 
+ $form['cancel'] = array(
+    '#type' => 'button',
+    '#value' => t('Cancel'),
+    '#prefix' => '&nbsp; &nbsp; &nbsp;',
+    '#attributes' => array('class' => array('form-submit'), 'onClick' => 'history.go(-1); event.preventDefault();'),
+	);
+
   $form[] = array(
     '#markup' => '</div>',
   );
