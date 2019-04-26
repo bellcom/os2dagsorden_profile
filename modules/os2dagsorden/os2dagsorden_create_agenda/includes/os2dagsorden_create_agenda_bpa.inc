@@ -91,7 +91,7 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
           '#bpa_nid' => $node->nid,
           '#ajax' => array(
             'callback' => 'os2dagsorden_create_agenda_bpa_file_delete_ajax',
-            'wrapper' => 'bbpa_file_' . $bilag['fid'],
+            'wrapper' => 'bpa_file_' . $bilag['fid'],
             'method' => 'replace',
             'effect' => 'fade',
           ),

@@ -1469,6 +1469,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#title' => t('File directory for uploaded files'),
     '#description' => t('URI to folder where uploaded files sroted'),
     '#default_value' => variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas'),
+    '#element_validate' => array('_os2dagsorden_plupload_upload_dir_validate'),
   );
   // Sort items alphabetically.
   ksort($form);
@@ -1606,6 +1607,26 @@ function _os2dagsorden_pdf2html_rendering_path_validate($element, &$form_state) 
  *   The state of form.
  */
 function _os2dagsorden_os2web_convertion_dir_validate($element, &$form_state) {
+  $value = $element['#value'];
+  if (file_exists($value)) {
+    if (!is_writable($value)) {
+      form_error($element, t("Could not writte to directory. Please check permissions"));
+    }
+  }
+  else {
+    form_error($element, t("Directory !value does nor exist", array('!value' => $value)));
+  }
+}
+
+/**
+ * Validates that the file upload dir is present and writable.
+ *
+ * @param mixed $element
+ *   The form element.
+ * @param mixed $form_state
+ *   The state of form.
+ */
+function _os2dagsorden_plupload_upload_dir_validate($element, &$form_state) {
   $value = $element['#value'];
   if (file_exists($value)) {
     if (!is_writable($value)) {
