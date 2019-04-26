@@ -58,7 +58,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
   $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form_state);
 
   // Pass the maximum file size in bytes - 2 MB.
-  $two_mb_bytes = 2 * 1024 * 1024;
+  $max_filesize_bytes = variable_get('os2dagsorden_plupupload_max_filesize', 2) * 1024 * 1024;
+  $allowed_extensions = variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf');
 
   // Adding other fields.
   $form['description_opened'] = array(
@@ -67,8 +68,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#name' => 'files[]',
     '#autoupload' => TRUE,
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
-      'file_validate_size' => array($two_mb_bytes),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($max_filesize_bytes),
     ),
     '#plupload_settings' => array(
       'multi_selection' => false,
@@ -81,8 +82,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#name' => 'files[]',
     '#autoupload' => TRUE,
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
-      'file_validate_size' => array($two_mb_bytes),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($max_filesize_bytes),
     ),
     '#plupload_settings' => array(
       'multi_selection' => false,
@@ -297,7 +298,7 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
     if ($description_file['status'] == 'done') {
       // Resaving file permanently.
       $source = $description_file['tmppath'];
-      $destination = file_stream_wrapper_uri_normalize('temporary://' . $description_file['name']);
+      $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $description_file['name']);
       $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
       $description_file = plupload_file_uri_to_object($destination);
       file_save($description_file);
@@ -323,7 +324,7 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
       if ($description_file['status'] == 'done') {
         // Resaving file permanently.
         $source = $description_file['tmppath'];
-        $destination = file_stream_wrapper_uri_normalize('temporary://' . $description_file['name']);
+        $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $description_file['name']);
         $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
         $description_file = plupload_file_uri_to_object($destination);
         file_save($description_file);

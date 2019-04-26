@@ -66,6 +66,8 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     '#title' => t('Personal'),
     '#field_suffix' => '<div class="indicator-form-personal"></div>',
   );
+  $twenty_mb_bytes = variable_get('os2dagsorden_plupupload_max_filesize', 2) * 1024 * 1024;
+  $allowed_extensions = variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf');
 
   $form['bilags'] = array(
     '#type' => 'plupload',
@@ -73,7 +75,8 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     '#title' => t('Upload bilags files'),
     '#autoupload' => TRUE,
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($twenty_mb_bytes),
     )
   );
 
@@ -511,13 +514,17 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form($form, &$form_st
     '#type' => 'hidden',
     '#value' => arg(2)
   );
+  $max_filesize_bytes = variable_get('os2dagsorden_plupupload_max_filesize', 2) * 1024 * 1024;
+  $allowed_extensions = variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf');
+
   $form['bilags'] = array(
     '#type' => 'plupload',
     '#name' => 'files[]',
     '#title' => t('Upload bilags files'),
     '#autoupload' => TRUE,
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($max_filesize_bytes),
     )
   );
   $form['save_bullet_point'] = array(
@@ -588,7 +595,7 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form_submit($form, &$
  */
 function _os2dagsorden_create_agenda_create_bpa_from_file($bp_id, $bilag_array) {
   $source = $bilag_array['tmppath'];
-  $destination = file_stream_wrapper_uri_normalize('temporary://' . $bilag_array['name']);
+  $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $bilag_array['name']);
   $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
   $bilag = plupload_file_uri_to_object($destination);
   file_save($bilag);

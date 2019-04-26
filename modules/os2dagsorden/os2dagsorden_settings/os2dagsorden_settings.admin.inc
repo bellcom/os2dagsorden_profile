@@ -1443,6 +1443,33 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides what "delete / anonymize" button will to do: clear meeting content or delete meeting'),
   );
 
+  // Settings for plupupload
+  $form['os2dagsorden_plupupload_settings'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('Plupupload configuration'),
+  );
+  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Allowed file types:'),
+    '#description' => t('Separate extensions with a space and do not include the leading dot. Fe. "doc docx pdf"'),
+    '#default_value' => variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf'),
+  );
+  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Max file size:'),
+    '#field_suffix' => 'MB',
+    '#size' => 10,
+    '#description' => t('Maximum allowed filesize'),
+    '#default_value' => variable_get('os2dagsorden_plupupload_max_filesize', 2),
+  );
+  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri'] = array(
+    '#type' => 'textfield',
+    '#title' => t('File directory for uploaded files'),
+    '#description' => t('URI to folder where uploaded files sroted'),
+    '#default_value' => variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas'),
+  );
   // Sort items alphabetically.
   ksort($form);
   return system_settings_form($form);
@@ -1817,5 +1844,10 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('quick_guide_upload_fid', $setting_array['upload_guide']['quick_guide_upload_fid']);
     variable_set('print_pdf_page_orientation', $setting_array['os2dagsorden_meeting_view_settings']['print_pdf_page_orientation']);
     variable_set('os2dagsorden_right_sidebar_arrow_position_radios', $setting_array['os2dagsorden_right_sidebar_arrow_position']['os2dagsorden_right_sidebar_arrow_position_radios']);
+
+    variable_set('os2dagsorden_plupupload_allowed_filetypes', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes']);
+    variable_set('os2dagsorden_plupupload_max_filesize', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize']);
+    variable_set('os2dagsorden_plupupload_filedir_uri', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri']);
+
   }
 }
