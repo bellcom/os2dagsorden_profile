@@ -58,6 +58,12 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
     ),
     '#multiple' => FALSE,
     '#default_value' => OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PLANNED,
+    '#ajax' => array(
+      'callback' => 'os2dagsorden_create_agenda_populate_available_users',
+      'event' => 'change',
+      'wrapper' => 'available_users',
+      'method' => 'replace',
+    )
   );
   $form[] = array(
     '#markup' => '<div class="clearfix">',
@@ -127,6 +133,12 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
     '#options' => $com_select,
     '#attributes' => array('required' => 'required'),
     '#multiple' => FALSE,
+    '#ajax' => array(
+      'callback' => 'os2dagsorden_create_agenda_populate_available_users',
+      'event' => 'change',
+      'wrapper' => 'available_users',
+      'method' => 'replace',
+    )
   );
 
   // Finishing form.
@@ -226,6 +238,40 @@ function os2dagsorden_create_agenda_populate_end_date($form, &$form_state) {
   }
 
   return $form['end_date'];
+}
+
+/**
+ * Callback for populate available users list
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_populate_available_users($form, &$form_state) {
+  $internal_participants = explode(',', $form_state['values']['internal_participants_hidden']);
+  $external_participants = explode(',', $form_state['values']['external_participants_hidden']);
+  $meeting_type = $form_state['values']['status'];
+  $committee_tid =  $form_state['values']['os2web_meetings_tax_committee'];
+  $user_list = "<ul id='available_users' class='droptrue ui-sortable'>";
+  $users = entity_load('user');
+  foreach ($users as $user) {
+    if ((int) $user->uid === 0) {
+      continue;
+    }
+    if (in_array($user->uid, $internal_participants) || in_array($user->uid, $external_participants)) {
+      continue;
+    }
+
+    if (os2dagsorden_create_agenda_check_user_can_see_meetings_in_committee( $user->uid, $committee_tid, $meeting_type) === FALSE) {
+      continue;
+    }
+
+    $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+    $user_list .= "<li id='{$user->uid}' class='ui-state-default'><span>{$user_name}</span><input id='checkbox_$user->uid'  type='checkbox' class='checkbox'></li>";
+  }
+  $user_list .='</ul>';
+  return $user_list;
 }
 
 /**
@@ -432,6 +478,8 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
   $external_participants = array();
   $internal_participants = array();
   $invisible_participants = array();
+  $meeting_type = NULL;
+  $committee_tid = NULL;
   if ($meeting_id) {
     $meeting = node_load($meeting_id);
     // external_participants.
@@ -450,6 +498,14 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
         $invisible_participants[] = $invisible_participant['uid'];
       }
     }
+    if ($meeting_type = field_get_items('node', $meeting, 'field_os2web_meetings_type')) {
+      $meeting_type = $meeting_type[0]['value'];
+    }
+
+    if($committee = field_get_items('node', $meeting, 'field_os2web_meetings_committee')) {
+      $committee_tid = $meeting_type[0]['tid'];
+    }
+
   }
   // Printing follows plus plus.
   $content = "<ul id='internal_participants' class='droptrue ui-sortable'>";
@@ -499,6 +555,10 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
     if (in_array($user->uid, $internal_participants) || in_array($user->uid, $external_participants)) {
       continue;
     }
+
+    if (os2dagsorden_create_agenda_check_user_can_see_meetings_in_committee($user->uid, $committee_tid, $meeting_type) === FALSE) {
+      continue;
+    }
     $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
     $user_list .= "<li id='{$user->uid}' class='ui-state-default'><span>{$user_name}</span><input id='checkbox_$user->uid'  type='checkbox' class='checkbox'></li>";
   }
@@ -513,4 +573,91 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
   $form[] = array(
     '#markup' => '<div style="clear:both"></div>',
   );
+}
+
+
+/**
+ * Checks is given meetings in the committees can bee seen by the user.
+ *
+ * The function checks user role, if user has role 'os2dagsorden limited' then
+ * only his own committees would be visible for him.
+ *
+ * @param int $meeting
+ *   The ID of the meeting or meeting object.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_create_agenda_check_user_can_see_meetings_in_committee($uid, $committee_tid = NULL, $meeting_type = NULL) {
+  $user = user_load($uid);
+
+  if (!isset($committee_tid)) {
+    return TRUE;
+  }
+  $committee = taxonomy_term_load($committee_tid);
+  // Checking category.
+  if (isset($committee->field_os2web_meetings_com_categ['und'])) {
+    $meeting_category = $committee->field_os2web_meetings_com_categ['und'][0]['tid'];
+    if (isset($user->field_user_com_forbid_categ['und'])) {
+      foreach ($user->field_user_com_forbid_categ['und'] as $user_cat) {
+        if ($user_cat['tid'] == $meeting_category) {
+          return FALSE;
+        }
+      }
+    }
+  }
+
+  // Has os2dagsorden limited role, perform committees check.
+  if (in_array('os2dagsorden limited', $user->roles)) {
+    // Is part of the committee.
+    if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
+      return TRUE;
+    }
+
+    // Follow PP.
+    if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_pp_committees($uid))) {
+      return TRUE;
+    }
+
+    // None of the above.
+    return FALSE;
+  }
+
+    // Checking if is meeting in hidden agendas list.
+  if (isset($meeting_type)){
+    $hidden_agendas = explode(',', variable_get('os2dagsorden_hidden_agenda_committee'));
+    if (strpos($meeting_type, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) {
+      if (isset($committee->field_os2web_meetings_com_subid['und'])) {
+        foreach ($committee->field_os2web_meetings_com_subid['und'] as $id_raw) {
+          if (in_array(intval($id_raw['value']), $hidden_agendas)) {
+            $in_hidden_list = TRUE;
+            break;
+          }
+        }
+      }
+
+      if ($in_hidden_list) {
+        // Is part of the committee.
+        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees())) {
+          return TRUE;
+        }
+
+        // Follow PP.
+        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_pp_committees())) {
+          return TRUE;
+        }
+
+        // Follow Plus.
+        if (in_array($committee_tid, os2dagsorden_access_helper_get_user_follow_plus_committees())) {
+          return TRUE;
+        }
+
+        // None of the above, access denied.
+        return FALSE;
+      }
+    }
+  }
+
+  // No restrictions, allow access.
+  return TRUE;
 }
