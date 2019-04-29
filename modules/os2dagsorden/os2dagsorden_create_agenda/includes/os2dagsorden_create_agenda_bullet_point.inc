@@ -574,7 +574,7 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form_submit($form, &$
         $bp_node->type = "os2web_meetings_bullet";
         $bp_node->language = LANGUAGE_NONE;
         node_object_prepare($bp_node);
-        $bp_node->title = 'Punkt ' . $number . ' ' . $bilag['name'];
+        $bp_node->title = 'Punkt ' . $number . ' ' . pathinfo($bilag['name'], PATHINFO_FILENAME);
         $bp_node->field_os2web_meetings_bul_number['und'][0]['value'] = $number;
         node_save($bp_node);
         os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bp_node->nid);
@@ -603,7 +603,7 @@ function _os2dagsorden_create_agenda_create_bpa_from_file($bp_id, $bilag_array) 
   $node->type = "os2web_meetings_bullet_attach";
   $node->language = LANGUAGE_NONE;
   node_object_prepare($node);
-  $node->title = $bilag->filename;
+  $node->title = pathinfo($bilag->filename, PATHINFO_FILENAME);
   $bilag->status = FILE_STATUS_PERMANENT;
   $bilag->display = 1;
   file_save($bilag);
