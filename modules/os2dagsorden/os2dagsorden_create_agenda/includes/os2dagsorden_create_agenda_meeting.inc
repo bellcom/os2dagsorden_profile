@@ -95,7 +95,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#title' => t('Agenda'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
-    '#prefix' => '<div id="js-agenda-fs">',
+    '#prefix' => '<div id="js-agenda-fs" data-meeting_id = ' . $meeting_id . '>',
     '#suffix' => '</div>'
   );
 
@@ -142,7 +142,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
       ksort($bullet_points);
       foreach ($bullet_points as $bp) {
         $form['agenda'][] = array(
-          '#markup' => '<div class="create-agenda-list-item">',
+          '#markup' => '<div class="create-agenda-list-item" id="bp_' . $bp->nid . '">',
         );
         $form['agenda'][] = array(
           '#markup' => '<span class="create-agenda-edit-delete-container">',
@@ -465,4 +465,31 @@ function os2dagsorden_create_agenda_meeting_create_ajax($form, &$form_state) {
     );
     return array('#type' => 'ajax', '#commands' => $commands);
   }
+}
+
+/**
+ * Helper functions to sort bullet points via ajax.
+ */
+function os2dagsorden_create_agenda_sort_bp_ajax_call() {
+  parse_str($_POST['attachments'], $attachments);
+  $meeting = node_load($_POST['meeting_id']);
+  unset($meeting->field_os2web_meetings_bullets['und']);
+  $attachments = array_pop($attachments);
+  $bullet_points = array_values(node_load_multiple($attachments));
+  foreach ($bullet_points as $key => $bp) {
+    if ((int)$bp->field_os2web_meetings_bul_number['und'][0]['value'] != (int) $key + 1)  {
+      // Creating meeting shadow to speed up saving.
+      $node = new stdClass();
+      $node->nid = $bp->nid; // Enter the nid taken. Make sure it exists.
+      $node->type = 'os2web_meetings_bullet';
+      $node->field_os2web_meetings_bul_number['und'][0]['value'] = (int) $key + 1;
+      // Forcing fields updates.
+      field_attach_update('node', $node);
+      field_attach_presave('node', $node);
+      // Clear the static loading cache.
+      entity_get_controller('node')->resetCache(array($node->nid));
+    }
+    $meeting->field_os2web_meetings_bullets['und'][]['target_id'] = $nid;
+  }
+  node_save($meeting);
 }

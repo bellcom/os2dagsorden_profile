@@ -53,6 +53,17 @@
           );
         }
       });
+       $("#js-agenda-fs .fieldset-wrapper").sortable({
+        update: function (event, ui) {
+          $.post(
+            '/agenda/meeting/sort',
+            {
+              meeting_id: $("#js-agenda-fs").data("meeting_id"),
+              attachments: $('#js-agenda-fs .fieldset-wrapper').sortable('serialize')
+            }
+          );
+        }
+      });
     }
   }
 })(jQuery);
