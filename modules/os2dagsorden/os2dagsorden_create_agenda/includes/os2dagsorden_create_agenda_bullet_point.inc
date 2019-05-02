@@ -105,50 +105,127 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
 
     if (field_get_items('node', $node, 'field_os2web_meetings_attach')) {
       $bpas = field_get_items('node', $node, 'field_os2web_meetings_attach');
+      $bilags = array();
+      $non_bilags = array();
+
       foreach ($bpas as $bpa) {
         $bpa = node_load($bpa['target_id']);
-        $form['bpas'][] = array(
-          '#markup' => '<div class="create-agenda-list-item" id="bpa_' . $bpa->nid . '">',
+        if (empty($bpa->field_os2web_meetings_bpa_file)) {
+          $non_bilags[] = $bpa;
+        }
+        else {
+          $bilags[] = $bpa;
+        }
+      }
+      if (!empty($non_bilags)) {
+        $form['bpas'][] = array (
+          '#markup' => '<div  id="js-bpa-non-bilags">',
         );
-        $form['bpas'][] = array(
-          '#markup' => '<span class="create-agenda-edit-delete-container">',
-        );
+        foreach ($non_bilags as $bpa) {
+          $form['bpas'][] = array(
+            '#markup' => '<div class="create-agenda-list-item" id="bpa_' . $bpa->nid . '">',
+          );
+          $form['bpas'][] = array(
+            '#markup' => '<span class="create-agenda-edit-delete-container">',
+          );
 
-        $form['bpas'][] = array(
-          '#type' => 'image_button',
-          '#button_type' => 'submit-edit',
-          '#src' => drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/icon_edit.png',
-          '#name' => 'edit_' . $bpa->nid,
-          '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_add_edit_bpa'),
-          '#bpa_nid' => $bpa->nid,
-        );
-        $form['bpas'][] = array(
-          '#type' => 'image_button',
-          '#button_type' => 'submit-delete',
-          '#src' => drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/icon_delete.png',
-          '#name' => 'delete_' . $bpa->nid,
-          '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_delete_bpa'),
-          '#bpa_nid' => $bpa->nid,
-          '#ajax' => array(
-            'callback' => 'os2dagsorden_create_agenda_bpa_delete_ajax',
-            'wrapper' => 'js-bpas-fs',
-            'method' => 'replace',
-            'effect' => 'fade',
-          ),
-        );
-        $form['bpas'][] = array(
-        // '<span class="create-agenda-edit-delete-container">',.
-          '#markup' => '</span>',
-        );
+          $form['bpas'][] = array(
+            '#type' => 'image_button',
+            '#button_type' => 'submit-edit',
+            '#src' => drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/icon_edit.png',
+            '#name' => 'edit_' . $bpa->nid,
+            '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_add_edit_bpa'),
+            '#bpa_nid' => $bpa->nid,
+          );
+          $form['bpas'][] = array(
+            '#type' => 'image_button',
+            '#button_type' => 'submit-delete',
+            '#src' => drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/icon_delete.png',
+            '#name' => 'delete_' . $bpa->nid,
+            '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_delete_bpa'),
+            '#bpa_nid' => $bpa->nid,
+            '#ajax' => array(
+              'callback' => 'os2dagsorden_create_agenda_bpa_delete_ajax',
+              'wrapper' => 'js-bpas-fs',
+              'method' => 'replace',
+              'effect' => 'fade',
+            ),
+          );
+          $form['bpas'][] = array(
+          // '<span class="create-agenda-edit-delete-container">',.
+            '#markup' => '</span>',
+          );
 
+          $form['bpas'][] = array(
+            '#markup' => $bpa->title,
+          );
+          $form['bpas'][] = array(
+          // '<div class="create-agenda-list-item">',.
+            '#markup' => '</div>',
+          );
+        }
         $form['bpas'][] = array(
-          '#markup' => $bpa->title,
-        );
-        $form['bpas'][] = array(
-        // '<div class="create-agenda-list-item">',.
-          '#markup' => '</div>',
+           // '<div class="create-agenda-list-item">',.
+             '#markup' => '</div>',
         );
       }
+      if (!empty($bilags)) {
+        $form['bpas'][] = array(
+          '#markup' => '<hr></br>',
+        );
+        $form['bpas'][] = array (
+          '#markup' => '<div  id="js-bpa-bilags">',
+        );
+        foreach ($bilags as $bpa) {
+          $form['bpas'][] = array(
+            '#markup' => '<div class="create-agenda-list-item" id="bpa_' . $bpa->nid . '">',
+          );
+          $form['bpas'][] = array(
+            '#markup' => '<span class="create-agenda-edit-delete-container">',
+          );
+
+          $form['bpas'][] = array(
+            '#type' => 'image_button',
+            '#button_type' => 'submit-edit',
+            '#src' => drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/icon_edit.png',
+            '#name' => 'edit_' . $bpa->nid,
+            '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_add_edit_bpa'),
+            '#bpa_nid' => $bpa->nid,
+          );
+          $form['bpas'][] = array(
+            '#type' => 'image_button',
+            '#button_type' => 'submit-delete',
+            '#src' => drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/icon_delete.png',
+            '#name' => 'delete_' . $bpa->nid,
+            '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_delete_bpa'),
+            '#bpa_nid' => $bpa->nid,
+            '#ajax' => array(
+              'callback' => 'os2dagsorden_create_agenda_bpa_delete_ajax',
+              'wrapper' => 'js-bpas-fs',
+              'method' => 'replace',
+              'effect' => 'fade',
+            ),
+          );
+          $form['bpas'][] = array(
+          // '<span class="create-agenda-edit-delete-container">',.
+            '#markup' => '</span>',
+          );
+
+          $form['bpas'][] = array(
+            '#markup' => $bpa->title,
+          );
+          $form['bpas'][] = array(
+          // '<div class="create-agenda-list-item">',.
+            '#markup' => '</div>',
+          );
+        }
+        $form['bpas'][] = array(
+          // '<div class="create-agenda-list-item">',.
+            '#markup' => '</div>',
+        );
+
+      }
+
     }
   }
 
@@ -483,10 +560,24 @@ function os2dagsorden_create_agenda_save_bilag_files($bp_id, $form_state) {
 function os2dagsorden_create_agenda_sort_bpa_ajax_call() {
   parse_str($_POST['attachments'], $attachments);
   $bullet_point = node_load($_POST['bullet_point']);
-  unset($bullet_point->field_os2web_meetings_attach['und']);
+  $bpa_type = $_POST['bpa_type'];
   $attachments = array_pop($attachments);
+  $bpa_need_to_be_saved = array();
+  foreach($bullet_point->field_os2web_meetings_attach['und'] as $bpa) {
+    if (!in_array($bpa['target_id'], $attachments)){
+      $bpa_need_to_be_saved[] = $bpa;
+    }
+  }
+  unset($bullet_point->field_os2web_meetings_attach['und']);
+  $sorted_bpa = array();
   foreach ($attachments as $nid) {
-    $bullet_point->field_os2web_meetings_attach['und'][]['target_id'] = $nid;
+   $sorted_bpa[] = array('target_id' => $nid);
+  }
+  if ($bpa_type == 'bilag') {
+    $bullet_point->field_os2web_meetings_attach['und'] = array_merge($bpa_need_to_be_saved, $sorted_bpa);
+  }
+  else {
+    $bullet_point->field_os2web_meetings_attach['und'] = array_merge($sorted_bpa, $bpa_need_to_be_saved);
   }
   node_save($bullet_point);
 }

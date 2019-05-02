@@ -195,7 +195,8 @@ function os2dagsorden_create_agenda_bpa_validate($form, &$form_state) {
   $input = $form_state['input'];
 
   $body = $input['body']['value'];
-  $bilag = $form_state['values']['file'];
+  $bilag = count($form_state['values']['file']);
+
   if (!empty($body) && $bilag != 0) {
     form_set_error('body', t('You cannot provide both file and the body text. Please choose one of the options.'));
   }

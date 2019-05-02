@@ -42,13 +42,26 @@
           });
         }
       });
-      $("#js-bpas-fs .fieldset-wrapper").sortable({
+      $("#js-bpas-fs #js-bpa-non-bilags").sortable({
         update: function (event, ui) {
           $.post(
             '/agenda/meeting/bullet-point/sort',
             {
+              bpa_type: 'non-bilags',
               bullet_point: $("#js-bpas-fs").data("bp_id"),
-              attachments: $('#js-bpas-fs .fieldset-wrapper').sortable('serialize')
+              attachments: $('#js-bpas-fs #js-bpa-non-bilags').sortable('serialize'),
+            }
+          );
+        }
+      });
+      $("#js-bpas-fs #js-bpa-bilags").sortable({
+        update: function (event, ui) {
+          $.post(
+            '/agenda/meeting/bullet-point/sort',
+            {
+              bpa_type: 'bilags',
+              bullet_point: $("#js-bpas-fs").data("bp_id"),
+              attachments: $('#js-bpas-fs #js-bpa-bilags').sortable('serialize')
             }
           );
         }
