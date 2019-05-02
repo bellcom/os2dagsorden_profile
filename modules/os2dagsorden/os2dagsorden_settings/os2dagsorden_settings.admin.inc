@@ -1471,6 +1471,22 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas'),
     '#element_validate' => array('_os2dagsorden_plupload_upload_dir_validate'),
   );
+  if (module_exists('os2dagsorden_create_agenda')) {
+    $form['os2dagsorden_create_agenda_settings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('Manual create agenda configuration'),
+    );
+    $form['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to store_latest_created meeting_data'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Save latest created meetings data during:'),
+      '#field_suffix' => t('hours'),
+      '#size' => 10,
+      '#description' => t('The period in hours during what the data of latest created meeting  will be save and will be populated during new meeting creation'),
+      '#default_value' => variable_get('os2dagsorden_create_agenda_period_to store_latest_created meeting_data', 1),
+    );
+  }
   // Sort items alphabetically.
   ksort($form);
   return system_settings_form($form);
@@ -1870,5 +1886,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_plupupload_max_filesize', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize']);
     variable_set('os2dagsorden_plupupload_filedir_uri', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri']);
 
+  }
+  if (module_exists('os2dagsorden_create_agenda')) {
+    variable_set('os2dagsorden_create_agenda_period_to store_latest_created meeting_data', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to store_latest_created meeting_data']);
   }
 }

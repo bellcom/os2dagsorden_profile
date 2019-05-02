@@ -217,6 +217,13 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
       }
     }
   }
+  if ($meeting_id = os2dagsorden_create_agenda_get_latest_meeting_created_by_user()) {
+    $node = node_load($meeting_id);
+
+    // Filling general fields.
+    $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
+
+  }
 
   if (!isset($form['agenda'][0])) {
     $form['agenda']['#access'] = FALSE;
@@ -492,4 +499,29 @@ function os2dagsorden_create_agenda_sort_bp_ajax_call() {
     $meeting->field_os2web_meetings_bullets['und'][]['target_id'] = $nid;
   }
   node_save($meeting);
+}
+
+/**
+ * Helper functions to find latest created meeting.
+ * 
+ * * @return mixed
+ *   the meeting nid if found, FALSE otherwise.
+ */
+function os2dagsorden_create_agenda_get_latest_meeting_created_by_user() {
+  global $user;
+  $timastamp = time() - variable_get('os2dagsorden_create_agenda_period_to store_latest_created meeting_data', 1) * 3600;
+  $meeting = db_select('node', 'n')
+    ->fields('n', array('nid'))
+    ->condition('n.type', 'os2web_meetings_meeting')
+    ->condition('n.uid', $user->uid)
+    ->condition('created', $timastamp, '>')
+    ->orderBy('created', 'DESC')
+    ->range(0, 1)
+    ->execute()
+    ->fetchAll();
+  if ($meeting) {
+    $meeting = array_pop($meeting);
+    return $meeting->nid;
+  }
+  return FALSE;
 }

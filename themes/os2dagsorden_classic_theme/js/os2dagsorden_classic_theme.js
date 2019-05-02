@@ -193,6 +193,23 @@ jQuery(document).ready(function() {
     //updatePostOrder();
 });
 
+jQuery(document).ajaxComplete(function() {
+  jQuery("ul.droptrue").sortable({
+    connectWith: 'ul',
+  });
+  jQuery("ul.droptrue").bind("sortreceive", function(event, ui) {
+    var arr_receiver = [];
+    var arr_sender = [];
+    jQuery(jQuery(this).children('li')).each(function(){
+      arr_receiver.push(jQuery(this).attr('id'));
+    });
+    jQuery(jQuery(ui.sender[0]).children('li')).each(function(){
+      arr_sender.push(jQuery(this).attr('id'));
+    });
+    jQuery('#' + jQuery(this).attr('id') + '_hidden').val(arr_receiver.join(','));
+    jQuery('#' + jQuery(ui.sender[0]).attr('id') + '_hidden').val(arr_sender.join(','));
+  });
+});    
 
 jQuery(document).ready(function() {
   jQuery('#users_filter').change( function () {

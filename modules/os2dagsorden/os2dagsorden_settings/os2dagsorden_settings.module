@@ -296,7 +296,9 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes'] = variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf');
   $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize'] = variable_get('os2dagsorden_plupupload_max_filesize', 2);
   $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri'] = variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas');
-
+  if (module_exists('os2dagsorden_create_agenda')) {
+    $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to store_latest_created meeting_data'] = variable_get('os2dagsorden_create_agenda_period_to store_latest_created meeting_data', 1);
+  }
   print os2dagsorden_settings_write_ini_file($setting_array, TRUE);
 }
 
