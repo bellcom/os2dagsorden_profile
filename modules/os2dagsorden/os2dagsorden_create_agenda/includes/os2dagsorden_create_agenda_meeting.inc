@@ -509,7 +509,10 @@ function os2dagsorden_create_agenda_sort_bp_ajax_call() {
  */
 function os2dagsorden_create_agenda_get_latest_meeting_created_by_user() {
   global $user;
-  $timastamp = time() - variable_get('os2dagsorden_create_agenda_period_to store_latest_created meeting_data', 1) * 3600;
+  $timastamp = 0;
+  if (variable_get('os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data', -1) > 0) {
+    $timastamp = time() - variable_get('os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data', -1) * 3600;
+  }
   $meeting = db_select('node', 'n')
     ->fields('n', array('nid'))
     ->condition('n.type', 'os2web_meetings_meeting')

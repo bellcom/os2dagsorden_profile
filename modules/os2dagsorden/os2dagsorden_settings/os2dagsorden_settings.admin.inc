@@ -1478,13 +1478,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#collapsed' => TRUE,
       '#title' => t('Manual create agenda configuration'),
     );
-    $form['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to store_latest_created meeting_data'] = array(
+    $form['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data'] = array(
       '#type' => 'textfield',
       '#title' => t('Save latest created meetings data during:'),
       '#field_suffix' => t('hours'),
       '#size' => 10,
-      '#description' => t('The period in hours during what the data of latest created meeting  will be save and will be populated during new meeting creation'),
-      '#default_value' => variable_get('os2dagsorden_create_agenda_period_to store_latest_created meeting_data', 1),
+      '#description' => t('The period in hours during what the data of latest created meeting  will be save and will be populated during new meeting creation. -1 for indefinite.'),
+      '#default_value' => variable_get('os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data', -1),
     );
   }
   // Sort items alphabetically.
@@ -1888,6 +1888,6 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
 
   }
   if (module_exists('os2dagsorden_create_agenda')) {
-    variable_set('os2dagsorden_create_agenda_period_to store_latest_created meeting_data', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to store_latest_created meeting_data']);
+    variable_set('os2dagsorden_create_agenda_period_to_store_latest_created meeting_data', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to_store_latest_created meeting_data']);
   }
 }
