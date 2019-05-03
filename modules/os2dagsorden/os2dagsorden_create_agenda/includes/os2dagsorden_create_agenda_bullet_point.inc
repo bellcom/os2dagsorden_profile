@@ -111,10 +111,10 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
       foreach ($bpas as $bpa) {
         $bpa = node_load($bpa['target_id']);
         if (empty($bpa->field_os2web_meetings_bpa_file)) {
-          $non_bilags[] = $bpa;
+          $non_bilags[$bpa->nid] = $bpa;
         }
         else {
-          $bilags[] = $bpa;
+          $bilags[$bpa->nid] = $bpa;
         }
       }
       if (!empty($non_bilags)) {
