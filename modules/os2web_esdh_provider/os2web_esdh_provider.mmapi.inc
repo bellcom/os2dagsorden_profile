@@ -944,7 +944,6 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
       $bullet_attachmets = $node->field_os2web_meetings_attach['und'];
     }
     $bullet_nids = _os2web_esdh_provider_import_bullets($item['bullets'], $bullet_attachmets);
-    //dpm($bullet_nids);
     watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] Imported attachments !list',
       array(
         '!id' => $_os2web_esdh_provider_processing_meeting_id,
@@ -986,7 +985,6 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
     foreach ($bullet_nids as $nid) {
       $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $nid;
     }
-    //dpm($node->field_os2web_meetings_attach[LANGUAGE_NONE]);
   }
   else {
     $node->field_os2web_meetings_attach[LANGUAGE_NONE] = array();
