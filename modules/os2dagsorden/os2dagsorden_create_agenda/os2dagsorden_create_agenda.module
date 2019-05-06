@@ -84,6 +84,11 @@ function os2dagsorden_create_agenda_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+   $items['agenda/meeting/sort'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_sort_bp_ajax_call',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   $items['agenda/meeting/%/bullet-point/create_from_file'] = array(
     'page callback' => 'drupal_get_form',
     'access callback' => '_os2dagsorden_create_agenda_meeting_access',

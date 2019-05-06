@@ -58,7 +58,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
   $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form_state);
 
   // Pass the maximum file size in bytes - 2 MB.
-  $two_mb_bytes = 2 * 1024 * 1024;
+  $max_filesize_bytes = variable_get('os2dagsorden_plupupload_max_filesize', 2) * 1024 * 1024;
+  $allowed_extensions = variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf');
 
   // Adding other fields.
   $form['description_opened'] = array(
@@ -67,8 +68,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#name' => 'files[]',
     '#autoupload' => TRUE,
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
-      'file_validate_size' => array($two_mb_bytes),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($max_filesize_bytes),
     ),
     '#plupload_settings' => array(
       'multi_selection' => false,
@@ -81,8 +82,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#name' => 'files[]',
     '#autoupload' => TRUE,
     '#upload_validators' => array(
-      'file_validate_extensions' => array('doc docx pdf'),
-      'file_validate_size' => array($two_mb_bytes),
+      'file_validate_extensions' => array($allowed_extensions),
+      'file_validate_size' => array($max_filesize_bytes),
     ),
     '#plupload_settings' => array(
       'multi_selection' => false,
@@ -94,7 +95,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     '#title' => t('Agenda'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
-    '#prefix' => '<div id="js-agenda-fs">',
+    '#prefix' => '<div id="js-agenda-fs" data-meeting_id = ' . $meeting_id . '>',
     '#suffix' => '</div>'
   );
 
@@ -141,7 +142,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
       ksort($bullet_points);
       foreach ($bullet_points as $bp) {
         $form['agenda'][] = array(
-          '#markup' => '<div class="create-agenda-list-item">',
+          '#markup' => '<div class="create-agenda-list-item" id="bp_' . $bp->nid . '">',
         );
         $form['agenda'][] = array(
           '#markup' => '<span class="create-agenda-edit-delete-container">',
@@ -215,6 +216,13 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
         );
       }
     }
+  }
+  if ($meeting_id = os2dagsorden_create_agenda_get_latest_meeting_created_by_user()) {
+    $node = node_load($meeting_id);
+
+    // Filling general fields.
+    $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
+
   }
 
   if (!isset($form['agenda'][0])) {
@@ -297,7 +305,7 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
     if ($description_file['status'] == 'done') {
       // Resaving file permanently.
       $source = $description_file['tmppath'];
-      $destination = file_stream_wrapper_uri_normalize('temporary://' . $description_file['name']);
+      $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $description_file['name']);
       $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
       $description_file = plupload_file_uri_to_object($destination);
       file_save($description_file);
@@ -323,7 +331,7 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
       if ($description_file['status'] == 'done') {
         // Resaving file permanently.
         $source = $description_file['tmppath'];
-        $destination = file_stream_wrapper_uri_normalize('temporary://' . $description_file['name']);
+        $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $description_file['name']);
         $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
         $description_file = plupload_file_uri_to_object($destination);
         file_save($description_file);
@@ -464,4 +472,59 @@ function os2dagsorden_create_agenda_meeting_create_ajax($form, &$form_state) {
     );
     return array('#type' => 'ajax', '#commands' => $commands);
   }
+}
+
+/**
+ * Helper functions to sort bullet points via ajax.
+ */
+function os2dagsorden_create_agenda_sort_bp_ajax_call() {
+  parse_str($_POST['attachments'], $attachments);
+  $meeting = node_load($_POST['meeting_id']);
+  unset($meeting->field_os2web_meetings_bullets['und']);
+  $attachments = array_pop($attachments);
+  $bullet_points = array_values(node_load_multiple($attachments));
+  foreach ($bullet_points as $key => $bp) {
+    if ((int)$bp->field_os2web_meetings_bul_number['und'][0]['value'] != (int) $key + 1)  {
+      // Creating meeting shadow to speed up saving.
+      $node = new stdClass();
+      $node->nid = $bp->nid; // Enter the nid taken. Make sure it exists.
+      $node->type = 'os2web_meetings_bullet';
+      $node->field_os2web_meetings_bul_number['und'][0]['value'] = (int) $key + 1;
+      // Forcing fields updates.
+      field_attach_update('node', $node);
+      field_attach_presave('node', $node);
+      // Clear the static loading cache.
+      entity_get_controller('node')->resetCache(array($node->nid));
+    }
+    $meeting->field_os2web_meetings_bullets['und'][]['target_id'] = $nid;
+  }
+  node_save($meeting);
+}
+
+/**
+ * Helper functions to find latest created meeting.
+ * 
+ * * @return mixed
+ *   the meeting nid if found, FALSE otherwise.
+ */
+function os2dagsorden_create_agenda_get_latest_meeting_created_by_user() {
+  global $user;
+  $timastamp = 0;
+  if (variable_get('os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data', -1) > 0) {
+    $timastamp = time() - variable_get('os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data', -1) * 3600;
+  }
+  $meeting = db_select('node', 'n')
+    ->fields('n', array('nid'))
+    ->condition('n.type', 'os2web_meetings_meeting')
+    ->condition('n.uid', $user->uid)
+    ->condition('created', $timastamp, '>')
+    ->orderBy('created', 'DESC')
+    ->range(0, 1)
+    ->execute()
+    ->fetchAll();
+  if ($meeting) {
+    $meeting = array_pop($meeting);
+    return $meeting->nid;
+  }
+  return FALSE;
 }

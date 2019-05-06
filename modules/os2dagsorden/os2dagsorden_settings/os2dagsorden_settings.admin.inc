@@ -1443,6 +1443,50 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides what "delete / anonymize" button will to do: clear meeting content or delete meeting'),
   );
 
+  // Settings for plupupload
+  $form['os2dagsorden_plupupload_settings'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('Plupupload configuration'),
+  );
+  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Allowed file types:'),
+    '#description' => t('Separate extensions with a space and do not include the leading dot. Fe. "doc docx pdf"'),
+    '#default_value' => variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf'),
+  );
+  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Max file size:'),
+    '#field_suffix' => 'MB',
+    '#size' => 10,
+    '#description' => t('Maximum allowed filesize'),
+    '#default_value' => variable_get('os2dagsorden_plupupload_max_filesize', 2),
+  );
+  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri'] = array(
+    '#type' => 'textfield',
+    '#title' => t('File directory for uploaded files'),
+    '#description' => t('URI to folder where uploaded files sroted'),
+    '#default_value' => variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas'),
+    '#element_validate' => array('_os2dagsorden_plupload_upload_dir_validate'),
+  );
+  if (module_exists('os2dagsorden_create_agenda')) {
+    $form['os2dagsorden_create_agenda_settings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('Manual create agenda configuration'),
+    );
+    $form['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Save latest created meetings data during:'),
+      '#field_suffix' => t('hours'),
+      '#size' => 10,
+      '#description' => t('The period in hours during what the data of latest created meeting  will be save and will be populated during new meeting creation. -1 for indefinite.'),
+      '#default_value' => variable_get('os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data', -1),
+    );
+  }
   // Sort items alphabetically.
   ksort($form);
   return system_settings_form($form);
@@ -1579,6 +1623,26 @@ function _os2dagsorden_pdf2html_rendering_path_validate($element, &$form_state) 
  *   The state of form.
  */
 function _os2dagsorden_os2web_convertion_dir_validate($element, &$form_state) {
+  $value = $element['#value'];
+  if (file_exists($value)) {
+    if (!is_writable($value)) {
+      form_error($element, t("Could not writte to directory. Please check permissions"));
+    }
+  }
+  else {
+    form_error($element, t("Directory !value does nor exist", array('!value' => $value)));
+  }
+}
+
+/**
+ * Validates that the file upload dir is present and writable.
+ *
+ * @param mixed $element
+ *   The form element.
+ * @param mixed $form_state
+ *   The state of form.
+ */
+function _os2dagsorden_plupload_upload_dir_validate($element, &$form_state) {
   $value = $element['#value'];
   if (file_exists($value)) {
     if (!is_writable($value)) {
@@ -1817,5 +1881,13 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('quick_guide_upload_fid', $setting_array['upload_guide']['quick_guide_upload_fid']);
     variable_set('print_pdf_page_orientation', $setting_array['os2dagsorden_meeting_view_settings']['print_pdf_page_orientation']);
     variable_set('os2dagsorden_right_sidebar_arrow_position_radios', $setting_array['os2dagsorden_right_sidebar_arrow_position']['os2dagsorden_right_sidebar_arrow_position_radios']);
+
+    variable_set('os2dagsorden_plupupload_allowed_filetypes', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes']);
+    variable_set('os2dagsorden_plupupload_max_filesize', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize']);
+    variable_set('os2dagsorden_plupupload_filedir_uri', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri']);
+
+  }
+  if (module_exists('os2dagsorden_create_agenda')) {
+    variable_set('os2dagsorden_create_agenda_period_to_store_latest_created meeting_data', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to_store_latest_created meeting_data']);
   }
 }

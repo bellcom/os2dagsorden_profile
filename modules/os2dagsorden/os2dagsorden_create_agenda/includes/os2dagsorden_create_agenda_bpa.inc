@@ -64,21 +64,70 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
     '#collapsible' => TRUE,
     '#description' => t('Enclose a file to the bullet point attachment.'),
     '#group' => 'add_attachment',
-  );
 
+  );
+  if ($form_state['bpa_id']) {
+    $node = node_load($form_state['bpa_id']);
+    if (field_get_items('node', $node, 'field_os2web_meetings_bpa_file')) {
+      $bilag = field_get_items('node', $node, 'field_os2web_meetings_attach');
+      $bilag = array_pop(field_get_items('node', $node, 'field_os2web_meetings_bpa_file'));
+      $file = file_load($bilag['fid']);
+      $form['bilag']['bpa_file'][] = array(
+          '#markup' => '<div class="create-agenda-list-item" id="bpa_file_' . $bilag['fid'] . '">',
+        );
+
+       $form['bilag']['bpa_file'][] = array(
+          '#markup' => '<span class="create-agenda-edit-delete-container">',
+        );
+
+
+        $form['bilag']['bpa_file'][] = array(
+          '#type' => 'image_button',
+          '#button_type' => 'submit-delete',
+          '#src' => drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/icon_delete.png',
+          '#name' => 'delete_' . $bilag['fid'],
+          '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_delete_bpa_file'),
+          '#bpa_fid' => $bilag['fid'],
+          '#bpa_nid' => $node->nid,
+          '#ajax' => array(
+            'callback' => 'os2dagsorden_create_agenda_bpa_file_delete_ajax',
+            'wrapper' => 'bpa_file_' . $bilag['fid'],
+            'method' => 'replace',
+            'effect' => 'fade',
+          ),
+        );
+
+        $form['bilag']['bpa_file'][] = array(
+        // '<span class="create-agenda-edit-delete-container">',.
+          '#markup' => '</span>',
+        );
+
+        $form['bilag']['bpa_file'][] = array(
+          '#markup' => l($file->filename, file_create_url($file->uri))
+        );
+
+        $form['bilag']['bpa_file'][] = array(
+        // '<div class="create-agenda-list-item">',.
+          '#markup' => '</div>',
+        );
+      }
+    }
   // Pass the maximum file size in bytes - 20 MB.
-  $twenty_mb_bytes = 20 * 1024 * 1024;
-  $allowed_extensions = 'doc docx pdf';
+  $max_filesize_bytes = variable_get('os2dagsorden_plupupload_max_filesize', 2) * 1024 * 1024;
+  $allowed_extensions = variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf');
 
   $form['bilag']['file'] = array(
-    '#type' => 'managed_file',
+    '#type' => 'plupload',
     '#title' => t('Bilag file:'),
     '#group' => 'add_attachment',
-    '#description' => t('Files must be less than !size.', array('!size' => '<strong>' . format_size($twenty_mb_bytes) . '</strong>')) . '<br/>' .
-    t('Allowed file types: !extensions.', array('!extensions' => '<strong>' . $allowed_extensions . '</strong>')),
+    '#name' => 'files[]',
+    '#autoupload' => TRUE,
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
-      'file_validate_size' => array($twenty_mb_bytes),
+      'file_validate_size' => array($max_filesize_bytes),
+    ),
+    '#plupload_settings' => array(
+      'multi_selection' => false,
     ),
   );
 
@@ -146,7 +195,8 @@ function os2dagsorden_create_agenda_bpa_validate($form, &$form_state) {
   $input = $form_state['input'];
 
   $body = $input['body']['value'];
-  $bilag = $form_state['values']['file'];
+  $bilag = count($form_state['values']['file']);
+
   if (!empty($body) && $bilag != 0) {
     form_set_error('body', t('You cannot provide both file and the body text. Please choose one of the options.'));
   }
@@ -186,26 +236,23 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
 
   $node->title = $title;
   $node->field_os2web_meetings_bpa_body['und'][0]['value'] = $body;
-
-  if ($bilag != 0) {
-    // Resaving file permanently.
-    $bilag = file_load($bilag);
-    $bilag->status = FILE_STATUS_PERMANENT;
-    $bilag->display = 1;
-    file_save($bilag);
-
-    $node->field_os2web_meetings_bpa_file['und'][0] = (array) $bilag;
-  }
-  else {
-    if (field_get_items('node', $node, 'field_os2web_meetings_bpa_file')) {
-      $bilag = array_pop(field_get_items('node', $node, 'field_os2web_meetings_bpa_file'));
-      $to_del_file = file_load($bilag['fid']);
-      unset($node->field_os2web_meetings_bpa_file['und']);
-      file_delete($to_del_file);
-      $bilag = NULL;
+  if (!empty($bilag)) {
+    foreach ($bilag as $bilag_file) {
+      if ($bilag_file['status'] == 'done') {
+        // Resaving file permanently.
+        $source = $bilag_file['tmppath'];
+        $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/'. $bilag_file['name']);
+        $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
+        $file = plupload_file_uri_to_object($destination);
+        file_save($file);
+        $file->status = FILE_STATUS_PERMANENT;
+        $file->display = 1;
+        file_save($file);
+        $node->field_os2web_meetings_bpa_file['und'][0] = (array) $file;
+        break;
+      }
     }
   }
-
   node_save($node);
 
   os2dagsorden_create_agenda_add_bpa_to_bullet_point($form_state['bullet_point_id'], $node->nid);
@@ -305,4 +352,36 @@ function os2dagsorden_create_agenda_bpa_create_ajax($form, &$form_state) {
     $commands[] = array('command' => 'closeLightboxPopup');
     return array('#type' => 'ajax', '#commands' => $commands);
   }
+}
+
+/**
+ * Helper functions to delete bullet point attachment file.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_bullet_point_submit_delete_bpa_file($form, &$form_state) {
+  $fid = $form_state['triggering_element']['#bpa_fid'];
+  $nid = $form_state['triggering_element']['#bpa_nid'];
+  $to_del_file = file_load($fid);
+  $node = node_load($nid);
+  unset($node->field_os2web_meetings_bpa_file['und']);
+  file_delete($to_del_file);
+  node_save($node);
+  $form_state['page_num'] = 3;
+  $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Callback for deleting bullet point attachment files.
+ *
+ * @param mixed $form
+ *   The form.
+ * @param mixed $form_state
+ *   The current state of the form.
+ */
+function os2dagsorden_create_agenda_bpa_file_delete_ajax($form, $form_state) {
+  return '';
 }
