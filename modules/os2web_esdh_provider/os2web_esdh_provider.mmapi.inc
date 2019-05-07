@@ -977,7 +977,6 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
           os2dagsorden_esdh_provider_reassign_notes($attachments_to_delete, $bullet_nids);
 
           node_delete_multiple($attachments_to_delete);
-         // unset($node->field_os2web_meetings_attach['und']);
         }
       }
     }
