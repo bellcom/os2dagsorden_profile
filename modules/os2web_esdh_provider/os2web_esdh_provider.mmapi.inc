@@ -950,20 +950,24 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
         '!sysid' => $_os2web_esdh_provider_processing_bp,
         '!list' => print_r($bullet_nids, TRUE),
       ), WATCHDOG_DEBUG);
-
     if (module_exists('os2dagsorden_esdh_provider')) {
       // Delete all attachments before importing.
       if (isset($node->field_os2web_meetings_attach['und'])) {
         $attachments_to_delete = array();
+        $enclosures_to_delete = array();
         foreach ($node->field_os2web_meetings_attach['und'] as $attachment_nid) {
-          $attachments_to_delete[$attachment_nid['target_id']] = $attachment_nid['target_id'];
+          $attachment_node = node_load($attachment_nid['target_id']);
+          if (isset($attachment_node->field_os2web_meetings_bpa_file['und']) && is_array($attachment_node->field_os2web_meetings_bpa_file['und'])) {
+            $enclosures_to_delete[$attachment_nid['target_id']] = $attachment_nid['target_id'];
+          }
+          else {
+            $attachments_to_delete[$attachment_nid['target_id']] = $attachment_nid['target_id'];
+          }
         }
-
         if (is_array($attachments_to_delete) && is_array($bullet_nids)) {
           // Deleting only those, that were nor added again.
           $attachments_to_delete = array_diff($attachments_to_delete, $bullet_nids);
         }
-
         if (!empty($attachments_to_delete)) {
           watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] Imported attachment to be deleted !list',
             array(
@@ -971,24 +975,23 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
               '!sysid' => $_os2web_esdh_provider_processing_bp,
               '!list' => print_r($attachments_to_delete, TRUE),
             ), WATCHDOG_DEBUG);
-
           // If any of the attachment had attached notes, we try to save the
           // notes.
           os2dagsorden_esdh_provider_reassign_notes($attachments_to_delete, $bullet_nids);
-
           node_delete_multiple($attachments_to_delete);
         }
       }
     }
-    unset($node->field_os2web_meetings_attach[LANGUAGE_NONE]);
-    foreach ($bullet_nids as $nid) {
-      $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $nid;
+    unset($node->field_os2web_meetings_attach['und']);
+    foreach ($bullet_nids as $key => $nid) {
+      $node->field_os2web_meetings_attach[LANGUAGE_NONE][$key]['target_id'] = $nid;
     }
   }
   else {
     $node->field_os2web_meetings_attach[LANGUAGE_NONE] = array();
   }
   // Gather enclosures.
+  $enclosures_nids = array();
   foreach ($item['enclosures'] as $enclosure) {
     if ($enclosure['access'] || module_exists('os2dagsorden_esdh_provider')) {
       if ($file = _os2web_esdh_provider_import_file($enclosure)) {
@@ -999,7 +1002,43 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
             '!file' => $file->uri,
           ), WATCHDOG_DEBUG);
         if (module_exists('os2dagsorden_esdh_provider')) {
-          $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = os2dagsorden_esdh_provider_process_enclosure($enclosure, $file);
+          if (!empty($enclosures_to_delete)) {
+            $enclosure_node = os2dagsorden_esdh_provider_find_corresponding_enclosure($enclosure, $enclosures_to_delete);
+          }
+          if ($enclosure_node) {
+            $enclosures_nids[] = $enclosure_node->nid;
+            if ((int) $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['filesize'] !== $file->filesize) {
+              $old_bpa_fid = $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['fid'];
+              $enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0] = (array) $file;
+              // PDF conversion.
+              if (module_exists("os2dagsorden_pdf2htmlex")) {
+                // If is PDF, schedule for HTML conversion.
+                if (file_get_mimetype($file->uri) === 'application/pdf') {
+                  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_node->nid);
+                }
+              }
+              // PNG  conversion.
+              if (module_exists("os2dagsorden_pdf2png_conversion")) {
+                // If is PDF, schedule for HTML conversion.
+                if (file_get_mimetype($file->uri) === 'application/pdf') {
+                  os2dagsorden_pdf2png_conversion_schedule($file->fid);
+                }
+              }
+              node_save($enclosure_node);
+              if (isset($old_bpa_fid)) {
+                file_delete(file_load($old_bpa_fid));
+              }
+            }
+            else {
+              //delete unneeded file;
+              file_delete($file);
+            }
+          }
+          else {
+            $nid = os2dagsorden_esdh_provider_process_enclosure($enclosure, $file);
+            $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $nid;
+            $enclosures_nids[] = $nid;
+          }
         }
       }
       else {
@@ -1012,7 +1051,24 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
       }
     }
   }
-
+  if (is_array($enclosures_to_delete) && is_array($enclosures_nids)) {
+    // Deleting only those, that were nor added again.
+    $enclosures_to_delete = array_diff($enclosures_to_delete, $enclosures_nids);
+  }
+  if (!empty($enclosures_to_delete)) {
+    watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] Imported enclosers to be deleted !list',
+    array(
+      '!id' => $_os2web_esdh_provider_processing_meeting_id,
+      '!sysid' => $_os2web_esdh_provider_processing_bp,
+      '!list' => print_r($enclosures_to_delete, TRUE),
+    ), WATCHDOG_DEBUG);
+    foreach($node->field_os2web_meetings_attach['und'] as $key => $attachment) {
+      if (in_array($attachment['target_id'], $enclosures_to_delete)) {
+        unset($node->field_os2web_meetings_attach['und'][$key]);
+      }
+    }
+    node_delete_multiple($enclosures_to_delete);
+  }
   return $node;
 }
 
