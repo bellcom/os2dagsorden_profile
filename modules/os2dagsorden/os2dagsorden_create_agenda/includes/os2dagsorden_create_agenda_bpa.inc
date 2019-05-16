@@ -258,12 +258,19 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
   os2dagsorden_create_agenda_add_bpa_to_bullet_point($form_state['bullet_point_id'], $node->nid);
 
   // Schedule file for html conversion.
-  if ($bilag) {
-    os2dagsorden_pdf2htmlex_schedule_if_bpa($bilag->fid);
+  if ($file) {
+    if (module_exists("os2dagsorden_pdf2htmlex")) {
+      // If is PDF, schedule for HTML conversion.
+      if (mime_content_type(drupal_realpath($file->uri)) === 'application/pdf') {
+        os2dagsorden_pdf2htmlex_schedule($file->fid, $node->nid);
+      }
+    }
     // PNG  conversion.
     if (module_exists("os2dagsorden_pdf2png_conversion")) {
       // If is PDF, schedule for HTML conversion.
-      os2dagsorden_pdf2png_conversion_schedule_if_bpa($file->fid);
+      if (mime_content_type(drupal_realpath($file->uri)) === 'application/pdf') {
+        os2dagsorden_pdf2png_conversion_schedule_if_bpa($file->fid);
+      }
     }
   }
 

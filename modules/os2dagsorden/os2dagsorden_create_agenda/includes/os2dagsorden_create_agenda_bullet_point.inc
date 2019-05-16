@@ -701,5 +701,19 @@ function _os2dagsorden_create_agenda_create_bpa_from_file($bp_id, $bilag_array) 
   $node->field_os2web_meetings_bpa_file['und'][0] = (array) $bilag;
   node_save($node);
   os2dagsorden_create_agenda_add_bpa_to_bullet_point($bp_id, $node->nid);
-  os2dagsorden_pdf2htmlex_schedule_if_bpa($bilag->fid);
+  if ($bilag) {
+    if (module_exists("os2dagsorden_pdf2htmlex")) {
+      // If is PDF, schedule for HTML conversion.
+      if (mime_content_type(drupal_realpath($bilag->uri)) === 'application/pdf') {
+        os2dagsorden_pdf2htmlex_schedule($bilag->fid, $node->nid);
+      }
+    }
+    // PNG  conversion.
+    if (module_exists("os2dagsorden_pdf2png_conversion")) {
+      // If is PDF, schedule for HTML conversion.
+      if (mime_content_type(drupal_realpath($bilag->uri)) === 'application/pdf') {
+        os2dagsorden_pdf2png_conversion_schedule_if_bpa($bilag->fid);
+      }
+    }
+  }
 }
