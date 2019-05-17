@@ -172,11 +172,11 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
   $date_start_obj = date_create($date_field['value'], new DateTimeZone('UTC'));
   date_timezone_set($date_start_obj, timezone_open(date_default_timezone()));
   $form['start_date']['#default_value'] = date_format($date_start_obj, 'Y-m-d H:i:s');
-  if ($date_field['value2'] != $date_field['value']) {
-    $date_end_obj = date_create($date_field['value2'], new DateTimeZone('UTC'));
-    date_timezone_set($date_end_obj, timezone_open(date_default_timezone()));
-    $form['end_date']['#default_value'] = date_format($date_end_obj, 'Y-m-d H:i:s');
-  }
+
+  $date_end_obj = date_create($date_field['value2'], new DateTimeZone('UTC'));
+  date_timezone_set($date_end_obj, timezone_open(date_default_timezone()));
+  $form['end_date']['#default_value'] = date_format($date_end_obj, 'Y-m-d H:i:s');
+
 
   $committee_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_committee'));
   $form['os2web_meetings_tax_committee']['#default_value'] = $committee_field['tid'];
