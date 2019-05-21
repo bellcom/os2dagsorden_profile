@@ -355,7 +355,7 @@ function os2dagsorden_access_helper_node_save($node) {
         global $base_url;
         $cName = taxonomy_term_load($committee_id)->name;
         $mName = check_plain($node->title);
-        $mDate = format_date(strtotime($node->field_os2web_meetings_date['und'][0]['value']), 'short');
+        $mDate = format_date(strtotime($node->field_os2web_meetings_date['und'][0]['value'] . 'UTC'), 'short');
         $published_item = (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) ? 'en dagsorden' : 'et referat';
         $meeting_url = $base_url . '/meeting/' . $node->nid;
         $mLink = $meeting_url;
