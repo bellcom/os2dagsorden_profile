@@ -294,7 +294,10 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
         $old_value = $old_value->format('d-m-Y');
         $form_state['input']['from_date']['value']['date'] = $old_value;
         $form_state['input']['to_date']['value']['date'] = $old_value;
-        $form_state['input']['field_os2web_meetings_committee_tid_depth'] = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+        $available_commitees = array_keys($form['field_os2web_meetings_committee_tid_depth']['#options']);
+        if (in_array($meeting->field_os2web_meetings_committee['und'][0]['tid'], $available_commitees)) {
+          $form_state['input']['field_os2web_meetings_committee_tid_depth'] = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+        }
       }
     }
     else {

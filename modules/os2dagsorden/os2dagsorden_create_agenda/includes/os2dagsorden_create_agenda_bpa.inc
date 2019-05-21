@@ -237,36 +237,39 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
   $node->title = $title;
   $node->field_os2web_meetings_bpa_body['und'][0]['value'] = $body;
   if (!empty($bilag)) {
-    foreach ($bilag as $bilag_file) {
-      if ($bilag_file['status'] == 'done') {
-        // Resaving file permanently.
-        $source = $bilag_file['tmppath'];
-        $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/'. $bilag_file['name']);
-        $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
-        $file = plupload_file_uri_to_object($destination);
-        file_save($file);
-        $file->status = FILE_STATUS_PERMANENT;
-        $file->display = 1;
-        file_save($file);
-        $node->field_os2web_meetings_bpa_file['und'][0] = (array) $file;
-        break;
-      }
+    $bilag_file = array_shift($bilag);
+    if ($bilag_file['status'] == 'done') {
+    // Resaving file permanently.
+      $source = $bilag_file['tmppath'];
+      $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/'. $bilag_file['name']);
+      $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
+      $file = plupload_file_uri_to_object($destination);
+      file_save($file);
+      $file->status = FILE_STATUS_PERMANENT;
+      $file->display = 1;
+      file_save($file);
+      $node->field_os2web_meetings_bpa_file['und'][0] = (array) $file;
     }
   }
   node_save($node);
-
   os2dagsorden_create_agenda_add_bpa_to_bullet_point($form_state['bullet_point_id'], $node->nid);
 
   // Schedule file for html conversion.
-  if ($bilag) {
-    os2dagsorden_pdf2htmlex_schedule_if_bpa($bilag->fid);
+  if ($file) {
+    if (module_exists("os2dagsorden_pdf2htmlex")) {
+      // If is PDF, schedule for HTML conversion.
+      if (mime_content_type(drupal_realpath($file->uri)) === 'application/pdf') {
+        os2dagsorden_pdf2htmlex_schedule($file->fid, $node->nid);
+      }
+    }
     // PNG  conversion.
     if (module_exists("os2dagsorden_pdf2png_conversion")) {
-      // If is PDF, schedule for HTML conversion.
-      os2dagsorden_pdf2png_conversion_schedule_if_bpa($file->fid);
+      // If is PDF, schedule for PNG conversion.
+      if (mime_content_type(drupal_realpath($file->uri)) === 'application/pdf') {
+        os2dagsorden_pdf2png_conversion_schedule_if_bpa($file->fid);
+      }
     }
   }
-
   return $node;
 }
 

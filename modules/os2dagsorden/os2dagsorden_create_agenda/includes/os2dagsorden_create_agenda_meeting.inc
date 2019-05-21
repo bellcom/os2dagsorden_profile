@@ -217,7 +217,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
       }
     }
   }
-  if ($meeting_id = os2dagsorden_create_agenda_get_latest_meeting_created_by_user()) {
+  else if ($meeting_id = os2dagsorden_create_agenda_get_latest_meeting_created_by_user()) {
     $node = node_load($meeting_id);
 
     // Filling general fields.
