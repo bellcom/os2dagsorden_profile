@@ -340,8 +340,8 @@ function _os2web_acadre_esdh_import_meeting($info) {
     foreach ($participants_cancelled as $participant_cancelled) {
       // Check if the absent is true, then add participants
       // to participants_cancelled list.
-      $absent = _get_value_from_xml($participant_cancelled->xpath("fields/field[@name='absent']"));
-      if ($absent == "1") {
+      $absent = _get_value_from_xml($participant_cancelled->xpath("fields/field[@name='absent']"), 'int');
+      if ($absent > 0) {
         $meeting['participants_cancellation'][] = _get_value_from_xml($participant_cancelled->xpath("fields/field[@name='name']"));
       }
     }
