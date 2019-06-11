@@ -1443,34 +1443,37 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides what "delete / anonymize" button will to do: clear meeting content or delete meeting'),
   );
 
-  // Settings for plupupload
-  $form['os2dagsorden_plupupload_settings'] = array(
-    '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-    '#title' => t('Plupupload configuration'),
-  );
-  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Allowed file types:'),
-    '#description' => t('Separate extensions with a space and do not include the leading dot. Fe. "doc docx pdf"'),
-    '#default_value' => variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf'),
-  );
-  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Max file size:'),
-    '#field_suffix' => 'MB',
-    '#size' => 10,
-    '#description' => t('Maximum allowed filesize'),
-    '#default_value' => variable_get('os2dagsorden_plupupload_max_filesize', 2),
-  );
-  $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri'] = array(
-    '#type' => 'textfield',
-    '#title' => t('File directory for uploaded files'),
-    '#description' => t('URI to folder where uploaded files sroted'),
-    '#default_value' => variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas'),
-    '#element_validate' => array('_os2dagsorden_plupload_upload_dir_validate'),
-  );
+
+ if (module_exists('os2dagsorden_create_agenda')) {
+    // Settings for plupupload
+    $form['os2dagsorden_plupupload_settings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('Plupupload configuration'),
+    );
+    $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Allowed file types:'),
+      '#description' => t('Separate extensions with a space and do not include the leading dot. Fe. "doc docx pdf"'),
+      '#default_value' => variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf'),
+    );
+    $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Max file size:'),
+      '#field_suffix' => 'MB',
+      '#size' => 10,
+      '#description' => t('Maximum allowed filesize'),
+      '#default_value' => variable_get('os2dagsorden_plupupload_max_filesize', 2),
+    );
+    $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri'] = array(
+      '#type' => 'textfield',
+      '#title' => t('File directory for uploaded files'),
+      '#description' => t('URI to folder where uploaded files sroted'),
+      '#default_value' => variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas'),
+      '#element_validate' => array('_os2dagsorden_plupload_upload_dir_validate'),
+    );
+ }
   if (module_exists('os2dagsorden_create_agenda')) {
     $form['os2dagsorden_create_agenda_settings'] = array(
       '#type' => 'fieldset',
