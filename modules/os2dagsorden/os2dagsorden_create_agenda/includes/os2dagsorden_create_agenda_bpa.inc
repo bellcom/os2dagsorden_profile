@@ -54,7 +54,7 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
   $form['attachment']['body'] = array(
     '#type' => 'text_format',
     '#title' => t('Body:'),
-    '#format' => 'full_html',
+    '#format' => 'filtered_html',
     '#group' => 'add_attachment',
   );
 
