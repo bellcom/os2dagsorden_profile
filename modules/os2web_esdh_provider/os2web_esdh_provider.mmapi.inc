@@ -780,7 +780,6 @@ function _os2web_esdh_provider_import_file($file_meta) {
   // we reset the execution timer to avoid timeouts.
   set_time_limit(300);
   $uri_in = $file_meta['uri'];
-
   $pinfo = pathinfo($uri_in);
   if ($file_meta['title'] !== '') {
     $fname = $file_meta['title'];
@@ -1010,6 +1009,7 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
             if ((int) $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['filesize'] !== $file->filesize) {
               $old_bpa_fid = $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['fid'];
               $enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0] = (array) $file;
+
               // PDF conversion.
               if (module_exists("os2dagsorden_pdf2htmlex")) {
                 // If is PDF, schedule for HTML conversion.
@@ -1025,14 +1025,15 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
                 }
               }
               node_save($enclosure_node);
-              if (isset($old_bpa_fid)) {
-                file_delete(file_load($old_bpa_fid));
+              if (isset($old_bpa_fid) && $old_file = file_load($old_bpa_fid)) {
+                file_delete($old_file);
               }
             }
             else {
               //delete unneeded file;
               file_delete($file);
             }
+            $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $enclosure_node->nid;
           }
           else {
             $nid = os2dagsorden_esdh_provider_process_enclosure($enclosure, $file);
@@ -1062,11 +1063,6 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
       '!sysid' => $_os2web_esdh_provider_processing_bp,
       '!list' => print_r($enclosures_to_delete, TRUE),
     ), WATCHDOG_DEBUG);
-    foreach($node->field_os2web_meetings_attach['und'] as $key => $attachment) {
-      if (in_array($attachment['target_id'], $enclosures_to_delete)) {
-        unset($node->field_os2web_meetings_attach['und'][$key]);
-      }
-    }
     node_delete_multiple($enclosures_to_delete);
   }
   return $node;

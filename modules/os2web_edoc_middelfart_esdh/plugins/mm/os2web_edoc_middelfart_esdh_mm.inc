@@ -605,11 +605,10 @@ function _os2web_edoc_esdh_mm_improve_body_html($data, $meeting_uri) {
   $doc = new DOMDocument();
   $doc->loadHTML($data);
   $elements = $doc->getElementsByTagName('img');
-
   if ($elements->length > 0) {
     foreach ($elements as $element) {
       $file = $element->getAttribute('src');
-      if (strpos($file, 'http://') === FALSE) {
+      if (strpos($file, 'http://') === FALSE  && preg_match('/^data:image\/(\w+);base64,/', $img_data, $type) === FALSE ) {
         $file = str_replace('"', '', $file);
         $uri_parts = preg_split('/(\/|\\\\)/m', $file);
         // Saving the file location information.
