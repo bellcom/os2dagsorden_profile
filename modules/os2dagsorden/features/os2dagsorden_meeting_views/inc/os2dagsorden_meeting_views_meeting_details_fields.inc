@@ -628,7 +628,7 @@ function os2dagsorden_meeting_views_meeting_details_dagsorden_access() {
   else {
     $access_granted = node_access('view', $meeting);
   }
-return TRUE;
+
   return $access_granted;
 }
 
