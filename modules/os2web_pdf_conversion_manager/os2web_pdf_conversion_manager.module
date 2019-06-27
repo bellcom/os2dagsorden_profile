@@ -765,11 +765,13 @@ function os2web_pdf_conversion_manager_file_delete($file) {
     ->condition('fid', $file->fid)
     ->execute()
     ->fetchField();
-  file_unmanaged_delete(variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR) . '/' . $result);
 
-  db_delete('os2web_pdf_conversion_manager_files')
-    ->condition('fid', $file->fid)
-    ->execute();
+  if ($result) {
+    file_unmanaged_delete(variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR) . '/' . $result);
+    db_delete('os2web_pdf_conversion_manager_files')
+      ->condition('fid', $file->fid)
+      ->execute();
+  }
 }
 
 /**
