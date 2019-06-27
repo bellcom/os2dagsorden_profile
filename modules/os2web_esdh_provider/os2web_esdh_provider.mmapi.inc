@@ -1007,8 +1007,11 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
           if ($enclosure_node) {
             $enclosures_nids[] = $enclosure_node->nid;
             if ((int) $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['filesize'] !== $file->filesize) {
-              $old_bpa_fid = $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['fid'];
+              // Replacing old file.
               $enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0] = (array) $file;
+
+              // Saving node.
+              node_save($enclosure_node);
 
               // PDF conversion.
               if (module_exists("os2dagsorden_pdf2htmlex")) {
@@ -1024,13 +1027,9 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
                   os2dagsorden_pdf2png_conversion_schedule($file->fid);
                 }
               }
-              node_save($enclosure_node);
-              if (isset($old_bpa_fid) && $old_file = file_load($old_bpa_fid)) {
-                file_delete($old_file);
-              }
             }
             else {
-              //delete unneeded file;
+              // Delete unneeded file.
               file_delete($file);
             }
             $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $enclosure_node->nid;
