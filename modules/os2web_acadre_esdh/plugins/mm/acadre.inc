@@ -432,7 +432,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
               foreach ($files as $file) {
                 // Avoiding part1 file import - don't need it.
                 if (strpos(basename($file), 'eml.part1') === FALSE) {
-                  $cases = array(
+                  $cases[] = array(
                     'uri' => $folder_path . '/' . basename($file),
                     'title' => 'Email:' . _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
                     'filetype' => '.PDF',
@@ -447,7 +447,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
               $enclosure_real_path = drupal_realpath($folder_path . '/' . $filename_in);
               if ($enclosure_real_path !== FALSE && _os2web_acadre_esdh_similar_file_exists($enclosure_real_path)) {
                 $uri = _os2web_acadre_esdh_pdf_file_path($folder_path, $filename_in);
-                $cases= array(
+                $cases[] = array(
                   'uri' => $uri,
                   'title' => 'Email:' . _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
                   'filetype' => "." . _get_value_from_xml($case_file->xpath("fields/field[@name='DocumentExtension']")),
@@ -460,7 +460,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
           }
           else {
             $uri = _os2web_acadre_esdh_pdf_file_path($folder_path, $filename_in);
-            $cases = array(
+            $cases[] = array(
               'uri' => $uri,
               'title' => _get_value_from_xml($case_file->xpath("fields/field[@name='Title']")),
               'filetype' => "." . _get_value_from_xml($case_file->xpath("fields/field[@name='DocumentExtension']")),
@@ -491,7 +491,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
             foreach ($files as $file) {
               // Avoiding part1 file import - don't need it.
               if (strpos(basename($file), 'eml.part1') === FALSE) {
-                $enclosures = array(
+                $enclosures[] = array(
                   'uri' => $folder_path . '/' . basename($file),
                   'title' => 'Email:' . _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
                   'filetype' => '.PDF',
@@ -506,7 +506,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
             $enclosure_real_path = drupal_realpath($folder_path . '/' . $filename_in);
             if ($enclosure_real_path !== FALSE && _os2web_acadre_esdh_similar_file_exists($enclosure_real_path)) {
               $uri = _os2web_acadre_esdh_pdf_file_path($folder_path, $filename_in);
-              $enclosures = array(
+              $enclosures[] = array(
                 'sysid' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sysid']"), 'int'),
                 'uri' => $uri,
                 'title' => 'Email:' . _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
@@ -825,7 +825,7 @@ function _acadre_esdh_mm_improve_body_html($data) {
   if ($elements->length > 0) {
     foreach ($elements as $element) {
       $file = $element->getAttribute('src');
-      if ((strpos($file, 'http://') === FALSE) && (preg_match('/^data:image\/(\w+);base64,/', $img_data, $type) === FALSE )){
+      if ((strpos($file, 'http://') === FALSE) && (preg_match('/^data:image\/(\w+);base64,/', $file, $type) === FALSE )){
         $file = str_replace('"', '', $file);
         $uri_parts = explode('\\', $file);
         $filename = trim(array_pop($uri_parts));
@@ -909,7 +909,7 @@ function _get_value_from_xml($xml_raw, $convert_to = 'string') {
  *
  */
 function _acadre_esdh_mm_sort_enclosures($item1, $item2) {
-  if (!isset($item1["sort"]) && !isset($item2["sort"]))  return 0;
+  if (!isset($item1["sort"]) || !isset($item2["sort"]))  return 0;
   if ($item1["sort"] == $item2["sort"]) return 0;
   return ($item1["sort"] < $item2["sort"])? -1: 1;
 }
