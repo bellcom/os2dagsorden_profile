@@ -1,6 +1,7 @@
 @media (max-width: 767px) {
 
   // Stacked tables in certain views.
+  .view-meeting-details,
   .view-meetings-search,
   .view-kommende-m-der-i-mine-udvalg,
   .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- {
@@ -52,6 +53,57 @@
     td:nth-of-type(2):before { content: "Dato"; }
     td:nth-of-type(3):before { content: "Punkt"; }
     td:nth-of-type(4):before { content: "Lokation"; }
+  }
+
+  // Meeting details.
+  .view-meeting-details {
+
+    table {
+      margin-bottom: 10px !important;
+      border: 0 !important;
+    }
+
+    td {
+      margin: 2px 0;
+    }
+
+    td:before {
+      top: 0;
+
+      font-weight: bold;
+    }
+
+    /* Label the data */
+    td:nth-of-type(1):before { content: "Møde"; }
+    td:nth-of-type(2):before { content: "Startdato"; }
+    td:nth-of-type(3):before { content: "Slutdato"; }
+    td:nth-of-type(4):before { content: "Udvalg"; }
+
+    tr {
+      border: 0 !important;
+    }
+
+    .attachment {
+      border-top: 10px solid #f7f1f1;
+    }
+  }
+
+  .view-meeting-details.view-display-id-page {
+    table {
+      margin-bottom: 0 !important;
+    }
+  }
+  .view-meeting-details.view-display-id-attachment_3 {
+    td:nth-of-type(1):before { content: "Lokation"; }
+  }
+  .view-meeting-details.view-display-id-attachment_5 {
+    td:nth-of-type(1):before { content: "Bemærkninger"; }
+  }
+  .view-meeting-details.view-display-id-attachment_2 {
+    td:nth-of-type(1):before { content: "Deltagere"; }
+  }
+  .view-meeting-details.view-display-id-attachment_4 {
+    td:nth-of-type(1):before { content: "Afbud"; }
   }
 
   // Better alignment of controls.
