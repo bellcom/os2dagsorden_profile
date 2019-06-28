@@ -2652,3 +2652,12 @@ ul#follows .checkbox.premeeting {
 .lightbox2-alt-layout-data #bottomNavClose,
 .lightbox2-alt-layout #bottomNavClose {
   margin-top: 0; }
+
+.annotator-touch-widget-inner {
+  padding: 0 !important;
+  border: none !important;
+  background: #ae477d !important; }
+
+.annotator-button, .annotator-button:hover, .annotator-button:focus {
+  border: 1px solid #783156 !important;
+  background: #ae477d !important; }

@@ -2908,3 +2908,17 @@ ul#follows {
 .lightbox2-alt-layout #bottomNavClose {
     margin-top: 0;
 }
+
+// "Create note" button.
+.annotator-touch-widget-inner {
+  padding: 0 !important;
+
+  border: none !important;
+  background: $color-branding-secondary !important;
+}
+.annotator-button {
+  &, &:hover, &:focus {
+    border: 1px solid darken($color-branding-secondary, 15%) !important;
+    background: $color-branding-secondary !important;
+  }
+}
