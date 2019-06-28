@@ -281,6 +281,82 @@
   .node.node-os2web-meetings-bullet-attach.node-teaser .content {
     padding: 5px; }
 
+@media (max-width: 767px) {
+  .view-meetings-search,
+  .view-kommende-m-der-i-mine-udvalg,
+  .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- {
+    /* Force table to not be like tables anymore */
+    /* Hide table headers (but not display: none;, for accessibility) */
+    /* Label the data */ }
+    .view-meetings-search table, .view-meetings-search thead, .view-meetings-search tbody, .view-meetings-search th, .view-meetings-search td, .view-meetings-search tr,
+    .view-kommende-m-der-i-mine-udvalg table,
+    .view-kommende-m-der-i-mine-udvalg thead,
+    .view-kommende-m-der-i-mine-udvalg tbody,
+    .view-kommende-m-der-i-mine-udvalg th,
+    .view-kommende-m-der-i-mine-udvalg td,
+    .view-kommende-m-der-i-mine-udvalg tr,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- table,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- thead,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- tbody,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- th,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- tr {
+      display: block; }
+    .view-meetings-search thead tr,
+    .view-kommende-m-der-i-mine-udvalg thead tr,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px; }
+    .view-meetings-search tr,
+    .view-kommende-m-der-i-mine-udvalg tr,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- tr {
+      padding: 0 !important;
+      border: 3px solid #ae477d !important; }
+      .view-meetings-search tr + tr,
+      .view-kommende-m-der-i-mine-udvalg tr + tr,
+      .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- tr + tr {
+        margin-top: 10px; }
+    .view-meetings-search td,
+    .view-kommende-m-der-i-mine-udvalg td,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td {
+      padding-top: 0 !important;
+      /* Reset. */
+      padding-bottom: 0 !important;
+      /* Reset. */
+      max-width: initial !important;
+      /* Reset. */
+      /* Behave  like a "row" */
+      border: none;
+      position: relative;
+      padding-left: 35% !important; }
+    .view-meetings-search td:before,
+    .view-kommende-m-der-i-mine-udvalg td:before,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 30%;
+      white-space: nowrap; }
+    .view-meetings-search td:nth-of-type(1):before,
+    .view-kommende-m-der-i-mine-udvalg td:nth-of-type(1):before,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(1):before {
+      content: "Udvalg"; }
+    .view-meetings-search td:nth-of-type(2):before,
+    .view-kommende-m-der-i-mine-udvalg td:nth-of-type(2):before,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(2):before {
+      content: "Dato"; }
+    .view-meetings-search td:nth-of-type(3):before,
+    .view-kommende-m-der-i-mine-udvalg td:nth-of-type(3):before,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(3):before {
+      content: "Punkt"; }
+    .view-meetings-search td:nth-of-type(4):before,
+    .view-kommende-m-der-i-mine-udvalg td:nth-of-type(4):before,
+    .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(4):before {
+      content: "Lokation"; } }
+
 /* This file will hold styles for the mobile version of your website (mobile first). */
 /* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
 body {
@@ -1109,7 +1185,7 @@ pager li.pager-first {
   margin: 15px 6px 0px 10px; }
 
 .controls-right.agenda-level.speaker-paper {
-  margin-top: 0; }
+  margin-top: 0b; }
 
 .controls-left {
   float: left;

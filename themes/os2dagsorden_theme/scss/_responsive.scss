@@ -1,0 +1,56 @@
+@media (max-width: 767px) {
+
+  // Stacked tables in certain views.
+  .view-meetings-search,
+  .view-kommende-m-der-i-mine-udvalg,
+  .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- {
+
+    /* Force table to not be like tables anymore */
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    tr {
+      padding: 0 !important;
+      border: 3px solid $color-branding-secondary !important;
+
+      + tr {
+        margin-top: 10px;
+      }
+    }
+
+    td {
+      padding-top: 0 !important; /* Reset. */
+      padding-bottom: 0 !important; /* Reset. */
+      max-width: initial !important; /* Reset. */
+
+      /* Behave  like a "row" */
+      border: none;
+      position: relative;
+      padding-left: 35% !important;
+    }
+
+    td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 30%;
+      white-space: nowrap;
+    }
+
+    /* Label the data */
+    td:nth-of-type(1):before { content: "Udvalg"; }
+    td:nth-of-type(2):before { content: "Dato"; }
+    td:nth-of-type(3):before { content: "Punkt"; }
+    td:nth-of-type(4):before { content: "Lokation"; }
+  }
+}
