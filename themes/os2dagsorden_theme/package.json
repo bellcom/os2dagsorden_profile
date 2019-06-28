@@ -4,6 +4,8 @@
   "description": "kldagsorden drupal theme ",
   "main": "index.js",
   "scripts": {
+    "watch": "gulp watch",
+    "dev": "gulp sass",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "ITK",
@@ -19,5 +21,6 @@
     "gutil": "^1.6.4",
     "include-media": "^1.4.9",
     "run-sequence": "^2.0.0"
-  }
+  },
+  "dependencies": {}
 }

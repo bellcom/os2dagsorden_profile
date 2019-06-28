@@ -1,7 +1,8 @@
 # KL-dagsorden theme
 
 ## Theme development
-`npm install` - This will install node dependencies
+`yarn install` - This will install node dependencies
 
-`gulp watch` - Start watching dev folders and generate new files when detecting
+`yarn dev` - Compiles sass
+`yarn watch` - Start watching dev folders and generate new files when detecting
 changes. Console outputs the required info about url and port.
