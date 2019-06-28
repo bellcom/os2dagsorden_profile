@@ -355,7 +355,21 @@
     .view-meetings-search td:nth-of-type(4):before,
     .view-kommende-m-der-i-mine-udvalg td:nth-of-type(4):before,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(4):before {
-      content: "Lokation"; } }
+      content: "Lokation"; }
+  .controls-left,
+  .controls-right {
+    display: inline-block;
+    float: none !important;
+    margin: 0 10px 5px 0 !important; }
+    .controls-left a,
+    .controls-right a {
+      display: inline-block;
+      padding: 4px 14px !important;
+      margin: 0 !important; }
+  .controls-right {
+    position: static !important;
+    top: initial !important;
+    right: initial !important; } }
 
 /* This file will hold styles for the mobile version of your website (mobile first). */
 /* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
