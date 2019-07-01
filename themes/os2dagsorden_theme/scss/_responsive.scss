@@ -157,4 +157,72 @@
     top: initial !important; // Reset.
     right: initial !important; // Reset.
   }
+
+  // Bulletpoint and bulletpoint attachment.
+  .view-meeting-details.bullet-point-attachments {
+    border-top: 20px solid $color-body !important;
+
+    .view-header {
+      background-color: $color-body;
+
+      h3 {
+        margin: 0;
+      }
+    }
+
+    table {
+      margin-top: 10px;
+
+      border-top: 3px solid $color-branding-secondary !important;
+
+      tr {
+        padding: 0 !important;
+        border: 3px solid $color-branding-secondary !important;
+
+        + tr {
+          margin-top: 10px;
+        }
+      }
+
+      td {
+
+        .indicator-empty {
+          display: none;
+        }
+
+        a {
+          border: 0 !important;
+          white-space: initial !important;
+          overflow: initial !important;
+          text-overflow: initial !important;
+
+          font-weight: normal !important;
+          line-height: 1.2 !important;
+        }
+      }
+
+      td.views-field-php-4 {
+        padding-right: 10px !important;
+      }
+
+      td.hide_show_button_container {
+        display: none;
+      }
+
+      td.speaker-paper-link-container {
+        width: 40px;
+
+        a {
+          font-size: 0 !important;
+        }
+      }
+
+      td.send-bullet-point-link {
+
+        a {
+          font-size: 0 !important;
+        }
+      }
+    }
+  }
 }

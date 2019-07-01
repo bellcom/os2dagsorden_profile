@@ -633,7 +633,40 @@
   .controls-right {
     position: static !important;
     top: initial !important;
-    right: initial !important; } }
+    right: initial !important; }
+  .view-meeting-details.bullet-point-attachments {
+    border-top: 20px solid #fff !important; }
+    .view-meeting-details.bullet-point-attachments .view-header {
+      background-color: #fff; }
+      .view-meeting-details.bullet-point-attachments .view-header h3 {
+        margin: 0; }
+    .view-meeting-details.bullet-point-attachments table {
+      margin-top: 10px;
+      border-top: 3px solid #ae477d !important; }
+      .view-meeting-details.bullet-point-attachments table tr {
+        padding: 0 !important;
+        border: 3px solid #ae477d !important; }
+        .view-meeting-details.bullet-point-attachments table tr + tr {
+          margin-top: 10px; }
+      .view-meeting-details.bullet-point-attachments table td .indicator-empty {
+        display: none; }
+      .view-meeting-details.bullet-point-attachments table td a {
+        border: 0 !important;
+        white-space: initial !important;
+        overflow: initial !important;
+        text-overflow: initial !important;
+        font-weight: normal !important;
+        line-height: 1.2 !important; }
+      .view-meeting-details.bullet-point-attachments table td.views-field-php-4 {
+        padding-right: 10px !important; }
+      .view-meeting-details.bullet-point-attachments table td.hide_show_button_container {
+        display: none; }
+      .view-meeting-details.bullet-point-attachments table td.speaker-paper-link-container {
+        width: 40px; }
+        .view-meeting-details.bullet-point-attachments table td.speaker-paper-link-container a {
+          font-size: 0 !important; }
+      .view-meeting-details.bullet-point-attachments table td.send-bullet-point-link a {
+        font-size: 0 !important; } }
 
 /* This file will hold styles for the mobile version of your website (mobile first). */
 /* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
