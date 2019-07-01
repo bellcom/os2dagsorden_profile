@@ -825,7 +825,7 @@ function _acadre_esdh_mm_improve_body_html($data) {
   if ($elements->length > 0) {
     foreach ($elements as $element) {
       $file = $element->getAttribute('src');
-      if ((strpos($file, 'http://') === FALSE) && (preg_match('/^data:image\/(\w+);base64,/', $file, $type) === FALSE )){
+      if ((strpos($file, 'http://') === FALSE) && (preg_match('/^data:image\/(\w+);base64,/', $file) == FALSE )){
         $file = str_replace('"', '', $file);
         $uri_parts = explode('\\', $file);
         $filename = trim(array_pop($uri_parts));
@@ -913,3 +913,4 @@ function _acadre_esdh_mm_sort_enclosures($item1, $item2) {
   if ($item1["sort"] == $item2["sort"]) return 0;
   return ($item1["sort"] < $item2["sort"])? -1: 1;
 }
+
