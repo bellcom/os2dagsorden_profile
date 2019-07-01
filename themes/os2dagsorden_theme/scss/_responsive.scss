@@ -225,4 +225,47 @@
       }
     }
   }
+
+  // Bulletpoint attachment.
+  .view-speaking-paper {
+
+    table {
+
+      table {
+
+        button.hide_show_all_attachments_text,
+        button.hide_show_attachment_text {
+          display: none;
+        }
+
+        .ul-item-list-dagsordenspunkt {
+          margin: 0;
+          padding: 0;
+
+          > li {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+
+            a {
+              padding: 0 !important;
+              margin: 0 !important;
+
+              border: 3px solid $color-branding-secondary !important;
+              border-radius: 3px !important;
+
+              white-space: initial !important;
+              overflow: initial !important;
+              text-overflow: initial !important;
+
+              font-weight: normal !important;
+            }
+          }
+        }
+
+        .item-list-dagsordenspunkt {
+          padding-left: 0 !important;
+        }
+      }
+    }
+  }
 }

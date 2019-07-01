@@ -666,7 +666,27 @@
         .view-meeting-details.bullet-point-attachments table td.speaker-paper-link-container a {
           font-size: 0 !important; }
       .view-meeting-details.bullet-point-attachments table td.send-bullet-point-link a {
-        font-size: 0 !important; } }
+        font-size: 0 !important; }
+  .view-speaking-paper table table button.hide_show_all_attachments_text,
+  .view-speaking-paper table table button.hide_show_attachment_text {
+    display: none; }
+  .view-speaking-paper table table .ul-item-list-dagsordenspunkt {
+    margin: 0;
+    padding: 0; }
+    .view-speaking-paper table table .ul-item-list-dagsordenspunkt > li {
+      margin-left: 0 !important;
+      padding-left: 0 !important; }
+      .view-speaking-paper table table .ul-item-list-dagsordenspunkt > li a {
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 3px solid #ae477d !important;
+        border-radius: 3px !important;
+        white-space: initial !important;
+        overflow: initial !important;
+        text-overflow: initial !important;
+        font-weight: normal !important; }
+  .view-speaking-paper table table .item-list-dagsordenspunkt {
+    padding-left: 0 !important; } }
 
 /* This file will hold styles for the mobile version of your website (mobile first). */
 /* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
