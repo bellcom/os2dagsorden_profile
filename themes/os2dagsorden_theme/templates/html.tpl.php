@@ -27,6 +27,32 @@ print $doctype; ?>
   <div id="skip-link">
     <a href="#main-content" class="element-invisible element-focusable"><?php print t('Skip to main content'); ?></a>
   </div>
+
+  <!-- Begin - sidr source provider -->
+  <aside class="sidr-source-provider">
+    <ul>
+      <li>
+        <a href="/sites/default/files/PDF/os2dagsorden_vejledning_oktober20161019.pdf" target="_blank">
+          <i class="material-icons">live_help</i>
+          Vejledning
+        </a>
+      </li>
+      <li>
+        <a href="/user/simple_edit">
+          <i class="material-icons">settings</i>
+          Mine indstillinger
+        </a>
+      </li>
+      <li>
+        <a href="/logout">
+          <i class="material-icons">arrow_forward</i>
+          Log ud
+        </a>
+      </li>
+    </ul>
+  </aside>
+  <!-- End - sidr source provider -->
+
   <?php print $page_top; ?>
   <?php print $page; ?>
   <?php print $page_bottom; ?>
