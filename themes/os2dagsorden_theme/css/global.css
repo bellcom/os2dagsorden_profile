@@ -282,14 +282,70 @@
     padding: 5px; }
 
 @media (max-width: 767px) {
-  .view-meeting-details,
+  .view-meeting-details.view-display-id-page > .view-content,
+  .view-meeting-details.view-display-id-attachment_2,
+  .view-meeting-details.view-display-id-attachment_3,
+  .view-meeting-details.view-display-id-attachment_4,
+  .view-meeting-details.view-display-id-attachment_5,
+  .view-meeting-details.view-display-id-attachment_6,
+  .view-meeting-details.view-display-id-attachment_7,
+  .view-meeting-details.view-display-id-attachment_8,
+  .view-meeting-details.view-display-id-attachment_9,
   .view-meetings-search,
   .view-kommende-m-der-i-mine-udvalg,
   .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- {
     /* Force table to not be like tables anymore */
     /* Hide table headers (but not display: none;, for accessibility) */
     /* Label the data */ }
-    .view-meeting-details table, .view-meeting-details thead, .view-meeting-details tbody, .view-meeting-details th, .view-meeting-details td, .view-meeting-details tr,
+    .view-meeting-details.view-display-id-page > .view-content table, .view-meeting-details.view-display-id-page > .view-content thead, .view-meeting-details.view-display-id-page > .view-content tbody, .view-meeting-details.view-display-id-page > .view-content th, .view-meeting-details.view-display-id-page > .view-content td, .view-meeting-details.view-display-id-page > .view-content tr,
+    .view-meeting-details.view-display-id-attachment_2 table,
+    .view-meeting-details.view-display-id-attachment_2 thead,
+    .view-meeting-details.view-display-id-attachment_2 tbody,
+    .view-meeting-details.view-display-id-attachment_2 th,
+    .view-meeting-details.view-display-id-attachment_2 td,
+    .view-meeting-details.view-display-id-attachment_2 tr,
+    .view-meeting-details.view-display-id-attachment_3 table,
+    .view-meeting-details.view-display-id-attachment_3 thead,
+    .view-meeting-details.view-display-id-attachment_3 tbody,
+    .view-meeting-details.view-display-id-attachment_3 th,
+    .view-meeting-details.view-display-id-attachment_3 td,
+    .view-meeting-details.view-display-id-attachment_3 tr,
+    .view-meeting-details.view-display-id-attachment_4 table,
+    .view-meeting-details.view-display-id-attachment_4 thead,
+    .view-meeting-details.view-display-id-attachment_4 tbody,
+    .view-meeting-details.view-display-id-attachment_4 th,
+    .view-meeting-details.view-display-id-attachment_4 td,
+    .view-meeting-details.view-display-id-attachment_4 tr,
+    .view-meeting-details.view-display-id-attachment_5 table,
+    .view-meeting-details.view-display-id-attachment_5 thead,
+    .view-meeting-details.view-display-id-attachment_5 tbody,
+    .view-meeting-details.view-display-id-attachment_5 th,
+    .view-meeting-details.view-display-id-attachment_5 td,
+    .view-meeting-details.view-display-id-attachment_5 tr,
+    .view-meeting-details.view-display-id-attachment_6 table,
+    .view-meeting-details.view-display-id-attachment_6 thead,
+    .view-meeting-details.view-display-id-attachment_6 tbody,
+    .view-meeting-details.view-display-id-attachment_6 th,
+    .view-meeting-details.view-display-id-attachment_6 td,
+    .view-meeting-details.view-display-id-attachment_6 tr,
+    .view-meeting-details.view-display-id-attachment_7 table,
+    .view-meeting-details.view-display-id-attachment_7 thead,
+    .view-meeting-details.view-display-id-attachment_7 tbody,
+    .view-meeting-details.view-display-id-attachment_7 th,
+    .view-meeting-details.view-display-id-attachment_7 td,
+    .view-meeting-details.view-display-id-attachment_7 tr,
+    .view-meeting-details.view-display-id-attachment_8 table,
+    .view-meeting-details.view-display-id-attachment_8 thead,
+    .view-meeting-details.view-display-id-attachment_8 tbody,
+    .view-meeting-details.view-display-id-attachment_8 th,
+    .view-meeting-details.view-display-id-attachment_8 td,
+    .view-meeting-details.view-display-id-attachment_8 tr,
+    .view-meeting-details.view-display-id-attachment_9 table,
+    .view-meeting-details.view-display-id-attachment_9 thead,
+    .view-meeting-details.view-display-id-attachment_9 tbody,
+    .view-meeting-details.view-display-id-attachment_9 th,
+    .view-meeting-details.view-display-id-attachment_9 td,
+    .view-meeting-details.view-display-id-attachment_9 tr,
     .view-meetings-search table,
     .view-meetings-search thead,
     .view-meetings-search tbody,
@@ -309,25 +365,57 @@
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- tr {
       display: block; }
-    .view-meeting-details thead tr,
+    .view-meeting-details.view-display-id-page > .view-content thead tr,
+    .view-meeting-details.view-display-id-attachment_2 thead tr,
+    .view-meeting-details.view-display-id-attachment_3 thead tr,
+    .view-meeting-details.view-display-id-attachment_4 thead tr,
+    .view-meeting-details.view-display-id-attachment_5 thead tr,
+    .view-meeting-details.view-display-id-attachment_6 thead tr,
+    .view-meeting-details.view-display-id-attachment_7 thead tr,
+    .view-meeting-details.view-display-id-attachment_8 thead tr,
+    .view-meeting-details.view-display-id-attachment_9 thead tr,
     .view-meetings-search thead tr,
     .view-kommende-m-der-i-mine-udvalg thead tr,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- thead tr {
       position: absolute;
       top: -9999px;
       left: -9999px; }
-    .view-meeting-details tr,
+    .view-meeting-details.view-display-id-page > .view-content tr,
+    .view-meeting-details.view-display-id-attachment_2 tr,
+    .view-meeting-details.view-display-id-attachment_3 tr,
+    .view-meeting-details.view-display-id-attachment_4 tr,
+    .view-meeting-details.view-display-id-attachment_5 tr,
+    .view-meeting-details.view-display-id-attachment_6 tr,
+    .view-meeting-details.view-display-id-attachment_7 tr,
+    .view-meeting-details.view-display-id-attachment_8 tr,
+    .view-meeting-details.view-display-id-attachment_9 tr,
     .view-meetings-search tr,
     .view-kommende-m-der-i-mine-udvalg tr,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- tr {
       padding: 0 !important;
       border: 3px solid #ae477d !important; }
-      .view-meeting-details tr + tr,
+      .view-meeting-details.view-display-id-page > .view-content tr + tr,
+      .view-meeting-details.view-display-id-attachment_2 tr + tr,
+      .view-meeting-details.view-display-id-attachment_3 tr + tr,
+      .view-meeting-details.view-display-id-attachment_4 tr + tr,
+      .view-meeting-details.view-display-id-attachment_5 tr + tr,
+      .view-meeting-details.view-display-id-attachment_6 tr + tr,
+      .view-meeting-details.view-display-id-attachment_7 tr + tr,
+      .view-meeting-details.view-display-id-attachment_8 tr + tr,
+      .view-meeting-details.view-display-id-attachment_9 tr + tr,
       .view-meetings-search tr + tr,
       .view-kommende-m-der-i-mine-udvalg tr + tr,
       .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- tr + tr {
         margin-top: 10px; }
-    .view-meeting-details td,
+    .view-meeting-details.view-display-id-page > .view-content td,
+    .view-meeting-details.view-display-id-attachment_2 td,
+    .view-meeting-details.view-display-id-attachment_3 td,
+    .view-meeting-details.view-display-id-attachment_4 td,
+    .view-meeting-details.view-display-id-attachment_5 td,
+    .view-meeting-details.view-display-id-attachment_6 td,
+    .view-meeting-details.view-display-id-attachment_7 td,
+    .view-meeting-details.view-display-id-attachment_8 td,
+    .view-meeting-details.view-display-id-attachment_9 td,
     .view-meetings-search td,
     .view-kommende-m-der-i-mine-udvalg td,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td {
@@ -341,7 +429,15 @@
       border: none;
       position: relative;
       padding-left: 35% !important; }
-    .view-meeting-details td:before,
+    .view-meeting-details.view-display-id-page > .view-content td:before,
+    .view-meeting-details.view-display-id-attachment_2 td:before,
+    .view-meeting-details.view-display-id-attachment_3 td:before,
+    .view-meeting-details.view-display-id-attachment_4 td:before,
+    .view-meeting-details.view-display-id-attachment_5 td:before,
+    .view-meeting-details.view-display-id-attachment_6 td:before,
+    .view-meeting-details.view-display-id-attachment_7 td:before,
+    .view-meeting-details.view-display-id-attachment_8 td:before,
+    .view-meeting-details.view-display-id-attachment_9 td:before,
     .view-meetings-search td:before,
     .view-kommende-m-der-i-mine-udvalg td:before,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:before {
@@ -352,58 +448,178 @@
       left: 6px;
       width: 30%;
       white-space: nowrap; }
-    .view-meeting-details td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-page > .view-content td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_6 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_7 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_8 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_9 td:nth-of-type(1):before,
     .view-meetings-search td:nth-of-type(1):before,
     .view-kommende-m-der-i-mine-udvalg td:nth-of-type(1):before,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(1):before {
       content: "Udvalg"; }
-    .view-meeting-details td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-page > .view-content td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_6 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_7 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_8 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_9 td:nth-of-type(2):before,
     .view-meetings-search td:nth-of-type(2):before,
     .view-kommende-m-der-i-mine-udvalg td:nth-of-type(2):before,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(2):before {
       content: "Dato"; }
-    .view-meeting-details td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-page > .view-content td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_6 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_7 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_8 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_9 td:nth-of-type(3):before,
     .view-meetings-search td:nth-of-type(3):before,
     .view-kommende-m-der-i-mine-udvalg td:nth-of-type(3):before,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(3):before {
       content: "Punkt"; }
-    .view-meeting-details td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-page > .view-content td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_6 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_7 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_8 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_9 td:nth-of-type(4):before,
     .view-meetings-search td:nth-of-type(4):before,
     .view-kommende-m-der-i-mine-udvalg td:nth-of-type(4):before,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- td:nth-of-type(4):before {
       content: "Lokation"; }
-  .view-meeting-details {
+  .view-meeting-details.view-display-id-page > .view-content,
+  .view-meeting-details.view-display-id-attachment_2,
+  .view-meeting-details.view-display-id-attachment_3,
+  .view-meeting-details.view-display-id-attachment_4,
+  .view-meeting-details.view-display-id-attachment_5,
+  .view-meeting-details.view-display-id-attachment_6,
+  .view-meeting-details.view-display-id-attachment_7,
+  .view-meeting-details.view-display-id-attachment_8,
+  .view-meeting-details.view-display-id-attachment_9 {
     /* Label the data */ }
-    .view-meeting-details table {
+    .view-meeting-details.view-display-id-page > .view-content table,
+    .view-meeting-details.view-display-id-attachment_2 table,
+    .view-meeting-details.view-display-id-attachment_3 table,
+    .view-meeting-details.view-display-id-attachment_4 table,
+    .view-meeting-details.view-display-id-attachment_5 table,
+    .view-meeting-details.view-display-id-attachment_6 table,
+    .view-meeting-details.view-display-id-attachment_7 table,
+    .view-meeting-details.view-display-id-attachment_8 table,
+    .view-meeting-details.view-display-id-attachment_9 table {
       margin-bottom: 10px !important;
       border: 0 !important; }
-    .view-meeting-details td {
+    .view-meeting-details.view-display-id-page > .view-content td,
+    .view-meeting-details.view-display-id-attachment_2 td,
+    .view-meeting-details.view-display-id-attachment_3 td,
+    .view-meeting-details.view-display-id-attachment_4 td,
+    .view-meeting-details.view-display-id-attachment_5 td,
+    .view-meeting-details.view-display-id-attachment_6 td,
+    .view-meeting-details.view-display-id-attachment_7 td,
+    .view-meeting-details.view-display-id-attachment_8 td,
+    .view-meeting-details.view-display-id-attachment_9 td {
       margin: 2px 0; }
-    .view-meeting-details td:before {
+    .view-meeting-details.view-display-id-page > .view-content td:before,
+    .view-meeting-details.view-display-id-attachment_2 td:before,
+    .view-meeting-details.view-display-id-attachment_3 td:before,
+    .view-meeting-details.view-display-id-attachment_4 td:before,
+    .view-meeting-details.view-display-id-attachment_5 td:before,
+    .view-meeting-details.view-display-id-attachment_6 td:before,
+    .view-meeting-details.view-display-id-attachment_7 td:before,
+    .view-meeting-details.view-display-id-attachment_8 td:before,
+    .view-meeting-details.view-display-id-attachment_9 td:before {
       top: 0;
       font-weight: bold; }
-    .view-meeting-details td:nth-of-type(1):before {
+    .view-meeting-details.view-display-id-page > .view-content td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_6 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_7 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_8 td:nth-of-type(1):before,
+    .view-meeting-details.view-display-id-attachment_9 td:nth-of-type(1):before {
       content: "Møde"; }
-    .view-meeting-details td:nth-of-type(2):before {
+    .view-meeting-details.view-display-id-page > .view-content td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_6 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_7 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_8 td:nth-of-type(2):before,
+    .view-meeting-details.view-display-id-attachment_9 td:nth-of-type(2):before {
       content: "Startdato"; }
-    .view-meeting-details td:nth-of-type(3):before {
+    .view-meeting-details.view-display-id-page > .view-content td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_6 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_7 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_8 td:nth-of-type(3):before,
+    .view-meeting-details.view-display-id-attachment_9 td:nth-of-type(3):before {
       content: "Slutdato"; }
-    .view-meeting-details td:nth-of-type(4):before {
+    .view-meeting-details.view-display-id-page > .view-content td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_6 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_7 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_8 td:nth-of-type(4):before,
+    .view-meeting-details.view-display-id-attachment_9 td:nth-of-type(4):before {
       content: "Udvalg"; }
-    .view-meeting-details tr {
+    .view-meeting-details.view-display-id-page > .view-content tr,
+    .view-meeting-details.view-display-id-attachment_2 tr,
+    .view-meeting-details.view-display-id-attachment_3 tr,
+    .view-meeting-details.view-display-id-attachment_4 tr,
+    .view-meeting-details.view-display-id-attachment_5 tr,
+    .view-meeting-details.view-display-id-attachment_6 tr,
+    .view-meeting-details.view-display-id-attachment_7 tr,
+    .view-meeting-details.view-display-id-attachment_8 tr,
+    .view-meeting-details.view-display-id-attachment_9 tr {
       border: 0 !important; }
-    .view-meeting-details .attachment {
+    .view-meeting-details.view-display-id-page > .view-content .attachment,
+    .view-meeting-details.view-display-id-attachment_2 .attachment,
+    .view-meeting-details.view-display-id-attachment_3 .attachment,
+    .view-meeting-details.view-display-id-attachment_4 .attachment,
+    .view-meeting-details.view-display-id-attachment_5 .attachment,
+    .view-meeting-details.view-display-id-attachment_6 .attachment,
+    .view-meeting-details.view-display-id-attachment_7 .attachment,
+    .view-meeting-details.view-display-id-attachment_8 .attachment,
+    .view-meeting-details.view-display-id-attachment_9 .attachment {
       border-top: 10px solid #f7f1f1; }
-  .view-meeting-details.view-display-id-page table {
-    margin-bottom: 0 !important; }
-  .view-meeting-details.view-display-id-attachment_3 td:nth-of-type(1):before {
-    content: "Lokation"; }
-  .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(1):before {
-    content: "Bemærkninger"; }
+  .view-meeting-details.view-display-id-page > .view-content table {
+    margin-bottom: 0 !important;
+    border-top: 6px solid #f7f1f1 !important; }
+  .view-meeting-details.view-display-id-attachment_2 table,
+  .view-meeting-details.view-display-id-attachment_3 table,
+  .view-meeting-details.view-display-id-attachment_4 table,
+  .view-meeting-details.view-display-id-attachment_5 table,
+  .view-meeting-details.view-display-id-attachment_6 table,
+  .view-meeting-details.view-display-id-attachment_7 table,
+  .view-meeting-details.view-display-id-attachment_8 table,
+  .view-meeting-details.view-display-id-attachment_9 table {
+    border-top: 0 !important; }
   .view-meeting-details.view-display-id-attachment_2 td:nth-of-type(1):before {
     content: "Deltagere"; }
   .view-meeting-details.view-display-id-attachment_4 td:nth-of-type(1):before {
     content: "Afbud"; }
+  .view-meeting-details.view-display-id-attachment_5 td:nth-of-type(1):before {
+    content: "Bemærkninger"; }
   .controls-left,
   .controls-right {
     display: inline-block;
@@ -758,7 +974,7 @@ ul li.leaf {
   height: 33px;
   color: transparent; }
   .content #show_hide_menu_container #show_hide_menu_button:before {
-    content: "\E3C7";
+    content: "compare_arrows";
     font-family: "Material Icons";
     font-size: 18px;
     font-size: 30px;

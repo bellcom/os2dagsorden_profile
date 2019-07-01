@@ -1,7 +1,15 @@
 @media (max-width: 767px) {
 
   // Stacked tables in certain views.
-  .view-meeting-details,
+  .view-meeting-details.view-display-id-page > .view-content,
+  .view-meeting-details.view-display-id-attachment_2,
+  .view-meeting-details.view-display-id-attachment_3,
+  .view-meeting-details.view-display-id-attachment_4,
+  .view-meeting-details.view-display-id-attachment_5,
+  .view-meeting-details.view-display-id-attachment_6,
+  .view-meeting-details.view-display-id-attachment_7,
+  .view-meeting-details.view-display-id-attachment_8,
+  .view-meeting-details.view-display-id-attachment_9,
   .view-meetings-search,
   .view-kommende-m-der-i-mine-udvalg,
   .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- {
@@ -56,7 +64,15 @@
   }
 
   // Meeting details.
-  .view-meeting-details {
+  .view-meeting-details.view-display-id-page > .view-content,
+  .view-meeting-details.view-display-id-attachment_2,
+  .view-meeting-details.view-display-id-attachment_3,
+  .view-meeting-details.view-display-id-attachment_4,
+  .view-meeting-details.view-display-id-attachment_5,
+  .view-meeting-details.view-display-id-attachment_6,
+  .view-meeting-details.view-display-id-attachment_7,
+  .view-meeting-details.view-display-id-attachment_8,
+  .view-meeting-details.view-display-id-attachment_9 {
 
     table {
       margin-bottom: 10px !important;
@@ -88,22 +104,36 @@
     }
   }
 
-  .view-meeting-details.view-display-id-page {
+  .view-meeting-details.view-display-id-page > .view-content {
+
     table {
       margin-bottom: 0 !important;
+
+      border-top: 6px solid #f7f1f1 !important;
     }
   }
-  .view-meeting-details.view-display-id-attachment_3 {
-    td:nth-of-type(1):before { content: "Lokation"; }
+  .view-meeting-details.view-display-id-attachment_2,
+  .view-meeting-details.view-display-id-attachment_3,
+  .view-meeting-details.view-display-id-attachment_4,
+  .view-meeting-details.view-display-id-attachment_5,
+  .view-meeting-details.view-display-id-attachment_6,
+  .view-meeting-details.view-display-id-attachment_7,
+  .view-meeting-details.view-display-id-attachment_8,
+  .view-meeting-details.view-display-id-attachment_9 {
+
+    table {
+      border-top: 0 !important;
+    }
   }
-  .view-meeting-details.view-display-id-attachment_5 {
-    td:nth-of-type(1):before { content: "Bemærkninger"; }
-  }
+
   .view-meeting-details.view-display-id-attachment_2 {
     td:nth-of-type(1):before { content: "Deltagere"; }
   }
   .view-meeting-details.view-display-id-attachment_4 {
     td:nth-of-type(1):before { content: "Afbud"; }
+  }
+  .view-meeting-details.view-display-id-attachment_5 {
+    td:nth-of-type(1):before { content: "Bemærkninger"; }
   }
 
   // Better alignment of controls.
