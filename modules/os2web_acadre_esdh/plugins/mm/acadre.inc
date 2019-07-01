@@ -60,6 +60,8 @@ function os2web_acadre_esdh_mm_get_import_list() {
       $uris[] = array('id' => $xml_file->name, 'uri' => $xml_file->uri);
     }
   }
+  usort($uris, '_acadre_esdh_mm_sort_import_list');
+  
   if (ACADRE_MM_PUB_FOCUS !== FALSE) {
     // We wish to only handle a single publication, så we return only that.
     if (isset($uris[ACADRE_MM_PUB_FOCUS])) {
@@ -912,5 +914,20 @@ function _acadre_esdh_mm_sort_enclosures($item1, $item2) {
   if (!isset($item1["sort"]) || !isset($item2["sort"]))  return 0;
   if ($item1["sort"] == $item2["sort"]) return 0;
   return ($item1["sort"] < $item2["sort"])? -1: 1;
+}
+
+/**
+ * Helper function to sort uris array in import list.
+ *
+ */
+function _acadre_esdh_mm_sort_import_list($item1, $item2) {
+  if (!isset($item1["id"]) || !isset($item2["id"]))  return 0;
+  if (is_numeric($item1["id"]) && is_numeric($item2["id"])) {
+    if ($item1["id"] == $item2["id"]) return 0;
+    return ($item1["id"] < $item2["id"])? 1: -1;
+  }
+  else {
+    return strcmp($item2["id"], $item1["id"]);
+  }
 }
 
