@@ -704,7 +704,7 @@
   .section-header #show_hide_menu_button {
     position: relative; }
   .section-header {
-    display: none; }
+    display: none !important; }
   .responsive-header {
     display: block !important;
     padding: 10px;
