@@ -158,7 +158,7 @@
     right: initial !important; // Reset.
   }
 
-  // Bulletpoint and bulletpoint attachment.
+  // Bulletpoint.
   .view-meeting-details.bullet-point-attachments {
     border-top: 20px solid $color-body !important;
 
@@ -168,6 +168,11 @@
       h3 {
         margin: 0;
       }
+    }
+
+    // Attachments.
+    .item-list {
+      display: none;
     }
 
     table {

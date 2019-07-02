@@ -640,6 +640,8 @@
       background-color: #fff; }
       .view-meeting-details.bullet-point-attachments .view-header h3 {
         margin: 0; }
+    .view-meeting-details.bullet-point-attachments .item-list {
+      display: none; }
     .view-meeting-details.bullet-point-attachments table {
       margin-top: 10px;
       border-top: 3px solid #ae477d !important; }
