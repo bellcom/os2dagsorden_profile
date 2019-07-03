@@ -252,7 +252,7 @@
             margin-left: 0 !important;
             padding-left: 0 !important;
 
-            a {
+            > a {
               padding: 0 !important;
               margin: 0 !important;
 
@@ -263,20 +263,27 @@
               overflow: initial !important;
               text-overflow: initial !important;
 
+              font-size: 18px !important;
+              font-weight: bold !important;
+            }
+
+            a {
               font-size: 16px !important;
-              font-weight: normal !important;
             }
           }
-        }
-
-        .attachment-text {
-          font-size: 16px !important;
         }
 
         .item-list-dagsordenspunkt {
           padding-left: 0 !important;
         }
       }
+    }
+  }
+
+  .annotator-wrapper {
+
+    .attachment-text {
+      font-size: 16px !important;
     }
   }
 

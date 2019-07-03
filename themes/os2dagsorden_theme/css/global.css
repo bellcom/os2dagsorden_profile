@@ -679,7 +679,7 @@
     .view-speaking-paper table table .ul-item-list-dagsordenspunkt > li {
       margin-left: 0 !important;
       padding-left: 0 !important; }
-      .view-speaking-paper table table .ul-item-list-dagsordenspunkt > li a {
+      .view-speaking-paper table table .ul-item-list-dagsordenspunkt > li > a {
         padding: 0 !important;
         margin: 0 !important;
         border: 2px solid #ae477d !important;
@@ -687,12 +687,14 @@
         white-space: initial !important;
         overflow: initial !important;
         text-overflow: initial !important;
-        font-size: 16px !important;
-        font-weight: normal !important; }
-  .view-speaking-paper table table .attachment-text {
-    font-size: 16px !important; }
+        font-size: 18px !important;
+        font-weight: bold !important; }
+      .view-speaking-paper table table .ul-item-list-dagsordenspunkt > li a {
+        font-size: 16px !important; }
   .view-speaking-paper table table .item-list-dagsordenspunkt {
     padding-left: 0 !important; }
+  .annotator-wrapper .attachment-text {
+    font-size: 16px !important; }
   .section-header .zone-branding-wrapper {
     padding-top: 10px;
     padding-bottom: 0; }
