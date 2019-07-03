@@ -28,7 +28,7 @@
 
     tr {
       padding: 0 !important;
-      border: 3px solid $color-branding-secondary !important;
+      border: 2px solid $color-branding-secondary !important;
 
       + tr {
         margin-top: 10px;
@@ -178,11 +178,11 @@
     table {
       margin-top: 10px;
 
-      border-top: 3px solid $color-branding-secondary !important;
+      border-top: 2px solid $color-branding-secondary !important;
 
       tr {
         padding: 0 !important;
-        border: 3px solid $color-branding-secondary !important;
+        border: 2px solid $color-branding-secondary !important;
 
         + tr {
           margin-top: 10px;
@@ -196,6 +196,7 @@
         }
 
         a {
+          font-size: 16px !important;
           border: 0 !important;
           white-space: initial !important;
           overflow: initial !important;
@@ -255,16 +256,21 @@
               padding: 0 !important;
               margin: 0 !important;
 
-              border: 3px solid $color-branding-secondary !important;
+              border: 2px solid $color-branding-secondary !important;
               border-radius: 3px !important;
 
               white-space: initial !important;
               overflow: initial !important;
               text-overflow: initial !important;
 
+              font-size: 16px !important;
               font-weight: normal !important;
             }
           }
+        }
+
+        .attachment-text {
+          font-size: 16px !important;
         }
 
         .item-list-dagsordenspunkt {

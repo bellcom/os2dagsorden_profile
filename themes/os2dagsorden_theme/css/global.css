@@ -393,7 +393,7 @@
     .view-kommende-m-der-i-mine-udvalg tr,
     .view-seneste-8-m-der-i-de-st-ende-politiske-udvalg- tr {
       padding: 0 !important;
-      border: 3px solid #ae477d !important; }
+      border: 2px solid #ae477d !important; }
       .view-meeting-details.view-display-id-page > .view-content tr + tr,
       .view-meeting-details.view-display-id-attachment_2 tr + tr,
       .view-meeting-details.view-display-id-attachment_3 tr + tr,
@@ -644,15 +644,16 @@
       display: none !important; }
     .view-meeting-details.bullet-point-attachments table {
       margin-top: 10px;
-      border-top: 3px solid #ae477d !important; }
+      border-top: 2px solid #ae477d !important; }
       .view-meeting-details.bullet-point-attachments table tr {
         padding: 0 !important;
-        border: 3px solid #ae477d !important; }
+        border: 2px solid #ae477d !important; }
         .view-meeting-details.bullet-point-attachments table tr + tr {
           margin-top: 10px; }
       .view-meeting-details.bullet-point-attachments table td .indicator-empty {
         display: none; }
       .view-meeting-details.bullet-point-attachments table td a {
+        font-size: 16px !important;
         border: 0 !important;
         white-space: initial !important;
         overflow: initial !important;
@@ -681,12 +682,15 @@
       .view-speaking-paper table table .ul-item-list-dagsordenspunkt > li a {
         padding: 0 !important;
         margin: 0 !important;
-        border: 3px solid #ae477d !important;
+        border: 2px solid #ae477d !important;
         border-radius: 3px !important;
         white-space: initial !important;
         overflow: initial !important;
         text-overflow: initial !important;
+        font-size: 16px !important;
         font-weight: normal !important; }
+  .view-speaking-paper table table .attachment-text {
+    font-size: 16px !important; }
   .view-speaking-paper table table .item-list-dagsordenspunkt {
     padding-left: 0 !important; }
   .section-header .zone-branding-wrapper {
