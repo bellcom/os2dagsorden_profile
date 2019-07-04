@@ -729,7 +729,18 @@
   .sidr ul li a .material-icons {
     margin-top: 12px;
     margin-right: 5px;
-    float: left; } }
+    float: left; }
+  .responsive-reverse {
+    display: flex;
+    flex-direction: column-reverse; }
+  #block-views-user-follow-committees-block-1,
+  #block-views-user-committee-block-1,
+  #block-views-events-block-1 {
+    display: none; }
+  .block-menu-menu-sidepane-menu {
+    display: none; }
+  .region-sidebar-second-inner {
+    display: block !important; } }
 
 .sidr-source-provider {
   display: none; }
