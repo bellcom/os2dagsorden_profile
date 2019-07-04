@@ -911,6 +911,15 @@
 
 /* This file will hold styles for the mobile version of your website (mobile first). */
 /* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
+.flexy-row {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  flex-wrap: wrap; }
+
+.flexy-spacer {
+  flex-grow: 1; }
+
 body {
   background: #fff;
   font-family: "Source Sans Pro";
