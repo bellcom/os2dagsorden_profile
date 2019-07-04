@@ -375,8 +375,14 @@
     display: none;
   }
 
+  .page-meetings-search {
+
+    .region-sidebar-second-inner {
+      display: block !important;
+    }
+  }
   .region-sidebar-second-inner {
-    display: block !important;
+    display: none !important;
   }
 }
 

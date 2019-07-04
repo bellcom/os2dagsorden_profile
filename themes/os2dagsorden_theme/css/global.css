@@ -739,8 +739,10 @@
     display: none; }
   .block-menu-menu-sidepane-menu {
     display: none; }
+  .page-meetings-search .region-sidebar-second-inner {
+    display: block !important; }
   .region-sidebar-second-inner {
-    display: block !important; } }
+    display: none !important; } }
 
 .sidr-source-provider {
   display: none; }
