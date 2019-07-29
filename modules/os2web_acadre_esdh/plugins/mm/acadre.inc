@@ -659,6 +659,10 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
       $debug && error_log('MM Import - Missing meeting_id or meeting_system_id for nid=' . $node->nid);
       continue;
     }
+    $meeting_type = field_get_items('node', $node, 'field_os2web_meetings_type');
+    if (isset($meeting_type[0]['value']) && strpos($meeting_type[0]['value'], OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING) === 0) {
+     continue;
+    }
     if (isset($meetings[$meeting_id[0]['value']][$meeting_system_id[0]['value']])) {
       // Duplicate meeting detected.
       watchdog('acadre MM', 'Duplicate import found for meeting %mid. Deleting nid=%nid.', array(
