@@ -589,11 +589,13 @@ function os2dagsorden_access_helper_translated_menu_link_alter(&$item, $map) {
     if (strpos(current_path(), 'admin/structure/menu/manage/' . $item['menu_name']) === 0 && user_access('administer menu')) {
       return;
     }
-    if ($item['options']['attributes']['id'] == 'menu-budgetforhandling') {
-      $allowed_committees = explode(',', variable_get('os2dagsorden_budgetforhandling_button_committees', FALSE));
-      $user_committees = os2dagsorden_access_helper_get_user_member_of_committees();
-      if (count(array_intersect($allowed_committees, $user_committees)) === 0) {
-        $item['access'] = FALSE;
+    if (isset($item['options']['attributes'])) {
+      if (isset($item['options']['attributes']['id']) && $item['options']['attributes']['id'] == 'menu-budgetforhandling') {
+        $allowed_committees = explode(',', variable_get('os2dagsorden_budgetforhandling_button_committees', FALSE));
+        $user_committees = os2dagsorden_access_helper_get_user_member_of_committees();
+        if (count(array_intersect($allowed_committees, $user_committees)) === 0) {
+          $item['access'] = FALSE;
+        }
       }
     }
   }
