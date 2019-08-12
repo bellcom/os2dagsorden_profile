@@ -523,7 +523,19 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
       if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
         $file_uri = $bilag->field_os2web_meetings_bpa_html['und'][0]['uri'];
         $body_file = file_get_contents($file_uri);
-        $html = os2dagsorden_pdf2htmlex_print_first_page($body_file, $meeting_id, $bullet_point_id, $bilag_id);
+        $pages = 1;
+        if (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) {
+          if (variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw')) {
+            $pages = OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW; 
+          }
+        }
+        else  {
+          if (variable_get('os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw')) {
+            $pages = OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW; 
+          }
+        }
+        
+        $html = os2dagsorden_pdf2htmlex_print_first_page($body_file, $meeting_id, $bullet_point_id, $bilag_id, $pages);
       }
       // Is not an actual bilag.
     }

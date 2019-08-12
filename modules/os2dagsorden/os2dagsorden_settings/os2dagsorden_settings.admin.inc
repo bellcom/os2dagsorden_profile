@@ -30,7 +30,7 @@ define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
  */
 function os2dagsorden_settings_settings_form($form, $form_state) {
   drupal_add_js(drupal_get_path('module', 'os2dagsorden_settings') . '/js/os2dagsorden_settings.js');
-  
+
   $output = os2dagsorden_blocks_positioning_show_git_version();
   $info_path = drupal_get_path('profile', 'os2dagsorden') . '/os2dagsorden.info';
   $info = drupal_parse_info_file($info_path);
@@ -459,6 +459,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#field_suffix' => t('Pages'),
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5),
   );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Activate for meeting view also'),
+    '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw', FALSE),
+  );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile'] = array(
     '#type' => 'textfield',
     '#title' => t('How many attachment\'s  pages are shown on meetings on mobile devices'),
@@ -467,6 +472,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#size' => 10,
     '#field_suffix' => t('Pages'),
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3),
+  );
+   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Activate for meeting view also'),
+    '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw', FALSE),
   );
 
   // Show latest meetings in my committee or all committees.
@@ -1734,7 +1744,9 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_case_bullet_point', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_case_bullet_point']);
     variable_set('os2dagsorden_show_bullet_case_nr', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr']);
     variable_set('os2dagsorden_attachments_pages_per_view_desktop', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop']);
+    variable_set('os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw']);
     variable_set('os2dagsorden_attachments_pages_per_view_mobile', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile']);
+    variable_set('os2dagsorden_attachments_pages_per_view_mobile_meeting_view', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_view']);
     variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
