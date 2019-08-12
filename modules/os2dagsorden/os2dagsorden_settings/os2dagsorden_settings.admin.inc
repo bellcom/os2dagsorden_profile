@@ -29,6 +29,8 @@ define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
  *   Settings form.
  */
 function os2dagsorden_settings_settings_form($form, $form_state) {
+  drupal_add_js(drupal_get_path('module', 'os2dagsorden_settings') . '/js/os2dagsorden_settings.js');
+  
   $output = os2dagsorden_blocks_positioning_show_git_version();
   $info_path = drupal_get_path('profile', 'os2dagsorden') . '/os2dagsorden.info';
   $info = drupal_parse_info_file($info_path);
