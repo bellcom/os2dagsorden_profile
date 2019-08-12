@@ -2655,6 +2655,32 @@ a.annotator-wrapper {
   padding-right: 20px;
   font-weight: bold; }
 
+.annotator-outline-pager {
+  top: 0;
+  width: 10%;
+  vertical-align: top;
+  display: none;
+}
+
+.annotator-outline-pager ul li {
+  list-style: none;
+  margin-bottom: 10px; }
+
+.annotator-outline-pager ul li a {
+  display: block; }
+.annotator-outline-pager ul li a span.page-number {
+  display: block;
+  text-align: center;
+  font-weight: 700; }
+
+.annotator-outline-pager ul li a img {
+  width: 100px;
+  height: auto; }
+
+.has-outline-pager {
+  display: inline-block;
+  width: 100%; }
+
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 /* ---------------------------- Breadcrumbs START---------------------------- */
 #breadcrumb .breadcrumb {
