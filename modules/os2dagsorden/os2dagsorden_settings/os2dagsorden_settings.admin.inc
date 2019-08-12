@@ -565,13 +565,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
 
   // Body text size.
-  $form['os2dagsorden_body_text_layout'] = array(
+  $form['os2dagsorden_text_layout'] = array(
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#title' => t('Body text size'),
+    '#title' => t('Text sizes'),
   );
-  $form['os2dagsorden_body_text_layout']['os2dagsorden_body_text_size'] = array(
+  $form['os2dagsorden_text_layout']['os2dagsorden_body_text_size'] = array(
     '#type' => 'textfield',
     '#title' => t('Body text size'),
     '#maxlength' => 10,
@@ -582,13 +582,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
 
   // Title text size.
-  $form['os2dagsorden_title_text_layout'] = array(
-    '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-    '#title' => t('Title text size'),
-  );
-  $form['os2dagsorden_title_text_layout']['os2dagsorden_title_text_size'] = array(
+  $form['os2dagsorden_text_layout']['os2dagsorden_title_text_size'] = array(
     '#type' => 'textfield',
     '#title' => t('Title text size'),
     '#maxlength' => 10,
@@ -1681,8 +1675,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     file_put_contents(drupal_realpath($file->uri), trim($content));
     $setting_array = parse_ini_file(drupal_realpath($file->uri), TRUE);
 
-    variable_set('os2dagsorden_body_text_size', $setting_array['os2dagsorden_body_text_layout']['os2dagsorden_body_text_size']);
-    variable_set('os2dagsorden_title_text_size', $setting_array['os2dagsorden_title_text_layout']['os2dagsorden_title_text_size']);
+    variable_set('os2dagsorden_text_size', $setting_array['os2dagsorden_text_layout']['os2dagsorden_body_text_size']);
+    variable_set('os2dagsorden_text_size', $setting_array['os2dagsorden_text_layout']['os2dagsorden_title_text_size']);
 
     variable_set('os2dagsorden_show_meeting_unpublish_button', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_unpublish_button']);
     variable_set('os2dagsorden_show_import_form_button', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_import_form_button']);
