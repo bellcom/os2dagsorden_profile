@@ -2366,3 +2366,9 @@ div.note.subscribe::before{
 .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td .ul-item-list-dagsordenspunkt li {
   position: relative;
 }
+
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text tr td,
+.attachment-text.attachment_text_full_container tr td,
+.attachment_text_container .attachment_text_full_container .attachment-text tr td{
+  border: 1px solid #b9b9b9;
+}

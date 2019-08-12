@@ -422,4 +422,9 @@ table .bullet-point-print-link-container {
 .attachment-text td {
   border: 1px solid black;
 }
+.view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table .attachment-text tr td,
+.attachment-text.attachment_text_full_container tr td,
+.attachment_text_container .attachment_text_full_container .attachment-text tr td{
+  border: 1px solid #b9b9b9;
+}
 /* ---------------------------- Meeting details attachment text END ---------------------------- */
