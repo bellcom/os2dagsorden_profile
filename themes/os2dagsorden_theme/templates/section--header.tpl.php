@@ -1,6 +1,6 @@
 <?php
   $current_theme = variable_get('theme_default', 'none');
-  $path = base_path() . drupal_get_path('theme', $current_theme);
+  $logo = theme_get_setting('logo', $current_theme);
 ?>
 
 <header<?php print $attributes; ?>>
@@ -11,9 +11,9 @@
 <div class="responsive-header">
   <div class="flexy-row">
     <a href="/">
-      <img src="<?=$path; ?>/img/logo.png" alt="OS2dagsorden"/>
+      <img src="<?=$logo; ?>" alt="OS2dagsorden"/>
     </a>
-    
+
     <div class="flexy-spacer"></div>
 
     <div>
