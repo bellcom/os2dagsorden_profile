@@ -82,7 +82,13 @@ function os2dagsorden_meeting_views_views_pre_render(&$view) {
     $view->query->pager->total_items = $count;
     $view->query->pager->update_page_info();
   }
+  if (($view->name === 'meeting_details' || $view->name === 'speaking_paper') && $view->current_display === 'page') {
+    $meeting_id = arg(1);
+    $view_title = $view->get_title();
+    $meeting_title = node_load($meeting_id)->title;
+    $view->set_title($meeting_title . ' - ' . $view_title);
   }
+}
 
 /**
  * Implements hook_views_pre_build().
