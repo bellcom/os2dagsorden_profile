@@ -1412,7 +1412,7 @@ function os2web_esdh_provider_clear_cache($success, $results, $operations) {
 /**
  * Removed inline styles from html tags.
  */
-function os2web_esdh_provider_filter_html_tags($data) {
+function os2web_esdh_provider_filter_html_tags($data){
   $tags = explode(',', variable_get('os2dagsorden_filtered_tags', ''));
   if (in_array('span', $tags) && !empty(variable_get('os2dagsorden_allowed_span_styles', ''))) {
     // We need to safen style for span.
@@ -1438,13 +1438,13 @@ function os2web_esdh_provider_filter_html_tags($data) {
     }
     $tags = array_diff($tags, array('span'));
   }
-
-
   foreach ($tags as $tag) {
-    preg_match_all('#<' . $tag . '(.*?)>#is', $data, $matches);
-    foreach ($matches[0] as $match) {
-      $filtred_data = preg_replace('#style="(.*?)"#is', "", $match);
-      $data = str_replace($match, $filtred_data, $data);
+    if (!empty($tag)) {
+      preg_match_all('#<' . $tag . '(.*?)>#is', $data, $matches);
+      foreach ($matches[0] as $match) {
+        $filtred_data = preg_replace('#style="(.*?)"#is', "", $match);
+        $data = str_replace($match, $filtred_data, $data);
+      }
     }
   }
   // Remove all a tags with attribute Name="Acadre..
