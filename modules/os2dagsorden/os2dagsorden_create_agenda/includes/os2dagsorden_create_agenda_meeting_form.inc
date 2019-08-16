@@ -140,6 +140,12 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
       'method' => 'replace',
     )
   );
+  
+  $form['field_os2web_meetings_full_attac'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show attachments in full view'),
+    
+  );
 
   // Finishing form.
   $form['#attached']['css'] = array(
@@ -185,6 +191,8 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
     $location_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_location'));
     $form['location']['#default_value'] = $location_field['tid'];
   }
+  $attachment_view = array_pop(field_get_items('node', $node, 'field_os2web_meetings_full_attac'));
+  $form['field_os2web_meetings_full_attac']['#default_value'] = $attachment_view['value'];
 
   if (field_get_items('node', $node, 'field_os2web_meetings_referent')) {
     $referent_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_referent'));
@@ -302,6 +310,8 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $com_tid = $input['os2web_meetings_tax_committee'];
   $participants = $input['participants'];
   $referents = $input['referents'];
+  $attachment_view = $form_state['values']['field_os2web_meetings_full_attac'];
+  
 
   $participants = $input['participants'];
   $internal_participants = explode(',', $input['internal_participants_hidden']);
@@ -325,6 +335,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   date_timezone_set($start_datetime, timezone_open('UTC'));
   $node->field_os2web_meetings_date['und'][0]['value'] = $start_datetime->format('Y-m-d H:i:s');
   $node->field_os2web_meetings_committee['und'][0]['tid'] = $com_tid;
+  $node->field_os2web_meetings_full_attac['und'][0]['value'] = $attachment_view;
 
   if (!empty($end_date)) {
     $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time, new DateTimeZone(date_default_timezone()));
