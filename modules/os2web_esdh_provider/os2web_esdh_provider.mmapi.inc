@@ -1412,7 +1412,7 @@ function os2web_esdh_provider_clear_cache($success, $results, $operations) {
 /**
  * Removed inline styles from html tags.
  */
-function os2web_esdh_provider_filter_html_tags($data){
+function os2web_esdh_provider_filter_html_tags($data) {
   $tags = explode(',', variable_get('os2dagsorden_filtered_tags', ''));
   if (in_array('span', $tags) && !empty(variable_get('os2dagsorden_allowed_span_styles', ''))) {
     // We need to safen style for span.
