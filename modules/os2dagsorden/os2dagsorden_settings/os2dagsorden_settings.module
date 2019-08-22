@@ -144,6 +144,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile'] = variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop_meeting_view'] = variable_get('os2dagsorden_attachments_pages_per_view_desktop_meeting_view', FALSE);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_view'] = variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_view', FALSE);
+  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button'] = variable_get('os2dagsorden_show_expand_all_button', FALSE);
 
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode'] = variable_get('os2dagsorden_latest_meetings_view_mode', 'all');

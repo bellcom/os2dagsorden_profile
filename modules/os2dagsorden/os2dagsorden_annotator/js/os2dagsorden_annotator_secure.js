@@ -7,7 +7,7 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
 		if (filter){
 		  jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Filter');
 		}
-		
+
 		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Store', {
 			// The endpoint of the store on your server.
 			prefix: url,
@@ -62,11 +62,21 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
             jQuery(".annotator-touch-widget-inner").attr("title", Drupal.settings.os2dagsorden_annotator.annotator_button_text);
         }
   });
+  jQuery(window).load(function() {
+    // Scroll bar on attachment page.
+        if (jQuery(".annotator-outline-pager").length && Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar) {
+          var pager_height = jQuery(".annotator-outline-pager").outerHeight();
+          var window_height = jQuery(window).height();
+          var height = (pager_height > window_height)? pager_height : window_height;
+          jQuery('#content.has-outline-pager').innerHeight(height);
+          jQuery("#content.has-outline-pager").css('overflow-y', 'scroll');
+        }
+  });
 }
 
 function annotator_hide_menu(){
 	jQuery(document).ready(function(){
-		jQuery(".region-sidebar-second-inner").hide(); 
+		jQuery(".region-sidebar-second-inner").hide();
 		jQuery("#show_hide_menu_button").val("⇒");
 		jQuery("#region-content").removeClass("grid-18");
 		jQuery("#region-content").addClass("grid-24");

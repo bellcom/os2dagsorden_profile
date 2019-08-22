@@ -478,6 +478,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#title' => t('Activate for meeting view also'),
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw', FALSE),
   );
+   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show scrollbar on attachment page'),
+    '#description' => t('This decides if scrollbar will be shown when attachment displayed as HTML.'),
+    '#default_value' => variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE),
+  );
 
   // Show latest meetings in my committee or all committees.
   $form['os2dagsorden_latest_meetings_view_settings'] = array(
@@ -1747,6 +1753,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw']);
     variable_set('os2dagsorden_attachments_pages_per_view_mobile', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile']);
     variable_set('os2dagsorden_attachments_pages_per_view_mobile_meeting_view', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_view']);
+    variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page']);
     variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);

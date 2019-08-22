@@ -346,12 +346,14 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
   $annotatorButtonText = variable_get('os2dagsorden_create_note_text', 'Lav note');
   $annotatorHideText = variable_get('os2dagsorden_create_note_hide_text', FALSE);
   $annotatorUseTitle = variable_get('os2dagsorden_create_note_text_use_title', FALSE);
+  $attachment_add_scrollbar = variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE);
   drupal_add_js(array(
       'os2dagsorden_annotator' =>
         array(
           'annotator_button_text' => $annotatorButtonText,
           'annotator_hide_text' => $annotatorHideText,
-          'annotator_use_title' => $annotatorUseTitle
+          'annotator_use_title' => $annotatorUseTitle,
+          'attachment_add_scrollbar' => $attachment_add_scrollbar,
         )
     ),
     array('type' => 'setting'));
@@ -533,12 +535,12 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
         else {
           if (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) {
             if (variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw')) {
-              $pages = OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW; 
+              $pages = OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
             }
           }
           else  {
             if (variable_get('os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw')) {
-              $pages = OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW; 
+              $pages = OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
             }
           }
         }
