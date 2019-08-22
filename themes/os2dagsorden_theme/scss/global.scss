@@ -440,7 +440,7 @@ ul li.leaf {
   height: 33px;
   color: transparent;
   &:before {
-    content: "compare_arrows";
+    content: "\E915";
     font-family: $font-icons;
     font-size: 18px;
     font-size: 30px;
@@ -448,6 +448,7 @@ ul li.leaf {
     top: 2px;
     position: absolute;
     color: $color-white;
+    line-height: 30px;
   }
 
 }

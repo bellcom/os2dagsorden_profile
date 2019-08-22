@@ -1270,14 +1270,15 @@ ul li.leaf {
   height: 33px;
   color: transparent; }
   .content #show_hide_menu_container #show_hide_menu_button:before {
-    content: "compare_arrows";
+    content: "\E915";
     font-family: "Material Icons";
     font-size: 18px;
     font-size: 30px;
     left: 2px;
     top: 2px;
     position: absolute;
-    color: #fffffe; }
+    color: #fffffe;
+    line-height: 30px; }
 
 .content #zoom_menu_container {
   line-height: 0; }
