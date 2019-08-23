@@ -3748,7 +3748,15 @@ os2dagsorden_meeting_views_last_8_meetings_help_text("my_meetings");
     'edit_node' => 'edit_node',
     'delete_node' => 'delete_node',
   );
-  /* Overskrift: breadcrumb override */
+   /* Overskrift: description download */
+  $handler->display->display_options['header']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['header']['php_2']['table'] = 'views';
+  $handler->display->display_options['header']['php_2']['field'] = 'php';
+  $handler->display->display_options['header']['php_2']['ui_name'] = 'description download';
+  $handler->display->display_options['header']['php_2']['php_output'] = '<?php
+os2dagsorden_meeting_views_bullet_point_description_download_button()
+?>';
+/* Overskrift: breadcrumb override */
   $handler->display->display_options['header']['php']['id'] = 'php';
   $handler->display->display_options['header']['php']['table'] = 'views';
   $handler->display->display_options['header']['php']['field'] = 'php';
