@@ -148,6 +148,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#description' => t('This decides whether a send to friend button is visible on each bullet point on meeting view.'),
       '#default_value' => variable_get('os2dagsorden_show_send_to_friend_icon', FALSE),
     );
+    $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_download_description_button_on_bp_view'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Show download descripttion button on bullet point view'),
+      '#description' => t('This decides whether a download descripttion button is visible on bullet point view.'),
+      '#default_value' => variable_get('os2dagsorden_show_download_description_button_on_bp_view', FALSE),
+    );
     $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_generate_pdf_link'] = array(
       '#type' => 'checkbox',
       '#title' => t('Show generate PDF link on meeting view'),
@@ -1692,6 +1698,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_participants_afbud', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_participants_afbud']);
     variable_set('os2dagsorden_show_print_icon', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_print_icon']);
     variable_set('os2dagsorden_show_send_to_friend_icon', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_send_to_friend_icon']);
+    variable_set('os2dagsorden_show_download_description_button_on_bp_view', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_download_description_button_on_bp_view']);
     variable_set('os2dagsorden_show_generate_pdf_link', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_generate_pdf_link']);
     variable_set('os2dagsorden_show_generate_pdf_link_full', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_generate_pdf_link_full']);
     variable_set('os2dagsorden_show_bullet_case_id_link', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bullet_case_id_link']);

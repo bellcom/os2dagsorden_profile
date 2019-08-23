@@ -335,7 +335,7 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   echo '</div>';
   // class=dropdown.
   echo '</div>';
-  echo '<div class="clearfix"></div>';
+  //echo '<div class="clearfix"></div>';
   // Descriptions (additional) END.
 }
 

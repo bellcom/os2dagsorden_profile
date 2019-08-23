@@ -36,8 +36,17 @@ function os2dagsorden_meeting_views_bullet_point_print_send_to_friend() {
         print '</div>';
 
       }
-      print '<div class="clearfix"></div>';
+     // print '<div class="clearfix"></div>';
     }
+  }
+}
+
+/**
+ * Prints agenda download button on bullet point page.
+ */
+function os2dagsorden_meeting_views_bullet_point_description_download_button() {
+  if (variable_get('os2dagsorden_show_download_description_button_on_bp_view', FALSE)) {
+    os2dagsorden_meeting_views_meeting_details_description_download();
   }
 }
 

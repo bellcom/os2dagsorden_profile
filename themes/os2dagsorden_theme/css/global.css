@@ -2349,6 +2349,11 @@ div.speaker-paper-print {
       font-family: Arial,Helvetica,sans-serif;
       font-weight: bold;
       font-size: 13px; }
+  .view-speaking-paper.view-display-id-page .controls-right.dropdown .dropbtn {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 16px;
+    text-transform: none; }
 
 .page-meeting-bullet-point .region-content-inner {
   background: #fffffe;
@@ -3095,7 +3100,7 @@ ul#follows .checkbox.premeeting {
   display: block; }
 
 .dropdown:hover .dropbtn {
-  background: #8a3863;
+  background: #ae477d;
   color: #fffffe; }
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
