@@ -139,6 +139,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_cases'] = variable_get('os2dagsorden_expand_cases', 'false');
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_massive_expand_collapse_button'] = variable_get('os2dagsorden_show_massive_expand_collapse_button', 'true');
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bilag_bullet_point'] = variable_get('os2dagsorden_show_bilag_bullet_point', FALSE);
+  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_all_bilags_list_on_attachment_page'] = variable_get('os2dagsorden_show_all_bilags_list_on_attachment_page', FALSE);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_case_bullet_point'] = variable_get('os2dagsorden_show_case_bullet_point', FALSE);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr'] = variable_get('os2dagsorden_show_bullet_case_nr', FALSE);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop'] = variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5);

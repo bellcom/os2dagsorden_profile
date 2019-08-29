@@ -1851,7 +1851,7 @@ div.speaker-paper-print {
         padding-left: 20px;
         padding-right: 20px;
         font-size: 16px;
-        text-transform: none;        
+        text-transform: none;
       }
     }
   }
@@ -2236,6 +2236,34 @@ a.annotator-wrapper {
   float: right;
   padding-right: 20px;
   font-weight: bold;
+}
+
+.bilag-list {
+  position: absolute;
+  top: 0;
+  word-break: break-word;
+  ul {
+    list-style: none;
+  }
+  li {
+    margin: 3px 3px;
+    a{
+      display: block;
+      position: relative;
+      background-color: $color-background-primary;
+      padding: 3px;
+      line-height: 30px;
+      font-size: 13px;
+      text-decoration: none;
+      border-color: $color-white;
+      border-radius: $border-radius $border-radius 0 0;
+      border-style: solid;
+      border-width: 1px;
+    }
+    &.current a {
+      font-weight: bold;
+    }
+  }
 }
 
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
@@ -2878,7 +2906,7 @@ ul#follows {
   .annotator-note {
     padding-left: 30px;
     padding-top: 5px;
-    display: block;    
+    display: block;
     div {
       display: inline-block;
       &.annotator-note div {

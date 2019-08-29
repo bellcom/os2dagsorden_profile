@@ -90,3 +90,7 @@ ul.droptrue li.can-subscribe span {
 .has-outline-pager {
   width: 90%;
 }
+
+.bilag-list {
+  display: block;
+}

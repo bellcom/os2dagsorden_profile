@@ -2661,6 +2661,29 @@ a.annotator-wrapper {
   padding-right: 20px;
   font-weight: bold; }
 
+.bilag-list {
+  position: absolute;
+  top: 0;
+  word-break: break-word; }
+  .bilag-list ul {
+    list-style: none; }
+  .bilag-list li {
+    margin: 3px 3px; }
+    .bilag-list li a {
+      display: block;
+      position: relative;
+      background-color: #f7f1f1;
+      padding: 3px;
+      line-height: 30px;
+      font-size: 13px;
+      text-decoration: none;
+      border-color: #fffffe;
+      border-radius: 3px 3px 0 0;
+      border-style: solid;
+      border-width: 1px; }
+    .bilag-list li.current a {
+      font-weight: bold; }
+
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 /* ---------------------------- Breadcrumbs START---------------------------- */
 #breadcrumb .breadcrumb {

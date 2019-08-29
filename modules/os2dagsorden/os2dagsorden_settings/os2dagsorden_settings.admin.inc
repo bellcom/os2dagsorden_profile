@@ -436,7 +436,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#options' => array('true' => t('Show'), 'false' => t('Hide')),
     '#description' => t('This decides whether massive expand/collapse button will be shown on meeting views.'),
   );
-  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bilag_bullet_point'] = array(
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_show_all_bilags_list_on_attachment_page'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show all bullet point\'s bilags list on bialg view page'),
+    '#description' => t('This decides whether all bullet point\'s bilags list will be shown on bilag page'),
+    '#default_value' => variable_get('os2dagsorden_show_all_bilags_list_on_attachment_page', FALSE),
+  );
+   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bilag_bullet_point'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show bilags under Bilag bullet point'),
     '#description' => t('This decides whether all bilags grouped under Bilag bullet point'),
@@ -1742,6 +1748,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_expand_cases', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_expand_cases']);
     variable_set('os2dagsorden_show_massive_expand_collapse_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_massive_expand_collapse_button']);
     variable_set('os2dagsorden_show_bilag_bullet_point', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bilag_bullet_point']);
+    variable_set('os2dagsorden_show_all_bilags_list_on_attachment_page', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_all_bilags_list_on_attachment_page']);
     variable_set('os2dagsorden_show_case_bullet_point', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_case_bullet_point']);
     variable_set('os2dagsorden_show_bullet_case_nr', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr']);
     variable_set('os2dagsorden_attachments_pages_per_view_desktop', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop']);
