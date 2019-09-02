@@ -403,7 +403,7 @@ HTML;
   if (variable_get('os2dagsorden_show_all_bilags_list_on_attachment_page', FALSE)) {
     if (!empty($bilag->field_os2web_meetings_bpa_file['und'][0]['uri'])) {
       if ($bilags = os2dagsorden_annotator_bilags_list($meeting_id, $bullet_point_id, $bilag_id)) {
-         $html .= '<div class="bilag-list">' . os2dagsorden_annotator_bilags_list($meeting_id, $bullet_point_id, $bilag_id) . '</div>';
+         $html .= '<div class="bilags-block"><span class = "bilag-list-btn"></span><div class="bilag-list">' . $bilags . '</div></div>';
       }
     }
   }
@@ -1155,7 +1155,7 @@ function os2dagsorden_annotator_bilags_list($meeting_id, $bullet_point_id, $bila
     }
   }
   if (!empty($bilags)) {
-    $html = '<strong>' . t('Bilag på dagsordenspunktet') . '</strong>';
+    $html = '<div class="title">' . t('Bilag på dagsordenspunktet') . '</div>';
     $html .= '<ul class = "bilags">';
     foreach($bilags as $id => $link){
       if ($id == $bilag_id) {

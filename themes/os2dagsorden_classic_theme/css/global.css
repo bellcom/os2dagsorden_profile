@@ -1690,18 +1690,41 @@ a.annotator-wrapper {
   width: 100%;
 }
 
-.bilag-list {
+.bilags-block {
   position: absolute;
-  top: 0;
   word-break: break-word;
-  display: none;
+  top: 0;
+  left: -40px;
+  z-index: 999;
+}
+.bilag-list-btn {
+  display:block;
+  height: 40px;
+  cursor: pointer;
+}
+.bilag-list-btn:before {
+  content: "\2630";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  font-size: 30px;
+}
+.bilag-list {
+  width: 40%;
+  background-color: #f0edff;
+  display:none;
+}
+.bilag-list .title {
+  padding:5px 5px 3px 15px;
+  font-size: 16px;
+  font-weight: bold;
 }
 .bilag-list ul {
   list-style: none;
 }
 
 .bilag-list ul li {
-  margin: 3px 3px;
+  margin: 0;
 }
 .bilag-list ul li a{
   display: block;
@@ -1716,6 +1739,8 @@ a.annotator-wrapper {
     border-color: #e5e5e5;
     border-style: solid;
     border-width: 1px;
+    border-right: 0;
+    border-left: 0;
 }
 .bilag-list ul li.current a {
   font-weight: bold;

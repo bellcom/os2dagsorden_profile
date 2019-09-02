@@ -61,14 +61,13 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
         if (Drupal.settings.os2dagsorden_annotator.annotator_use_title) {
             jQuery(".annotator-touch-widget-inner").attr("title", Drupal.settings.os2dagsorden_annotator.annotator_button_text);
         }
-        if (jQuery(".bilag-list").length) {
-          var offset = Math.floor(jQuery("#zone-content").offset().left);
-          jQuery(".bilag-list").css ('left', '-' + offset + 'px');
-          jQuery(".bilag-list").css ('width',  offset + 'px');
+        if (jQuery(".bilag-list-btn").length) {
+          jQuery(".bilag-list-btn").click(function(){
+            jQuery(".bilag-list").toggle();
+          });
         }
-
   });
-  } 
+  }
 function annotator_hide_menu(){
 	jQuery(document).ready(function(){
 		jQuery(".region-sidebar-second-inner").hide();

@@ -2237,35 +2237,59 @@ a.annotator-wrapper {
   padding-right: 20px;
   font-weight: bold;
 }
-
-.bilag-list {
+.bilags-block {
   position: absolute;
-  top: 0;
   word-break: break-word;
-  ul {
-    list-style: none;
-  }
-  li {
-    margin: 3px 3px;
-    a{
-      display: block;
-      position: relative;
-      background-color: $color-background-primary;
-      padding: 3px;
-      line-height: 30px;
-      font-size: 13px;
-      text-decoration: none;
-      border-color: $color-white;
-      border-radius: $border-radius $border-radius 0 0;
-      border-style: solid;
-      border-width: 1px;
+  top: 0;
+  left: -40px;
+  z-index: 999;
+  width: 300px;
+  .bilag-list-btn {
+    display:block;
+    height: 40px;
+    cursor: pointer;
+    &:before {
+      content: "\2630";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      font-size: 30px;
     }
-    &.current a {
+  }  
+  .bilag-list {
+    background-color: $color-background-primary;
+    display:none;
+    .title {
+      padding:5px 5px 3px 15px;
+      font-size: 16px;
       font-weight: bold;
+    }
+    ul {
+      list-style: none;
+      li {
+        margin: 0;
+        a{
+          display: block;
+          position: relative;
+          background-color: $color-background-primary;
+          padding: 3px;
+          line-height: 30px;
+          font-size: 13px;
+          text-decoration: none;
+          border-color: $color-white;
+          border-radius: $border-radius $border-radius 0 0;
+          border-style: solid;
+          border-width: 1px;
+          border-right: 0;
+          border-left: 0;
+        }
+        &.current a {
+          font-weight: bold;
+        }
+      }
     }
   }
 }
-
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 
 /* ---------------------------- Breadcrumbs START---------------------------- */
