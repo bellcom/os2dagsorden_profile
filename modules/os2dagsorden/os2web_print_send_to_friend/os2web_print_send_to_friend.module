@@ -63,6 +63,20 @@ function os2web_print_send_to_friend_menu() {
     'page arguments' => array(1, TRUE),
     'access arguments' => array('access content'),
   );
+  $items['bullet_point/%/pdf'] = array(
+    'title' => 'PDF Dagsorden',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'os2web_print_send_to_friend_bp_pdf_generate',
+    'page arguments' => array(1, FALSE),
+    'access arguments' => array('access content'),
+  );
+  $items['bullet_point/%/pdf_full'] = array(
+    'title' => 'PDF Full Dagsorden',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'os2web_print_send_to_friend_bp_pdf_generate',
+    'page arguments' => array(1, TRUE),
+    'access arguments' => array('access content'),
+  );
   $items['admin/reports/send_to_friend_log'] = array(
     'title' => 'Send to friend log Report',
     'description' => 'View events that have been logged.',

@@ -400,7 +400,13 @@ HTML;
 
   // Overriding title for bilag.
   drupal_set_title($bilag->title);
-
+  if (variable_get('os2dagsorden_show_all_bilags_list_on_attachment_page', FALSE)) {
+    if (!empty($bilag->field_os2web_meetings_bpa_file['und'][0]['uri'])) {
+      if ($bilags = os2dagsorden_annotator_bilags_list($meeting_id, $bullet_point_id, $bilag_id)) {
+         $html .= '<div class="bilags-block"><span class = "bilag-list-btn"></span><div class="bilag-list">' . $bilags . '</div></div>';
+      }
+    }
+  }
   // Help icon.
   $html .= '<div class="node">
 		<div class="help-button" id="os2dagsorden_annotator_help_text" aria-label="' . variable_get('os2dagsorden_annotator_help_text', 'Hvis du ønsker at lave en kommentar til et ord eller et afsnit, så marker blot dette hvorefter du får mulighed for at indtaste kommentaren.') . '"></div>
@@ -1110,4 +1116,58 @@ function _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageSta
     $output .= '</ul>';
   }
   return $output;
+}
+
+/**
+ * Renders the html for bullet point's bilags list.
+ *
+ * @param int $meeting_id
+ *   ID of the meeting.
+ * @param int $bullet_point_id
+ *   ID of the bullet point.
+ * @param int $bilag_id
+ *   ID of the attachment (bilag)
+ *
+ * @return string
+ *   The html code list of bilags.
+*/
+function os2dagsorden_annotator_bilags_list($meeting_id, $bullet_point_id, $bilag_id) {
+  $bullet_point = node_load($bullet_point_id);
+  $bilags = array();
+  if (isset($bullet_point->field_os2web_meetings_attach['und'])) {
+    // Eliminating duplicates in bullet points attachments.
+    $attachments = array();
+    foreach ($bullet_point->field_os2web_meetings_attach['und'] as $attachment_id) {
+      $hash = $attachment_id['target_id'];
+      $attachments[$hash] = $attachment_id;
+    }
+    foreach ($attachments as $key => $attachment_id) {
+     $bilag = node_load($attachment_id['target_id']);
+      if (!empty($bilag->field_os2web_meetings_bpa_file['und'][0]['uri'])){
+        // Bilag has converter to HTML version of file, getting the text out of it.
+        if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
+          $bilags[$bilag->nid] = l($bilag->title, 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag->nid);
+        }
+        else {
+          $bilags[$bilag->nid] = l($bilag->title, file_create_url($bilag->field_os2web_meetings_bpa_file['und'][0]['uri']));
+        }
+      }
+    }
+  }
+  if (!empty($bilags)) {
+    $html = '<div class="title">' . t('Bilag på dagsordenspunktet') . '</div>';
+    $html .= '<ul class = "bilags">';
+    foreach($bilags as $id => $link){
+      if ($id == $bilag_id) {
+        $html .= '<li class="current">' . $link . '</li>';
+      }
+      else {
+        $html .= '<li>' . $link . '</li>';
+      }
+
+    }
+    $html .= '</ul>';
+    return $html;
+  }
+  return FALSE;
 }

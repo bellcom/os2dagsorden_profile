@@ -36,8 +36,17 @@ function os2dagsorden_meeting_views_bullet_point_print_send_to_friend() {
         print '</div>';
 
       }
-      print '<div class="clearfix"></div>';
+     // print '<div class="clearfix"></div>';
     }
+  }
+}
+
+/**
+ * Prints agenda download button on bullet point page.
+ */
+function os2dagsorden_meeting_views_bullet_point_description_download_button() {
+  if (variable_get('os2dagsorden_show_download_description_button_on_bp_view', FALSE)) {
+    os2dagsorden_meeting_views_bullet_point_description_download();
   }
 }
 
@@ -539,4 +548,54 @@ function os2dagsorden_meeting_views_bullet_point_modify_links($meeting_id, $bp_i
         . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/attachment" class="edit-meeting-btn" rel="lightframe[|width:800px; height:500px; scrolling: auto;]">'
         . '<div class="indicator-add-agenda"></div>&nbsp;</a>';
   }
+}
+
+
+function os2dagsorden_meeting_views_bullet_point_description_download() {
+  // Disallowing PDF download.
+  if (!os2dagsorden_access_helper_check_pdf_download_enabled()) {
+    return '';
+  }
+
+  global $base_url;
+  $q = explode('/', $_GET['q']);
+  $meeting_id = $q[1];
+  $bullet_point_id = $q[3];
+
+  // User has no access to agenda.
+  $bullet_point = node_load($bullet_point_id);
+  if (!node_access('view', $bullet_point )) {
+    return;
+  }
+  if (os2dagsorden_access_helper_check_pdf_download_enabled()) {
+    echo '<div class="controls-right dropdown">';
+    echo '<a class="dropbtn form-submit" type="button" data-toggle="dropdown">'
+      . variable_get('os2dagsorden_meeting_description_download_dropdown', 'Hent dokumenter')
+      . ' &#9660;</a>';
+    echo '<div class="dropdown-content">';
+
+
+    $pdf_documents_links = array();
+    // Generated PDF's.
+    if (module_exists('os2web_print_send_to_friend')) {
+      if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id)){
+        echo '<a target="_blank" href="' . $base_url . '/bullet_point/' . $bullet_point_id . '/pdf">' . variable_get('os2dagsorden_meeting_description_generate_pdf_title', 'Samlet dokument i PDF') . '</a>';
+        $has_description = TRUE;
+        // Only if has not been printed yet.
+        echo '<a target="_blank" href="' . $base_url . '/bullet_point/' . $bullet_point_id . '/pdf_full">' . variable_get('os2dagsorden_meeting_description_generate_pdf_full_title', 'Samlet dokument med bilag i PDF') . '</a>';
+        $has_full_doc_attachments = TRUE;
+      }
+    }
+  }
+  // Print that it does not have anything.
+  if (!$has_description && !$$has_full_doc_attachments) {
+    echo '<p>Ingen</p>';
+  }
+
+  // class=dropdown-content.
+  echo '</div>';
+  // class=dropdown.
+  echo '</div>';
+  //echo '<div class="clearfix"></div>';
+  // Descriptions (additional) END.
 }

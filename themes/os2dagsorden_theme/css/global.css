@@ -2349,6 +2349,11 @@ div.speaker-paper-print {
       font-family: Arial,Helvetica,sans-serif;
       font-weight: bold;
       font-size: 13px; }
+  .view-speaking-paper.view-display-id-page .controls-right.dropdown .dropbtn {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 16px;
+    text-transform: none; }
 
 .page-meeting-bullet-point .region-content-inner {
   background: #fffffe;
@@ -2655,6 +2660,51 @@ a.annotator-wrapper {
   float: right;
   padding-right: 20px;
   font-weight: bold; }
+
+.bilags-block {
+  position: absolute;
+  word-break: break-word;
+  top: 0;
+  left: -40px;
+  z-index: 999;
+  width: 300px; }
+  .bilags-block .bilag-list-btn {
+    display: block;
+    height: 40px;
+    cursor: pointer; }
+    .bilags-block .bilag-list-btn:before {
+      content: "\2630";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      font-size: 30px; }
+  .bilags-block .bilag-list {
+    background-color: #f7f1f1;
+    display: none; }
+    .bilags-block .bilag-list .title {
+      padding: 5px 5px 3px 15px;
+      font-size: 16px;
+      font-weight: bold; }
+    .bilags-block .bilag-list ul {
+      list-style: none; }
+      .bilags-block .bilag-list ul li {
+        margin: 0; }
+        .bilags-block .bilag-list ul li a {
+          display: block;
+          position: relative;
+          background-color: #f7f1f1;
+          padding: 3px;
+          line-height: 30px;
+          font-size: 13px;
+          text-decoration: none;
+          border-color: #fffffe;
+          border-radius: 3px 3px 0 0;
+          border-style: solid;
+          border-width: 1px;
+          border-right: 0;
+          border-left: 0; }
+        .bilags-block .bilag-list ul li.current a {
+          font-weight: bold; }
 
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 /* ---------------------------- Breadcrumbs START---------------------------- */
@@ -3095,7 +3145,7 @@ ul#follows .checkbox.premeeting {
   display: block; }
 
 .dropdown:hover .dropbtn {
-  background: #8a3863;
+  background: #ae477d;
   color: #fffffe; }
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
