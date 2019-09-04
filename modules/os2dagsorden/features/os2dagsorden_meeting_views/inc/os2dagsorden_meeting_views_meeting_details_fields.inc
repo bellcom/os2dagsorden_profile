@@ -91,15 +91,27 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   // Descriptions full doc.
   $has_full_doc = FALSE;
   $has_full_doc_attachments = FALSE;
+  $has_full_doc_html = FALSE;
+  $has_full_doc_attachments_html = FALSE;
   $has_add_doc = FALSE;
   $has_add_doc_attachments = FALSE;
   $pdf_documents_lists_order = array (
     'full_doc',
-    'att_doc',
+    'full_doc_html',
+    'att_doc',    
+    'att_doc_html',
     'full_doc_c',
+    'full_doc_c_html',
     'att_doc_c',
+    'att_doc_c_html',
     'full_doc_p',
     'att_doc_p'
+  );
+  $html_documents_list = array (
+    'full_doc_html' => variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument')),
+    'att_doc_html' => variable_get('os2dagsorden_general_bullet_full_doc_with_attach_title', t('Åben samlet dokument med bilag')),
+    'full_doc_c_html' => variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument')) . '(Lukket)',
+    'att_doc_c_html' => variable_get('os2dagsorden_general_bullet_full_doc_with_attach_title', t('Åben samlet dokument med bilag')) . '(Lukket)'
   );
 
   echo '<div class="controls-right dropdown">';
@@ -170,6 +182,45 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
           $pdf_documents_links['att_doc'] = '<a target="_blank" href="' . file_create_url($meeting->field_os2web_meetings_att_doc['und'][0]['uri']) .
             '" class="btn-group">' . variable_get('os2dagsorden_meeting_description_with_att_download_title', 'Samlet dokument med bilag') . '</a>';
           $has_full_doc_attachments = TRUE;
+        }
+      }
+    }
+    
+   
+    if ($bullet_point = _os2dagsorden_access_helper_get_genaral_bullet_point($meeting->nid)) {
+      $html_documents = array();
+      foreach($bullet_point->field_os2web_meetings_attach['und'] as $attachnemt_nid) {
+        $attachment =  node_load($attachnemt_nid['target_id']);
+        if (($key = array_search($attachment->title, $html_documents_list)) && !empty($attachment->field_os2web_meetings_bpa_html['und'][0]['uri'])) {
+          $html_documents[$key] =  '<a target="_blank" href="/meeting/' . $meeting->nid . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $attachnemt_nid['target_id'] .
+            '" class="btn-group">' . $attachment->title . '</a>'; 
+        }
+      }
+      if ($user_can_see_closed_agendas && ((!isset($agenda_access) || $agenda_access === 0) || variable_get('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE))) {
+        if (isset($html_documents['full_doc_c_html'])) {
+          $pdf_documents_links['full_doc_html'] = $html_documents['full_doc_c_html'];
+          $has_full_doc_html = TRUE;
+        }
+        if (isset($html_documents['att_doc_c_html'])) {
+          $pdf_documents_links['att_doc_html'] = $html_documents['att_doc_c_html'];
+          $has_full_doc_attachments_html = TRUE;
+        }
+      }
+      if ($meeting_full_access_granted) {
+        // Only if closed/personal has not been printed yet.
+        if (!$has_full_doc_html ) {
+          // Opened version - if not empty.
+          if (isset($html_documents['full_doc_html'])) {
+            $pdf_documents_links['full_doc_html'] = $html_documents['full_doc_html'];
+            $has_full_doc_html = TRUE;
+          }
+        }
+        if (!$has_full_doc_attachments_html) {
+          // Opened version - if not empty.
+          if (isset($html_documents['att_doc_html'])) {
+            $pdf_documents_links['att_doc_html'] = $html_documents['att_doc_html'];
+            $has_full_doc_attachments_html = TRUE;
+          }
         }
       }
     }
@@ -296,6 +347,7 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
           }
         }
       }
+      
       foreach($pdf_documents_lists_order as $doc_type) {
         if (isset($additional_descriptions_pdf_files[$doc_type]) && is_array($additional_descriptions_pdf_files[$doc_type])) {
           foreach($additional_descriptions_pdf_files[$doc_type] as $pdf_doc) {
@@ -1172,15 +1224,17 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_case_ide
  *   True if skip, false if show.
  */
 function os2dagsorden_meeting_views_meeting_details_fields_filter_bullet_point($nid, $filter_opened) {
+  $bullet_point = node_load($nid);
+  if (intval($bullet_point->field_os2web_meetings_bul_gener['und'][0]['value']) == 1) {
+    return TRUE;
+  }
   // Put inline.
   if (variable_get('os2dagsorden_group_closed_bullet_points', 'false') === 'false') {
     // Accept every type.
     return !$filter_opened;
   }
   // Put separately.
-  else {
-    $bullet_point = node_load($nid);
-
+  else {    
     // Accept opened.
     if ($filter_opened) {
       if ($bullet_point->field_os2web_meetings_bul_closed['und'][0]['value'] == 0) {

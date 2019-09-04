@@ -189,6 +189,10 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_allowed_span_styles'] = variable_get('os2dagsorden_allowed_span_styles', '');
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_tab_tag'] = variable_get('os2dagsorden_tab_tag', '&nbsp;');
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_url_strip_count'] = variable_get('os2dagsorden_url_strip_count', '20');
+  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_import_full_agenda_as_attachments'] = variable_get('os2dagsorden_import_full_agenda_as_attachments', FALSE);
+  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_title'] = variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument'));
+  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_with_attach_title'] = variable_get('oos2dagsorden_general_bullet_full_doc_with_attach_title', t('Åben samlet dokument med bilag'));
+  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_point_title'] = variable_get('os2dagsorden_general_bullet_point_title', t('Generalt'));
 
   $setting_array['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_subject'] = variable_get('os2dagsorden_meeting_unpublished_state_subject', '');
   $setting_array['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_body'] = variable_get('os2dagsorden_meeting_unpublished_state_body', '');
