@@ -74,6 +74,16 @@ function os2dagsorden_content_modify_menu() {
 
   return $items;
 }
+/**
+ * Implements hook_permission().
+ */
+function os2dagsorden_content_modify_permission() {
+  return array(
+    'administer external users' => array(
+      'title' => t('Edit "external" flag in user account'),
+    )
+  );
+}
 
 /**
  * Helper function, redirects to taxonomy creation page.

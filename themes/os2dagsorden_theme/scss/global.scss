@@ -2636,7 +2636,8 @@ div.note {
   float: right;
 }
 div.note.premeeting,
-div.note.subscribe {
+div.note.subscribe, 
+div.note.external-user {
   display: block;
   float: none;
   margin-left: 18px;
@@ -2649,14 +2650,16 @@ div.note.subscribe {
 .checkbox.follows,
 .checkbox_invisible,
 .checkbox.premeeting,
-.checkbox.can-subscribe {
+.checkbox.can-subscribe,
+{
   float: right;
 }
 
 .checkbox.follows,
 .checkbox.invisible,
 .checkbox.premeeting,
-.checkbox.can-subscribe {
+.checkbox.can-subscribe,
+.checkbox.external-user {
   float: right;
   display: inline;
   position: relative;
@@ -2696,6 +2699,34 @@ div.note.premeeting::before{
   left: 8px;
   width: 16px;
   height: 16px;
+}
+div.note.external-user {
+  position: relative;
+  margin-top: 1em;
+  &::before{
+    content: '';
+    position: absolute;
+    background-image: url(../img/external_user.png);
+    background-repeat: no-repeat;
+    background-size: 15px;
+    left: -18px;
+    width: 16px;
+    height: 16px;
+    top: 5px;
+  }
+}
+.checkbox.external-user::before{
+  content: '';
+  position: absolute;
+  background-image: url(../img/external_user.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
 }
 div.note.subscribe::before{
   content: '';
