@@ -110,7 +110,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 7,
+      'weight' => 8,
     ),
   );
 
@@ -157,7 +157,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -225,7 +225,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 8,
+      'weight' => 9,
     ),
   );
 
@@ -266,7 +266,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -307,7 +307,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 6,
+      'weight' => 7,
     ),
   );
 
@@ -368,6 +368,50 @@ function os2web_meetings_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_meetings_bullet-field_os2web_meetings_bul_gener'.
+  $field_instances['node-os2web_meetings_bullet-field_os2web_meetings_bul_gener'] = array(
+    'bundle' => 'os2web_meetings_bullet',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 11,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_bul_gener',
+    'label' => 'General',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_meetings_bullet-field_os2web_meetings_bul_number'.
   $field_instances['node-os2web_meetings_bullet-field_os2web_meetings_bul_number'] = array(
     'bundle' => 'os2web_meetings_bullet',
@@ -410,7 +454,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -526,7 +570,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 9,
+      'weight' => 11,
     ),
   );
 
@@ -3096,6 +3140,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Full doc with attachments');
   t('Full doc with attachments closed');
   t('Full doc with attachments personal');
+  t('General');
   t('HTML File Page Amount');
   t('Hvis den taksonomi der bruges findes i en drop down list kan der angives en ekstern url som åbnes i stedet.');
   t('ID');
