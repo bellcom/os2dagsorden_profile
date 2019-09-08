@@ -2659,8 +2659,7 @@ a.annotator-wrapper {
 .annotator-outline-pager {
   top: 0;
   width: 10%;
-  vertical-align: top;
-  display: none; }
+  vertical-align: top; }
 
 .annotator-outline-pager ul li {
   list-style: none;
@@ -2679,7 +2678,12 @@ a.annotator-wrapper {
   height: auto; }
 
 .has-outline-pager {
-  display: inline-block;
+  display: inline-block; }
+
+.annotator-outline-pager {
+  display: none; }
+
+.has-outline-pager {
   width: 100%; }
 
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
@@ -3095,6 +3099,9 @@ ul#follows .checkbox.premeeting {
   display: inline;
   position: relative;
   display: flex; }
+
+.create-user-btn {
+  text-align: right; }
 
 /* ---------------------------- Dropdown Button START ---------------------------- */
 .dropbtn {

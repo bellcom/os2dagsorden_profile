@@ -91,11 +91,10 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
     '#prefix' => '<div id="js-end-date-wrapper">',
     '#suffix' => '</div>',
   );
-
-  if ($form_state['input']['start_date']['date']) {
+  if (isset($form_state['input']['start_date']['date'])) {
     $form['end_date']['#value']['date'] = $form_state['input']['start_date']['date'];
   }
-  if ($form_state['input']['start_date']['time']) {
+  if (isset($form_state['input']['start_date']['time'])) {
     $form['end_date']['#value']['time'] = $form_state['input']['start_date']['time'];
   }
 
@@ -298,9 +297,9 @@ function os2dagsorden_create_agenda_populate_available_users($form, &$form_state
  */
 function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state) {
   $input = $form_state['input'];
-
+  $values = $form_state['values'];
   // Input extraction.
-  $title = $input['title'];
+  $title = isset($values['title'])?$values['title'] : $input['title'];
   $status = $input['status'];
   $start_date = $input['start_date']['date'];
   $start_time = $input['start_date']['time'];
@@ -442,7 +441,7 @@ function os2dagsorden_create_agenda_is_user_committee_admin($committee_tid) {
  * @param mixed $meeting_id
  *   Meeting ID.
  */
-function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meeting_id) {
+function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $form_state, $meeting_id) {
   $form[] = array(
     '#markup' => "<div class=\"select-participants\">",
   );
@@ -497,6 +496,9 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
       $committee_tid = $meeting_type[0]['tid'];
     }
 
+  }
+  if (isset($form_state['input']['participants_hidden'])) {
+    $participants = $participants + $form_state['input']['participants_hidden'];
   }
   // Printing follows plus plus.
   $content = "<ul id='participants' class='droptrue ui-sortable'>";

@@ -1584,8 +1584,17 @@ function _os2web_esdh_provider_meeting_unpublished_state_emails($tid, $meeting_t
   return implode(', ', $emails);
 }
 
+/**
+ * Helper function for create "General" bullet point with full agenda decsription.
+ *
+ * @param mixed $meeting
+ *   Meeting object.
+ *
+ * @return mixed
+ *   ID of created bullet point or FALSE.
+ */
 
-function os2web_esdh_provider_import_general_item($node) {
+function os2web_esdh_provider_import_general_item($meeting) {
   $items = array (
     'full_doc' => variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument')),
     'att_doc' => variable_get('os2dagsorden_general_bullet_full_doc_with_attach_title', t('Åben samlet dokument med bilag')),
@@ -1595,13 +1604,13 @@ function os2web_esdh_provider_import_general_item($node) {
   $doc_file_exists = FALSE;
   foreach ($items as $key => $title) {
     $field = 'field_os2web_meetings_' . $key;
-    if (isset($node->$field[LANGUAGE_NONE][0])) {
+    if (isset($meeting->$field[LANGUAGE_NONE][0])) {
       $doc_file_exists = TRUE;
       break;
     }
   }
   if ($doc_file_exists) {
-    $bullet_point = _os2dagsorden_access_helper_get_genaral_bullet_point($node->nid);
+    $bullet_point = _os2dagsorden_access_helper_get_genaral_bullet_point($meeting->nid);
 
   if (!$bullet_point) {
     $bullet_point = new stdClass();
@@ -1632,8 +1641,8 @@ function os2web_esdh_provider_import_general_item($node) {
   foreach ($items as $key => $title) {
     $field = 'field_os2web_meetings_' . $key;
     $schedule_to_convert = FALSE;
-    if (isset($node->$field[LANGUAGE_NONE][0])) {
-      $file = file_load($node->$field[LANGUAGE_NONE][0]['fid']);
+    if (isset($meeting->$field[LANGUAGE_NONE][0])) {
+      $file = file_load($meeting->$field[LANGUAGE_NONE][0]['fid']);
       $file->display = 1;
       if (isset($existing_attachments[$key])) {
         $attachment_node = $existing_attachments[$key];

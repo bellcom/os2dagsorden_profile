@@ -31,6 +31,9 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
   elseif (!empty($form_state['page_num']) && $form_state['page_num'] === 3) {
     return os2dagsorden_create_agenda_bpa($form, $form_state);
   }
+  elseif (!empty($form_state['page_num']) && $form_state['page_num'] === 4) {
+    return os2dagsorden_create_agenda_meeting_create_user_form($form, $form_state);
+  }
   elseif (isset($bpa_id)) {
     $form_state['meeting_id'] = $meeting_id;
     $form_state['bullet_point_id'] = $bp_id;
@@ -104,7 +107,17 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     // If meeting id is empty, try to fill it with form_state meeting_id value.
     $meeting_id = $form_state['meeting_id'];
   }
-  _os2dagsorden_create_agenda_render_drag_and_drop_controls($form, $meeting_id);
+  $form['create_user'] = array(
+    '#type' => 'submit',
+    '#prefix' => '<div class="create-user-btn">',
+    '#attributes' => array(
+      'class' => array('form-add-submit'),
+    ),
+    '#value' => t('Create user'),
+    '#submit' => array('os2dagsorden_create_agenda_meeting_create_user'),
+    '#suffix' => '</div>',
+  );
+  _os2dagsorden_create_agenda_render_drag_and_drop_controls($form, $form_state, $meeting_id);
   if ($meeting_id) {
     // Saving for usage in the submit function.
     $form_state['meeting_id'] = $meeting_id;
@@ -224,6 +237,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
 
   }
+  
 
   if (!isset($form['agenda'][0])) {
     $form['agenda']['#access'] = FALSE;
@@ -632,4 +646,9 @@ function os2dagsorden_create_agenda_create_general_item($node) {
 
   }
   return FALSE;
+}
+
+function os2dagsorden_create_agenda_meeting_create_user($form, &$form_state) {
+  $form_state['page_num'] = 4;
+  $form_state['rebuild'] = TRUE;
 }
