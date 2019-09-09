@@ -27,7 +27,7 @@ return $account;
 
 /**
  * Rule that reads all user roles and assigns them to taxonomies with the same name.
- * Mapping of the user roles is done via simplesaml SSO module role mapping tool 
+ * Mapping of the user roles is done via simplesaml SSO module role mapping tool
  *
  * @ingroup rules
  */
@@ -46,37 +46,37 @@ function os2web_rules_rules_action_drupal_message($account) {
   $vocabulary = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee');
   $terms = taxonomy_get_tree($vocabulary->vid);
   foreach ($terms as $termname) {
-    $termnames[$termname->name]['tid'] = $termname->tid;
-    $termnames[$termname->name]['name'] = $termname->name;
+    $name_in_lower = mb_strtolower($termname->name);
+    $termnames[$name_in_lower]['tid'] = $termname->tid;
+    $termnames[$name_in_lower]['name'] = $termname->name;
   }
 
-  // Loading the taxonomies that the user is already assigned to 
+  // Loading the taxonomies that the user is already assigned to
   $user_committees = $user->field_user_committee['und'];
   foreach ($user_committees as $user_committee) {
-    $committee_id = $user_committee['tid']; 
+    $committee_id = $user_committee['tid'];
     $user_comm = taxonomy_term_load($committee_id); // load term object
-    $term_uri = taxonomy_term_uri($user_comm); // get array with path (maybe not needed - but usefull)
-    $term_title = taxonomy_term_title($user_comm); // set the title for the taxonomy
+    $term_title = mb_strtolower(taxonomy_term_title($user_comm)); // set the title for the taxonomy
     if($term_title) {
       $term_committee[$term_title]['tid'] = $committee_id; // Title is the key as we only have the text to map from
-      $term_committee[$term_title]['name'] = $term_title;  // So user role and taxonomy name must be the same. 
+      $term_committee[$term_title]['name'] = $term_title;  // So user role and taxonomy name must be the same.
     }
   }
 
   // Looping over the drupal roles and assigning taxonomies of the same name.
   // Case insensitive.
   foreach ($data as $role_tid => $role_name) {
-    $user_is_part_of_committee = FALSE;
+    $role_name = mb_strtolower($role_name);
     if (array_key_exists($role_name,$term_committee)) {
-        drupal_set_message("brugeren er allerede tilmeldt udvalget ". $rolename);
+        drupal_set_message("brugeren er allerede tilmeldt udvalget ". $role_name);
     }
     else {
       if (array_key_exists($role_name,$termnames)) {
         drupal_set_message("brugeren er nu tilknyttet udvalget ". $role_name . " og id " . $termnames[$role_name]['tid']);
-        $user->field_user_committee['und'][]['tid'] = $termnames[$role_name]['tid']; 
+        $user->field_user_committee['und'][]['tid'] = $termnames[$role_name]['tid'];
       }
     }
-  }  
+  }
 
   // Saving the user session with changes.
   user_save($user);
