@@ -832,12 +832,22 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether the will be added a prefix to Bilag or Case bullet point attachment on import.<br/>e.g. <b>Bilag:</b> Indsigelser of Bemaerkninger.'),
     '#default_value' => variable_get('os2dagsorden_add_type_prefix', 'true'),
   );
+  $form['os2dagsorden_meeting_import']['os2dagsorden_filter_all_tags'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Filter all HTML tags'),
+    '#default_value' => variable_get('os2dagsorden_filter_all_tags', 0),
+  );
   $form['os2dagsorden_meeting_import']['os2dagsorden_filtered_tags'] = array(
     '#type' => 'textfield',
     '#title' => t('Filtered HTML tags lists'),
     '#maxlength' => 250,
     '#default_value' => variable_get('os2dagsorden_filtered_tags', ''),
     '#description' => t('Comma-separated list of html tags that want to filter out (fe. p,h1,h2).'),
+    '#states' => array(
+        'disabled' => array(
+          '[name="os2dagsorden_filter_all_tags"]' => array('checked' => TRUE),
+        ),
+      ),
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_stripped_tags'] = array(
     '#type' => 'textfield',
@@ -845,7 +855,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#maxlength' => 250,
     '#default_value' => variable_get('os2dagsorden_stripped_tags', ''),
     '#description' => t('Comma-separated list of html tags that want to strip (fe. font, span).'),
-  );
+   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_allowed_span_styles'] = array(
     '#type' => 'textfield',
     '#title' => t('Allowed styles in filtered span tags'),
@@ -1789,6 +1799,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_send_timespan_of_notification', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_send_timespan_of_notification']);
     variable_set('os2dagsorden_add_type_prefix', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_add_type_prefix']);
     variable_set('os2dagsorden_clean_image_tags', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_clean_image_tags']);
+    variable_set('os2dagsorden_filter_all_tags',  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_filter_all_tags']);
     variable_set('os2dagsorden_filtered_tags', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_filtered_tags']);
     variable_set('os2dagsorden_stripped_tags', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_stripped_tags']);
     variable_set('os2dagsorden_allowed_span_styles', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_allowed_span_styles']);

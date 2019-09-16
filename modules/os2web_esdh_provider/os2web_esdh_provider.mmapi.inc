@@ -1414,6 +1414,16 @@ function os2web_esdh_provider_clear_cache($success, $results, $operations) {
  */
 function os2web_esdh_provider_filter_html_tags($data) {
   $tags = explode(',', variable_get('os2dagsorden_filtered_tags', ''));
+  $filter_all_tags = variable_get('os2dagsorden_filter_all_tags', 0);
+  if ($filter_all_tags) {
+    $tags = array('');
+    if (!empty(variable_get('os2dagsorden_allowed_span_styles', ''))) {
+      $tags[] = 'span';
+    }
+  }
+  else {
+    $tags = explode(',', variable_get('os2dagsorden_filtered_tags', ''));
+  }
   if (in_array('span', $tags) && !empty(variable_get('os2dagsorden_allowed_span_styles', ''))) {
     // We need to safen style for span.
     $allowed_styles = explode(',', variable_get('os2dagsorden_allowed_span_styles', ''));
@@ -1438,13 +1448,28 @@ function os2web_esdh_provider_filter_html_tags($data) {
     }
     $tags = array_diff($tags, array('span'));
   }
-
-
-  foreach ($tags as $tag) {
-    preg_match_all('#<' . $tag . '(.*?)>#is', $data, $matches);
+  if ($filter_all_tags) {
+    if (!empty(variable_get('os2dagsorden_allowed_span_styles', ''))) {
+      $match_str = '#<(?!span|\/span)(.*?)>#is';
+    }
+    else {
+      $match_str = '#<(.*?)>#is';
+    }
+    preg_match_all($match_str, $data, $matches);
     foreach ($matches[0] as $match) {
       $filtred_data = preg_replace('#style="(.*?)"#is', "", $match);
       $data = str_replace($match, $filtred_data, $data);
+    }
+  }
+  else {
+    foreach ($tags as $tag) {
+      if (!empty($tag)) {
+        preg_match_all('#<' . $tag . '(.*?)>#is', $data, $matches);
+        foreach ($matches[0] as $match) {
+          $filtred_data = preg_replace('#style="(.*?)"#is', "", $match);
+          $data = str_replace($match, $filtred_data, $data);
+        }
+      }
     }
   }
   // Remove all a tags with attribute Name="Acadre..
