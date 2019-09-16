@@ -1414,7 +1414,8 @@ function os2web_esdh_provider_clear_cache($success, $results, $operations) {
  */
 function os2web_esdh_provider_filter_html_tags($data) {
   $tags = explode(',', variable_get('os2dagsorden_filtered_tags', ''));
-  if ($filter_all_tags = variable_get('os2dagsorden_filter_all_tags', 0)) {
+  $filter_all_tags = variable_get('os2dagsorden_filter_all_tags', 0);
+  if ($filter_all_tags) {
     $tags = array('');
     if (!empty(variable_get('os2dagsorden_allowed_span_styles', ''))) {
       $tags[] = 'span';
