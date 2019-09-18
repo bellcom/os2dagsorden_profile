@@ -91,11 +91,10 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
     '#prefix' => '<div id="js-end-date-wrapper">',
     '#suffix' => '</div>',
   );
-
-  if ($form_state['input']['start_date']['date']) {
+  if (isset($form_state['input']['start_date']['date'])) {
     $form['end_date']['#value']['date'] = $form_state['input']['start_date']['date'];
   }
-  if ($form_state['input']['start_date']['time']) {
+  if (isset($form_state['input']['start_date']['time'])) {
     $form['end_date']['#value']['time'] = $form_state['input']['start_date']['time'];
   }
 
@@ -139,6 +138,12 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
       'wrapper' => 'available_users',
       'method' => 'replace',
     )
+  );
+
+  $form['field_os2web_meetings_full_attac'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show attachments in full view'),
+
   );
 
   // Finishing form.
@@ -185,6 +190,8 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
     $location_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_location'));
     $form['location']['#default_value'] = $location_field['tid'];
   }
+  $attachment_view = array_pop(field_get_items('node', $node, 'field_os2web_meetings_full_attac'));
+  $form['field_os2web_meetings_full_attac']['#default_value'] = $attachment_view['value'];
 
   if (field_get_items('node', $node, 'field_os2web_meetings_referent')) {
     $referent_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_referent'));
@@ -290,9 +297,9 @@ function os2dagsorden_create_agenda_populate_available_users($form, &$form_state
  */
 function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state) {
   $input = $form_state['input'];
-
+  $values = $form_state['values'];
   // Input extraction.
-  $title = $input['title'];
+  $title = isset($values['title'])?$values['title'] : $input['title'];
   $status = $input['status'];
   $start_date = $input['start_date']['date'];
   $start_time = $input['start_date']['time'];
@@ -302,10 +309,9 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $com_tid = $input['os2web_meetings_tax_committee'];
   $participants = $input['participants'];
   $referents = $input['referents'];
+  $attachment_view = $form_state['values']['field_os2web_meetings_full_attac'];
 
-  $participants = $input['participants'];
-  $internal_participants = explode(',', $input['internal_participants_hidden']);
-  $external_participants = explode(',', $input['external_participants_hidden']);
+  $participants = explode(',', $input['participants_hidden']);
   $invisible_participants = explode(',', $input['participants_invisible_hidden']);
   if (!$form_state['meeting_id']) {
     // Node creating.
@@ -325,6 +331,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   date_timezone_set($start_datetime, timezone_open('UTC'));
   $node->field_os2web_meetings_date['und'][0]['value'] = $start_datetime->format('Y-m-d H:i:s');
   $node->field_os2web_meetings_committee['und'][0]['tid'] = $com_tid;
+  $node->field_os2web_meetings_full_attac['und'][0]['value'] = $attachment_view;
 
   if (!empty($end_date)) {
     $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time, new DateTimeZone(date_default_timezone()));
@@ -340,25 +347,21 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
 
   // Unsetting internal members.
   $node->field_os2web_meetings_partic_int['und'] = array();
-  if ($internal_participants) {
-    foreach ($internal_participants as $uid) {
-      if (!empty($uid)) {
-        $node->field_os2web_meetings_partic_int['und'][]['uid'] = $uid;
-      }
-    }
-  }
-  // Unsetting external members.
   $node->field_os2web_meetings_partic_ext['und'] = array();
-  if ($external_participants) {
-    $role = user_role_load_by_name("os2dagsorden limited");
-    foreach ($external_participants as $uid) {
+  if ($participants) {
+    foreach ($participants as $uid) {
       if (!empty($uid)) {
-        $node->field_os2web_meetings_partic_ext['und'][]['uid'] = $uid;
+        $participant =  user_load($uid);
+        if (intval($participant->field_user_external['und'][0]['value']) == 1) {
+          $node->field_os2web_meetings_partic_ext['und'][]['uid'] = $uid;
+        }
+        else {
+          $node->field_os2web_meetings_partic_int['und'][]['uid'] = $uid;
+        }
       }
     }
-    // Add os2dagsorden limited role.
-    user_multiple_role_edit($external_participants, 'add_role', $role->rid);
   }
+
   // Unsetting external members.
   $node->field_os2web_meetings_partic_inv['und'] = array();
   if ($invisible_participants) {
@@ -369,7 +372,6 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
     }
   }
 
-  $participants = array_merge($external_participants, $internal_participants);
   foreach ($participants as $uid) {
     if (!empty($uid)) {
       $user = user_load($uid);
@@ -439,31 +441,20 @@ function os2dagsorden_create_agenda_is_user_committee_admin($committee_tid) {
  * @param mixed $meeting_id
  *   Meeting ID.
  */
-function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meeting_id) {
+function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $form_state, $meeting_id) {
   $form[] = array(
     '#markup' => "<div class=\"select-participants\">",
   );
 
-  $form['internal_participants_div'] = array(
+  $form['participants_div'] = array(
     '#type' => 'item',
-    '#prefix' => '<label class="label-participants">' . t('Internal participants:') . '</label><div class="note">' . t('Invisible:') . '</div>',
+    '#prefix' => '<label class="label-participants">' . t('Participants:') . '</label><div class="note">' . t('Invisible:') . '</div>',
     '#markup' => '',
   );
-  $form['internal_participants_hidden'] = array(
+  $form['participants_hidden'] = array(
     '#type' => 'hidden',
     '#attributes' => array(
-      'id' => 'internal_participants_hidden',
-    ),
-  );
-  $form['external_participants_div'] = array(
-    '#type' => 'item',
-    '#prefix' => '<label class="label-participants">' . t('External participants:') . '</label><div class="note">' . t('Invisible:') . '</div>',
-    '#markup' => '',
-  );
-  $form['external_participants_hidden'] = array(
-    '#type' => 'hidden',
-    '#attributes' => array(
-      'id' => 'external_participants_hidden',
+      'id' => 'participants_hidden',
     ),
   );
   $form['participants_invisible_hidden'] = array(
@@ -475,8 +466,7 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
   $form[] = array(
     '#markup' => '</div >',
   );
-  $external_participants = array();
-  $internal_participants = array();
+  $participants = array();
   $invisible_participants = array();
   $meeting_type = NULL;
   $committee_tid = NULL;
@@ -485,12 +475,12 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
     // external_participants.
     if ($external_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_ext')) {
       foreach ($external_participants_items as $external_participant) {
-        $external_participants[] = $external_participant['uid'];
+        $participants[] = $external_participant['uid'];
       }
     }
     if ($internal_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_int')) {
       foreach ($internal_participants_items as $internal_participant) {
-        $internal_participants[] = $internal_participant['uid'];
+        $participants[] = $internal_participant['uid'];
       }
     }
     if ($invisible_participants_items = field_get_items('node', $meeting, 'field_os2web_meetings_partic_inv')) {
@@ -507,13 +497,21 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
     }
 
   }
+  if (isset($form_state['input']['participants_hidden'])) {
+    $participants = $participants + $form_state['input']['participants_hidden'];
+  }
   // Printing follows plus plus.
-  $content = "<ul id='internal_participants' class='droptrue ui-sortable'>";
-  foreach ($internal_participants as $uid) {
+  $content = "<ul id='participants' class='droptrue ui-sortable'>";
+  foreach ($participants as $uid) {
     $user = user_load($uid);
     $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
-    $form['internal_participants_hidden']['#value'] .= $uid . ',';
-    $content .= "<li id='{$uid}' class='ui-state-default'><span>{$user_name}</span>";
+    $form['participants_hidden']['#value'] .= $uid . ',';
+    if (intval($user->field_user_external['und'][0]['value']) == 1) {
+      $content .= "<li id='{$uid}' class='ui-state-default'><span>{$user_name}</span><span class='checkbox external-user'></span>";
+    }
+    else {
+      $content .= "<li id='{$uid}' class='ui-state-default'><span>{$user_name}</span>";
+    }
     $checked = '';
     if (in_array($uid, $invisible_participants)) {
       $checked = "checked='checked'";
@@ -521,23 +519,7 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
     $content .= "<input id='checkbox_{$uid}'  type='checkbox' class='checkbox invisible' {$checked}></li>";
   }
   $content .= '</ul>';
-  $form['internal_participants_div']['#markup'] = $content;
-  // Printing follows plus.
-  $content = "<ul id='external_participants' class='droptrue ui-sortable'>";
-  foreach ($external_participants as $uid) {
-    $user = user_load($uid);
-    $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
-    $form['external_participants_hidden']['#value'] .= $uid . ',';
-    $content .= "<li id='{$uid}' class='ui-state-default'><span>{$user_name}</span>";
-    $checked = '';
-    if (in_array($uid, $invisible_participants)) {
-      $checked = "checked='checked'";
-    }
-    $content .= "<input id='checkbox_{$uid}' type='checkbox' class='checkbox invisible' {$checked}></li>";
-  }
-  $content .= '</ul>';
-  $form['external_participants_div']['#markup'] = $content;
-
+  $form['participants_div']['#markup'] = $content;
   $form['participants_invisible_hidden']['#value'] = implode(',', $invisible_participants);
 
   // Printing arrows reverse.
@@ -552,7 +534,7 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
     if ((int) $user->uid === 0) {
       continue;
     }
-    if (in_array($user->uid, $internal_participants) || in_array($user->uid, $external_participants)) {
+    if (in_array($user->uid, $participants)) {
       continue;
     }
 
@@ -560,13 +542,18 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $meet
       continue;
     }
     $user_name = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
-    $user_list .= "<li id='{$user->uid}' class='ui-state-default'><span>{$user_name}</span><input id='checkbox_$user->uid'  type='checkbox' class='checkbox'></li>";
+    $external_user = '';
+    if (intval($user->field_user_external['und'][0]['value']) == 1) {
+      $external_user = '<span class="checkbox external-user"></span>';
+    }
+    $user_list .= "<li id='{$user->uid}' class='ui-state-default'><span>{$user_name}</span>" . $external_user . "<input id='checkbox_$user->uid'  type='checkbox' class='checkbox'></li>";
   }
   $user_list .= "</ul>";
   $form['available_users'] = array(
     '#type' => 'item',
     '#prefix' => "<div class='available_users'><label>" . t('Users:') . "</label>"
-    . "<div class='user-filter-block'><input id='users_filter' type='text' class='form-text'></div>",
+    . "<div class='user-filter-block'><input id='users_filter' type='text' class='form-text'></div>"
+    . "<div class='note external-user'>" . t('External user') . "</div>",
     '#markup' => $user_list,
     '#suffix' => '</div>',
   );

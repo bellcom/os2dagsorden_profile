@@ -2704,7 +2704,37 @@ a.annotator-wrapper {
           border-right: 0;
           border-left: 0; }
         .bilags-block .bilag-list ul li.current a {
-          font-weight: bold; }
+          font-weight: bold; }        
+.annotator-outline-pager {
+  top: 0;
+  width: 10%;
+  vertical-align: top; }
+
+.annotator-outline-pager ul li {
+  list-style: none;
+  margin-bottom: 10px; }
+
+.annotator-outline-pager ul li a {
+  display: block; }
+
+.annotator-outline-pager ul li a span.page-number {
+  display: block;
+  text-align: center;
+  font-weight: 700; }
+
+.annotator-outline-pager ul li a img {
+  width: 100px;
+  height: auto; }
+
+.has-outline-pager {
+  display: inline-block; }
+
+.annotator-outline-pager {
+  display: none; }
+
+.has-outline-pager {
+  width: 100%; }
+
 
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 /* ---------------------------- Breadcrumbs START---------------------------- */
@@ -3006,7 +3036,8 @@ div.note {
   float: right; }
 
 div.note.premeeting,
-div.note.subscribe {
+div.note.subscribe,
+div.note.external-user {
   display: block;
   float: none;
   margin-left: 18px; }
@@ -3024,7 +3055,8 @@ div.note.subscribe {
 .checkbox.follows,
 .checkbox.invisible,
 .checkbox.premeeting,
-.checkbox.can-subscribe {
+.checkbox.can-subscribe,
+.checkbox.external-user {
   float: right;
   display: inline;
   position: relative; }
@@ -3065,6 +3097,33 @@ div.note.premeeting::before {
   width: 16px;
   height: 16px; }
 
+div.note.external-user {
+  position: relative;
+  margin-top: 1em; }
+  div.note.external-user::before {
+    content: '';
+    position: absolute;
+    background-image: url(../img/external_user.png);
+    background-repeat: no-repeat;
+    background-size: 15px;
+    left: -18px;
+    width: 16px;
+    height: 16px;
+    top: 5px; }
+
+.checkbox.external-user::before {
+  content: '';
+  position: absolute;
+  background-image: url(../img/external_user.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center; }
+
 div.note.subscribe::before {
   content: '';
   position: absolute;
@@ -3090,6 +3149,9 @@ ul#follows .checkbox.premeeting {
   display: inline;
   position: relative;
   display: flex; }
+
+.create-user-btn {
+  text-align: right; }
 
 /* ---------------------------- Dropdown Button START ---------------------------- */
 .dropbtn {

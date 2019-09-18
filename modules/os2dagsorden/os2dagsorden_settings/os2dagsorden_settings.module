@@ -144,6 +144,9 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr'] = variable_get('os2dagsorden_show_bullet_case_nr', FALSE);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop'] = variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile'] = variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3);
+  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop_meeting_view'] = variable_get('os2dagsorden_attachments_pages_per_view_desktop_meeting_view', FALSE);
+  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_view'] = variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_view', FALSE);
+  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button'] = variable_get('os2dagsorden_show_expand_all_button', FALSE);
 
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode'] = variable_get('os2dagsorden_latest_meetings_view_mode', 'all');
@@ -160,8 +163,8 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_show_search_block_title'] = variable_get('os2dagsorden_show_search_block_title', 'true');
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_frontpage_layout_show_hide_zoom_buttons'] = variable_get('os2dagsorden_frontpage_layout_show_hide_zoom_buttons', FALSE);
 
-  $setting_array['os2dagsorden_body_text_layout']['os2dagsorden_body_text_size'] = variable_get('os2dagsorden_body_text_size', '13');
-  $setting_array['os2dagsorden_title_text_layout']['os2dagsorden_title_text_size'] = variable_get('os2dagsorden_title_text_size', '13');
+  $setting_array['os2dagsorden_text_layout']['os2dagsorden_body_text_size'] = variable_get('os2dagsorden_body_text_size', '13');
+  $setting_array['os2dagsorden_text_layout']['os2dagsorden_title_text_size'] = variable_get('os2dagsorden_title_text_size', '13');
   $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_show_meeting_committee'] = variable_get('os2dagsorden_meetings_search_show_meeting_committee', TRUE);
   $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_show_meeting_location'] = variable_get('os2dagsorden_meetings_search_show_meeting_location', FALSE);
   $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_show_meeting_status'] = variable_get('os2dagsorden_meetings_search_show_meeting_status', FALSE);
@@ -188,6 +191,10 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_allowed_span_styles'] = variable_get('os2dagsorden_allowed_span_styles', '');
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_tab_tag'] = variable_get('os2dagsorden_tab_tag', '&nbsp;');
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_url_strip_count'] = variable_get('os2dagsorden_url_strip_count', '20');
+  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_import_full_agenda_as_attachments'] = variable_get('os2dagsorden_import_full_agenda_as_attachments', FALSE);
+  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_title'] = variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument'));
+  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_with_attach_title'] = variable_get('oos2dagsorden_general_bullet_full_doc_with_attach_title', t('Åben samlet dokument med bilag'));
+  $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_point_title'] = variable_get('os2dagsorden_general_bullet_point_title', t('Generalt'));
 
   $setting_array['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_subject'] = variable_get('os2dagsorden_meeting_unpublished_state_subject', '');
   $setting_array['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_body'] = variable_get('os2dagsorden_meeting_unpublished_state_body', '');

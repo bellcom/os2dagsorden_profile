@@ -18,6 +18,7 @@ require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2
 require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2dagsorden_create_agenda_meeting_form.inc';
 require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2dagsorden_create_agenda_bullet_point.inc';
 require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2dagsorden_create_agenda_bpa.inc';
+require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2dagsorden_create_agenda_user.inc';
 
 /**
  * Implements hook_menu().
@@ -29,12 +30,24 @@ function os2dagsorden_create_agenda_menu() {
     'access arguments' => array('administer os2web'),
     'type' => MENU_CALLBACK,
   );
-
+  $items['agenda/meeting/user'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_meeting_page',
+    'access arguments' => array('administer os2web'),
+    'page arguments' => array(2),
+    'type' => MENU_CALLBACK,
+  );
   $items['agenda/meeting/%'] = array(
     'page callback' => 'os2dagsorden_create_agenda_meeting_page',
     'access callback' => '_os2dagsorden_create_agenda_meeting_access',
     'access arguments' => array(2),
     'page arguments' => array(2),
+    'type' => MENU_CALLBACK,
+  );
+  $items['agenda/meeting/%/user'] = array(
+    'page callback' => 'os2dagsorden_create_agenda_meeting_page',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(2),
+    'page arguments' => array(2, 3),
     'type' => MENU_CALLBACK,
   );
   $items['agenda/meeting/%/bullet-point/%'] = array(

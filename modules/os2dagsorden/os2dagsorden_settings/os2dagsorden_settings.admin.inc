@@ -29,6 +29,8 @@ define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
  *   Settings form.
  */
 function os2dagsorden_settings_settings_form($form, $form_state) {
+  drupal_add_js(drupal_get_path('module', 'os2dagsorden_settings') . '/js/os2dagsorden_settings.js');
+
   $output = os2dagsorden_blocks_positioning_show_git_version();
   $info_path = drupal_get_path('profile', 'os2dagsorden') . '/os2dagsorden.info';
   $info = drupal_parse_info_file($info_path);
@@ -469,6 +471,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#field_suffix' => t('Pages'),
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5),
   );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Activate for meeting view also'),
+    '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw', FALSE),
+  );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile'] = array(
     '#type' => 'textfield',
     '#title' => t('How many attachment\'s  pages are shown on meetings on mobile devices'),
@@ -477,6 +484,17 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#size' => 10,
     '#field_suffix' => t('Pages'),
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3),
+  );
+   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Activate for meeting view also'),
+    '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw', FALSE),
+  );
+   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show scrollbar on attachment page'),
+    '#description' => t('This decides if scrollbar will be shown when attachment displayed as HTML.'),
+    '#default_value' => variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE),
   );
 
   // Show latest meetings in my committee or all committees.
@@ -577,13 +595,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
 
   // Body text size.
-  $form['os2dagsorden_body_text_layout'] = array(
+  $form['os2dagsorden_text_layout'] = array(
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#title' => t('Body text size'),
+    '#title' => t('Text sizes'),
   );
-  $form['os2dagsorden_body_text_layout']['os2dagsorden_body_text_size'] = array(
+  $form['os2dagsorden_text_layout']['os2dagsorden_body_text_size'] = array(
     '#type' => 'textfield',
     '#title' => t('Body text size'),
     '#maxlength' => 10,
@@ -594,13 +612,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
 
   // Title text size.
-  $form['os2dagsorden_title_text_layout'] = array(
-    '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-    '#title' => t('Title text size'),
-  );
-  $form['os2dagsorden_title_text_layout']['os2dagsorden_title_text_size'] = array(
+  $form['os2dagsorden_text_layout']['os2dagsorden_title_text_size'] = array(
     '#type' => 'textfield',
     '#title' => t('Title text size'),
     '#maxlength' => 10,
@@ -836,6 +848,45 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#type' => 'checkbox',
     '#title' => t('Filter all HTML tags'),
     '#default_value' => variable_get('os2dagsorden_filter_all_tags', 0),
+  );
+  $form['os2dagsorden_meeting_import']['os2dagsorden_import_full_agenda_as_attachments'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Import full agenda files as bullet point attahcments'),
+    '#description' => t('Decide whether agenda files will be added to special bullet point as attachments.'),
+    '#default_value' => variable_get('os2dagsorden_import_full_agenda_as_attachments', FALSE),
+  );
+  $form['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_point_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('General bullet point title'),
+    '#maxlength' => 200,
+    '#default_value' => variable_get('os2dagsorden_general_bullet_point_title', t('Generalt')),
+     '#states' => array(
+      'visible' => array(
+        ':input[name="os2dagsorden_import_full_agenda_as_attachments"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+  $form['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title for bilag that contains full agenda '),
+    '#maxlength' => 200,
+    '#default_value' => variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument')),
+     '#states' => array(
+      'visible' => array(
+        ':input[name="os2dagsorden_import_full_agenda_as_attachments"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+  $form['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_with_attach_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title for bilag that contains full agenda with bilags'),
+    '#maxlength' => 200,
+    '#default_value' => variable_get('os2dagsorden_general_bullet_full_doc_with_attach_title', t('Åben samlet dokument med bilag')),
+     '#states' => array(
+      'visible' => array(
+        ':input[name="os2dagsorden_import_full_agenda_as_attachments"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_filtered_tags'] = array(
     '#type' => 'textfield',
@@ -1703,8 +1754,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     file_put_contents(drupal_realpath($file->uri), trim($content));
     $setting_array = parse_ini_file(drupal_realpath($file->uri), TRUE);
 
-    variable_set('os2dagsorden_body_text_size', $setting_array['os2dagsorden_body_text_layout']['os2dagsorden_body_text_size']);
-    variable_set('os2dagsorden_title_text_size', $setting_array['os2dagsorden_title_text_layout']['os2dagsorden_title_text_size']);
+    variable_set('os2dagsorden_text_size', $setting_array['os2dagsorden_text_layout']['os2dagsorden_body_text_size']);
+    variable_set('os2dagsorden_text_size', $setting_array['os2dagsorden_text_layout']['os2dagsorden_title_text_size']);
 
     variable_set('os2dagsorden_show_meeting_unpublish_button', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_meeting_unpublish_button']);
     variable_set('os2dagsorden_show_import_form_button', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_import_form_button']);
@@ -1727,7 +1778,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_use_abbr', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_use_abbr']);
     variable_set('os2dagsorden_show_bp_comname', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_comname']);
     variable_set('os2dagsorden_show_bilag_pages_amount', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount']);
-    variable_set('os2dagsorden_show_group_pager_on_bpa_page', $setting_array['os2dagsorden_meeting_view_settings']['oos2dagsorden_show_group_pager_on_bpa_page']);
+    variable_set('os2dagsorden_show_group_pager_on_bpa_page', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page']);
     variable_set('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_view_settings_not_attach_addtional_agenda']);
 
 // FIXME: new variable.
@@ -1762,7 +1813,10 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_case_bullet_point', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_case_bullet_point']);
     variable_set('os2dagsorden_show_bullet_case_nr', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bullet_case_nr']);
     variable_set('os2dagsorden_attachments_pages_per_view_desktop', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop']);
+    variable_set('os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw']);
     variable_set('os2dagsorden_attachments_pages_per_view_mobile', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile']);
+    variable_set('os2dagsorden_attachments_pages_per_view_mobile_meeting_view', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_view']);
+    variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page']);
     variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
@@ -1805,6 +1859,10 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_allowed_span_styles', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_allowed_span_styles']);
     variable_set('os2dagsorden_tab_tag', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_tab_tag']);
     variable_set('os2dagsorden_url_strip_count', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_url_strip_count']);
+    variable_set('os2dagsorden_import_full_agenda_as_attachments', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_import_full_agenda_as_attachments']);
+    variable_get('os2dagsorden_general_bullet_full_doc_title', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_title']);
+    variable_get('os2dagsorden_general_bullet_full_doc_with_attach_title', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_with_attach_title']);
+    variable_get('os2dagsorden_general_bullet_point_title', $setting_array['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_point_title']);
 
     variable_set('os2dagsorden_meeting_unpublished_state_subject', $setting_array['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_subject']);
     variable_set('os2dagsorden_meeting_unpublished_state_body', $setting_array['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_body']);

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * os2dagsorden_fields_and_content_types.features.field_instance.inc
@@ -48,7 +47,51 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 9,
+      'weight' => 10,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-os2web_meetings_meeting-field_os2web_meetings_full_attac'.
+  $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_full_attac'] = array(
+    'bundle' => 'os2web_meetings_meeting',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 42,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_full_attac',
+    'label' => 'Show attachments in full view',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 29,
     ),
   );
 
@@ -603,6 +646,43 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_user_external'.
+  $field_instances['user-user-field_user_external'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 21,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_external',
+    'label' => 'External user',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 19,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_user_full_name'.
   $field_instances['user-user-field_user_full_name'] = array(
     'bundle' => 'user',
@@ -870,6 +950,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('Comname');
   t('Deles med');
   t('Deles med grupper');
+  t('External user');
   t('Follows committees');
   t('Follows committees subscribed');
   t('Follows committees+');
@@ -883,6 +964,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('Premeeting committee');
   t('Rediger tekst');
   t('Ref Bullet point');
+  t('Show attachments in full view');
   t('Speaker paper groups');
   t('User can send to friend closed bullet points');
   t('represents the committees the user is a part of');

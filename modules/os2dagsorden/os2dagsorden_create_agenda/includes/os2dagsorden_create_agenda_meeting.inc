@@ -31,6 +31,9 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
   elseif (!empty($form_state['page_num']) && $form_state['page_num'] === 3) {
     return os2dagsorden_create_agenda_bpa($form, $form_state);
   }
+  elseif (!empty($form_state['page_num']) && $form_state['page_num'] === 4) {
+    return os2dagsorden_create_agenda_meeting_create_user_form($form, $form_state);
+  }
   elseif (isset($bpa_id)) {
     $form_state['meeting_id'] = $meeting_id;
     $form_state['bullet_point_id'] = $bp_id;
@@ -104,7 +107,17 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     // If meeting id is empty, try to fill it with form_state meeting_id value.
     $meeting_id = $form_state['meeting_id'];
   }
-  _os2dagsorden_create_agenda_render_drag_and_drop_controls($form, $meeting_id);
+  $form['create_user'] = array(
+    '#type' => 'submit',
+    '#prefix' => '<div class="create-user-btn">',
+    '#attributes' => array(
+      'class' => array('form-add-submit'),
+    ),
+    '#value' => t('Create user'),
+    '#submit' => array('os2dagsorden_create_agenda_meeting_create_user'),
+    '#suffix' => '</div>',
+  );
+  _os2dagsorden_create_agenda_render_drag_and_drop_controls($form, $form_state, $meeting_id);
   if ($meeting_id) {
     // Saving for usage in the submit function.
     $form_state['meeting_id'] = $meeting_id;
@@ -224,6 +237,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
 
   }
+  
 
   if (!isset($form['agenda'][0])) {
     $form['agenda']['#access'] = FALSE;
@@ -354,8 +368,12 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
 
   $node->field_os2web_meetings_type['und'][0]['value'] = $input['status'];
   node_submit($node);
+  if (variable_get('os2dagsorden_import_full_agenda_as_attachments', FALSE)) {
+    if ($general_item_id = os2dagsorden_create_agenda_create_general_item($node)) {
+      $node->field_os2web_meetings_bullets[LANGUAGE_NONE][]['target_id'] = $general_item_id;
+    }
+  }
   node_save($node);
-
   return $node;
 }
 
@@ -503,7 +521,7 @@ function os2dagsorden_create_agenda_sort_bp_ajax_call() {
 
 /**
  * Helper functions to find latest created meeting.
- * 
+ *
  * * @return mixed
  *   the meeting nid if found, FALSE otherwise.
  */
@@ -527,4 +545,110 @@ function os2dagsorden_create_agenda_get_latest_meeting_created_by_user() {
     return $meeting->nid;
   }
   return FALSE;
+}
+
+function os2dagsorden_create_agenda_create_general_item($node) {
+  $items = array (
+    'full_doc' => variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument')),
+    'full_doc_c' => variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument')) . '(Lukket)',
+  );
+  $doc_file_exists = FALSE;
+  foreach ($items as $key => $title) {
+    $field = 'field_os2web_meetings_' . $key;
+    if (isset($node->$field[LANGUAGE_NONE][0])) {
+      $doc_file_exists = TRUE;
+      break;
+    }
+  }
+  if ($doc_file_exists) {
+    $bullet_point = _os2dagsorden_access_helper_get_genaral_bullet_point($node->nid);
+
+  if (!$bullet_point) {
+    $bullet_point = new stdClass();
+    $bullet_point->type = "os2web_meetings_bullet";
+    $bullet_point->language = LANGUAGE_NONE;
+    $bullet_point->uid = 1;
+    $bullet_point->title =variable_get('os2dagsorden_general_bullet_point_title', t('Generalt'));
+    // Set some default values.
+    node_object_prepare($bullet_point);
+    $bullet_point->field_os2web_meetings_bul_gener[LANGUAGE_NONE][0]['value'] = 1;
+    $bullet_point->field_os2web_meetings_bul_number[LANGUAGE_NONE][0]['value'] = 0;
+    node_submit($bullet_point);
+    node_save($bullet_point);
+  }
+  $existing_attachments = array();
+  if ($bullet_point->field_os2web_meetings_attach['und']) {
+    foreach($bullet_point->field_os2web_meetings_attach['und'] as $attachnemt_nid) {
+      $attachment =  node_load($attachnemt_nid['target_id']);
+      foreach ($items as $key => $title) {
+        if ($attachment->title === $title) {
+          $existing_attachments[$key] = $attachment;
+          break;
+        }
+      }
+    }
+  }
+  $attachment_nids = array();
+  foreach ($items as $key => $title) {
+    $field = 'field_os2web_meetings_' . $key;
+    $schedule_to_convert = FALSE;
+    if (isset($node->$field[LANGUAGE_NONE][0])) {
+      $file = file_load($node->$field[LANGUAGE_NONE][0]['fid']);
+      $file->display = 1;
+      if (isset($existing_attachments[$key])) {
+        $attachment_node = $existing_attachments[$key];
+      }
+      else {
+        $attachment_node = new stdClass();
+        $attachment_node->type = "os2web_meetings_bullet_attach";
+        $attachment_node->language = LANGUAGE_NONE;
+        $attachment_node->uid = 1;
+        $attachment_node->title = $title;
+        node_object_prepare($attachment_node);
+        node_submit($attachment_node);
+        node_save($attachment_node);
+      }
+      if (isset($attachment_node->field_os2web_meetings_bpa_file['und'][0])) {
+        if ((int) $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['filesize'] !== $file->filesize) {
+          $attachment_node->field_os2web_meetings_bpa_file['und'][0] = (array) $file;
+          $schedule_to_convert = TRUE;
+          node_save($attachment_node);
+        }
+      }
+      else {
+        $attachment_node->field_os2web_meetings_bpa_file['und'][0] = (array) $file;
+        $schedule_to_convert = TRUE;
+        node_save($attachment_node);
+      }
+
+      if($schedule_to_convert) {
+        // PDF conversion.
+        if (module_exists("os2dagsorden_pdf2htmlex")) {
+          // If is PDF, schedule for HTML conversion.
+          if (file_get_mimetype($file->uri) === 'application/pdf') {
+            os2dagsorden_pdf2htmlex_schedule($file->fid, $attachment_node->nid);
+          }
+        }
+        // PNG  conversion.
+        if (module_exists("os2dagsorden_pdf2png_conversion")) {
+          // If is PDF, schedule for HTML conversion.
+          if (file_get_mimetype($file->uri) === 'application/pdf') {
+            os2dagsorden_pdf2png_conversion_schedule($file->fid);
+          }
+        }
+      }
+      $attachment_nids[] = array('target_id' => $attachment_node->nid);
+    }
+  }
+  $bullet_point->field_os2web_meetings_attach['und'] =  $attachment_nids;
+  node_save($bullet_point);
+  return $bullet_point->nid;
+
+  }
+  return FALSE;
+}
+
+function os2dagsorden_create_agenda_meeting_create_user($form, &$form_state) {
+  $form_state['page_num'] = 4;
+  $form_state['rebuild'] = TRUE;
 }

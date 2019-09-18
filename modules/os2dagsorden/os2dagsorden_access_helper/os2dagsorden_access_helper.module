@@ -614,3 +614,21 @@ function os2dagsorden_access_helper_module_implements_alter(&$implementations, $
     $implementations['os2dagsorden_access_helper'] = $group;
   }
 }
+
+/**
+ * 
+ */
+function _os2dagsorden_access_helper_get_genaral_bullet_point($meeting_id) {
+  $existing_bullet_points = array();
+  $node = node_load($meeting_id);
+  if ($node->field_os2web_meetings_bullets['und']) {
+    $existing_bullet_points = $node->field_os2web_meetings_bullets['und'];
+  }
+  foreach ($existing_bullet_points as $bullet_nid) { 
+    $bullet = node_load($bullet_nid['target_id']);
+    if ((int) $bullet->field_os2web_meetings_bul_gener[LANGUAGE_NONE][0]['value'] === 1) {
+      return $bullet;
+    }
+  }
+  return FALSE;
+}

@@ -45,6 +45,12 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid) {
 
   );
 
+  $form['user_external'] = array(
+    '#access' => user_access('administer external users'),
+    '#type' => 'checkbox',
+    '#title' =>  t('External user'),
+    '#default_value' => FALSE,
+  );
   $cat_voc = taxonomy_vocabulary_machine_name_load('os2web_meetings_tax_committee_category');
   $cat_terms = taxonomy_get_tree($cat_voc->vid);
   $cat_select = array();
