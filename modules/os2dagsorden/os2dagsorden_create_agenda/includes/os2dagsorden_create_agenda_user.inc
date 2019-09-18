@@ -99,7 +99,7 @@ function _os2dagsorden_create_agenda_meeting_create_user_form_submit($form, &$fo
   );
   $account = user_save('', $fields);
   // Send notification email.
-  drupal_mail('user', 'register_admin_created', $email, NULL, array('account' => $account), variable_get('site_mail', ''));
+  drupal_mail('user', 'password_reset', $email, NULL, array('account' => $account), variable_get('site_mail', ''));
 
   $form_state['input'] = (array) json_decode($form_state['meeting_data']);
   $participants = explode(',', $form_state['input']['participants_hidden']);
