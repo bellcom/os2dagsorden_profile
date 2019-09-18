@@ -844,11 +844,6 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether the will be added a prefix to Bilag or Case bullet point attachment on import.<br/>e.g. <b>Bilag:</b> Indsigelser of Bemaerkninger.'),
     '#default_value' => variable_get('os2dagsorden_add_type_prefix', 'true'),
   );
-  $form['os2dagsorden_meeting_import']['os2dagsorden_filter_all_tags'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Filter all HTML tags'),
-    '#default_value' => variable_get('os2dagsorden_filter_all_tags', 0),
-  );
   $form['os2dagsorden_meeting_import']['os2dagsorden_import_full_agenda_as_attachments'] = array(
     '#type' => 'checkbox',
     '#title' => t('Import full agenda files as bullet point attahcments'),
@@ -887,6 +882,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
         ':input[name="os2dagsorden_import_full_agenda_as_attachments"]' => array('checked' => TRUE),
       ),
     ),
+  );
+  $form['os2dagsorden_meeting_import']['os2dagsorden_filter_all_tags'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Filter all HTML tags'),
+    '#default_value' => variable_get('os2dagsorden_filter_all_tags', 0),
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_filtered_tags'] = array(
     '#type' => 'textfield',
