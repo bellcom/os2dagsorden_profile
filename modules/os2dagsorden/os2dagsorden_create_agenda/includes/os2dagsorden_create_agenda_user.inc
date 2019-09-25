@@ -104,7 +104,8 @@ function _os2dagsorden_create_agenda_meeting_create_user_form_submit($form, &$fo
   $form_state['input'] = (array) json_decode($form_state['meeting_data']);
   $participants = explode(',', $form_state['input']['participants_hidden']);
   $participants[] = $account->uid;
-  $form_state['input']['participants_hidden'] = array_diff($participants, array(''));
+  $participants = array_diff($participants, array(''));
+  $form_state['input']['participants_hidden'] = implode(',', $participants);
   if (isset($form_state['input']['start_date'])) {
     $timestamp = strtotime($form_state['input']['start_date']);
     $form_state['input']['start_date'] = array (

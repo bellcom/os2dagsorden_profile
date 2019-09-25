@@ -448,7 +448,7 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $form
 
   $form['participants_div'] = array(
     '#type' => 'item',
-    '#prefix' => '<label class="label-participants">' . t('Participants:') . '</label><div class="note">' . t('Invisible:') . '</div>',
+    '#prefix' => '<label class="label-participants">' . t('Participants:') . '</label><div class="note">' . t('Invisible:') . '</div><div class="note external-user">' . t('External user') . '</div>',
     '#markup' => '',
   );
   $form['participants_hidden'] = array(
@@ -497,8 +497,10 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $form
     }
 
   }
-  if (isset($form_state['input']['participants_hidden'])) {
-    $participants = $participants + $form_state['input']['participants_hidden'];
+  if (isset($form_state['input']['participants_hidden']) && !empty($form_state['input']['participants_hidden'])) {
+    $participants = $participants + explode(',', $form_state['input']['participants_hidden']);
+    $participants = array_unique($participants);
+
   }
   // Printing follows plus plus.
   $content = "<ul id='participants' class='droptrue ui-sortable'>";
