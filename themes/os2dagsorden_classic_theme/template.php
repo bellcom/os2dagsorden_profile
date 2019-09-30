@@ -56,10 +56,13 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
   if (!empty($view)) {
     global $base_path;
     if ($view->name === 'meeting_details') {
+      $args =  arg();
+      $meeting =  node_load($args[1]);
       // Adding expand/collapse behaviour to meeting details view.
       $os2dagsorden_expand_all_bullets = variable_get('os2dagsorden_expand_all_bullets', FALSE) ? TRUE : 'false';
       $expand_attachment = variable_get('os2dagsorden_expand_attachment', TRUE);
-      $expand_attachment_onload = variable_get('os2dagsorden_expand_attachment_onload', FALSE);
+      $expand_attachment_onload = variable_get('os2dagsorden_expand_attachment_onload', FALSE)
+          || (!empty($meeting->field_os2web_meetings_full_attac) && $meeting->field_os2web_meetings_full_attac['und'][0]['value'] ==1);
       drupal_add_js('bullet_point_add_expand_behaviour("' . $base_path . '?q=", ' . $expand_attachment . ',  ' . $os2dagsorden_expand_all_bullets . ' , ' . $expand_attachment_onload . ')', 'inline');
       if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js');
