@@ -14,7 +14,7 @@
 function os2dagsorden_create_agenda_meeting_create_user_form($form, &$form_state) {
   $form_state['meeting_data'] = json_encode($form_state['values']);
   $form[] = array(
-    '#markup' => '<h1 class="title">' . t('External User') . '</h1>',
+    '#markup' => '<h1 class="title">' . t('External user') . '</h1>',
   );
 
   $form[] = array(
