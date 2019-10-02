@@ -503,16 +503,11 @@ function os2dagsorden_create_agenda_sort_bp_ajax_call() {
   $bullet_points = array_values(node_load_multiple($attachments));
   foreach ($bullet_points as $key => $bp) {
     if ((int)$bp->field_os2web_meetings_bul_number['und'][0]['value'] != (int) $key + 1)  {
-      // Creating meeting shadow to speed up saving.
-      $node = new stdClass();
-      $node->nid = $bp->nid; // Enter the nid taken. Make sure it exists.
-      $node->type = 'os2web_meetings_bullet';
-      $node->field_os2web_meetings_bul_number['und'][0]['value'] = (int) $key + 1;
-      // Forcing fields updates.
-      field_attach_update('node', $node);
-      field_attach_presave('node', $node);
-      // Clear the static loading cache.
-      entity_get_controller('node')->resetCache(array($node->nid));
+      if (preg_match_all('/Punkt ([0-9]*)/i', $bp->title, $matches) === 1) {
+        $bp->title = str_replace($matches[0], 'Punkt ' . (string) ($key + 1), $bp->title);      
+      }
+      $bp->field_os2web_meetings_bul_number['und'][0]['value'] = (int) $key + 1;
+      node_save($bp);
     }
     $meeting->field_os2web_meetings_bullets['und'][]['target_id'] = $nid;
   }
