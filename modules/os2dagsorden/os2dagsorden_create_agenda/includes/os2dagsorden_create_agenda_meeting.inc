@@ -63,35 +63,36 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
   // Pass the maximum file size in bytes - 2 MB.
   $max_filesize_bytes = variable_get('os2dagsorden_plupupload_max_filesize', 2) * 1024 * 1024;
   $allowed_extensions = variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf');
+  if (variable_get('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form', FALSE)) {
+    // Adding other fields.
+    $form['description_opened'] = array(
+      '#title' => t('Description opened:'),
+      '#type' => 'plupload',
+      '#name' => 'files[]',
+      '#autoupload' => TRUE,
+      '#upload_validators' => array(
+        'file_validate_extensions' => array($allowed_extensions),
+        'file_validate_size' => array($max_filesize_bytes),
+      ),
+      '#plupload_settings' => array(
+        'multi_selection' => false,
+      ),
+    );
 
-  // Adding other fields.
-  $form['description_opened'] = array(
-    '#title' => t('Description opened:'),
-    '#type' => 'plupload',
-    '#name' => 'files[]',
-    '#autoupload' => TRUE,
-    '#upload_validators' => array(
-      'file_validate_extensions' => array($allowed_extensions),
-      'file_validate_size' => array($max_filesize_bytes),
-    ),
-    '#plupload_settings' => array(
-      'multi_selection' => false,
-    ),
-  );
-
-  $form['description_closed'] = array(
-    '#title' => t('Description closed:'),
-    '#type' => 'plupload',
-    '#name' => 'files[]',
-    '#autoupload' => TRUE,
-    '#upload_validators' => array(
-      'file_validate_extensions' => array($allowed_extensions),
-      'file_validate_size' => array($max_filesize_bytes),
-    ),
-    '#plupload_settings' => array(
-      'multi_selection' => false,
-    ),
-  );
+    $form['description_closed'] = array(
+      '#title' => t('Description closed:'),
+      '#type' => 'plupload',
+      '#name' => 'files[]',
+      '#autoupload' => TRUE,
+      '#upload_validators' => array(
+        'file_validate_extensions' => array($allowed_extensions),
+        'file_validate_size' => array($max_filesize_bytes),
+      ),
+      '#plupload_settings' => array(
+        'multi_selection' => false,
+      ),
+    );
+  }
 
   $form['agenda'] = array(
     '#type' => 'fieldset',
@@ -237,7 +238,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
 
   }
-  
+
 
   if (!isset($form['agenda'][0])) {
     $form['agenda']['#access'] = FALSE;
@@ -310,38 +311,13 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
   $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
 
   $input = $form_state['input'];
-  // File extraction.
-  $description_opened = $form_state['values']['description_opened'];
-  $description_closed = $form_state['values']['description_closed'];
+  if (variable_get('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form', FALSE)) {
+    // File extraction.
+    $description_opened = $form_state['values']['description_opened'];
+    $description_closed = $form_state['values']['description_closed'];
 
-  if (!empty($description_opened)) {
-   foreach ($description_opened as $description_file) {
-    if ($description_file['status'] == 'done') {
-      // Resaving file permanently.
-      $source = $description_file['tmppath'];
-      $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $description_file['name']);
-      $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
-      $description_file = plupload_file_uri_to_object($destination);
-      file_save($description_file);
-      $description_file->status = FILE_STATUS_PERMANENT;
-      $description_file->display = 1;
-      file_save($description_file);
-      $node->field_os2web_meetings_full_doc['und'][0] = (array) $description_file;
-      break;
-     }
-    }
-  }
-  else {
-    if (field_get_items('node', $node, 'field_os2web_meetings_full_doc')) {
-      $description_opened_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_full_doc'));
-      $to_del_file = file_load($description_opened_field['fid']);
-      unset($node->field_os2web_meetings_full_doc['und']);
-      file_delete($to_del_file);
-    }
-  }
-
-  if (!empty($description_closed)) {
-    foreach ($description_closed as $description_file) {
+    if (!empty($description_opened)) {
+     foreach ($description_opened as $description_file) {
       if ($description_file['status'] == 'done') {
         // Resaving file permanently.
         $source = $description_file['tmppath'];
@@ -352,20 +328,46 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
         $description_file->status = FILE_STATUS_PERMANENT;
         $description_file->display = 1;
         file_save($description_file);
-        $node->field_os2web_meetings_full_doc_c['und'][0] = (array) $description_file;
+        $node->field_os2web_meetings_full_doc['und'][0] = (array) $description_file;
         break;
+       }
+      }
+    }
+    else {
+      if (field_get_items('node', $node, 'field_os2web_meetings_full_doc')) {
+        $description_opened_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_full_doc'));
+        $to_del_file = file_load($description_opened_field['fid']);
+        unset($node->field_os2web_meetings_full_doc['und']);
+        file_delete($to_del_file);
+      }
+    }
+
+    if (!empty($description_closed)) {
+      foreach ($description_closed as $description_file) {
+        if ($description_file['status'] == 'done') {
+          // Resaving file permanently.
+          $source = $description_file['tmppath'];
+          $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $description_file['name']);
+          $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
+          $description_file = plupload_file_uri_to_object($destination);
+          file_save($description_file);
+          $description_file->status = FILE_STATUS_PERMANENT;
+          $description_file->display = 1;
+          file_save($description_file);
+          $node->field_os2web_meetings_full_doc_c['und'][0] = (array) $description_file;
+          break;
+        }
+      }
+    }
+    else {
+      if (field_get_items('node', $node, 'field_os2web_meetings_full_doc_c')) {
+        $description_closed_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_full_doc_c'));
+        $to_del_file = file_load($description_closed_field['fid']);
+        unset($node->field_os2web_meetings_full_doc_c['und']);
+        file_delete($to_del_file);
       }
     }
   }
-  else {
-    if (field_get_items('node', $node, 'field_os2web_meetings_full_doc_c')) {
-      $description_closed_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_full_doc_c'));
-      $to_del_file = file_load($description_closed_field['fid']);
-      unset($node->field_os2web_meetings_full_doc_c['und']);
-      file_delete($to_del_file);
-    }
-  }
-
   $node->field_os2web_meetings_type['und'][0]['value'] = $input['status'];
   node_submit($node);
   if (variable_get('os2dagsorden_import_full_agenda_as_attachments', FALSE)) {
@@ -504,7 +506,7 @@ function os2dagsorden_create_agenda_sort_bp_ajax_call() {
   foreach ($bullet_points as $key => $bp) {
     if ((int)$bp->field_os2web_meetings_bul_number['und'][0]['value'] != (int) $key + 1)  {
       if (preg_match_all('/Punkt ([0-9]*)/i', $bp->title, $matches) === 1) {
-        $bp->title = str_replace($matches[0], 'Punkt ' . (string) ($key + 1), $bp->title);      
+        $bp->title = str_replace($matches[0], 'Punkt ' . (string) ($key + 1), $bp->title);
       }
       $bp->field_os2web_meetings_bul_number['und'][0]['value'] = (int) $key + 1;
       node_save($bp);
