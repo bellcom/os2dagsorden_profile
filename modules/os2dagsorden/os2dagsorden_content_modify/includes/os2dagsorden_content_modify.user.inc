@@ -564,7 +564,10 @@ function _os2dagsorden_conten_modify_load_user_fields(&$form, $uid) {
     $token_login_field = array_pop(field_get_items('user', $user, 'field_user_login_token'));
     $form['token_login']['#default_value'] = $token_login_field['value'];
   }
-
+  if (field_get_items('user', $user, 'field_user_external')) {
+    $user_external_field = array_pop(field_get_items('user', $user, 'field_user_external'));
+    $form['user_external']['#default_value'] = $user_external_field['value'];
+  }
   $form['user_roles']['#default_value'] = $user->roles;
 }
 
@@ -606,7 +609,7 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
   $user->field_user_full_name['und'][0]['value'] = $full_name;
   $user->field_user_organization['und'][0]['value'] = $organization;
   $user->field_user_can_send_closed_bp['und'][0]['value'] = $user_can_send_closed_bp;
-
+  $user->field_user_external['und'][0]['value'] = $user_external;
   // Unsetting follows committees.
   $user->field_follows_committee['und'] = array();
   if ($follows) {
