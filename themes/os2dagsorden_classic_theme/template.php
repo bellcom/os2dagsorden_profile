@@ -59,8 +59,8 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
       $args =  arg();
       $meeting =  node_load($args[1]);
       // Adding expand/collapse behaviour to meeting details view.
-      $os2dagsorden_expand_all_bullets = (variable_get('os2dagsorden_expand_all_bullets', FALSE) || (!empty($meeting->field_os2web_meetings_full_attac) && $meeting->field_os2web_meetings_full_attac['und'][0]['value'] ==1))
- ? TRUE : 'false';
+      $os2dagsorden_expand_all_bullets = (variable_get('os2dagsorden_expand_all_bullets', FALSE)
+          || (!empty($meeting->field_os2web_meetings_full_attac) && $meeting->field_os2web_meetings_full_attac['und'][0]['value'] ==1)) ? TRUE : 'false';
       $expand_attachment = variable_get('os2dagsorden_expand_attachment', TRUE);
       $expand_attachment_onload = variable_get('os2dagsorden_expand_attachment_onload', FALSE)
           || (!empty($meeting->field_os2web_meetings_full_attac) && $meeting->field_os2web_meetings_full_attac['und'][0]['value'] ==1);
