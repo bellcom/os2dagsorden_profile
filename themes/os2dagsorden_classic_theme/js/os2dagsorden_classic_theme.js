@@ -190,6 +190,7 @@ jQuery(document).ready(function() {
     jQuery("#edit-available-committee").css('height',jQuery(".select-committee").height()+"px");
     jQuery(".remove-committee").css('width',jQuery(".select-committee").width()+"px");
     jQuery("#edit-available-users").css('height',jQuery(".select-participants").height()+"px");
+    jQuery('.page-user-reset #block-system-main #edit-pass-pass1').focus();
     //updatePostOrder();
 });
 

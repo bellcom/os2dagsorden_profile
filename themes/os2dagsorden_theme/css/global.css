@@ -73,7 +73,14 @@
     float: none;
     display: block;
     width: 74px; }
-
+  
+ .page-user-reset #block-system-main {
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    background: #f7f1f1;
+    padding: 20px 40px;
+  }
 #block-user-login {
   max-width: 450px;
   min-height: 400px;
