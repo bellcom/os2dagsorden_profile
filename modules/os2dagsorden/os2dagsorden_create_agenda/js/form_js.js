@@ -10,8 +10,32 @@
         parent.location.href = response.redirect;
         parent.Lightbox.end();
       }
-
     }
+    $('#edit-start-date-datepicker-popup-0').datepicker({
+        onClose: function(){
+          $(this).focus();
+          $('#edit-end-date-datepicker-popup-0').val( $(this).val())
+        }
+    });
+
+    $('#edit-end-date-datepicker-popup-0').datepicker({
+        onClose: function(){
+        $(this).focus();
+        }
+    });
+
+    $('#edit-start-date-timeEntry-popup-1').change(
+        function(){
+          $('#edit-end-date-timeEntry-popup-1').val($(this).val());
+          $(this).focus();
+        }
+    );
+    $('#edit-end-date-timeEntry-popup-1').change(
+        function(){
+          $('#edit-end-date-timeEntry-popup-1').val($(this).val());
+          $(this).focus();
+        }
+    );
       $('.create-agenda-edit-delete-container.form-submit-delete').once('form-submit-delete-processed').each(function (index) {
         var events = $(this).clone(true).data('events');// Get the jQuery events.
         $(this).unbind('mousedown'); // Remove the click events.
@@ -26,6 +50,17 @@
           return false;
         })
       });
+    $('#edit-start-date-datepicker-popup-0').datepicker({
+        onClose: function(){
+        $(this).focus();
+      }
+    });
+
+    $('#edit-end-date-datepicker-popup-0').datepicker({
+        onClose: function(){
+        $(this).focus();
+        }
+    });
       jQuery('.edit-meeting-btn.form-submit-delete').click(function (event) {
         event.preventDefault();
         if (confirm(Drupal.t('Are you sure you want to delete this item?'))) {
