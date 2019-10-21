@@ -50,17 +50,7 @@
           return false;
         })
       });
-    $('#edit-start-date-datepicker-popup-0').datepicker({
-        onClose: function(){
-        $(this).focus();
-      }
-    });
 
-    $('#edit-end-date-datepicker-popup-0').datepicker({
-        onClose: function(){
-        $(this).focus();
-        }
-    });
       jQuery('.edit-meeting-btn.form-submit-delete').click(function (event) {
         event.preventDefault();
         if (confirm(Drupal.t('Are you sure you want to delete this item?'))) {
