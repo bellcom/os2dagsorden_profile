@@ -19,7 +19,6 @@ dependencies[] = node_reference
 dependencies[] = number
 dependencies[] = options
 dependencies[] = os2dagsorden_fields_and_content_types
-dependencies[] = os2dagsorden_piwik
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = text

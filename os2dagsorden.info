@@ -63,8 +63,6 @@ dependencies[] = lightbox2
 dependencies[] = content_taxonomy
 dependencies[] = php
 dependencies[] = delete_all
-dependencies[] = piwik
-dependencies[] = piwik_stats
 dependencies[] = admin_views
 dependencies[] = better_watchdog_ui
 
