@@ -1562,6 +1562,14 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#description' => t('The period in hours during what the data of latest created meeting  will be save and will be populated during new meeting creation. -1 for indefinite.'),
       '#default_value' => variable_get('os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data', -1),
     );
+    $form['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_meeting_start_date_default'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Antall dage i fremtiden mødet skal oprettes'),
+      '#field_suffix' => t('days'),
+      '#size' => 10,
+      '#description' => t('The amount of days in future for meeting start date default value. If that field is set to 10, when a meeting created start date will be set 10 days ahead.'),
+      '#default_value' => variable_get('os2dagsorden_create_agenda_meeting_start_date_default'),
+    );
     $form['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form'] = array(
       '#type' => 'checkbox',
       '#title' => t('Show fields for upload PDF files with full agenda on meeting creation form'),
@@ -1981,6 +1989,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
   }
   if (module_exists('os2dagsorden_create_agenda')) {
     variable_set('os2dagsorden_create_agenda_period_to_store_latest_created meeting_data', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to_store_latest_created meeting_data']);
+    variable_set('os2dagsorden_create_agenda_meeting_start_date_default', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_meeting_start_date_default']);
     variable_set('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form']);
   }
 }
