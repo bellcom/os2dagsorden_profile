@@ -309,7 +309,7 @@ function os2dagsorden_settings_export_to_file() {
   if (module_exists('os2dagsorden_create_agenda')) {
     $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data'] = variable_get('os2dagsorden_create_agenda_period_to_store_latest_created_meeting_data', -1);
     $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form'] = variable_get('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form', FALSE);
-    $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_meeting_start_date_default'] = variable_get('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form');
+    $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_meeting_start_date_default'] = variable_get('os2dagsorden_create_agenda_meeting_start_date_default');
   }
   print os2dagsorden_settings_write_ini_file($setting_array, TRUE);
 }
