@@ -233,10 +233,26 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
   }
   else if ($meeting_id = os2dagsorden_create_agenda_get_latest_meeting_created_by_user()) {
     $node = node_load($meeting_id);
-
-    // Filling general fields.
+    // Prefill new date values.
+    $start_time = date('H:i:s', strtotime($node->field_os2web_meetings_date['und'][0]['value']));
+    $end_time = date('H:i:s', strtotime($node->field_os2web_meetings_date['und'][0]['value2']));
+    $days_in_future = variable_get('os2dagsorden_create_agenda_meeting_start_date_default') ? variable_get('os2dagsorden_create_agenda_meeting_start_date_default') : 0;
+    $days_in_future = strtotime('+ ' . $days_in_future . ' days');
+    $node->field_os2web_meetings_date['und'][0]['value'] = date('Y-m-d', $days_in_future) . ' ' . $start_time;
+    $node->field_os2web_meetings_date['und'][0]['value2'] = date('Y-m-d', $days_in_future) . ' ' . $end_time;
+     // Filling general fields.
     $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
+  }
+  else {
+    $days_in_future = variable_get('os2dagsorden_create_agenda_meeting_start_date_default') ? variable_get('os2dagsorden_create_agenda_meeting_start_date_default') : 0;
+    $days_in_future = '+ ' . $days_in_future . ' days';
+    $date_start_obj = date_create($days_in_future, new DateTimeZone('UTC'));
+    date_timezone_set($date_start_obj, timezone_open(date_default_timezone()));
+    $form['start_date']['#default_value'] = date_format($date_start_obj, 'Y-m-d H:i:s');
 
+    $date_end_obj = date_create($days_in_future, new DateTimeZone('UTC'));
+    date_timezone_set($date_end_obj, timezone_open(date_default_timezone()));
+    $form['end_date']['#default_value'] = date_format($date_end_obj, 'Y-m-d H:i:s');
   }
 
 

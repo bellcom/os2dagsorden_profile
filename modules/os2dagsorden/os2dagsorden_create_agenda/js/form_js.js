@@ -10,15 +10,18 @@
         parent.location.href = response.redirect;
         parent.Lightbox.end();
       }
+
     }
     $('#edit-start-date-datepicker-popup-0').datepicker({
+        dateFormat: 'd/m/yy',
         onClose: function(){
           $(this).focus();
           $('#edit-end-date-datepicker-popup-0').val( $(this).val())
-        }
+        },
     });
 
     $('#edit-end-date-datepicker-popup-0').datepicker({
+        dateFormat: 'd/m/yy',
         onClose: function(){
         $(this).focus();
         }
@@ -36,6 +39,7 @@
           $(this).focus();
         }
     );
+
       $('.create-agenda-edit-delete-container.form-submit-delete').once('form-submit-delete-processed').each(function (index) {
         var events = $(this).clone(true).data('events');// Get the jQuery events.
         $(this).unbind('mousedown'); // Remove the click events.
@@ -48,9 +52,8 @@
 
           // Prevent default action.
           return false;
-        })
+        });
       });
-
       jQuery('.edit-meeting-btn.form-submit-delete').click(function (event) {
         event.preventDefault();
         if (confirm(Drupal.t('Are you sure you want to delete this item?'))) {
