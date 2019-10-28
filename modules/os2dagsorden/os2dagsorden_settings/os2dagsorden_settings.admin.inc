@@ -995,6 +995,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#description' => t('Local path to GhostScript (GS)'),
       '#default_value' => variable_get('os2dagsorden_gs_conversion_gs_path', ""),
     );
+    $form['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_symbols_cleanup'] = array(
+      '#type' => 'textfield',
+      '#title' => t('List of symbols that should be removed the filename'),
+      '#description' => t('Comma-separated list of symbols that should be removed from the filename before GS conversion'),
+      '#default_value' => variable_get('os2dagsorden_gs_conversion_symbols_cleanup', "–"),
+    );
   }
   if (module_exists('os2dagsorden_pdf2png_conversion')) {
     $form['os2dagsorden_pdf2png_conversion_settings'] = array(
@@ -1893,6 +1899,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
 
     if (module_exists('os2dagsorden_gs_conversion')) {
       variable_set('os2dagsorden_gs_conversion_gs_path', $setting_array['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_gs_path']);
+      variable_set('os2dagsorden_gs_conversion_symbols_cleanup', $setting_array['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_symbols_cleanup']);
     }
 
     if (module_exists('os2dagsorden_pdf2png_conversion')) {
