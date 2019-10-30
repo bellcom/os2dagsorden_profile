@@ -149,6 +149,20 @@ function os2dagsorden_gs_conversion_convert_single($fid, $uri) {
 
   // With file name.
   $file_path_real = drupal_realpath($uri);
+  $file_path_initial = $file_path_real;
+  $file_path_real_pathinfo = pathinfo($file_path_real);
+  // Cleanup problematic symbols from filename.
+  if (variable_get('os2dagsorden_gs_conversion_symbols_cleanup')) {
+    $symbols = explode(',', variable_get('os2dagsorden_gs_conversion_symbols_cleanup'));
+    $file_real_basename_clean = str_replace($symbols, '', $file_path_real_pathinfo['basename'], $count);
+    if ($count > 0) {
+      $file_path_real_clean = $file_path_real_pathinfo['dirname'] . '/'. $file_real_basename_clean;
+      // Creating dublicate of PDF file using as filename the string without problematic symbols.
+      if (copy($file_path_real, $file_path_real_clean)) {
+        $file_path_real = $file_path_real_clean;
+      }
+    }
+  }
   $file_path_converted = $file_path_real . '.tmp';
 
   // One has to know the exact locale of the system, otherwise uncomment the
@@ -164,8 +178,12 @@ function os2dagsorden_gs_conversion_convert_single($fid, $uri) {
   if (strcasecmp($new_pdf_version, '1.4') === 0) {
     // Removing original file.
     unlink($file_path_real);
+    // Removing dublicate of file if exists.
+    if ($file_path_initial != $file_path_real) {
+      unlink($file_path_initial);
+    }
     // Renaming new file.
-    rename($file_path_converted, $file_path_real);
+    rename($file_path_converted, $file_path_initial);
 
     db_update('os2dagsorden_gs_conversion_files')
       ->fields(array(

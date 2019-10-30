@@ -212,6 +212,7 @@ function os2dagsorden_settings_export_to_file() {
 
   if (module_exists('os2dagsorden_gs_conversion')) {
     $setting_array['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_gs_path'] = variable_get('os2dagsorden_gs_conversion_gs_path', "");
+    $setting_array['os2dagsorden_gs_conversion_settings']['os2dagsorden_gs_conversion_symbols_cleanup'] = variable_get('os2dagsorden_gs_conversion_symbols_cleanup');
   }
    if (module_exists('os2dagsorden_pdf2png_conversion')) {
     $setting_array['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_pdf2png_conversion_sedja_console_path'] = variable_get('os2dagsorden_pdf2png_conversion_sedja_console_pathos2dagsorden_clear_cache_active', "");
