@@ -73,7 +73,7 @@
     float: none;
     display: block;
     width: 74px; }
-  
+
  .page-user-reset #block-system-main {
     margin-left: auto;
     margin-right: auto;
@@ -2711,7 +2711,7 @@ a.annotator-wrapper {
           border-right: 0;
           border-left: 0; }
         .bilags-block .bilag-list ul li.current a {
-          font-weight: bold; }        
+          font-weight: bold; }
 .annotator-outline-pager {
   top: 0;
   width: 10%;
@@ -3355,3 +3355,16 @@ ul#follows .checkbox.premeeting {
 .annotator-button, .annotator-button:hover, .annotator-button:focus {
   border: 1px solid #783156 !important;
   background: #ae477d !important; }
+
+@media (min-width: 768px) {
+  .view-meeting-details td.case-id-link-container {
+    width: 70px !important;
+    text-align: right;
+  }
+  .view-content table .item-list {
+    margin-right: -200px;
+  }
+  .view-meeting-details .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
+    right: 25px;
+  }
+}
