@@ -73,13 +73,18 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     '#type' => 'plupload',
     '#name' => 'files[]',
     '#title' => t('Upload bilags files'),
-    '#autoupload' => TRUE,
+    '#autoupload' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
       'file_validate_size' => array($twenty_mb_bytes),
-    )
+    ),
+   '#prefix' => '<div class="auto">',
+   '#suffix' => '</div>',
   );
-
+  if (variable_get('os2dagsorden_plupupload_autoupload', TRUE)) {
+    $form['bilags']['#prefix'] = '<div class="field-autoupload">';
+    $form['bilags']['#suffix'] = '</div>';
+  }
   $form['bpas'] = array(
     '#type' => 'fieldset',
     '#title' => t('Bullet point attachments'),
@@ -253,7 +258,7 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     '#markup' => '</div>',
   );
   $form['#attached']['css'] = array(
-    drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
+     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css', 
   );
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js',
@@ -612,12 +617,16 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form($form, &$form_st
     '#type' => 'plupload',
     '#name' => 'files[]',
     '#title' => t('Upload bilags files'),
-    '#autoupload' => TRUE,
+    '#autoupload' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
       'file_validate_size' => array($max_filesize_bytes),
     )
   );
+  if (variable_get('os2dagsorden_plupupload_autoupload', TRUE)) {
+    $form['bilags']['#prefix'] = '<div class="field-autoupload">';
+    $form['bilags']['#suffix'] = '</div>';
+  }
   $form['save_bullet_point'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),

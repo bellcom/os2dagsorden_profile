@@ -69,7 +69,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
       '#title' => t('Description opened:'),
       '#type' => 'plupload',
       '#name' => 'files[]',
-      '#autoupload' => TRUE,
+      '#autoupload' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
       '#upload_validators' => array(
         'file_validate_extensions' => array($allowed_extensions),
         'file_validate_size' => array($max_filesize_bytes),
@@ -83,7 +83,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
       '#title' => t('Description closed:'),
       '#type' => 'plupload',
       '#name' => 'files[]',
-      '#autoupload' => TRUE,
+      '#autoupload' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
       '#upload_validators' => array(
         'file_validate_extensions' => array($allowed_extensions),
         'file_validate_size' => array($max_filesize_bytes),
@@ -92,6 +92,12 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
         'multi_selection' => false,
       ),
     );
+    if (variable_get('os2dagsorden_plupupload_autoupload', TRUE)) {
+      $form['description_closed']['#prefix'] = '<div class="field-autoupload">';
+      $form['description_closed']['#suffix'] = '</div>';
+      $form['description_opened']['#prefix'] = '<div class="field-autoupload">';
+      $form['description_opened']['#suffix'] = '</div>';
+    }
   }
 
   $form['agenda'] = array(

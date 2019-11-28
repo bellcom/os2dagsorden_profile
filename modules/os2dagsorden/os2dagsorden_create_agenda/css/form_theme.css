@@ -29,3 +29,6 @@ html body {
 .region-content {
   width: 100% !important;
 }
+.field-autoupload .plupload_button.plupload_start {
+  display: none;
+}

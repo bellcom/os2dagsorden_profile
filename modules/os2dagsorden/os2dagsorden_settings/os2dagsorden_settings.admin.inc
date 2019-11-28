@@ -1531,6 +1531,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#collapsed' => TRUE,
       '#title' => t('Plupupload configuration'),
     );
+    $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_autoupload'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Automatically start upload when files added'),
+      '#default_value' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
+    );
     $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes'] = array(
       '#type' => 'textfield',
       '#title' => t('Allowed file types:'),
@@ -1552,7 +1557,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas'),
       '#element_validate' => array('_os2dagsorden_plupload_upload_dir_validate'),
     );
- }
+  }
   if (module_exists('os2dagsorden_create_agenda')) {
     $form['os2dagsorden_create_agenda_settings'] = array(
       '#type' => 'fieldset',
@@ -1989,6 +1994,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('print_pdf_page_orientation', $setting_array['os2dagsorden_meeting_view_settings']['print_pdf_page_orientation']);
     variable_set('os2dagsorden_right_sidebar_arrow_position_radios', $setting_array['os2dagsorden_right_sidebar_arrow_position']['os2dagsorden_right_sidebar_arrow_position_radios']);
 
+    variable_set('os2dagsorden_plupupload_autoupload', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_autoupload']);
     variable_set('os2dagsorden_plupupload_allowed_filetypes', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes']);
     variable_set('os2dagsorden_plupupload_max_filesize', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize']);
     variable_set('os2dagsorden_plupupload_filedir_uri', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri']);
