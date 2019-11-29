@@ -222,11 +222,17 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether in some places a short version (abbreviation) of the meeting will be used instead of the full title'),
     '#default_value' => variable_get('os2dagsorden_use_abbr', TRUE),
   );
-  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_comname'] = array(
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_title_system_text'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Bullet point <i>"Afgøres i"</i> field'),
-    '#description' => t('This decides whether bullet point <i>"Afgøres i"</i> will be shown'),
-    '#default_value' => variable_get('os2dagsorden_show_bp_comname', FALSE),
+    '#title' => t('Show system text <strong>"Punkt x"</strong> in bullet point title' ),
+    '#description' => t('This decides whether system text <strong>"Punkt x"</strong> will be shown in bullet point title'),
+    '#default_value' => variable_get('os2dagsorden_show_bp_title_system_text', TRUE),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bullet_case_id_link'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show case id link'),
+    '#description' => t('This decides whether case id is visible on each bullet point on the meeting view (assuming bullet point has case id provided)'),
+    '#default_value' => variable_get('os2dagsorden_show_bullet_case_id_link', FALSE),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = array(
     '#type' => 'checkbox',
@@ -1805,7 +1811,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bilag_pages_amount', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount']);
     variable_set('os2dagsorden_show_group_pager_on_bpa_page', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page']);
     variable_set('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_view_settings_not_attach_addtional_agenda']);
-
+    variable_set('os2dagsorden_show_bp_title_system_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_title_system_text']);
+    
 // FIXME: new variable.
     variable_set('os2dagsorden_pdf_download_whitelist_enabled', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled']);
     variable_set('os2dagsorden_pdf_download_whitelist', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist']);

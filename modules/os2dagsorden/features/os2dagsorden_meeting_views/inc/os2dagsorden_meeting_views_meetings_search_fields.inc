@@ -191,8 +191,12 @@ function os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data)
         if ($bp_id && $bpa_id) {
           $bullet_point = node_load($bp_id);
           $bpa = node_load($bpa_id);
-
-          print $bpa->title . ': [' . $bullet_point->title . ']';
+          $bp_title = $bullet_point->title;
+          if (!variable_get('os2dagsorden_show_bp_title_system_text', TRUE)) {
+            $bp_title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($bp_title);
+          }
+ 
+          print $bpa->title . ': [' . $bp_title . ']';
           return;
         }
         $search_string = substr($full_search_string, $search_param_pos_e + 1);

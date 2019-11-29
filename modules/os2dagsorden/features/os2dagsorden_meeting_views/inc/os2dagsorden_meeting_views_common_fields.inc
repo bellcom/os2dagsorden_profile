@@ -278,3 +278,19 @@ function os2dagsorden_meeting_views_common_fields_status($meeting_id) {
     print $options['settings']['allowed_values'][$meeting_type[0]['value']];
   }
 }
+
+/**
+ * Remove system text "Punkt x" from string.
+ *
+ * @param string $title
+ *   Bullet point title.
+ * 
+ * * @return string
+ *   Bullet point title without system text.
+ */
+function os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title) {
+  if (preg_match_all('/Punkt ([0-9]*)/i', $title, $matches) === 1) {
+    $title = str_replace($matches[0], '', $title);
+  }
+  return $title;
+}

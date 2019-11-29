@@ -760,6 +760,9 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_title($t
     }
   }
 
+  if (!variable_get('os2dagsorden_show_bp_title_system_text', TRUE)) {
+    $title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title);
+  }
   $is_closed = $bp->field_os2web_meetings_bul_closed['und'][0]['value'];
   $is_personal = $bp->field_os2web_meetings_bul_pers['und'][0]['value'];
 

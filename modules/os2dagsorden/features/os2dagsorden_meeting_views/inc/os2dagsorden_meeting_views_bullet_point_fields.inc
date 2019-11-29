@@ -149,6 +149,9 @@ function os2dagsorden_meeting_views_bullet_point_fields_title_navigation_buttons
   }
 
   $title = $bullet_point->title;
+  if (!variable_get('os2dagsorden_show_bp_title_system_text', TRUE)) {
+    $title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title);
+  }
   if (variable_get('os2dagsorden_show_bullet_case_nr', FALSE)) {
     $bp = node_load($bp_id);
     if ($bp->field_os2web_meetings_bul_case['und'] && !empty($bp->field_os2web_meetings_bul_case['und'][0]['value'])) {
