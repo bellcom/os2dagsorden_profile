@@ -183,6 +183,9 @@ function os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content(
     }
 
     foreach ($all_attachments as $attachment_id) {
+      if (!os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bp_id, $attachment_id['target_id'])) {
+          continue;
+      }
       $attachment = node_load($attachment_id['target_id']);
 
       // If is bilag.

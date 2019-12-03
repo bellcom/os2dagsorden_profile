@@ -378,6 +378,22 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_notes_page_standart_layout', TRUE),
     '#description' => t('This desides what layout will be used for notes page'),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_open_specified_bpa_in_closed_bullet'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Make certain bullet point attachments accesible for all users in closed bullet points.'),
+    '#default_value' => variable_get('os2dagsorden_open_specified_bpa_in_closed_bullet', FALSE),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_fully_accesibe_bpas_title_list'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Bullet point attachments titles, whose will be accessible for all users in closed bullet point'),
+    '#description' => t('Comma-separeted list of bullet point attachments titles, whose will be accessible for all users in closed bullet point. For example "indstilling,beslutning"'),
+    '#default_value' => variable_get('os2dagsorden_fully_accesibe_bpas_title_list', ""),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="os2dagsorden_open_specified_bpa_in_closed_bullet"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
 
   // Expand or not expand bilag on bullet point expand
   // Meetig view settings.
@@ -1800,8 +1816,10 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bilag_pages_amount', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount']);
     variable_set('os2dagsorden_show_group_pager_on_bpa_page', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page']);
     variable_set('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_view_settings_not_attach_addtional_agenda']);
+    variable_set('os2dagsorden_open_specified_bpa_in_closed_bullet', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_open_specified_bpa_in_closed_bullet']);
+    variable_set('os2dagsorden_fully_accesibe_bpas_title_list', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_fully_accesibe_bpas_title_list']);
 
-// FIXME: new variable.
+    // FIXME: new variable.
     variable_set('os2dagsorden_pdf_download_whitelist_enabled', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled']);
     variable_set('os2dagsorden_pdf_download_whitelist', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist']);
     variable_set('os2dagsorden_sager_group_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_sager_group_title']);

@@ -283,6 +283,7 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
   }
 
   if (os2dagsorden_access_helper_check_bullet_point_is_part_of_meeting($meeting_id, $bullet_point_id)) {
+
     $bullet_points = entity_load('node', array($bullet_point_id), array('type' => 'os2web_meetings_bullet'));
     $is_closed = $bullet_points[$bullet_point_id]->field_os2web_meetings_bul_closed['und'][0]['value'];
     $is_personal = $bullet_points[$bullet_point_id]->field_os2web_meetings_bul_pers['und'][0]['value'];
@@ -301,6 +302,12 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
       }
       if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees($uid))) {
         return TRUE;
+      }
+      if (variable_get('os2dagsorden_open_specified_bpa_in_closed_bullet')) {
+        $accesible_bpa_titles = explode(',', variable_get('os2dagsorden_fully_accesibe_bpas_title_list', ""));
+        if (is_array($accesible_bpa_titles) && !empty($accesible_bpa_titles)) {
+          return _os2dagsorden_access_helper_check_closed_bullet_point_has_fully_accesible_bpa($bullet_points[$bullet_point_id], $accesible_bpa_titles);
+        }
       }
     }
     // Is personal.
@@ -407,7 +414,28 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($
       return FALSE;
     }
     else {
-      return os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id);
+      $bullet_point = node_load($bullet_point_id);
+      $is_closed = $bullet_point->field_os2web_meetings_bul_closed['und'][0]['value'];
+      $user_can_see_bullet_point = os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id);
+      if ($is_closed && $user_can_see_bullet_point && variable_get('os2dagsorden_open_specified_bpa_in_closed_bullet')) {
+        $meeting = node_load($meeting_id);
+        $meeting_committee_id = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+        if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
+          return TRUE;
+        }
+        if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_pp_committees($uid))) {
+          return TRUE;
+        }
+        if (in_array($meeting_committee_id, os2dagsorden_access_helper_get_user_follow_plus_committees($uid))) {
+          return TRUE;
+        }
+        if (_os2dagsorden_access_helper_check_bullet_point_fully_accesible($bpa->title)) {
+          return TRUE;
+        }
+      }
+      else {
+        return $user_can_see_bullet_point;
+      }
     }
   }
   else {
@@ -622,4 +650,55 @@ function os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($
     }
   }
   return TRUE;
+}
+
+
+/**
+ * Checks if closed bullet point has bullet point attachments that can be accessible for all users.
+ *
+ * @param mixed $bullet_point
+ *   Bullet point.
+ * @param mixed $accesible_bpa_titles
+ *   List of bullet point attachment titles that should be fully accessible.
+ *
+ * @return bool
+ *   True of false.
+ */
+function _os2dagsorden_access_helper_check_closed_bullet_point_has_fully_accesible_bpa($bullet_point, $accesible_bpa_titles) {
+  $bpa_nids = array();
+  foreach($bullet_point->field_os2web_meetings_attach['und'] as $value){
+    $bpa_nids[] = $value['target_id'];
+  }
+  $result = db_select('node', 'n')
+    ->fields('n', array('title'))
+    ->condition('nid', $bpa_nids,'IN')
+    ->execute()
+    ->fetchAllAssoc('title');
+  if ($result) {
+    $titles = array_keys($result);
+    $titles = array_map('strtolower', $titles);
+    $accesible_bpa_titles = array_map('trim', $accesible_bpa_titles);
+    $accesible_bpa_titles = array_map('strtolower', $accesible_bpa_titles);
+    return (!empty(array_intersect($titles, $accesible_bpa_titles)));
+  }
+  return FALSE;
+}
+
+/**
+ * Checks if closed bullet point attachment is accessible for all users.
+ *
+ * @param string $title
+ *   Bullet point attachment title
+ *
+ * @return bool
+ *   True of false.
+ */
+function _os2dagsorden_access_helper_check_bullet_point_fully_accesible($title) {
+  $accesible_bpa_titles = explode(',', variable_get('os2dagsorden_fully_accesibe_bpas_title_list', ""));
+  if (is_array($accesible_bpa_titles) && !empty($accesible_bpa_titles)) {
+    $accesible_bpa_titles = array_map('trim', $accesible_bpa_titles);
+    $accesible_bpa_titles = array_map('strtolower', $accesible_bpa_titles);
+    return in_array(strtolower($title), $accesible_bpa_titles);
+  }
+  return FALSE;
 }
