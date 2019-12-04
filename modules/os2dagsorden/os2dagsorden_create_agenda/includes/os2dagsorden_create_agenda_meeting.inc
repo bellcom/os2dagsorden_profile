@@ -247,7 +247,8 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     $node->field_os2web_meetings_date['und'][0]['value'] = date('Y-m-d', $days_in_future) . ' ' . $start_time;
     $node->field_os2web_meetings_date['und'][0]['value2'] = date('Y-m-d', $days_in_future) . ' ' . $end_time;
     $node->field_os2web_meetings_full_attac['und'][0]['value'] = FALSE;
-
+    $node->field_os2web_meetings_punkt_num['und'][0]['value'] = TRUE;
+    
      // Filling general fields.
     $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
   }

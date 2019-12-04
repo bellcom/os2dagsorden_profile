@@ -152,6 +152,19 @@ function os2dagsorden_meeting_views_bullet_point_fields_title_navigation_buttons
   if (!variable_get('os2dagsorden_show_bp_title_system_text', TRUE)) {
     $title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title);
   }
+  else {
+    $meeting = node_load($meeting_id);
+    $tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+    $committee = taxonomy_term_load($tid);
+    if (isset($meeting->field_os2web_meetings_punkt_num['und'])) {
+      if (!$meeting->field_os2web_meetings_punkt_num['und'][0]['value']) {
+       $title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title);
+      }
+    }
+    elseif (isset($committee->field_os2web_meetings_punkt_num['und']) && !$committee->field_os2web_meetings_punkt_num['und'][0]['value']) {
+      $title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title);
+    }
+  }
   if (variable_get('os2dagsorden_show_bullet_case_nr', FALSE)) {
     $bp = node_load($bp_id);
     if ($bp->field_os2web_meetings_bul_case['und'] && !empty($bp->field_os2web_meetings_bul_case['und'][0]['value'])) {
