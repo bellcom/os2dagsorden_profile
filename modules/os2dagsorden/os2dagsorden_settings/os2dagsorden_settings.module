@@ -369,7 +369,7 @@ function os2dagsorden_settings_committee_autocomplete_callback($string = '') {
 }
 
 /**
- * Helper function for committee autocomplete.
+ * Helper function for users autocomplete.
  *
  * @param string $string
  *   Search string.
