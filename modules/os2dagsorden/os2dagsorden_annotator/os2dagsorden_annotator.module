@@ -169,7 +169,6 @@ function _os2dagsorden_annotator_read($id) {
   drupal_add_http_header('Content-Type', 'application/json');
 
   global $user;
-
   $result = db_select('os2dagsorden_annotator_notes', 'notes')
     ->fields('notes')
     ->condition('id', $id, '=')
@@ -202,15 +201,12 @@ function _os2dagsorden_annotator_update($id) {
 
   global $user;
   $note_json = json_decode(file_get_contents('php://input'), TRUE);
-
   // Filtering on fields - removing those, that are saved separatelly.
+  $id= $note_json['id'];
   unset($note_json['id']);
   unset($note_json['user']);
   unset($note_json['permissions']);
-  unset($note_json['bilag_id']);
-  unset($note_json['bullet_point_id']);
-  unset($note_json['meeting_id']);
-
+  
   db_update('os2dagsorden_annotator_notes')
     ->fields(array(
       'note_info' => json_encode($note_json),
@@ -218,7 +214,7 @@ function _os2dagsorden_annotator_update($id) {
     ->condition('id', $id, '=')
     ->execute();
 
-  print(json_encode(array()));
+  print(json_encode($note_json));
 }
 
 /**
@@ -227,6 +223,9 @@ function _os2dagsorden_annotator_update($id) {
  * Deletes the node from the database.
  */
 function _os2dagsorden_annotator_delete($id) {
+  $note_json = json_decode(file_get_contents('php://input'), TRUE);
+  // Filtering on fields - removing those, that are saved separatelly.
+  $id= $note_json['id'];
   db_delete('os2dagsorden_annotator_notes')
     ->condition('id', $id)
     ->execute();
@@ -382,7 +381,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 HTML;
   }
   else {
-    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
+    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator.min.js');
     drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.min.js');
     drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/json2.js');
     drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');

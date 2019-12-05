@@ -1,6 +1,6 @@
 function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter) {
   jQuery(document).ready(function() {
-		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Touch', {
+		/*jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Touch', {
 			force: 1,
 			useHighlighter: location.search.indexOf('highlighter') > -1
 		});
@@ -28,7 +28,42 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
 			  destroy: 'annotator/delete/:id',
 			  search:  'annotator/search'
 			}
-		});
+		});*/
+    var pageUri = function () {
+    return {
+        beforeAnnotationCreated: function (ann) {
+            	ann.bilag_id= bilag_id;
+              ann.bullet_point_id= bullet_point_id;
+              ann.meeting_id= meeting_id;
+        },
+    };
+};
+    var app = new annotator.App();
+    app.include(annotator.ui.main, {element: document.getElementById(element_to_annotate)})
+     .include(annotator.storage.http, {
+       prefix: url,
+       urls: {
+			  create:  'annotator/create',
+			  read:    'annotator/read/:id',
+			  update:  'annotator/update/:id',
+			  destroy: 'annotator/delete/:id',
+			  search:  'annotator/search'
+			}
+     })
+    .include(annotatorImageSelect, {
+        element: jQuery('#' + element_to_annotate +' img'),
+    })
+  
+   .include(pageUri);
+    app.start()
+   .then(function () {
+       app.annotations.load({
+         bilag_id : bilag_id,
+				 bullet_point_id : bullet_point_id,
+				 meeting_id : meeting_id,
+       });
+   });
+   
 
         if (!jQuery("body .annotator-touch-controls.dummy-controls").length ) {
             jQuery('body').append(
