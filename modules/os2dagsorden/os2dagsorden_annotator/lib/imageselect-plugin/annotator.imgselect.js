@@ -111,7 +111,7 @@ function annotatorImageSelect(options) {
         return;
       }
       var imgselection = annotation.image_selection;
-      var img = jQuery('img[srcjQuery="' + imgselection.src + '"]').first();
+      var img = jQuery('img[src$="' + imgselection.src + '"]').first();
       if (img.length === 0) {
         // if the highlighted image is not found, skip
         return;
