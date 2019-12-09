@@ -58,8 +58,11 @@ function os2dagsorden_pdf2png_conversion_convert_single($fid, $uri) {
   $file_path_real = drupal_realpath($uri);
   $file_realpath_pathinfo = pathinfo($file_path_real);
   $image_dir_realpath = $file_realpath_pathinfo['dirname'] . '/' . $file_realpath_pathinfo['filename'] . '_images/';
-  if (!mkdir($image_dir_realpath)) {
-    watchdog('PDF2PNG Conversion', 'Could not create subdirectory %dir. Check the permissions', array('%dir' => $image_dir_realpath), WATCHDOG_ERROR);
+  if (!file_exists( $image_dir_realpath)) {
+    if (!mkdir($image_dir_realpath)) {
+      watchdog('PDF2PNG Conversion', 'Could not create subdirectory %dir. Check the permissions', array('%dir' => $image_dir_realpath), WATCHDOG_ERROR);
+      return;
+    }
   }
   // One has to know the exact locale of the system, otherwise uncomment the
   // lines.

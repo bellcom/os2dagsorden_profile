@@ -2318,15 +2318,16 @@ a.annotator-wrapper {
 
 .has-outline-pager {
   display: inline-block;
+  width: 100%;
+  .attachment-text {
+    position: relative;
+  }
 }
 
 .annotator-outline-pager {
   display: none;
 }
 
-.has-outline-pager {
-  width: 100%;
-}
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 
 /* ---------------------------- Breadcrumbs START---------------------------- */

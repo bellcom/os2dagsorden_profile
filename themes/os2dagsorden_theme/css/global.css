@@ -2734,14 +2734,14 @@ a.annotator-wrapper {
   height: auto; }
 
 .has-outline-pager {
-  display: inline-block; }
-
-.annotator-outline-pager {
-  display: none; }
-
-.has-outline-pager {
+  display: inline-block;
   width: 100%; }
 
+.has-outline-pager .attachment-text {
+  position: relative;
+}
+.annotator-outline-pager {
+  display: none; }
 
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 /* ---------------------------- Breadcrumbs START---------------------------- */
