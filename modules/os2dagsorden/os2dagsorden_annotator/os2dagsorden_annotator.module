@@ -1125,7 +1125,7 @@ function _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageSta
     $output = '<ul>';
     foreach ($images as $key => $image) {
       if ($key < $pageStart || $key > $pageEnd) {
-        $page = floor($key / OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
+        $page = floor(($key - 1) / OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW ) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
         $link = $current_bilag_url . '?page=' . $page . '#pf' . $key;
       }
       else {
