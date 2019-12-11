@@ -9,7 +9,7 @@
  * Implements hook_rules_action_info().
  */
 function os2web_rules_rules_action_info() {
-  $account = array(
+  $rules = array(
     'os2web_rules_rules_action_drupal_message' => array(
       'label' => t('Set taxonomy from user roles'),
       'group' => t('OS2web'),
@@ -21,8 +21,20 @@ function os2web_rules_rules_action_info() {
         ),
       ),
     ),
+    'os2web_set_committee_from_simplesaml' => array(
+      'label' => t('OS2web set committee from simplesaml'),
+      'group' => t('OS2web'),
+      'parameter' => array(
+        'account' => array(
+          'type' => 'user',
+          'label' => t('User account'),
+          'save' => TRUE,
+        ),
+      ),
+    )
   );
-  return $account;
+
+  return $rules;
 }
 
 /**
@@ -75,4 +87,49 @@ function os2web_rules_rules_action_drupal_message($account) {
 
   // Saving the user session with changes.
   user_save($user);
+}
+
+/**
+ * Action Implementation: OS2web set committee from simplesaml.
+ *
+ * @ingroup rules
+ */
+function os2web_set_committee_from_simplesaml($account) {
+  // Loading user object for correct saving of user info.
+  $user = user_load($account->uid);
+
+  $user_committees = array();
+
+  $field_user_committee = field_get_items('user', $user, 'field_user_committee');
+  if (!empty($field_user_committee)) {
+    foreach ($field_user_committee as $user_committee) {
+      $user_committees[$user_committee['tid']] = $user_committee['tid'];
+    }
+  }
+
+  $groups = simplesamlphp_auth_get_attributes('http://schemas.xmlsoap.org/claims/Group');
+  foreach ($groups as $group) {
+    if (preg_match('/.*_OS2Dagsorden_(.*)/i', $group, $matches)) {
+      $committee_name = $matches[1];
+
+      $committee = taxonomy_get_term_by_name($committee_name, 'os2web_meetings_tax_committee');
+      if ($committee) {
+        $committee = reset($committee);
+        $updated_user_committees[$committee->tid] = $committee->tid;
+      }
+    }
+  }
+
+  sort($user_committees);
+  sort($updated_user_committees);
+
+  if ($user_committees != $updated_user_committees) {
+    $user->field_user_committee['und'] = array();
+
+    foreach($updated_user_committees as $tid) {
+      $user->field_user_committee['und'][]['tid'] = $tid;
+    }
+
+    user_save($user);
+  }
 }
