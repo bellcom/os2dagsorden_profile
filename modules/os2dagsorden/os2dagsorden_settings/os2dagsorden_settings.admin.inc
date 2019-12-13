@@ -499,7 +499,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
    $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Show scrollbar on attachment page'),
-    '#options' => array( 'thumbnails' => t('for pictures pager'), 'attachment' => t('for attachment')),
+    '#options' => array( 'thumbnails' => t('for thumbnails pager area'), 'attachment' => t('for bilag content area')),
     '#description' => t('This decides if scrollbar will be shown when attachment displayed as HTML.'),
     '#default_value' => variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', ''),
   );
