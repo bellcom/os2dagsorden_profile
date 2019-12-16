@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_fields_and_content_types.features.field_instance.inc
@@ -69,6 +70,12 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 42,
+      ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -310,7 +317,42 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
         'apply_chosen' => '',
       ),
       'type' => 'options_buttons',
-      'weight' => 12,
+      'weight' => 17,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_ssname'.
+  $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_com_ssname'] = array(
+    'bundle' => 'os2web_meetings_tax_committee',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 17,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_os2web_meetings_com_ssname',
+    'label' => 'SimpleSAML name',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 10,
     ),
   );
 
@@ -965,6 +1007,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('Rediger tekst');
   t('Ref Bullet point');
   t('Show attachments in full view');
+  t('SimpleSAML name');
   t('Speaker paper groups');
   t('User can send to friend closed bullet points');
   t('represents the committees the user is a part of');

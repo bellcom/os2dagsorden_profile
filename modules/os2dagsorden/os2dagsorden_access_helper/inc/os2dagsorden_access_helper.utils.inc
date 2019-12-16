@@ -621,6 +621,39 @@ function _os2dagsorden_access_helper_get_committee_by_subid_and_name($com_subid,
 }
 
 /**
+ * Helper function. Returns the committee based on its sub id.
+ *
+ * @param string $ss_name
+ *   Committee SimpleSAML name.
+ *
+ * @return term
+ *   The committee term, if found.
+ *   NULL otherwise.
+ */
+function _os2dagsorden_access_helper_get_committee_by_simplesaml_name($ss_name) {
+  $vid = db_select('taxonomy_vocabulary', 'tv')
+    ->fields('tv', array('vid'))
+    ->condition('machine_name', 'os2web_meetings_tax_committee')
+    ->execute()
+    ->fetchField();
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'taxonomy_term')
+    ->propertyCondition('vid', $vid)
+    ->fieldCondition('field_os2web_meetings_com_ssname', 'value', $ss_name);
+
+  $result = $query->execute();
+  if (isset($result['taxonomy_term'])) {
+    $tids = array_keys($result['taxonomy_term']);
+    $tid = reset($tids);
+    $term = taxonomy_term_load($tid);
+    return $term;
+  }
+
+  return NULL;
+}
+
+/**
  * Callback function for sort methods.
  *
  * That compares the terms name using strnatcmp comparison.
