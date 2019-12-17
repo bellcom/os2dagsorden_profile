@@ -149,7 +149,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE);
   $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button'] = variable_get('os2dagsorden_show_expand_all_button', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_title_system_text'] = variable_set('os2dagsorden_show_bp_title_system_text', TRUE);
-  
+
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode'] = variable_get('os2dagsorden_latest_meetings_view_mode', 'all');
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title'] = variable_get('os2dagsorden_meetings_views_last_8_show_meeting_title', TRUE);
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_committee'] = variable_get('os2dagsorden_meetings_views_last_8_show_meeting_committee', TRUE);
@@ -217,7 +217,10 @@ function os2dagsorden_settings_export_to_file() {
   }
    if (module_exists('os2dagsorden_pdf2png_conversion')) {
     $setting_array['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_pdf2png_conversion_sedja_console_path'] = variable_get('os2dagsorden_pdf2png_conversion_sedja_console_pathos2dagsorden_clear_cache_active', "");
-  }
+    $setting_array['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_show_thumbnails_on_ipad'] = variable_get('os2dagsorden_show_thumbnails_on_ipad', FALSE);
+
+
+   }
 
   $setting_array['os2dagsorden_clear_cache_after_import']['os2dagsorden_clear_cache_active'] = variable_get('os2dagsorden_clear_cache_active', 0);
   $setting_array['os2dagsorden_clear_cache_after_import']['os2dagsorden_clear_cache_frequency'] = variable_get('os2dagsorden_clear_cache_frequency', 0);
