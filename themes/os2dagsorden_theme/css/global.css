@@ -3371,3 +3371,102 @@ ul#follows .checkbox.premeeting {
     right: 25px;
   }
 }
+
+/* Removal of annotator touch - begin */
+.touchevents .annotator-adder {
+  position: fixed !important;
+
+  top: auto !important;
+  left: auto !important;
+  right: 20px;
+  bottom: 20px;
+
+  width: auto !important;
+  height: auto !important;
+
+  background-image: none !important;
+}
+.touchevents .annotator-adder button {
+  position: relative;
+  width: 46px !important;
+  height: 46px !important;
+  background-color: #9c1a5e !important;
+  border-radius: 4px;
+  border: 1px solid #9c1a5e !important;
+
+  font-family: "Material Icons";
+
+  content: "create";
+  line-height: 46px;
+  font-size: 20px;
+}
+
+.touchevents .annotator-outer {
+  position: fixed !important;
+  display: flex;
+
+  width: auto !important;
+  height: auto !important;
+
+  top: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+
+  background-color: rgba(0, 0, 0, .5);
+}
+.touchevents .annotator-widget {
+  position: static !important;
+
+  max-width: 300px !important;
+  margin: auto !important;
+}
+.touchevents .annotator-editor .annotator-item textarea {
+  padding: 10px !important;
+  font-size: 16px !important;
+  font-style: initial !important;
+}
+.touchevents .annotator-controls {
+  padding: 10px !important;
+  background-image: none !important;
+}
+.touchevents .annotator-controls > a {
+  padding: 5px 30px 5px 30px !important;
+
+  font-size: 16px !important;
+
+  background-color: #9c1a5e !important;
+  border-radius: 4px !important;
+  border: 1px solid #9c1a5e !important;
+  background-image: none !important;
+
+  text-shadow: none !important;
+  color: #fff !important;
+
+  box-shadow: none !important;
+}
+.touchevents .annotator-controls > a::after {
+  display: none !important;
+}
+.touchevents .annotator-viewer div:first-of-type {
+  padding: 10px !important;
+
+  font-size: 16px !important;
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  font-style: initial !important;
+}
+.touchevents .annotator-viewer .annotator-controls {
+  opacity: 1 !important;
+}
+.touchevents .annotator-viewer .annotator-controls a,
+.touchevents .annotator-viewer .annotator-controls button {
+  opacity: 1 !important;
+}
+.touchevents .annotator-viewer .annotator-controls a:focus,
+.touchevents .annotator-viewer .annotator-controls a:hover,
+.touchevents .annotator-viewer .annotator-controls button:focus,
+.touchevents .annotator-viewer .annotator-controls button:hover {
+  opacity: 1 !important;
+}
+/* Removal of annotator touch - end */
