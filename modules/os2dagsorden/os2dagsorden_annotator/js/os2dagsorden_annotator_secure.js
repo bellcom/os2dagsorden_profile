@@ -103,13 +103,31 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
   });
   jQuery(window).load(function() {
     // Scroll bar on attachment page.
+    console.log(Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar);
         if (jQuery(".annotator-outline-pager").length && Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar) {
+          if (Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar == 'attachment_add_scrollbar_both') {
+            jQuery("#content.has-outline-pager").css('overflow-y', 'auto');
+            jQuery(".annotator-outline-pager").css('overflow-y', 'auto');
+            jQuery(".annotator-outline-pager").css('overflow-x', 'hidden');
+            var height = jQuery(window).height();
+            jQuery('#content.has-outline-pager').innerHeight(height);
+            jQuery(".annotator-outline-pager").innerHeight(height);
+          }
+          else if (Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar == 'attachment_add_scrollbar_attachment') {
           var pager_height = jQuery(".annotator-outline-pager").outerHeight();
           var window_height = jQuery(window).height();
           var height = (pager_height > window_height)? pager_height : window_height;
           jQuery('#content.has-outline-pager').innerHeight(height);
-          jQuery("#content.has-outline-pager").css('overflow-y', 'scroll');
+          jQuery("#content.has-outline-pager").css('overflow-y', 'auto');
         }
+        else if (Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar == 'attachment_add_scrollbar_thumbnails') {
+          var attachment_height = jQuery("#content.has-outline-pager").outerHeight();
+          var window_height = jQuery(window).height();
+          var height = (attachment_height > window_height)? attachment_height : window_height;
+          jQuery('.annotator-outline-pager').innerHeight(height);
+          jQuery(".annotator-outline-pager").css('overflow-y', 'auto');
+        }
+      }
   });
 }
 

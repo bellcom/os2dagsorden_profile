@@ -497,10 +497,17 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw', FALSE),
   );
    $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = array(
-    '#type' => 'checkbox',
+    '#type' => 'checkboxes',
     '#title' => t('Show scrollbar on attachment page'),
+    '#options' => array( 'thumbnails' => t('for thumbnails pager area'), 'attachment' => t('for bilag content area')),
     '#description' => t('This decides if scrollbar will be shown when attachment displayed as HTML.'),
-    '#default_value' => variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE),
+    '#default_value' => variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', ''),
+  );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Open bilags attachments in new tab each'),
+    '#description' => t('This decides if bilag pages opened from the attachments menu will be open as a new tab each'),
+    '#default_value' => variable_get('os2dagsorden_attachments_open_bilags_as_new_tab', FALSE),
   );
 
   // Show latest meetings in my committee or all committees.
@@ -1850,7 +1857,8 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_attachments_pages_per_view_mobile_meeting_view', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_view']);
     variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page']);
     variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
-
+    variable_set('os2dagsorden_attachments_open_bilags_as_new_tab',  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab']);
+    
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_title', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_committee', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_committee']);

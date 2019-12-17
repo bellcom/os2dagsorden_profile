@@ -127,7 +127,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['print_pdf_page_orientation'] = variable_get('print_pdf_page_orientation', PRINT_PDF_PAGE_ORIENTATION_DEFAULT);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_print_pdf_show_commitee'] = variable_get('os2dagsorden_print_pdf_show_commitee', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_view_settings_not_attach_addtional_agenda'] = variable_get('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', FALSE);
-
+  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab'] = variable_get('os2dagsorden_attachments_open_bilags_as_new_tab', FALSE);
 
   $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_shared_speaker_paper'] = variable_get('os2dagsorden_shared_speaker_paper', TRUE);
   $settings_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links'] = variable_get('oos2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE);
