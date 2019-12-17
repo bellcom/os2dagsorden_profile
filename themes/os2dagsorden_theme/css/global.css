@@ -3395,6 +3395,8 @@ ul#follows .checkbox.premeeting {
   border-radius: 4px;
   border: 1px solid #9c1a5e !important;
   font-size: 20px;
+  text-indent: 0 !important;
+  color: #fff;
 }
 
 .touchevents .annotator-outer {
