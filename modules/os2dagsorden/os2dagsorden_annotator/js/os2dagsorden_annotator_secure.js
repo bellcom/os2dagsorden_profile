@@ -69,7 +69,6 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
   });
   jQuery(window).load(function() {
     // Scroll bar on attachment page.
-    console.log(Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar);
         if (jQuery(".annotator-outline-pager").length && Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar) {
           if (Drupal.settings.os2dagsorden_annotator.attachment_add_scrollbar == 'attachment_add_scrollbar_both') {
             jQuery("#content.has-outline-pager").css('overflow-y', 'auto');
