@@ -56,3 +56,19 @@ function os2dagsorden_annotator_schema() {
   );
   return $schema;
 }
+
+
+/**
+ * Implements hook_update_N().
+ *
+ * Change 'note_info' field type to longblob.
+ */
+function os2dagsorden_annotator_update_7000 () {
+  $new_field = array(
+    'type' => 'blob', 
+    'size' => 'big', 
+    'not null' => FALSE,  
+    'description' => 'The information of the note object',
+  );
+  db_change_field('os2dagsorden_annotator_notes', 'note_info', 'note_info', $new_field);
+}
