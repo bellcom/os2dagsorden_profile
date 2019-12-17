@@ -35,6 +35,11 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
        });
    });
 
+        if (jQuery(".bilag-list-btn").length) {
+          jQuery(".bilag-list-btn").click(function(){
+            jQuery(".bilag-list").toggle();
+          });
+        }
   });
   jQuery(window).load(function() {
     // Scroll bar on attachment page.
