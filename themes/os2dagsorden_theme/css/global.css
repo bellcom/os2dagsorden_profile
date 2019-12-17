@@ -3373,7 +3373,7 @@ ul#follows .checkbox.premeeting {
 }
 
 /* Removal of annotator touch - begin */
-.touchevents .annotator-adder {
+.has-touch .annotator-adder {
   position: fixed !important;
 
   top: auto !important;
@@ -3386,7 +3386,7 @@ ul#follows .checkbox.premeeting {
 
   background-image: none !important;
 }
-.touchevents .annotator-adder button {
+.has-touch .annotator-adder button {
   position: relative;
   padding: 10px 20px !important;
   width: auto !important;
@@ -3400,7 +3400,7 @@ ul#follows .checkbox.premeeting {
   color: #fff;
 }
 
-.touchevents .annotator-outer {
+.has-touch .annotator-outer {
   position: fixed !important;
   display: flex;
 
@@ -3414,22 +3414,22 @@ ul#follows .checkbox.premeeting {
 
   background-color: rgba(0, 0, 0, .5);
 }
-.touchevents .annotator-widget {
+.has-touch .annotator-widget {
   position: static !important;
 
   max-width: 300px !important;
   margin: auto !important;
 }
-.touchevents .annotator-editor .annotator-item textarea {
+.has-touch .annotator-editor .annotator-item textarea {
   padding: 10px !important;
   font-size: 16px !important;
   font-style: initial !important;
 }
-.touchevents .annotator-controls {
+.has-touch .annotator-controls {
   padding: 10px !important;
   background-image: none !important;
 }
-.touchevents .annotator-controls > a {
+.has-touch .annotator-controls > a {
   padding: 5px 30px 5px 30px !important;
 
   font-size: 16px !important;
@@ -3444,10 +3444,10 @@ ul#follows .checkbox.premeeting {
 
   box-shadow: none !important;
 }
-.touchevents .annotator-controls > a::after {
+.has-touch .annotator-controls > a::after {
   display: none !important;
 }
-.touchevents .annotator-viewer div:first-of-type {
+.has-touch .annotator-viewer div:first-of-type {
   padding: 10px !important;
 
   font-size: 16px !important;
@@ -3455,17 +3455,17 @@ ul#follows .checkbox.premeeting {
   background-color: #fff !important;
   font-style: initial !important;
 }
-.touchevents .annotator-viewer .annotator-controls {
+.has-touch .annotator-viewer .annotator-controls {
   opacity: 1 !important;
 }
-.touchevents .annotator-viewer .annotator-controls a,
-.touchevents .annotator-viewer .annotator-controls button {
+.has-touch .annotator-viewer .annotator-controls a,
+.has-touch .annotator-viewer .annotator-controls button {
   opacity: 1 !important;
 }
-.touchevents .annotator-viewer .annotator-controls a:focus,
-.touchevents .annotator-viewer .annotator-controls a:hover,
-.touchevents .annotator-viewer .annotator-controls button:focus,
-.touchevents .annotator-viewer .annotator-controls button:hover {
+.has-touch .annotator-viewer .annotator-controls a:focus,
+.has-touch .annotator-viewer .annotator-controls a:hover,
+.has-touch .annotator-viewer .annotator-controls button:focus,
+.has-touch .annotator-viewer .annotator-controls button:hover {
   opacity: 1 !important;
 }
 /* Removal of annotator touch - end */
