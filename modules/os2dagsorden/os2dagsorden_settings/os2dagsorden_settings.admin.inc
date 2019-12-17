@@ -1025,8 +1025,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     $form['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_pdf2png_conversion_sedja_console_path'] = array(
       '#type' => 'textfield',
       '#title' => t('Path to Sejda-console'),
-      '#description' => t('Absolute path to sejda-console'),
       '#default_value' => variable_get('os2dagsorden_pdf2png_conversion_sedja_console_path', ""),
+    );
+    $form['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_show_thumbnails_on_ipad'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Vis miniature side på Ipad'),
+      '#description' => t('Absolute path to sejda-console'),
+      '#default_value' => variable_get('os2dagsorden_show_thumbnails_on_ipad', FALSE),
     );
   }
 
@@ -1819,7 +1824,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_group_pager_on_bpa_page', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page']);
     variable_set('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_view_settings_not_attach_addtional_agenda']);
     variable_set('os2dagsorden_show_bp_title_system_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_title_system_text']);
-    
+
 // FIXME: new variable.
     variable_set('os2dagsorden_pdf_download_whitelist_enabled', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled']);
     variable_set('os2dagsorden_pdf_download_whitelist', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist']);
@@ -1858,7 +1863,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page']);
     variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
     variable_set('os2dagsorden_attachments_open_bilags_as_new_tab',  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab']);
-    
+
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_title', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_committee', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_committee']);
@@ -1924,6 +1929,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
 
     if (module_exists('os2dagsorden_pdf2png_conversion')) {
       variable_set('os2dagsorden_pdf2png_conversion_sedja_console_path', $setting_array['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_pdf2png_conversion_sedja_console_path']);
+      variable_set('os2dagsorden_show_thumbnails_on_ipad', $setting_array['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_show_thumbnails_on_ipad']);
     }
 
     variable_set('os2dagsorden_show_meeting_category', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_show_meeting_category']);

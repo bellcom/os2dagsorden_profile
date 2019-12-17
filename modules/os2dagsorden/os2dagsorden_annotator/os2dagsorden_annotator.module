@@ -18,6 +18,7 @@ module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_ann
 
 define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]));
 define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5));
+define('OS2DAGSORDEN_ANNOTATOR_IS_TABLET', (bool) preg_match("/(tablet|ipad|playbook)|(android(?!.*(mobi|opera mini)))/i", strtolower($_SERVER['HTTP_USER_AGENT'])));
 
 /**
  * Implements hook_menu().
@@ -446,11 +447,13 @@ HTML;
       $file_uri = $bilag->field_os2web_meetings_bpa_html['und'][0]['uri'];
       $body_file = file_get_contents($file_uri);
       if (module_exists("os2dagsorden_pdf2png_conversion") && (int) $pageAmount > 1) {
-        $pdf_file_uri = $bilag->field_os2web_meetings_bpa_file['und'][0]['uri'];
-        $images_folder = os2dagsorden_pdf2png_conversion_get_image_folder_uri($pdf_file_uri);
-        if (file_exists($images_folder)) {
-          $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
-          $outline_pager = _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageStart, $pageEnd, $current_bilag_url);
+        if ((OS2DAGSORDEN_ANNOTATOR_IS_IPAD && (OS2DAGSORDEN_ANNOTATOR_IS_TABLET && variable_get('os2dagsorden_show_thumbnails_on_ipad', FALSE))) || !OS2DAGSORDEN_ANNOTATOR_IS_IPAD){
+          $pdf_file_uri = $bilag->field_os2web_meetings_bpa_file['und'][0]['uri'];
+          $images_folder = os2dagsorden_pdf2png_conversion_get_image_folder_uri($pdf_file_uri);
+          if (file_exists($images_folder)) {
+            $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
+            $outline_pager = _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageStart, $pageEnd, $current_bilag_url);
+          }
         }
       }
       $text = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
