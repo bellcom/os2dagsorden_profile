@@ -1767,7 +1767,7 @@ pager li.pager-first {
   margin: 15px 6px 0px 10px; }
 
 .controls-right.agenda-level.speaker-paper {
-  margin-top: 0b; }
+  margin-top: 0; }
 
 .controls-left {
   float: left;
@@ -2005,7 +2005,7 @@ table .speaker-paper-link-container {
       .view-meeting-details .view-content table.views-table tr td:nth-child(1) {
         padding-left: 10px;
         border-radius: 3px 0 0 3px; }
-      .view-meeting-details .view-content table.views-table tr td:nth-last-child() {
+      .view-meeting-details .view-content table.views-table tr td:nth-last-child {
         border-radius: 0 3px 3px 0; }
     .view-meeting-details .view-content table.views-table tr th, .view-meeting-details .view-content table.views-table tr td {
       font-size: 16px;
@@ -2145,7 +2145,7 @@ table .speaker-paper-link-container {
             display: inline-block;
             padding: 3px 3px 0 3px;
             line-height: 15px;
-            border-radius: none; }
+            border-radius: 0; }
             .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-edit-agenda {
               position: relative;
               background: url("../img/icon_edit.png") no-repeat 50% top;
@@ -2968,7 +2968,7 @@ a.annotator-wrapper {
 
 /* ---------------------------- arrows_reverse START ---------------------------- */
 .arrows-reverse {
-  background-image: url(/profiles/os2dagsorden/themes/kldagsorden/img/img_arrows_reverse.png);
+  background-image: url('/profiles/os2dagsorden/themes/kldagsorden/img/img_arrows_reverse.png');
   background-repeat: no-repeat;
   background-position: center;
   /*displaying starting from default-normal*/
@@ -3372,6 +3372,16 @@ ul#follows .checkbox.premeeting {
 
 .page-meeting-notes .view-content h3 {
   font-weight: bold;
+  background-image: none !important;
+}
+.touchevents .annotator-adder button {
+  position: relative;
+  padding: 10px 20px !important;
+  width: auto !important;
+  height: auto !important;
+  background-color: #9c1a5e !important;
+  border-radius: 4px;
+  border: 1px solid #9c1a5e !important;
   font-size: 20px;
   padding-left: 0;
   padding-right: 0;
