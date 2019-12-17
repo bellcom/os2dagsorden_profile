@@ -3394,7 +3394,8 @@ ul#follows .checkbox.premeeting {
   background-color: #9c1a5e !important;
   border-radius: 4px;
   border: 1px solid #9c1a5e !important;
-  font-size: 20px;
+  font-size: 16px;
+  font-weight: bold;
   text-indent: 0 !important;
   color: #fff;
 }
