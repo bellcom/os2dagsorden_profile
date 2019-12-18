@@ -26,6 +26,7 @@
  *   True of false.
  */
 function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $committee_tid = NULL, $uid = NULL) {
+
   if (!$uid) {
     $user = os2dagsorden_access_helper_get_user();
   }
@@ -41,6 +42,19 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
 
   if (!$committee_tid) {
     $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+  }
+  //external user
+  if (is_object($meeting)) {
+    if ((int) $user->field_user_external['und'][0]['value'] === 1){
+      if (isset($meeting->field_os2web_meetings_partic_ext['und'])) {
+        foreach ($meeting->field_os2web_meetings_partic_ext['und'] as $ext_partic) {
+          if ($ext_partic['uid'] == $user->uid) {
+            return TRUE;
+          }
+        }
+      }
+      return FALSE;
+  }
   }
   $committee = taxonomy_term_load($committee_tid);
   // Checking category.
