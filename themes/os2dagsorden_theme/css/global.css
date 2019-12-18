@@ -3469,3 +3469,26 @@ ul#follows .checkbox.premeeting {
   opacity: 1 !important;
 }
 /* Removal of annotator touch - end */
+
+.page-meeting-notes .view-content h3 {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.page-meeting-notes .view-content a.no-print {
+  display: inline-block;
+  background-color: #005c9d;
+  border: 1px solid #35b1d5;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  color: #fff;
+  padding: 5px 20px 5px 20px;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  margin-left: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color .1s ease-in;
+}
