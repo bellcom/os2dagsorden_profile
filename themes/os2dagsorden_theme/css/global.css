@@ -3476,15 +3476,15 @@ ul#follows .checkbox.premeeting {
   padding-left: 0;
   padding-right: 0;
 }
-.page-meeting-notes .view-content a.no-print:before {
-  content: "";
-  clear: both;
-  display: table;
+.page-meeting-notes .view-content i {
+  display: block;
+
+  margin-bottom: 4px;
 }
 .page-meeting-notes .view-content a.no-print {
   display: inline-block;
-  background-color: #005c9d;
-  border: 1px solid #35b1d5;
+  background-color: #9c1a5e;
+  border: 1px solid #9c1a5e;
   border-radius: 3px;
   -webkit-appearance: none;
   color: #fff;
