@@ -710,7 +710,7 @@ function attachment_load_content(bulletPointIndex, index_attachment, url){
 	jQuery("#attachment_text_container_"+bulletPointIndex+"_"+index_attachment).children().first().append(html);
 
 	//add annotator to it
-	add_annotator(meeting_id, bullet_point_id, bilag_id, "attachment_text_container_"+bulletPointIndex+"_"+index_attachment ,url, false);
+	add_annotator(meeting_id, bullet_point_id, bilag_id, "bpa_"+ meeting_id + "_" + bullet_point_id + "_" + bilag_id ,url, false);
 
 	//add preview stamp picture, if is actual bilag
 	if (jQuery(".bpa-" + meeting_id + "-" + bullet_point_id + "-" + bilag_id).hasClass("attachment_text_trimmed_container"))
