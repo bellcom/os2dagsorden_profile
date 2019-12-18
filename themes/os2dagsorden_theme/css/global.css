@@ -3476,6 +3476,11 @@ ul#follows .checkbox.premeeting {
   padding-left: 0;
   padding-right: 0;
 }
+.page-meeting-notes .view-content a.no-print:before {
+  content: "";
+  clear: both;
+  display: table;
+}
 .page-meeting-notes .view-content a.no-print {
   display: inline-block;
   background-color: #005c9d;
