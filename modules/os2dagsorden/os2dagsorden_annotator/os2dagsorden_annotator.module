@@ -1183,7 +1183,7 @@ function os2dagsorden_annotator_bilags_list($meeting_id, $bullet_point_id, $bila
         // Bilag has converter to HTML version of file, getting the text out of it.
         if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
           if(variable_get('os2dagsorden_attachments_open_bilags_as_new_tab', FALSE)) {
-            $bilags[$bilag->nid] = l($bilag->title, 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag->nid, array('attributes'=>array('target'=>'blank')));
+            $bilags[$bilag->nid] = l($bilag->title, 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag->nid, array('attributes'=>array('target'=>'_blank')));
           }
           else {
              $bilags[$bilag->nid] = l($bilag->title, 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag->nid);
