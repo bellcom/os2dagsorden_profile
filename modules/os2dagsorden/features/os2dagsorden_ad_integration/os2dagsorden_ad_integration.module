@@ -76,6 +76,32 @@ function os2dagsorden_ad_integration_user_sync_settings_form($form, $form_state)
     '#default_value' => variable_get('os2dagsorden_ad_integration_user_sync_attr'),
     '#required' => TRUE,
   );
+  $form['os2dagsorden_ad_integration_users_cleanup_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('Users cleanup'),
+  );
+  $form['os2dagsorden_ad_integration_users_cleanup_fieldset']['os2dagsorden_ad_integration_users_cleanup_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Enable users cleanup.',
+    '#description' => 'This decides whether a disabled users will be deleted once at month.',
+    '#default_value' => variable_get('os2dagsorden_ad_integration_users_cleanup_enabled', FALSE),
+  );
+  $form['os2dagsorden_ad_integration_users_cleanup_fieldset']['os2dagsorden_ad_integration_users_cleanup_day'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Months day number when all disabled users will be deleted.',
+    '#description' => 'All disable users will be deleted once of month at given day number.',
+    '#default_value' => variable_get('os2dagsorden_ad_integration_users_cleanup_day'),    
+    '#states' => array(
+      'visible' => array(
+        ':input[name="os2dagsorden_ad_integration_users_cleanup_enabled"]' => array('checked' => TRUE),
+      ),
+      'required' => array(
+        ':input[name="os2dagsorden_ad_integration_users_cleanup_enabled"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
   return system_settings_form($form);
 }
 
@@ -95,6 +121,9 @@ function os2dagsorden_ad_integration_cronapi($op, $job = NULL) {
 function os2dagsorden_ad_integration_cron() {
   os2dagsorden_ad_integration_do_user_sync();
   os2dagsorden_ad_integration_do_user_inactive_sync();
+  if (variable_get('os2dagsorden_ad_integration_users_cleanup_enabled', FALSE)) {
+     os2dagsorden_ad_integration_inactive_users_cleanup();
+  }
 }
 
 /**
@@ -150,7 +179,8 @@ function os2dagsorden_ad_integration_do_user_sync() {
           }
           $user->field_user_organization['und'][0]['value'] = $company;
           $user->field_user_full_name['und'][0]['value'] = $full_name;
-
+          $user->mail = $mail;
+          
           // Add user to speaker paper group.
           if ($terms) {
             foreach ($terms as $term) {
@@ -266,4 +296,44 @@ function _os2dagsorden_ad_integration_get_speaker_paper_group($ldap_server, $dat
       }
     }
   }
+}
+
+/**
+ * Callback to start user synch. Deactivates the users that have to be deactivated.
+ */
+function os2dagsorden_ad_integration_inactive_users_cleanup(){
+  $last_cleanup_timestamp = variable_get('os2dagsorden_ad_integration_epoch_users_cleanup', 0);
+  $last_cleanup_month = (int) date('m', $last_cleanup_timestamp); 
+  $current_timestamp = time();
+  $current_month = (int) date('m', $current_timestamp);
+  $current_day = (int) date('d', $current_timestamp);
+  if ($current_month != $last_cleanup_month && $current_day >= variable_get('os2dagsorden_ad_integration_users_cleanup_day')){
+    $query = new EntityFieldQuery;
+    $query->entityCondition('entity_type', 'user');
+    $query->propertyCondition('status', '0');
+    $query->entityCondition('entity_id', array(1, 0), 'NOT IN');
+    $result = reset($query->execute());
+    if (is_array($result)) {
+      $users = user_load_multiple(array_keys($result));
+      foreach ($users as $uid => $user) {
+        $row = array(
+          array('user_cancel_notify' => FALSE,
+            'user_cancel_method' => 'user_cancel_reassign',
+          ),
+          $uid,
+          'user_cancel_reassign'
+        );
+        watchdog('LDAP_user_sync', 'User %user deleted', array('%user' => $user->name), WATCHDOG_INFO);
+        $operations[] = array('user_cancel', $row);
+      }
+      $batch = array(
+        'operations' => $operations,
+      );
+      batch_set($batch);
+      $batch = &batch_get();
+      $batch['progressive'] = FALSE;
+      batch_process();
+    }
+  } 
+  variable_set('os2dagsorden_ad_integration_epoch_users_cleanup', $current_timestamp);
 }
