@@ -64,6 +64,12 @@ function os2dagsorden_settings_menu() {
     'access arguments' => array('use autocomplete'),
     'type' => MENU_CALLBACK,
   );
+  $items['get_users/autocomplete'] = array(
+    'page callback' => 'os2dagsorden_settings_users_autocomplete_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('use autocomplete'),
+    'type' => MENU_CALLBACK,
+  );
 
   $items['os2dagsorden/export_settings'] = array(
     'page callback' => 'os2dagsorden_settings_export_to_file',
@@ -109,6 +115,8 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_sager_group_title'] = variable_get('os2dagsorden_sager_group_title', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_group_closed_bullet_points'] = variable_get('os2dagsorden_group_closed_bullet_points', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_hidden_agenda_committee'] = variable_get('os2dagsorden_hidden_agenda_committee', OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE);
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_users_accessed_hidden_agenda_committee'] = variable_get('os2dagsorden_users_accessed_hidden_agenda_committee', '');
+
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_download_dropdown'] = variable_get('os2dagsorden_meeting_description_download_dropdown', 'Hent dokumenter');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_download_title'] = variable_get('os2dagsorden_meeting_description_download_title', 'Hent samlet dokument i PDF');
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_download_title_additional'] = variable_get('os2dagsorden_meeting_description_download_title_additional', 'Hent tillægsdokument i PDF');
@@ -365,6 +373,36 @@ function os2dagsorden_settings_committee_autocomplete_callback($string = '') {
   drupal_json_output($terms);
 }
 
+/**
+ * Helper function for users autocomplete.
+ *
+ * @param string $string
+ *   Search string.
+ */
+function os2dagsorden_settings_users_autocomplete_callback($string = '') {
+  $array = drupal_explode_tags($string);
+  $last_string = trim(array_pop($array));
+  $prefix = count($array) ? implode(', ', $array) . ', ' : '';
+  if ($last_string) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'user')
+    ->propertyCondition('status',1)
+    ->fieldCondition('field_user_full_name', 'value', db_like($last_string) . '%', 'like')
+    ->range(0, 10);
+    $result = $query->execute();
+    if (isset($result['user'])) {
+      $user_ids = array_keys($result['user']);
+      $users = user_load_multiple($user_ids);
+    }
+    if ($users) {
+      foreach ($users as $user) {
+        $matches[$prefix . $user->name] = check_plain($user->field_user_full_name['und'][0]['value']);
+      }
+    }
+  }
+
+  drupal_json_output($matches);
+}
 /**
  * Implements hook_views_pre_render().
  *

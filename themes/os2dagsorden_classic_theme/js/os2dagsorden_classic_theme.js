@@ -210,7 +210,7 @@ jQuery(document).ajaxComplete(function() {
     jQuery('#' + jQuery(this).attr('id') + '_hidden').val(arr_receiver.join(','));
     jQuery('#' + jQuery(ui.sender[0]).attr('id') + '_hidden').val(arr_sender.join(','));
   });
-});    
+});
 
 jQuery(document).ready(function() {
   jQuery('#users_filter').change( function () {
@@ -990,9 +990,63 @@ jQuery("#zoom_reset_button").click(function(){
 
 
 });
-// Help text clickable.
 
-(function($) {
+// Re-allocate td.
+(function() {
 
-});
-( jQuery );
+  // Wait until the DOM has loaded.
+  document.addEventListener('DOMContentLoaded', function() {
+    var pageWrapper = document.querySelector('.page-meeting');
+    var listElements = document.querySelectorAll('.bullet-point-attachments .item-list');
+    var elements = [];
+    var totalWidth = 0;
+
+    // Only do stuff if we are on a meetings page.
+    if (pageWrapper !== null) {
+
+      // Bullet point modify links.
+      var bulletPointModifyContainers = document.querySelectorAll('.bullet-point-modify-links-container');
+      if (bulletPointModifyContainers.length > 0) {
+        elements.push(bulletPointModifyContainers[0]);
+      }
+
+      // Speaker paper container.
+      var speakerPaperContainers = document.querySelectorAll('.speaker-paper-link-container');
+      if (speakerPaperContainers.length > 0) {
+        elements.push(speakerPaperContainers[0]);
+      }
+
+      // Print bullet point.
+      var printBulletPointContainers = document.querySelectorAll('.print-bullet-point-link');
+      if (printBulletPointContainers.length > 0) {
+        elements.push(printBulletPointContainers[0]);
+      }
+
+      // Send bullet point.
+      var sendBulletPointContainers = document.querySelectorAll('.send-bullet-point-link');
+      if (sendBulletPointContainers.length > 0) {
+        elements.push(sendBulletPointContainers[0]);
+      }
+
+      // Case ID.
+      var caseIdContainers = document.querySelectorAll('.case-id-link-container');
+      if (caseIdContainers.length > 0) {
+        elements.push(caseIdContainers[0]);
+      }
+
+      // Run through all elements.
+      for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+
+        totalWidth += element.offsetWidth;
+      }
+
+      // Run through all list elements.
+      for (var i = 0; i < listElements.length; i++) {
+        var listElement = listElements[i];
+
+        listElement.style.marginRight = 0 - totalWidth + 'px';
+      }
+    }
+  });
+})();

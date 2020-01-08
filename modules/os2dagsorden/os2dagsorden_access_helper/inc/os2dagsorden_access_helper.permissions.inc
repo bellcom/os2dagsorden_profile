@@ -111,6 +111,14 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
       }
 
       if ($in_hidden_list) {
+        // Is in white-list
+        $users_white_list = drupal_explode_tags(variable_get('os2dagsorden_users_accessed_hidden_agenda_committee'));
+        $users_white_list = array_map('trim', $users_white_list);
+
+        if (in_array($user->name, $users_white_list)) {
+          return TRUE;
+        }
+
         // Is part of the committee.
         if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
           return TRUE;
