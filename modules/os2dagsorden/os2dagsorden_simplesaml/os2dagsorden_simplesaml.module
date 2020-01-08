@@ -73,14 +73,24 @@ function os2dagsorden_simplesaml_user_login(&$edit, $account) {
   $user = user_load($account->uid);
   $user_is_updated = FALSE;
 
+  // User actual permissions.
+  $user_member_of = $user_follows_pp = $user_follows_plus = $user_follows =[];
+
+  // User updated permissions.
+  $updated_user_member_of = $updated_user_follows_pp = $updated_user_follows_plus = $updated_user_follows = [];
+
+  // Mapping regex.
+  $user_com_mapping_regex = $user_follows_pp_mapping_regex = $user_follows_plus_mapping_regex = $user_follows_mapping_regex = NULL;
+
   // Collecting user member of committees.
-  $user_member_of = [];
-  $user_com_mapping_regex = NULL;
   if ($user_com_mapping = variable_get('os2dagsorden_simplesaml_user_com_mapping')) {
     $field_user_committee = field_get_items('user', $user, 'field_user_committee');
 
     if (!empty($field_user_committee)) {
       $user_member_of = array_column($field_user_committee, 'tid','tid');
+
+      // Adding to updated list those committees that are mapped via SimpleSAML.
+      _os2dagsorden_simplesaml_add_simplesaml_unmapped_committees_to_list($user_member_of, $updated_user_member_of);
     }
 
     // Preparing regex.
@@ -90,13 +100,14 @@ function os2dagsorden_simplesaml_user_login(&$edit, $account) {
   }
 
   // Collecting user follows++ committees.
-  $user_follows_pp = [];
-  $user_follows_pp_mapping_regex = NULL;
   if ($user_follows_pp_mapping = variable_get('os2dagsorden_simplesaml_follows_com_pp_mapping')) {
     $field_follows_committee_pp = field_get_items('user', $user, 'field_follows_committee_pp');
 
     if (!empty($field_follows_committee_pp)) {
       $user_follows_pp = array_column($field_follows_committee_pp, 'tid','tid');
+
+      // Adding to updated list those committees that are mapped via SimpleSAML.
+      _os2dagsorden_simplesaml_add_simplesaml_unmapped_committees_to_list($user_follows_pp, $updated_user_follows_pp);
     }
 
     // Preparing regex.
@@ -106,13 +117,14 @@ function os2dagsorden_simplesaml_user_login(&$edit, $account) {
   }
 
   // Collecting user follows+ committees.
-  $user_follows_plus = [];
-  $user_follows_plus_mapping_regex = NULL;
   if ($user_follows_plus_mapping = variable_get('os2dagsorden_simplesaml_follows_com_plus_mapping')) {
     $field_follows_committee_plus = field_get_items('user', $user, 'field_follows_committee_plus');
 
     if (!empty($field_follows_committee_plus)) {
       $user_follows_plus = array_column($field_follows_committee_plus, 'tid','tid');
+
+      // Adding to updated list those committees that are mapped via SimpleSAML.
+      _os2dagsorden_simplesaml_add_simplesaml_unmapped_committees_to_list($user_follows_plus, $updated_user_follows_plus);
     }
 
     // Preparing regex.
@@ -122,13 +134,14 @@ function os2dagsorden_simplesaml_user_login(&$edit, $account) {
   }
 
   // Collecting user follows committees.
-  $user_follows = [];
-  $user_follows_mapping_regex = NULL;
   if ($user_follows_mapping = variable_get('os2dagsorden_simplesaml_follows_com_mapping')) {
     $field_follows_committee = field_get_items('user', $user, 'field_follows_committee');
 
     if (!empty($field_follows_committee)) {
       $user_follows = array_column($field_follows_committee, 'tid','tid');
+
+      // Adding to updated list those committees that are mapped via SimpleSAML.
+      _os2dagsorden_simplesaml_add_simplesaml_unmapped_committees_to_list($user_follows, $updated_user_follows);
     }
 
     // Preparing regex.
@@ -137,9 +150,7 @@ function os2dagsorden_simplesaml_user_login(&$edit, $account) {
     $user_follows_mapping_regex = '/' . str_replace('[committee]', '(.*)', $user_follows_mapping) . '/i';
   }
 
-  // Extracting committeed from groups and adding them to updated lists.
-  $updated_user_member_of = $updated_user_follows_pp = $updated_user_follows_plus = $updated_user_follows = [];
-
+  // Extracting committees from groups and adding them to updated lists.
   $groupsAttribure = variable_get('os2dagsorden_simplesaml_group_attribute');
   $groups = simplesamlphp_auth_get_attributes($groupsAttribure);
 
@@ -230,6 +241,28 @@ function _os2dagsorden_simplesaml_add_committee_to_list($committee_ss_name, arra
   $committee = _os2dagsorden_access_helper_get_committee_by_simplesaml_name($committee_ss_name);
   if ($committee) {
     $list[$committee->tid] = $committee->tid;
+  }
+}
+
+/**
+ * Adds the committee from source list to destination list.
+ *
+ * Committee will only be added to destination list if it does not have
+ * SimpleSAML mapping.
+ *
+ * @param array $source_list
+ *   Source list of the committees mapped by tid.
+ * @param array $destination_list
+ *   Destination list of the committees mapped by tid.
+ */
+function _os2dagsorden_simplesaml_add_simplesaml_unmapped_committees_to_list(array $source_list, array &$destination_list) {
+  foreach ($source_list as $tid) {
+    $committee = taxonomy_term_load($tid);
+
+    $field_os2web_meetings_com_ssname = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_ssname');
+    if (empty($field_os2web_meetings_com_ssname)) {
+      $destination_list[$tid] = $tid;
+    }
   }
 }
 
