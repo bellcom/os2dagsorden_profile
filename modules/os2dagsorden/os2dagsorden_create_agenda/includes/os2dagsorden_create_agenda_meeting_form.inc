@@ -139,6 +139,13 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
     '#title' => t('Show attachments in full view'),
 
   );
+  if(variable_get('os2dagsorden_show_bp_title_system_text', TRUE)) {
+    $form['field_os2web_meetings_punkt_num'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Vis Punkt nummerering'),
+      '#default_value' => TRUE,
+    );
+  }   
 
   // Finishing form.
   $form['#attached']['css'] = array(
@@ -184,9 +191,16 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
     $location_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_location'));
     $form['location']['#default_value'] = $location_field['tid'];
   }
-  $attachment_view = array_pop(field_get_items('node', $node, 'field_os2web_meetings_full_attac'));
-  $form['field_os2web_meetings_full_attac']['#default_value'] = $attachment_view['value'];
-
+  if ($punkt_numbering = field_get_items('node', $node, 'field_os2web_meetings_punkt_num')) {
+    $punkt_numbering = array_pop($punkt_numbering);
+    $form['field_os2web_meetings_punkt_num']['#default_value'] = $punkt_numbering['value'];
+  }
+  
+  if ($attachment_view = field_get_items('node', $node, 'field_os2web_meetings_full_attac')) {
+    $attachment_view = array_pop($attachment_view);
+    $form['field_os2web_meetings_full_attac']['#default_value'] = $attachment_view['value'];
+  }
+  
   if (field_get_items('node', $node, 'field_os2web_meetings_referent')) {
     $referent_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_referent'));
     $referents = explode(',', $referent_field['safe_value']);
@@ -304,7 +318,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $participants = $input['participants'];
   $referents = $input['referents'];
   $attachment_view = $form_state['values']['field_os2web_meetings_full_attac'];
-
+  
   $participants = explode(',', $input['participants_hidden']);
   $invisible_participants = explode(',', $input['participants_invisible_hidden']);
   if (!$form_state['meeting_id']) {
@@ -326,6 +340,11 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $node->field_os2web_meetings_date['und'][0]['value'] = $start_datetime->format('Y-m-d H:i:s');
   $node->field_os2web_meetings_committee['und'][0]['tid'] = $com_tid;
   $node->field_os2web_meetings_full_attac['und'][0]['value'] = $attachment_view;
+  if (isset($form_state['values']['field_os2web_meetings_punkt_num'])) {
+    $node->field_os2web_meetings_punkt_num['und'][0]['value'] = $form_state['values']['field_os2web_meetings_punkt_num'];
+  }
+
+  
 
   if (!empty($end_date)) {
     $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time, new DateTimeZone(date_default_timezone()));

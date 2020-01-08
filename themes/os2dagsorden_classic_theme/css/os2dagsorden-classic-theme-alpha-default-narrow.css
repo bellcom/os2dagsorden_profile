@@ -47,10 +47,13 @@
   float: right;
 }
 .annotator-outline-pager {
-  display: none;
+  display: inline-block;
+}
+.annotator-outline-pager li {
+  margin-left: -10px;
 }
 
 .has-outline-pager {
-  width: 100%;
+  width: 90%;
 }
 

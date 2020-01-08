@@ -98,7 +98,7 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   $pdf_documents_lists_order = array (
     'full_doc',
     'full_doc_html',
-    'att_doc',    
+    'att_doc',
     'att_doc_html',
     'full_doc_c',
     'full_doc_c_html',
@@ -185,15 +185,15 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
         }
       }
     }
-    
-   
+
+
     if ($bullet_point = _os2dagsorden_access_helper_get_genaral_bullet_point($meeting->nid)) {
       $html_documents = array();
       foreach($bullet_point->field_os2web_meetings_attach['und'] as $attachnemt_nid) {
         $attachment =  node_load($attachnemt_nid['target_id']);
         if (($key = array_search($attachment->title, $html_documents_list)) && !empty($attachment->field_os2web_meetings_bpa_html['und'][0]['uri'])) {
           $html_documents[$key] =  '<a target="_blank" href="/meeting/' . $meeting->nid . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $attachnemt_nid['target_id'] .
-            '" class="btn-group">' . $attachment->title . '</a>'; 
+            '" class="btn-group">' . $attachment->title . '</a>';
         }
       }
       if ($user_can_see_closed_agendas && ((!isset($agenda_access) || $agenda_access === 0) || variable_get('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE))) {
@@ -347,7 +347,7 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
           }
         }
       }
-      
+
       foreach($pdf_documents_lists_order as $doc_type) {
         if (isset($additional_descriptions_pdf_files[$doc_type]) && is_array($additional_descriptions_pdf_files[$doc_type])) {
           foreach($additional_descriptions_pdf_files[$doc_type] as $pdf_doc) {
@@ -760,6 +760,22 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_title($t
     }
   }
 
+  if (!variable_get('os2dagsorden_show_bp_title_system_text', TRUE)) {
+    $title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title);
+  }
+  else {
+    $meeting = node_load($meeting_id);
+    $tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+    $committee = taxonomy_term_load($tid);
+    if (isset($meeting->field_os2web_meetings_punkt_num['und'])) {
+      if (!$meeting->field_os2web_meetings_punkt_num['und'][0]['value']) {
+       $title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title);
+      }
+    }
+    elseif (isset($committee->field_os2web_meetings_punkt_num['und']) && !$committee->field_os2web_meetings_punkt_num['und'][0]['value']) {
+      $title = os2dagsorden_meeting_views_common_fields_strip_bullet_point_number($title);
+    }
+  }
   $is_closed = $bp->field_os2web_meetings_bul_closed['und'][0]['value'];
   $is_personal = $bp->field_os2web_meetings_bul_pers['und'][0]['value'];
 
@@ -1234,7 +1250,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_filter_bullet_point($
     return !$filter_opened;
   }
   // Put separately.
-  else {    
+  else {
     // Accept opened.
     if ($filter_opened) {
       if ($bullet_point->field_os2web_meetings_bul_closed['und'][0]['value'] == 0) {

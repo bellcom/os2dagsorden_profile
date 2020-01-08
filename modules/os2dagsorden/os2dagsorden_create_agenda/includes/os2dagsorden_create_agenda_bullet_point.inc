@@ -73,13 +73,18 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     '#type' => 'plupload',
     '#name' => 'files[]',
     '#title' => t('Upload bilags files'),
-    '#autoupload' => TRUE,
+    '#autoupload' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
       'file_validate_size' => array($twenty_mb_bytes),
-    )
+    ),
+   '#prefix' => '<div class="auto">',
+   '#suffix' => '</div>',
   );
-
+  if (variable_get('os2dagsorden_plupupload_autoupload', TRUE)) {
+    $form['bilags']['#prefix'] = '<div class="field-autoupload">';
+    $form['bilags']['#suffix'] = '</div>';
+  }
   $form['bpas'] = array(
     '#type' => 'fieldset',
     '#title' => t('Bullet point attachments'),
@@ -253,7 +258,7 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     '#markup' => '</div>',
   );
   $form['#attached']['css'] = array(
-    drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
+     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css', 
   );
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js',
@@ -605,6 +610,10 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form($form, &$form_st
     '#type' => 'hidden',
     '#value' => arg(2)
   );
+  $form['create_as_bpa'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Opret som underpunkter')
+  );
   $max_filesize_bytes = variable_get('os2dagsorden_plupupload_max_filesize', 2) * 1024 * 1024;
   $allowed_extensions = variable_get('os2dagsorden_plupupload_allowed_filetypes', 'doc docx pdf');
 
@@ -612,12 +621,16 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form($form, &$form_st
     '#type' => 'plupload',
     '#name' => 'files[]',
     '#title' => t('Upload bilags files'),
-    '#autoupload' => TRUE,
+    '#autoupload' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
       'file_validate_size' => array($max_filesize_bytes),
     )
   );
+  if (variable_get('os2dagsorden_plupupload_autoupload', TRUE)) {
+    $form['bilags']['#prefix'] = '<div class="field-autoupload">';
+    $form['bilags']['#suffix'] = '</div>';
+  }
   $form['save_bullet_point'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
@@ -656,20 +669,37 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form($form, &$form_st
 function os2dagsorden_create_agenda_bullet_point_from_file_form_submit($form, &$form_state) {
   $bilags = $form_state['values']['bilags'];
   $meeting_id = $form_state['values']['meeting_id'];
+  $create_as_bpa = $form_state['values']['create_as_bpa'];
   $form_state['meeting_id'] = $meeting_id;
   if (isset($bilags) && !empty($bilags)) {
-    foreach ($bilags as $bilag) {
-      if ($bilag['status'] === 'done') {
-        $number = os2dagsorden_create_agenda_bullet_point_find_last_number($meeting_id);
-        $bp_node = new stdClass();
-        $bp_node->type = "os2web_meetings_bullet";
-        $bp_node->language = LANGUAGE_NONE;
-        node_object_prepare($bp_node);
-        $bp_node->title = 'Punkt ' . $number . ' ' . pathinfo($bilag['name'], PATHINFO_FILENAME);
-        $bp_node->field_os2web_meetings_bul_number['und'][0]['value'] = $number;
-        node_save($bp_node);
-        os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bp_node->nid);
-        _os2dagsorden_create_agenda_create_bpa_from_file($bp_node->nid, $bilag);
+    if ($create_as_bpa == 1) {
+      $number = os2dagsorden_create_agenda_bullet_point_find_last_number($meeting_id);
+      $bp_node = new stdClass();
+      $bp_node->type = "os2web_meetings_bullet";
+      $bp_node->language = LANGUAGE_NONE;
+      node_object_prepare($bp_node);
+      $bp_node->title = 'Punkt ' . $number . ' ' . t('Nyt punkt');
+      $bp_node->field_os2web_meetings_bul_number['und'][0]['value'] = $number;
+      node_save($bp_node);
+      os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bp_node->nid);
+      foreach ($bilags as $bilag) {
+       _os2dagsorden_create_agenda_create_bpa_from_file($bp_node->nid, $bilag);
+      }
+    }
+    else {
+      foreach ($bilags as $bilag) {
+        if ($bilag['status'] === 'done') {
+          $number = os2dagsorden_create_agenda_bullet_point_find_last_number($meeting_id);
+          $bp_node = new stdClass();
+          $bp_node->type = "os2web_meetings_bullet";
+          $bp_node->language = LANGUAGE_NONE;
+          node_object_prepare($bp_node);
+          $bp_node->title = 'Punkt ' . $number . ' ' . pathinfo($bilag['name'], PATHINFO_FILENAME);
+          $bp_node->field_os2web_meetings_bul_number['und'][0]['value'] = $number;
+          node_save($bp_node);
+          os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bp_node->nid);
+          _os2dagsorden_create_agenda_create_bpa_from_file($bp_node->nid, $bilag);
+        }
       }
     }
   }

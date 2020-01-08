@@ -95,6 +95,50 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-os2web_meetings_meeting-field_os2web_meetings_punkt_num'.
+  $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_punkt_num'] = array(
+    'bundle' => 'os2web_meetings_meeting',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 43,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_punkt_num',
+    'label' => 'Vis Punkt nummerering',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 30,
+    ),
+  );
+
   // Exported field_instance: 'node-os2web_meetings_spaper-body'.
   $field_instances['node-os2web_meetings_spaper-body'] = array(
     'bundle' => 'os2web_meetings_spaper',
@@ -311,6 +355,44 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
       ),
       'type' => 'options_buttons',
       'weight' => 12,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_punkt_num'.
+  $field_instances['taxonomy_term-os2web_meetings_tax_committee-field_os2web_meetings_punkt_num'] = array(
+    'bundle' => 'os2web_meetings_tax_committee',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 17,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_os2web_meetings_punkt_num',
+    'label' => 'Vis Punkt nummerering',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 16,
     ),
   );
 
@@ -967,6 +1049,7 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('Show attachments in full view');
   t('Speaker paper groups');
   t('User can send to friend closed bullet points');
+  t('Vis Punkt nummerering');
   t('represents the committees the user is a part of');
 
   return $field_instances;

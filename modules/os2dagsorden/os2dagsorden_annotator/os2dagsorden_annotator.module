@@ -18,6 +18,7 @@ module_load_include('inc', 'os2dagsorden_annotator', '/includes/os2dagsorden_ann
 
 define('OS2DAGSORDEN_ANNOTATOR_IS_IPAD', (bool) preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]));
 define('OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW', (OS2DAGSORDEN_ANNOTATOR_IS_IPAD) ? variable_get('os2dagsorden_attachments_pages_per_view_mobile', 3) : variable_get('os2dagsorden_attachments_pages_per_view_desktop', 5));
+define('OS2DAGSORDEN_ANNOTATOR_IS_TABLET', (bool) preg_match("/(tablet|ipad|playbook)|(android(?!.*(mobi|opera mini)))/i", strtolower($_SERVER['HTTP_USER_AGENT'])));
 
 /**
  * Implements hook_menu().
@@ -346,14 +347,25 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
   $annotatorButtonText = variable_get('os2dagsorden_create_note_text', 'Lav note');
   $annotatorHideText = variable_get('os2dagsorden_create_note_hide_text', FALSE);
   $annotatorUseTitle = variable_get('os2dagsorden_create_note_text_use_title', FALSE);
-  $attachment_add_scrollbar = variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE);
+  $attachment_add_scrollbar = variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page');
+  if (is_array($attachment_add_scrollbar)) {
+        if (in_array('thumbnails', $attachment_add_scrollbar, TRUE) && in_array('attachment', $attachment_add_scrollbar, TRUE)) {
+          $scrollbar = 'attachment_add_scrollbar_both';
+        }
+        elseif (in_array('thumbnails', $attachment_add_scrollbar, TRUE)) {
+          $scrollbar = 'attachment_add_scrollbar_thumbnails';
+        }
+        elseif (in_array('attachment', $attachment_add_scrollbar, TRUE)) {
+          $scrollbar = 'attachment_add_scrollbar_attachment';
+        }
+  }
   drupal_add_js(array(
       'os2dagsorden_annotator' =>
         array(
           'annotator_button_text' => $annotatorButtonText,
           'annotator_hide_text' => $annotatorHideText,
           'annotator_use_title' => $annotatorUseTitle,
-          'attachment_add_scrollbar' => $attachment_add_scrollbar,
+          'attachment_add_scrollbar' => $scrollbar,
         )
     ),
     array('type' => 'setting'));
@@ -435,11 +447,13 @@ HTML;
       $file_uri = $bilag->field_os2web_meetings_bpa_html['und'][0]['uri'];
       $body_file = file_get_contents($file_uri);
       if (module_exists("os2dagsorden_pdf2png_conversion") && (int) $pageAmount > 1) {
-        $pdf_file_uri = $bilag->field_os2web_meetings_bpa_file['und'][0]['uri'];
-        $images_folder = os2dagsorden_pdf2png_conversion_get_image_folder_uri($pdf_file_uri);
-        if (file_exists($images_folder)) {
-          $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
-          $outline_pager = _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageStart, $pageEnd, $current_bilag_url);
+        if ((OS2DAGSORDEN_ANNOTATOR_IS_IPAD && (OS2DAGSORDEN_ANNOTATOR_IS_TABLET && variable_get('os2dagsorden_show_thumbnails_on_ipad', FALSE))) || !OS2DAGSORDEN_ANNOTATOR_IS_IPAD){
+          $pdf_file_uri = $bilag->field_os2web_meetings_bpa_file['und'][0]['uri'];
+          $images_folder = os2dagsorden_pdf2png_conversion_get_image_folder_uri($pdf_file_uri);
+          if (file_exists($images_folder)) {
+            $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
+            $outline_pager = _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageStart, $pageEnd, $current_bilag_url);
+          }
         }
       }
       $text = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
@@ -1125,7 +1139,7 @@ function _os2dagsorden_annotator_get_outline_pager_html($images_folder, $pageSta
     $output = '<ul>';
     foreach ($images as $key => $image) {
       if ($key < $pageStart || $key > $pageEnd) {
-        $page = floor($key / OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
+        $page = floor(($key - 1) / OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW ) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
         $link = $current_bilag_url . '?page=' . $page . '#pf' . $key;
       }
       else {
@@ -1167,7 +1181,12 @@ function os2dagsorden_annotator_bilags_list($meeting_id, $bullet_point_id, $bila
       if (!empty($bilag->field_os2web_meetings_bpa_file['und'][0]['uri'])){
         // Bilag has converter to HTML version of file, getting the text out of it.
         if (!empty($bilag->field_os2web_meetings_bpa_html['und'][0])) {
-          $bilags[$bilag->nid] = l($bilag->title, 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag->nid);
+          if(variable_get('os2dagsorden_attachments_open_bilags_as_new_tab', FALSE)) {
+            $bilags[$bilag->nid] = l($bilag->title, 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag->nid, array('attributes'=>array('target'=>'_blank')));
+          }
+          else {
+             $bilags[$bilag->nid] = l($bilag->title, 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag->nid);
+          }
         }
         else {
           $bilags[$bilag->nid] = l($bilag->title, file_create_url($bilag->field_os2web_meetings_bpa_file['und'][0]['uri']));

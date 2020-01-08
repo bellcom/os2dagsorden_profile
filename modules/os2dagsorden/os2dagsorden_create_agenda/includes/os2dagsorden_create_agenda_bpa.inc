@@ -121,7 +121,7 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
     '#title' => t('Bilag file:'),
     '#group' => 'add_attachment',
     '#name' => 'files[]',
-    '#autoupload' => TRUE,
+    '#autoupload' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
     '#upload_validators' => array(
       'file_validate_extensions' => array($allowed_extensions),
       'file_validate_size' => array($max_filesize_bytes),
@@ -130,7 +130,10 @@ function os2dagsorden_create_agenda_bpa($form, &$form_state) {
       'multi_selection' => false,
     ),
   );
-
+  if (variable_get('os2dagsorden_plupupload_autoupload', TRUE)) {
+    $form['bilag']['file']['#prefix'] = '<div class="field-autoupload">';
+    $form['bilag']['file']['#suffix'] = '</div>';
+  }
   // Filling the fields if meeting_id is not empty.
   if ($form_state['bpa_id']) {
     $node = node_load($form_state['bpa_id']);

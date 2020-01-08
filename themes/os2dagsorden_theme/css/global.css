@@ -13,7 +13,7 @@
 
 .user-logout-block .user-logout-textbox {
   color: #fffffe;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 1em; }
 
@@ -23,7 +23,7 @@
 
 .user-logout-block .settings-btn, .user-logout-block .user-logout-btn, .user-logout-block .user-guide-btn, .user-logout-block .create-meeting-btn {
   color: #fffffe;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 100;
   text-shadow: none;
   text-transform: none;
@@ -182,7 +182,7 @@
   -webkit-appearance: none;
   color: #fffffe;
   padding: 5px 20px 5px 20px;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
@@ -942,7 +942,7 @@
 
 body {
   background: #fff;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px; }
 
 #region-footer-first, #region-postscript-first {
@@ -1010,7 +1010,7 @@ div.content ul.menu li {
   div.content ul.menu li a {
     display: block;
     color: #373636;
-    font-family: "Source Sans Pro";
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     border-radius: 3px;
     font-size: 20px;
     text-decoration: none;
@@ -1320,7 +1320,7 @@ ul li.leaf {
 /*---------------------------- Show hide menu End ----------------------------*/
 /*---------------------------- Views Start ----------------------------*/
 .view-header h3, .view-header h4, .view-content h3, .view-content h4 {
-  font-family: "Source Sans Pro"; }
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 .view-header h3, .view-content h3 {
   color: #373636;
@@ -1417,7 +1417,7 @@ div.attachment {
 /*---------------------------- Blocks START ----------------------------*/
 h2.block-title, h1.title {
   color: #373636;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 20px;
   margin-top: 0;
@@ -1525,7 +1525,7 @@ div.block-inner {
 .calendar-calendar {
   padding-bottom: 10px; }
   .calendar-calendar table.mini {
-    font-family: "Source Sans Pro";
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 12px; }
     .calendar-calendar table.mini thead {
       border: 1px solid #fffffe; }
@@ -1717,7 +1717,7 @@ pager li.pager-first {
   border-width: 0px;
   color: #fffffe;
   padding: 5px 10px 5px 10px;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
@@ -1729,7 +1729,7 @@ pager li.pager-first {
   border-width: 0px;
   color: #fffffe;
   padding: 5px 10px 5px 10px;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
@@ -1767,7 +1767,7 @@ pager li.pager-first {
   margin: 15px 6px 0px 10px; }
 
 .controls-right.agenda-level.speaker-paper {
-  margin-top: 0b; }
+  margin-top: 0; }
 
 .controls-left {
   float: left;
@@ -1811,7 +1811,7 @@ ul.primary li a {
   -webkit-appearance: none;
   color: #373636;
   padding: 5px 20px 5px 20px;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
@@ -1847,7 +1847,7 @@ table tr th {
   background: #f7f1f1;
   border: none;
   color: #373636;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 14px; }
   table tr th a {
@@ -1875,7 +1875,7 @@ table.views-table tbody tr {
       color: #373636;
       padding: 8px;
       /*     vertical-align:center; */
-      font-family: "Source Sans Pro";
+      font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-weight: normal;
       font-size: 14px;
       text-decoration: none;
@@ -1960,7 +1960,7 @@ table .speaker-paper-link-container {
   background: #fffffe;
   border: 1px solid #f7f1f1;
   border-top: 0px;
-  font-family: "Source Sans Pro"; }
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif; }
   .view-meeting-details .ul-item-list-dagsordenspunkt li.bilag {
     position: relative; }
     .view-meeting-details .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
@@ -1990,7 +1990,7 @@ table .speaker-paper-link-container {
       font-weight: bold;
       width: 243px;
       font-size: 16px;
-      font-family: "Source Sans Pro";
+      font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
       text-transform: none; }
   .view-meeting-details .view-content {
     background: #f7f1f1;
@@ -2005,7 +2005,7 @@ table .speaker-paper-link-container {
       .view-meeting-details .view-content table.views-table tr td:nth-child(1) {
         padding-left: 10px;
         border-radius: 3px 0 0 3px; }
-      .view-meeting-details .view-content table.views-table tr td:nth-last-child() {
+      .view-meeting-details .view-content table.views-table tr td:nth-last-child {
         border-radius: 0 3px 3px 0; }
     .view-meeting-details .view-content table.views-table tr th, .view-meeting-details .view-content table.views-table tr td {
       font-size: 16px;
@@ -2145,7 +2145,7 @@ table .speaker-paper-link-container {
             display: inline-block;
             padding: 3px 3px 0 3px;
             line-height: 15px;
-            border-radius: none; }
+            border-radius: 0; }
             .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-edit-agenda {
               position: relative;
               background: url("../img/icon_edit.png") no-repeat 50% top;
@@ -2177,7 +2177,7 @@ table .speaker-paper-link-container {
           color: #001D2F;
           padding: 3px 10px 3px 10px;
           line-height: 30px;
-          font-family: "Source Sans Pro";
+          font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
           font-weight: bold;
           font-size: 14px;
           text-decoration: none;
@@ -2338,7 +2338,7 @@ div.speaker-paper-print {
       border-radius: 3px;
       color: #fffffe;
       padding: 5px 20px 5px 20px;
-      font-family: "Source Sans Pro";
+      font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 16px;
       text-decoration: none;
       font-weight: bold;
@@ -2734,14 +2734,14 @@ a.annotator-wrapper {
   height: auto; }
 
 .has-outline-pager {
-  display: inline-block; }
-
-.annotator-outline-pager {
-  display: none; }
-
-.has-outline-pager {
+  display: inline-block;
   width: 100%; }
 
+.has-outline-pager .attachment-text {
+  position: relative;
+}
+.annotator-outline-pager {
+  display: none; }
 
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
 /* ---------------------------- Breadcrumbs START---------------------------- */
@@ -2754,7 +2754,7 @@ a.annotator-wrapper {
     border-style: solid;
     border-width: 0px;
     padding: 5px 10px 5px 10px;
-    font-family: "Source Sans Pro";
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     text-decoration: none;
     cursor: pointer; }
@@ -2968,7 +2968,7 @@ a.annotator-wrapper {
 
 /* ---------------------------- arrows_reverse START ---------------------------- */
 .arrows-reverse {
-  background-image: url(/profiles/os2dagsorden/themes/kldagsorden/img/img_arrows_reverse.png);
+  background-image: url('/profiles/os2dagsorden/themes/kldagsorden/img/img_arrows_reverse.png');
   background-repeat: no-repeat;
   background-position: center;
   /*displaying starting from default-normal*/
@@ -3165,7 +3165,7 @@ ul#follows .checkbox.premeeting {
   border-color: #b9b9b9 #b9b9b9 #BBBBBB;
   color: #fffffe;
   padding: 5px 10px 5px 10px;
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   text-decoration: none;
   text-transform: uppercase;
@@ -3368,3 +3368,44 @@ ul#follows .checkbox.premeeting {
     right: 25px;
   }
 }
+
+
+.page-meeting-notes .view-content h3 {
+  font-weight: bold;
+  background-image: none !important;
+}
+.touchevents .annotator-adder button {
+  position: relative;
+  padding: 10px 20px !important;
+  width: auto !important;
+  height: auto !important;
+  background-color: #9c1a5e !important;
+  border-radius: 4px;
+  border: 1px solid #9c1a5e !important;
+  font-size: 20px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.page-meeting-notes .view-content i {
+  display: block;
+
+  margin-bottom: 4px;
+}
+.page-meeting-notes .view-content a.no-print {
+  display: inline-block;
+  background-color: #9c1a5e;
+  border: 1px solid #9c1a5e;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  color: #fff;
+  padding: 5px 20px 5px 20px;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  margin-left: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color .1s ease-in;
+}
+
+

@@ -222,11 +222,17 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether in some places a short version (abbreviation) of the meeting will be used instead of the full title'),
     '#default_value' => variable_get('os2dagsorden_use_abbr', TRUE),
   );
-  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_comname'] = array(
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_title_system_text'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Bullet point <i>"Afgøres i"</i> field'),
-    '#description' => t('This decides whether bullet point <i>"Afgøres i"</i> will be shown'),
-    '#default_value' => variable_get('os2dagsorden_show_bp_comname', FALSE),
+    '#title' => t('Show system text <strong>"Punkt x"</strong> in bullet point title' ),
+    '#description' => t('This decides whether system text <strong>"Punkt x"</strong> will be shown in bullet point title'),
+    '#default_value' => variable_get('os2dagsorden_show_bp_title_system_text', TRUE),
+  );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bullet_case_id_link'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show case id link'),
+    '#description' => t('This decides whether case id is visible on each bullet point on the meeting view (assuming bullet point has case id provided)'),
+    '#default_value' => variable_get('os2dagsorden_show_bullet_case_id_link', FALSE),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = array(
     '#type' => 'checkbox',
@@ -500,10 +506,17 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw', FALSE),
   );
    $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = array(
-    '#type' => 'checkbox',
+    '#type' => 'checkboxes',
     '#title' => t('Show scrollbar on attachment page'),
+    '#options' => array( 'thumbnails' => t('for thumbnails pager area'), 'attachment' => t('for bilag content area')),
     '#description' => t('This decides if scrollbar will be shown when attachment displayed as HTML.'),
-    '#default_value' => variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', FALSE),
+    '#default_value' => variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', ''),
+  );
+  $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Open bilags attachments in new tab each'),
+    '#description' => t('This decides if bilag pages opened from the attachments menu will be open as a new tab each'),
+    '#default_value' => variable_get('os2dagsorden_attachments_open_bilags_as_new_tab', FALSE),
   );
 
   // Show latest meetings in my committee or all committees.
@@ -1021,8 +1034,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     $form['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_pdf2png_conversion_sedja_console_path'] = array(
       '#type' => 'textfield',
       '#title' => t('Path to Sejda-console'),
-      '#description' => t('Absolute path to sejda-console'),
       '#default_value' => variable_get('os2dagsorden_pdf2png_conversion_sedja_console_path', ""),
+    );
+    $form['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_show_thumbnails_on_ipad'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Vis miniature side på Ipad'),
+      '#description' => t('Absolute path to sejda-console'),
+      '#default_value' => variable_get('os2dagsorden_show_thumbnails_on_ipad', FALSE),
     );
   }
 
@@ -1540,6 +1558,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#collapsed' => TRUE,
       '#title' => t('Plupupload configuration'),
     );
+    $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_autoupload'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Automatically start upload when files added'),
+      '#default_value' => variable_get('os2dagsorden_plupupload_autoupload', TRUE),
+    );
     $form['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes'] = array(
       '#type' => 'textfield',
       '#title' => t('Allowed file types:'),
@@ -1561,7 +1584,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#default_value' => variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas'),
       '#element_validate' => array('_os2dagsorden_plupload_upload_dir_validate'),
     );
- }
+  }
   if (module_exists('os2dagsorden_create_agenda')) {
     $form['os2dagsorden_create_agenda_settings'] = array(
       '#type' => 'fieldset',
@@ -1809,6 +1832,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_bilag_pages_amount', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount']);
     variable_set('os2dagsorden_show_group_pager_on_bpa_page', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page']);
     variable_set('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_view_settings_not_attach_addtional_agenda']);
+    variable_set('os2dagsorden_show_bp_title_system_text', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_title_system_text']);
 
 // FIXME: new variable.
     variable_set('os2dagsorden_pdf_download_whitelist_enabled', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled']);
@@ -1848,6 +1872,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_attachments_pages_per_view_mobile_meeting_view', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_view']);
     variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page']);
     variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
+    variable_set('os2dagsorden_attachments_open_bilags_as_new_tab',  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_title', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title']);
@@ -1914,6 +1939,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
 
     if (module_exists('os2dagsorden_pdf2png_conversion')) {
       variable_set('os2dagsorden_pdf2png_conversion_sedja_console_path', $setting_array['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_pdf2png_conversion_sedja_console_path']);
+      variable_set('os2dagsorden_show_thumbnails_on_ipad', $setting_array['os2dagsorden_pdf2png_conversion_settings']['os2dagsorden_show_thumbnails_on_ipad']);
     }
 
     variable_set('os2dagsorden_show_meeting_category', $setting_array['os2dagsorden_committee_category_settings']['os2dagsorden_show_meeting_category']);
@@ -1999,6 +2025,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('print_pdf_page_orientation', $setting_array['os2dagsorden_meeting_view_settings']['print_pdf_page_orientation']);
     variable_set('os2dagsorden_right_sidebar_arrow_position_radios', $setting_array['os2dagsorden_right_sidebar_arrow_position']['os2dagsorden_right_sidebar_arrow_position_radios']);
 
+    variable_set('os2dagsorden_plupupload_autoupload', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_autoupload']);
     variable_set('os2dagsorden_plupupload_allowed_filetypes', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_allowed_filetypes']);
     variable_set('os2dagsorden_plupupload_max_filesize', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_max_filesize']);
     variable_set('os2dagsorden_plupupload_filedir_uri', $setting_array['os2dagsorden_plupupload_settings']['os2dagsorden_plupupload_filedir_uri']);
