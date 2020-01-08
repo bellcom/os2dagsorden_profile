@@ -242,6 +242,9 @@ function _os2dagsorden_simplesaml_add_committee_to_list($committee_ss_name, arra
   if ($committee) {
     $list[$committee->tid] = $committee->tid;
   }
+  else {
+    watchdog('OS2Dagsorden SimpleSAML', t('No committee mapped with SimpleSAML name "%ssname"'), array('%ssname' => $committee_ss_name), WATCHDOG_NOTICE);
+  }
 }
 
 /**
