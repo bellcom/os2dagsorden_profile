@@ -3361,9 +3361,9 @@ ul#follows .checkbox.premeeting {
     width: 70px !important;
     text-align: right;
   }
-  .view-content table .item-list {
-    margin-right: -200px;
-  }
+  /*.view-content table .item-list {*/
+  /*  margin-right: -200px;*/
+  /*}*/
   .view-meeting-details .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
     right: 25px;
   }
