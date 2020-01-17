@@ -738,6 +738,11 @@ function _os2dagsorden_create_agenda_create_bpa_from_file($bp_id, $bilag_array) 
         os2dagsorden_pdf2htmlex_schedule($bilag->fid, $node->nid);
       }
     }
+    if (module_exists('os2web_pdf_conversion_manager')) {
+      if (mime_content_type(drupal_realpath($bilag->uri)) !== 'application/pdf') {
+       _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($bilag->fid);
+      }
+    }
     // PNG  conversion.
     if (module_exists("os2dagsorden_pdf2png_conversion")) {
       // If is PDF, schedule for HTML conversion.

@@ -265,6 +265,11 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
         os2dagsorden_pdf2htmlex_schedule($file->fid, $node->nid);
       }
     }
+    if (module_exists('os2web_pdf_conversion_manager')) {
+      if (mime_content_type(drupal_realpath($file->uri)) !== 'application/pdf') {
+        _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($file->fid);
+      }
+    }
     // PNG  conversion.
     if (module_exists("os2dagsorden_pdf2png_conversion")) {
       // If is PDF, schedule for PNG conversion.

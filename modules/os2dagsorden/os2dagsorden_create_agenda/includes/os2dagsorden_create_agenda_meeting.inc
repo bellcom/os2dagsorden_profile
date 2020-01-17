@@ -248,7 +248,7 @@ function os2dagsorden_create_agenda_meeting($form, &$form_state, $meeting_id, $b
     $node->field_os2web_meetings_date['und'][0]['value2'] = date('Y-m-d', $days_in_future) . ' ' . $end_time;
     $node->field_os2web_meetings_full_attac['und'][0]['value'] = FALSE;
     $node->field_os2web_meetings_punkt_num['und'][0]['value'] = TRUE;
-    
+
      // Filling general fields.
     $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
   }
@@ -642,13 +642,17 @@ function os2dagsorden_create_agenda_create_general_item($node) {
         $schedule_to_convert = TRUE;
         node_save($attachment_node);
       }
-
       if($schedule_to_convert) {
         // PDF conversion.
         if (module_exists("os2dagsorden_pdf2htmlex")) {
           // If is PDF, schedule for HTML conversion.
           if (file_get_mimetype($file->uri) === 'application/pdf') {
             os2dagsorden_pdf2htmlex_schedule($file->fid, $attachment_node->nid);
+          }
+        }
+        if (module_exists('os2web_pdf_conversion_manager')) {
+          if (mime_content_type(drupal_realpath($file->uri)) !== 'application/pdf') {
+            _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($file->fid);
           }
         }
         // PNG  conversion.
