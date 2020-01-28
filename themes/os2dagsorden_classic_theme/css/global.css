@@ -1412,7 +1412,7 @@ table .item-list-dagsordenspunkt .hide_show_all_attachments_text {
 
 .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
   position: absolute;
-  right: -65px;
+  right: 15px;
   top: 0;
   line-height: 30px;
 }
