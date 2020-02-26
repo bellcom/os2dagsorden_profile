@@ -1,4 +1,4 @@
-/*  Annotator Touch Plugin - v2.0.0
+/*  Annotator Touch Plugin - v2.0.1
  *  Copyright 2012-2020, Compendio <www.compendio.ch>
  *  Released under the MIT license
  *  More Information: https://github.com/aron/annotator.touch.js
@@ -1303,7 +1303,7 @@ window.annotator.touch.textselector = {};
     // take advantage of the fact it stops running when the window is idle.
     // If this becomes a performance bottleneck consider switching to a
     // longer setTimeout() and managing the start/stop manually.
-    step = function() {
+    var step = function() {
       var progress = new Date().getTime() - start;
       if (progress > interval) {
         start = new Date().getTime();
@@ -1313,7 +1313,7 @@ window.annotator.touch.textselector = {};
           console.error(e);
         }
       }
-      this.timer = window.requestAnimationFrame(step);
+      self.timer = window.requestAnimationFrame(step);
     };
     step();
   };
