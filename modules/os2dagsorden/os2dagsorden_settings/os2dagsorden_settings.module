@@ -105,6 +105,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_bullet_case_id_link_url'] = variable_get('os2dagsorden_bullet_case_id_link_url', "");
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_comments'] = variable_get('os2dagsorden_show_comments', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_closed_bullet_point_content'] = variable_get('os2dagsorden_show_closed_bullet_point_content', FALSE);
+  $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_closed_bullet_content_depending_of_publishlevel'] = variable_get('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_open_closed_bullet_in_new_tab'] = variable_set('os2dagsorden_open_closed_bullet_in_new_tab', FALSE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag'] = variable_get('os2dagsorden_show_bilag', TRUE);
   $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_sager_group_title'] = variable_get('os2dagsorden_sager_group_title', 'Sager');
@@ -208,7 +209,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_subject'] = variable_get('os2dagsorden_meeting_unpublished_state_subject', '');
   $setting_array['os2dagsorden_meeting_unpublished_state']['os2dagsorden_meeting_unpublished_state_body'] = variable_get('os2dagsorden_meeting_unpublished_state_body', '');
   $setting_array['os2dagsorden_meeting_import']['os2dagsorden_filter_all_tags']  = variable_get('os2dagsorden_filter_all_tags',  0);
-
+  $settings_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_anonymiseret'] = variable_get('os2dagsorden_title_anonymiseret', 'Anonymiseret');
   if (module_exists('os2web_pdf_conversion_manager')) {
     $setting_array['os2dagsorden_file_import']['os2web_copied_filetype'] = variable_get('os2web_copied_filetype', OS2WEB_PDF_CONVERSION_MANAGER_COPIED_FILETYPE);
     $setting_array['os2dagsorden_file_import']['os2web_convertion_dir'] = variable_get('os2web_convertion_dir', OS2WEB_PDF_CONVERSION_MANAGER_CONVERSION_DIR);
