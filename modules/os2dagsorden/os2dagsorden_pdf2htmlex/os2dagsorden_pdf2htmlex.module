@@ -344,7 +344,7 @@ function _os2dagsorden_pdf2htmlex_calc_page_amount($html) {
  * @return string
  *   Improved HTML code.
  */
-function _os2dagsorden_pdf2htmlex_improve_html($data) {
+function _os2dagsorden_pdf2htmlex_improve_html($data, $filepath = '') {
   // Removing unneeded paragraphs.
   $data = str_replace("<p>&nbsp;</p>", "", $data);
   // Removing scripts tags.
@@ -355,7 +355,8 @@ function _os2dagsorden_pdf2htmlex_improve_html($data) {
   $data = preg_replace('#::-moz-selection{(.*?)}#is', '', $data);
   // Removing ZERO WIDTH SPACE character.
   $data = preg_replace('/[\x{200B}-\x{200D}]/u', "", $data);
-
+  $data = os2dagsorden_pdf2htmlex_improve_img($data, $filepath);
+  $data = os2dagsorden_pdf2htmlex_cleanup_html($data, "c");
   return $data;
 }
 
@@ -397,16 +398,31 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
   // With file name.
   $file_path_real = drupal_realpath($file->uri);
   $file_pathinfo = pathinfo($file_path_real);
+/*
+ * $file_path_real = drupal_realpath($uri);
+  $file_realpath_pathinfo = pathinfo($file_path_real);
+  $image_dir_realpath = $file_realpath_pathinfo['dirname'] . '/' . $file_realpath_pathinfo['filename'] . '_images/';
 
+ */
   // Is set.
   if (variable_get('pdf2html_rendering_path') && file_exists(drupal_realpath(variable_get('pdf2html_rendering_path')))) {
     $uri_parts = pathinfo($file->uri);
-    $dest_dir_real = drupal_realpath(variable_get('pdf2html_rendering_path')) . '/' . preg_replace("#(private|public):///?#is", '', $uri_parts['dirname']);
+    $dest_dir_real = drupal_realpath(variable_get('pdf2html_rendering_path')) . '/' . preg_replace("#(private|public):///?#is", '', $uri_parts['dirname']) . '/' . $file_pathinfo['filename'];
+    $dest_uri = variable_get('pdf2html_rendering_path') . '/' . preg_replace("#(private|public):///?#is", '', $uri_parts['dirname']) . '/' . $file_pathinfo['filename'];
+
   }
   else {
-    $dest_dir_real = $file_pathinfo['dirname'];
-  }
+    $uri_parts = pathinfo($file->uri);
+    $dest_dir_real = $file_pathinfo['dirname'] . '/' .  $file_pathinfo['filename'];
+    $dest_uri = $uri_parts['dirname'] . '/' . $file_pathinfo['filename'];
 
+  }
+  if (!file_exists( $dest_dir_real)) {
+    if (!mkdir($dest_dir_real)) {
+      watchdog('PDF2PNG Conversion', 'Could not create subdirectory %dir. Check the permissions', array('%dir' => $dest_dir_real), WATCHDOG_ERROR);
+      return;
+    }
+  }
   if (isset($file)) {
     // filename.html.
     $dest_filename = $file_pathinfo['filename'] . '.html';
@@ -427,7 +443,7 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
         $process_annotation = '';
       }
       shell_exec(variable_get('os2dagsorden_pdf2htmlex_path') . ' ' .
-      $shell_file_path_real . ' "' . $dest_filename . '" --dest-dir ' . $shell_dest_dir_real . ' --fallback 1 --printing 0 --process-outline 0 ' . $process_annotation . ' --zoom ' . OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_ZOOM . ' 2>&1');
+      $shell_file_path_real . ' "' . $dest_filename . '" --dest-dir ' . $shell_dest_dir_real . ' --fallback 1 --printing 0 --process-outline 0 --embed-image 0 ' . $process_annotation . ' --zoom ' . OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_ZOOM . ' 2>&1');
 
       // Successful conversion?
       if (file_exists($path)) {
@@ -435,7 +451,7 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
 
         // Rewritting with improved HTML code.
         $fh = fopen($path, 'w');
-        fwrite($fh, _os2dagsorden_pdf2htmlex_improve_html($data));
+        fwrite($fh, _os2dagsorden_pdf2htmlex_improve_html($data, $dest_uri));
         fclose($fh);
 
         $success = TRUE;
@@ -695,4 +711,57 @@ function os2dagsorden_pdf2htmlex_node_delete($node) {
   db_delete('os2dagsorden_pdf2htmlex_files')
     ->condition('did', $node->nid)
     ->execute();
+}
+
+function os2dagsorden_pdf2htmlex_improve_img($data, $filepath) {
+  $doc = new DOMDocument();
+  $doc->loadHTML($data);
+  $elements = $doc->getElementsByTagName('img');
+  if ($elements->length > 0) {
+    foreach ($elements as $element) {
+      $file = $element->getAttribute('src');
+      if ((strpos($file, 'http://') === FALSE) && (preg_match('/^data:image\/(\w+);base64,/', $file) == FALSE )){
+        $file = str_replace('"', '', $file);
+        $uri_parts = explode('\\', $file);
+        $filename = trim(array_pop($uri_parts));
+        if (strpos($filepath, 'private://') == 0 ) {
+          $filepath = str_replace('private:/', 'system/files', $filepath);
+        }
+        elseif (strpos($filepath, 'public://') == 0 ) {
+           $filepath = str_replace('public:/', variable_get('file_public_path', 'sites/default/files'), $filepath);
+        }
+        $new_uri = '/' . $filepath . '/' . $filename;
+
+        $data = str_replace($file, $new_uri, $data);
+      }
+    }
+  }
+  return $data;
+}
+
+
+/*
+ * Helper function for removing HTML tags with certain class
+ * @param string $data
+ *   HTML string.
+ * @param string $strip_class
+ *   class name.
+ * .
+ * * @return string
+ *   HTML without stripped class.
+ */
+function os2dagsorden_pdf2htmlex_cleanup_html($data, $strip_class) {
+  $doc = new DOMDocument();
+  $doc->loadHTML($data);
+  $finder = new DomXPath($doc);
+  $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $strip_class ')]");
+
+  foreach ($nodes as $node) {
+    $parent = $node->parentNode;
+    while ($node->hasChildNodes()){
+      $parent->insertBefore($node->lastChild, $node->nextSibling);
+      }
+  $parent->removeChild($node);
+  }
+  return trim($doc->saveHTML());
 }
