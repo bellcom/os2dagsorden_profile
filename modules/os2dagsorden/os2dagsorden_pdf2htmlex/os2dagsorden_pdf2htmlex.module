@@ -398,12 +398,7 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
   // With file name.
   $file_path_real = drupal_realpath($file->uri);
   $file_pathinfo = pathinfo($file_path_real);
-/*
- * $file_path_real = drupal_realpath($uri);
-  $file_realpath_pathinfo = pathinfo($file_path_real);
-  $image_dir_realpath = $file_realpath_pathinfo['dirname'] . '/' . $file_realpath_pathinfo['filename'] . '_images/';
 
- */
   // Is set.
   if (variable_get('pdf2html_rendering_path') && file_exists(drupal_realpath(variable_get('pdf2html_rendering_path')))) {
     $uri_parts = pathinfo($file->uri);
@@ -413,8 +408,9 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
   }
   else {
     $uri_parts = pathinfo($file->uri);
-    $dest_dir_real = $file_pathinfo['dirname'] . '/' .  $file_pathinfo['filename'];
-    $dest_uri = $uri_parts['dirname'] . '/' . $file_pathinfo['filename'];
+    $folder_name = os2dagsorden_pdf2htmlex_satanize_folder_name($file->uri);
+    $dest_dir_real = $file_pathinfo['dirname'] . '/' .  $folder_name;
+    $dest_uri = $uri_parts['dirname'] . '/' . $folder_name;
 
   }
   if (!file_exists( $dest_dir_real)) {
@@ -764,4 +760,21 @@ function os2dagsorden_pdf2htmlex_cleanup_html($data, $strip_class) {
   $parent->removeChild($node);
   }
   return trim($doc->saveHTML());
+}
+
+
+function os2dagsorden_pdf2htmlex_satanize_folder_name($uri) {
+  $uri_parts = pathinfo($uri);
+  $folder_name = $uri_parts['filename'];
+  $folder_name = str_replace(array('-', '_','.', ','), '', $folder_name);
+  $folder_name = preg_replace('/\s+/', ' ', $folder_name);
+  $folder_name = str_replace(' ', '_', $folder_name);
+
+
+  $dest_uri = $uri_parts['dirname'] . '/' . $folder_name . '/' . $uri_parts['filename'] .'.html';
+  if (strlen($dest_uri)>255) {
+    $symbols = strlen($dest_uri) - 255;
+    $folder_name = substr($folder_name, 0, strlen($folder_name)-$symbols);
+  }
+  return $folder_name;
 }
