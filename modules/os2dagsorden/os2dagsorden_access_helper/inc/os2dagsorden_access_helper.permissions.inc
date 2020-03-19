@@ -432,7 +432,6 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($
       else if (variable_get('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', FALSE)) {
         $bullet_point = node_load($bullet_point_id);
         $publish_level = $bullet_point->field_os2web_meetings_bul_plevel['und'][0]['value'];
-        var_dump('here');
         return os2dagsorden_access_helper_bullet_point_attachment_is_public($publish_level, $bullet_point_attachment_id);
       }
     }
