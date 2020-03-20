@@ -22,8 +22,6 @@
  */
 function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments = TRUE) {
   require_once DRUPAL_ROOT . '/profiles/os2dagsorden/libraries/mpdf/vendor/autoload.php';
-    var_dump('here');
-    die;
   // Set up and prepare mPDF tool.
   module_load_include('inc', 'print', 'includes/print');
 

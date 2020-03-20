@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2web_meetings_content_types.features.field_instance.inc
@@ -503,6 +504,53 @@ function os2web_meetings_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_meetings_bullet-field_os2web_meetings_bul_plevel'.
+  $field_instances['node-os2web_meetings_bullet-field_os2web_meetings_bul_plevel'] = array(
+    'bundle' => 'os2web_meetings_bullet',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => '',
+        ),
+        'type' => 'number_integer',
+        'weight' => 12,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_bul_plevel',
+    'label' => 'Publish level',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 12,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_meetings_bullet-field_os2web_meetings_enclosures'.
   $field_instances['node-os2web_meetings_bullet-field_os2web_meetings_enclosures'] = array(
     'bundle' => 'os2web_meetings_bullet',
@@ -885,6 +933,53 @@ function os2web_meetings_content_types_field_default_field_instances() {
       'settings' => array(),
       'type' => 'number',
       'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-os2web_meetings_bullet_attach-field_os2web_meetings_bpa_plevel'.
+  $field_instances['node-os2web_meetings_bullet_attach-field_os2web_meetings_bpa_plevel'] = array(
+    'bundle' => 'os2web_meetings_bullet_attach',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => '',
+        ),
+        'type' => 'number_integer',
+        'weight' => 8,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_meetings_bpa_plevel',
+    'label' => 'Publish level',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 8,
     ),
   );
 
@@ -3155,6 +3250,7 @@ function os2web_meetings_content_types_field_default_field_instances() {
   t('Number');
   t('Participants Cancelled');
   t('Personal');
+  t('Publish level');
   t('Ref Attachment');
   t('Ref Bullet points');
   t('Referat admins');
