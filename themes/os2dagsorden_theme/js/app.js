@@ -24,7 +24,7 @@ jQuery(function($) {
   if (window.outerWidth < 767) {
 
     if (document.body.classList.contains('page-meeting')) {
-      const toggleAllButton = document.querySelector('.hide_show_all_attachments_text.top');
+      var toggleAllButton = document.querySelector('.hide_show_all_attachments_text.top');
 
       if (! toggleAllButton.classList.contains('opened')) {
         toggleAllButton.click();
@@ -32,3 +32,26 @@ jQuery(function($) {
     }
   }
 });
+
+function is_touch_device() {
+  var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+  var mq = function(query) {
+    return window.matchMedia(query).matches;
+  }
+
+  if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+    return true;
+  }
+
+  // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+  // https://git.io/vznFH
+  var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+
+  return mq(query);
+}
+
+if (is_touch_device()) {
+  var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
+
+  root.classList.add('has-touch');
+}

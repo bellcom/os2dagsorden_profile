@@ -2822,6 +2822,9 @@ a.annotator-wrapper {
 .attachment-text img {
   max-width: 100%; }
 
+.attachment-text #sidebar {
+  background: none; }
+
 .attachment_text_full_container.attachment-text a {
   color: #ae477d;
   text-decoration: underline; }
@@ -3370,11 +3373,21 @@ ul#follows .checkbox.premeeting {
 }
 
 
-.page-meeting-notes .view-content h3 {
-  font-weight: bold;
+/* Removal of annotator touch - begin */
+.has-touch .annotator-adder {
+  position: fixed !important;
+
+  top: auto !important;
+  left: auto !important;
+  right: 20px;
+  bottom: 20px;
+
+  width: auto !important;
+  height: auto !important;
+
   background-image: none !important;
 }
-.touchevents .annotator-adder button {
+.has-touch .annotator-adder button {
   position: relative;
   padding: 10px 20px !important;
   width: auto !important;
@@ -3382,6 +3395,84 @@ ul#follows .checkbox.premeeting {
   background-color: #9c1a5e !important;
   border-radius: 4px;
   border: 1px solid #9c1a5e !important;
+  font-size: 16px;
+  font-weight: bold;
+  text-indent: 0 !important;
+  color: #fff;
+}
+
+.has-touch .annotator-outer {
+  position: fixed !important;
+  display: flex;
+
+  width: auto !important;
+  height: auto !important;
+
+  top: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+
+  background-color: rgba(0, 0, 0, .5);
+}
+.has-touch .annotator-widget {
+  position: static !important;
+
+  max-width: 300px !important;
+  margin: auto !important;
+}
+.has-touch .annotator-editor .annotator-item textarea {
+  padding: 10px !important;
+  font-size: 16px !important;
+  font-style: initial !important;
+}
+.has-touch .annotator-controls {
+  padding: 10px !important;
+  background-image: none !important;
+}
+.has-touch .annotator-controls > a {
+  padding: 5px 30px 5px 30px !important;
+
+  font-size: 16px !important;
+
+  background-color: #9c1a5e !important;
+  border-radius: 4px !important;
+  border: 1px solid #9c1a5e !important;
+  background-image: none !important;
+
+  text-shadow: none !important;
+  color: #fff !important;
+
+  box-shadow: none !important;
+}
+.has-touch .annotator-controls > a::after {
+  display: none !important;
+}
+.has-touch .annotator-viewer div:first-of-type {
+  padding: 10px !important;
+
+  font-size: 16px !important;
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  font-style: initial !important;
+}
+.has-touch .annotator-viewer .annotator-controls {
+  opacity: 1 !important;
+}
+.has-touch .annotator-viewer .annotator-controls a,
+.has-touch .annotator-viewer .annotator-controls button {
+  opacity: 1 !important;
+}
+.has-touch .annotator-viewer .annotator-controls a:focus,
+.has-touch .annotator-viewer .annotator-controls a:hover,
+.has-touch .annotator-viewer .annotator-controls button:focus,
+.has-touch .annotator-viewer .annotator-controls button:hover {
+  opacity: 1 !important;
+}
+/* Removal of annotator touch - end */
+
+.page-meeting-notes .view-content h3 {
+  font-weight: bold;
   font-size: 20px;
   padding-left: 0;
   padding-right: 0;
@@ -3407,5 +3498,3 @@ ul#follows .checkbox.premeeting {
   font-weight: bold;
   transition: background-color .1s ease-in;
 }
-
-

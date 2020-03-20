@@ -228,11 +228,9 @@ function os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content(
           // Attachment text - if any.
           if (!empty($attachment->field_os2web_meetings_bpa_body['und'][0]['value'])) {
             print '<div class="attachment_text_container">';
-
-            print '<div class="attachment_text_full_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
+            print '<div id = "bpa_' . $meeting_id . '_' . $bp_id . '_' . $attachment->nid . '" class="attachment_text_full_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
             print 'Vent venligst...<div class="throbber"></div>';
             print '</div>';
-
             print '</div>';
           }
 
@@ -326,7 +324,7 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases($elements, $meetin
         if (!empty($attachment->field_os2web_meetings_bpa_html['und'][0]) && $content_accessible) {
           print '<div class="attachment_text_container">';
 
-          print '<div class="attachment_text_trimmed_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
+          print '<div id = "bpa_' . $meeting_id . '_' . $bp_id . '_' . $attachment->nid . '" class="attachment_text_trimmed_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
 
           print 'Vent venligst...<div class="throbber"></div>';
           print '</div>';
@@ -453,7 +451,7 @@ function _os2dagsorden_meeting_views_bullet_point_bilag_cases_with_content($elem
         if (variable_get('os2dagsorden_show_bilag', TRUE)) {
           print '<div class="attachment_text_container">';
 
-          print '<div class="attachment_text_trimmed_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
+          print '<div id = "bpa_' . $meeting_id . '_' . $bp_id . '_' . $attachment->nid . '" class="attachment_text_trimmed_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
 
           print 'Vent venligst...<div class="throbber"></div>';
           print '</div>';

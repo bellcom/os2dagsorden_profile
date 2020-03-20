@@ -170,7 +170,6 @@ function _os2dagsorden_annotator_read($id) {
   drupal_add_http_header('Content-Type', 'application/json');
 
   global $user;
-
   $result = db_select('os2dagsorden_annotator_notes', 'notes')
     ->fields('notes')
     ->condition('id', $id, '=')
@@ -203,14 +202,11 @@ function _os2dagsorden_annotator_update($id) {
 
   global $user;
   $note_json = json_decode(file_get_contents('php://input'), TRUE);
-
   // Filtering on fields - removing those, that are saved separatelly.
+  $id= $note_json['id'];
   unset($note_json['id']);
   unset($note_json['user']);
   unset($note_json['permissions']);
-  unset($note_json['bilag_id']);
-  unset($note_json['bullet_point_id']);
-  unset($note_json['meeting_id']);
 
   db_update('os2dagsorden_annotator_notes')
     ->fields(array(
@@ -219,7 +215,7 @@ function _os2dagsorden_annotator_update($id) {
     ->condition('id', $id, '=')
     ->execute();
 
-  print(json_encode(array()));
+  print(json_encode($note_json));
 }
 
 /**
@@ -228,6 +224,9 @@ function _os2dagsorden_annotator_update($id) {
  * Deletes the node from the database.
  */
 function _os2dagsorden_annotator_delete($id) {
+  $note_json = json_decode(file_get_contents('php://input'), TRUE);
+  // Filtering on fields - removing those, that are saved separatelly.
+  $id= $note_json['id'];
   db_delete('os2dagsorden_annotator_notes')
     ->condition('id', $id)
     ->execute();
@@ -369,11 +368,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
         )
     ),
     array('type' => 'setting'));
-  drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
-  drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
-  drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
-
-  $html = "";
+   $html = "";
 
   // Check mode.
   $mode = (isset($_GET['search_param'])) ? 'search_mode' : 'annotator_mode';
@@ -394,19 +389,25 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 HTML;
   }
   else {
-    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
-    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.min.js');
+    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
+    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator.min.js');
+    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-touch-plugin/annotator.touch.min.js');
+    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/imageselect-plugin/jquery.imgareaselect.min.js');
+    drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/imageselect-plugin/annotator.imgselect.js');
     drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/json2.js');
     drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
-
-    drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_path . '?q=", true, "' . $user->name . '");', 'inline');
-
+    drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/imageselect-plugin/imgareaselect-default.css');
     drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
-    drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
+    drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-touch-plugin/annotator.touch.css');
+
+    drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"content","' . $base_path . '?q=", true, "' . $user->name . '");', 'inline');
+
+
   }
 
   // Floating scrollbar.
   drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_floatingscrollbar.min.js');
+
   drupal_add_js('annotator_add_floatinscrollbar();', 'inline');
 
   // Hiding the side pane menu.
@@ -1038,12 +1039,12 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
 
       $to_return .= ' <b>' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i>';
       if (!empty($link)) {
-        if (intval($page_nr) > OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) {
+        if (intval($page_nr) >= OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) {
           // If pages per view is 5, then the page number will be 5, 10, 15 etc.
           $link .= '?page=' . intval($page_nr /
               OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
         }
-
+        $link .="#". $note->id;
         global $base_url;
         $to_return .= '<a target="_blank" href="' . $base_url . $link . '" class="no-print"> >>> </a>';
 
@@ -1079,7 +1080,7 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
           $link .= '?page=' . intval($page_nr /
               OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
         }
-
+        $link .="#". $note->id;
         global $base_url;
         $to_return .= '<div class="annotator-note-link"><a target="_blank" href="' . $base_url . $link . '" class="no-print">' . t('Gå til note') . '</a> </div>';
 
@@ -1210,4 +1211,30 @@ function os2dagsorden_annotator_bilags_list($meeting_id, $bullet_point_id, $bila
     return $html;
   }
   return FALSE;
+}
+
+/**
+ * Implements hook_file_download().
+ *
+ * @param string $uri
+ *   The URI of the file.
+ */
+function os2dagsorden_annotator_file_download($uri) {
+
+  $folder_uri = pathinfo($uri, PATHINFO_DIRNAME);
+  $realpath = drupal_realpath($folder_uri);
+  $result = db_select('os2dagsorden_pdf2htmlex_files', 'o')
+    ->fields('o', array('fid'))
+    ->condition('created_filepath', db_like($realpath) . '%' , 'LIKE')
+    ->execute()
+    ->fetchField();
+
+   if (isset($result) && !empty($result)) {
+    $info = image_get_info($uri);
+    if (os2dagsorden_access_helper_check_user_can_download_bullet_point_attachment_file($result)) {
+      return array(
+        'Content-Type' => $info['mime_type'],
+      );
+    }
+  }
 }
