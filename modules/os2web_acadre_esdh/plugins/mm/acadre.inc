@@ -61,7 +61,7 @@ function os2web_acadre_esdh_mm_get_import_list() {
     }
   }
   usort($uris, '_acadre_esdh_mm_sort_import_list');
-  
+
   if (ACADRE_MM_PUB_FOCUS !== FALSE) {
     // We wish to only handle a single publication, så we return only that.
     if (isset($uris[ACADRE_MM_PUB_FOCUS])) {
@@ -388,6 +388,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
   $case = _get_value_from_xml($xml->xpath("fields/field[@name='caseno']"));
   $sysid = _get_value_from_xml($xml->xpath("fields/field[@name='sysid']"), 'int');
   $comname = _get_value_from_xml($xml->xpath("fields/field[@name='comname']"));
+  $publish_level = _get_value_from_xml($xml->xpath("fields/field[@name='publishlevel']"), 'int');
 
   $item = array(
     'id' => $id,
@@ -396,6 +397,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
     'case_nr' => $case,
     'access' => $access,
     'comname' => $comname,
+    'publishlevel' => $publish_level,
     'bullets' => array(),
     'enclosures' => array(),
   );
@@ -416,6 +418,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
         }
       }
     }
+
     $cases = array();
     $enclosures = array();
     foreach ($xml->xpath("table[@name='Case']") as $case_xml) {
@@ -441,6 +444,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
                     'type' => 'Sager',
                     'sort' => _get_value_from_xml($case_file->xpath("fields/field[@name='sort']"), 'int'),
                     'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
+                    'publishlevel' => (_get_value_from_xml($case_file->xpath("fields/field[@name='publishlevel']")) == 'NA') ? 0 : _get_value_from_xml($case_file->xpath("fields/field[@name='publishlevel']"), 'int')
                   );
                 }
               }
@@ -456,6 +460,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
                   'type' => 'Sager',
                   'sort' => _get_value_from_xml($case_file->xpath("fields/field[@name='sort']"), 'int'),
                   'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
+                  'publishlevel' => (_get_value_from_xml($case_file->xpath("fields/field[@name='publishlevel']")) == 'NA') ? 0 : _get_value_from_xml($case_file->xpath("fields/field[@name='publishlevel']"), 'int')
                 );
               }
             }
@@ -469,6 +474,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
               'type' => 'Sager',
               'sort' => _get_value_from_xml($case_file->xpath("fields/field[@name='sort']"), 'int'),
               'access' => (_get_value_from_xml($case_file->xpath("fields/field[@name='PublicAccessLevelName']")) === 'Åben'),
+              'publishlevel' => (_get_value_from_xml($case_file->xpath("fields/field[@name='publishlevel']")) == 'NA') ? 0 : _get_value_from_xml($case_file->xpath("fields/field[@name='publishlevel']"), 'int')
             );
           }
         }
@@ -498,8 +504,9 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
                   'title' => 'Email:' . _get_value_from_xml($enclosure->xpath("fields/field[@name='name']")),
                   'filetype' => '.PDF',
                   'type' => 'Bilag',
-                  'sort' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sort']"), 'int'),
+                  'sorbt' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sort']"), 'int'),
                   'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
+                  'publishlevel' => (_get_value_from_xml($enclosure->xpath("fields/field[@name='publishlevel']")) == 'NA') ? 0 : _get_value_from_xml($enclosure->xpath("fields/field[@name='publishlevel']"), 'int')
                 );
               }
             }
@@ -516,6 +523,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
                 'type' => 'Bilag',
                 'sort' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sort']"), 'int'),
                 'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
+                'publishlevel' => (_get_value_from_xml($enclosure->xpath("fields/field[@name='publishlevel']")) == 'NA') ? 0 : _get_value_from_xml($enclosure->xpath("fields/field[@name='publishlevel']"), 'int')
               );
             }
           }
@@ -531,6 +539,7 @@ function _os2web_acadre_esdh_import_item($info, SimpleXMLElement $xml) {
             'type' => 'Bilag',
             'sort' => _get_value_from_xml($enclosure->xpath("fields/field[@name='sort']"), 'int'),
             'access' => ACADRE_MM_ACCESS_OPEN === _get_value_from_xml($enclosure->xpath("fields/field[@name='access']"), 'int'),
+            'publishlevel' => (_get_value_from_xml($enclosure->xpath("fields/field[@name='publishlevel']")) == 'NA') ? 0 : _get_value_from_xml($enclosure->xpath("fields/field[@name='publishlevel']"), 'int')
           );
         }
       }

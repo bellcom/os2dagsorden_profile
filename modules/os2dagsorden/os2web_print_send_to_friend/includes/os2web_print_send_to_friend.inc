@@ -16,6 +16,10 @@
 function os2web_print_send_to_friend_print_bullet_point($meeting_id, $bullet_point_id, $show_commitee = TRUE) {
   module_load_include('inc', 'os2dagsorden_meeting_views', 'os2dagsorden_meeting_views_common_fields');
   $bullet_point = node_load($bullet_point_id);
+  if (variable_get('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', FALSE)) {
+    $publish_level = intval($bullet_point->field_os2web_meetings_bul_plevel['und'][0]['value']);
+    $title = os2dagsorden_access_helper_get_bullet_point_title($meeting_id, $bullet_point_id, $bullet_point->title, $publish_level);
+  }
 
   if (strcmp($bullet_point->type, 'os2web_meetings_bullet') === 0) {
     if (variable_get('os2dagsorden_print_pdf_show_commitee', FALSE) && $show_commitee) {
@@ -30,17 +34,19 @@ function os2web_print_send_to_friend_print_bullet_point($meeting_id, $bullet_poi
         $commitee = taxonomy_term_load($meeting_committee[0]["tid"])->name;
       }
       $meeting_date = format_date(strtotime($date[0]["value"]), $type = 'short', '', $date[0]['timezone']);
-      $html = '<h2>' . $bullet_point->title . ' (' . $commitee . ' ' . $meeting_date . ')</h2>';
+      $html = '<h2>' . $title . ' (' . $commitee . ' ' . $meeting_date . ')</h2>';
     }
     else {
-      $html = '<h2>' . $bullet_point->title . '</h2>';
+      $html = '<h2>' . $title . '</h2>';
     }
     // Eliminating duplicates in bullet points attachments.
     $attachments = array();
     if ($bullet_point->field_os2web_meetings_attach['und']) {
       foreach ($bullet_point->field_os2web_meetings_attach['und'] as $attachment_id) {
-        $hash = $attachment_id['target_id'];
-        $attachments[$hash] = $attachment_id;
+        if (os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bullet_point_id, $attachment_id['target_id'])) {
+          $hash = $attachment_id['target_id'];
+          $attachments[$hash] = $attachment_id;
+        }
       }
     }
     foreach ($attachments as $attachment_id) {
@@ -65,12 +71,23 @@ function os2web_print_send_to_friend_print_bullet_point($meeting_id, $bullet_poi
  */
 function os2web_print_send_to_friend_print_bullet_point_attachments($bullet_point_id) {
   $bullet_point = node_load($bullet_point_id);
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->fieldCondition('field_os2web_meetings_bullets', 'target_id', $bullet_point_id, '=');
+  $result = $query->execute();
+   if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $meeting_id = reset($nids);
+  }
+
   if (strcmp($bullet_point->type, 'os2web_meetings_bullet') === 0) {
     $attachments = array();
     if ($bullet_point->field_os2web_meetings_attach['und']) {
       foreach ($bullet_point->field_os2web_meetings_attach['und'] as $attachment_id) {
-        $hash = $attachment_id['target_id'];
-        $attachments[$hash] = $attachment_id;
+        if (os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bullet_point_id, $attachment_id['target_id'])) {
+          $hash = $attachment_id['target_id'];
+          $attachments[$hash] = $attachment_id;
+        }
       }
     }
     $files = array();

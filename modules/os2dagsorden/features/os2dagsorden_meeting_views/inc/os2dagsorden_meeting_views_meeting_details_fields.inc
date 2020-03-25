@@ -754,6 +754,10 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_title($t
   global $base_url;
 
   $bp = node_load($bp_id);
+  if (variable_get('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', FALSE)) {
+    $publish_level = intval($bp->field_os2web_meetings_bul_plevel['und'][0]['value']);
+    $title = os2dagsorden_access_helper_get_bullet_point_title($meeting_id, $bp_id, $title, $publish_level);
+  }
   if (variable_get('os2dagsorden_show_bullet_case_nr', FALSE)) {
     if ($bp->field_os2web_meetings_bul_case['und'] && !empty($bp->field_os2web_meetings_bul_case['und'][0]['value'])) {
       $title .= ' (' . $bp->field_os2web_meetings_bul_case['und'][0]['value'] . ')';
@@ -779,7 +783,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_title($t
   $is_closed = $bp->field_os2web_meetings_bul_closed['und'][0]['value'];
   $is_personal = $bp->field_os2web_meetings_bul_pers['und'][0]['value'];
 
-  if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id)) {
+  if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id) || os2dagsorden_access_helper_check_bullet_point_has_public_content($bp_id)) {
     if ($is_closed && variable_get('os2dagsorden_open_closed_bullet_in_new_tab', FALSE)) {
       print '<a href="' . $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '" target="_blank"  class="first-child poshy_tip"' . $tooltip . '>';
     }
@@ -1284,7 +1288,7 @@ function os2dagsorden_meeting_views_meeting_details_fields_filter_bullet_point($
  *   True is yes, false is no.
  */
 function os2dagsorden_meeting_views_meeting_details_show_closed_bullet_point_content($meeting_id, $bp_id) {
-  if (variable_get('os2dagsorden_show_closed_bullet_point_content', FALSE) && os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id)) {
+  if (variable_get('os2dagsorden_show_closed_bullet_point_content', FALSE) && (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id) || os2dagsorden_access_helper_check_bullet_point_has_public_content($bp_id))) {
     return TRUE;
   }
   return FALSE;
