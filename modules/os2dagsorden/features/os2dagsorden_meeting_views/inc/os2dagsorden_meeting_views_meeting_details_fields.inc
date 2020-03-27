@@ -851,40 +851,41 @@ function os2dagsorden_meeting_views_meeting_details_fields_bullet_point_attachme
 
       foreach ($all_attachments as $attachment_id) {
         $attachment = node_load($attachment_id['target_id']);
+       if (os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bp_id, $attachment->nid)) {
+          // If is bilag.
+          if (!empty($attachment->field_os2web_meetings_bpa_file['und'])) {
+            // Saving bilags to the end.
+            if ($attachment->field_os2web_meetings_bpa_type['und'][0]['value'] === 'Sager') {
+              $cases[] = $attachment;
+            }
+            else {
+              $bilags[] = $attachment;
+            }
 
-        // If is bilag.
-        if (!empty($attachment->field_os2web_meetings_bpa_file['und'])) {
-          // Saving bilags to the end.
-          if ($attachment->field_os2web_meetings_bpa_type['und'][0]['value'] === 'Sager') {
-            $cases[] = $attachment;
           }
+          // Not bilag.
           else {
-            $bilags[] = $attachment;
+            print '<li class="non-bilag">';
+
+            $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/bullet-point-attachment/' . $attachment->nid;
+            print '<a href="' . $link . '" class="first-child last-child"><div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>' . $attachment->title . '</a>';
+            if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
+              print '<div class="attachment-modify-links-container"><a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/attachment/' . $attachment->nid . '" class="edit-meeting-btn" rel="lightframe[|width:800px; height:500px; scrolling: auto;]"><div class="indicator-edit-agenda"></div>&nbsp;</a>'
+                . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/attachment/' . $attachment->nid . '/delete" class="edit-meeting-btn form-submit-delete"><div class="indicator-delete-agenda"></div>'
+                . '&nbsp;</a></div>';
+            }
+            // Attachment text - if any.
+            if (!empty($attachment->field_os2web_meetings_bpa_body['und'][0]['value'])) {
+              print '<div class="attachment_text_container">';
+
+              print '<div id = "bpa_' . $meeting_id . '_' . $bp_id . '_' . $attachment->nid . '" class="attachment_text_full_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
+              print 'Vent venligst...<div class="throbber"></div>';
+              print '</div>';
+
+              print '</div>';
+            }
+            print '</li>';
           }
-
-        }
-        // Not bilag.
-        else {
-          print '<li class="non-bilag">';
-
-          $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/bullet-point-attachment/' . $attachment->nid;
-          print '<a href="' . $link . '" class="first-child last-child"><div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div>' . $attachment->title . '</a>';
-          if (module_exists('os2dagsorden_create_agenda') && user_access('administer os2web')) {
-            print '<div class="attachment-modify-links-container"><a href="' . $GLOBALS['base_url'] . '/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/attachment/' . $attachment->nid . '" class="edit-meeting-btn" rel="lightframe[|width:800px; height:500px; scrolling: auto;]"><div class="indicator-edit-agenda"></div>&nbsp;</a>'
-              . '<a href="/agenda/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/attachment/' . $attachment->nid . '/delete" class="edit-meeting-btn form-submit-delete"><div class="indicator-delete-agenda"></div>'
-              . '&nbsp;</a></div>';
-          }
-          // Attachment text - if any.
-          if (!empty($attachment->field_os2web_meetings_bpa_body['und'][0]['value'])) {
-            print '<div class="attachment_text_container">';
-
-            print '<div id = "bpa_' . $meeting_id . '_' . $bp_id . '_' . $attachment->nid . '" class="attachment_text_full_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
-            print 'Vent venligst...<div class="throbber"></div>';
-            print '</div>';
-
-            print '</div>';
-          }
-          print '</li>';
         }
       }
 
