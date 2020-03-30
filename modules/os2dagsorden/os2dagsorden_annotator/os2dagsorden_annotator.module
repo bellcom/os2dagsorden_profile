@@ -1223,12 +1223,11 @@ function os2dagsorden_annotator_file_download($uri) {
 
   $folder_uri = pathinfo($uri, PATHINFO_DIRNAME);
   $realpath = drupal_realpath($folder_uri);
-  $result = db_select('os2dagsorden_pdf2htmlex_files', 'o')
+  $result = db_select('file_managed', 'o')
     ->fields('o', array('fid'))
-    ->condition('created_filepath', db_like($realpath) . '%' , 'LIKE')
+    ->condition('uri', db_like($folder_uri) . '%' , 'LIKE')
     ->execute()
     ->fetchField();
-
    if (isset($result) && !empty($result)) {
     $info = image_get_info($uri);
     if (os2dagsorden_access_helper_check_user_can_download_bullet_point_attachment_file($result)) {
