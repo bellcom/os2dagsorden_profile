@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2web_meetings_content_types.strongarm.inc

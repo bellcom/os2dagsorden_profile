@@ -322,7 +322,7 @@ function _os2dagsorden_annotator_dummy() {
  *   TRUE or FALSE
  */
 function _os2dagsorden_annotator_check_permission($meeting_id, $bullet_point_id, $bilag_id) {
-  return os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bullet_point_id, $bilag_id);
+  return os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment_content($meeting_id, $bullet_point_id, $bilag_id);
 }
 
 /**
@@ -1039,12 +1039,12 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
 
       $to_return .= ' <b>' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i>';
       if (!empty($link)) {
-        if (intval($page_nr) > OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) {
+        if (intval($page_nr) >= OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) {
           // If pages per view is 5, then the page number will be 5, 10, 15 etc.
           $link .= '?page=' . intval($page_nr /
               OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
         }
-
+        $link .="#". $note->id;
         global $base_url;
         $to_return .= '<a target="_blank" href="' . $base_url . $link . '" class="no-print"> >>> </a>';
 
@@ -1080,7 +1080,7 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
           $link .= '?page=' . intval($page_nr /
               OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW) * OS2DAGSORDEN_ANNOTATOR_PAGES_PER_VIEW;
         }
-
+        $link .="#". $note->id;
         global $base_url;
         $to_return .= '<div class="annotator-note-link"><a target="_blank" href="' . $base_url . $link . '" class="no-print">' . t('Gå til note') . '</a> </div>';
 

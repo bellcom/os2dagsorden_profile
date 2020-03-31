@@ -615,7 +615,9 @@ function _os2web_esdh_provider_import_items($items, $existing_bullets = NULL) {
       $node->field_os2web_bullet_point_id[$node->language][0]['value'] = $item['sysid'];
     }
     $node->title = mb_substr($item['title'], 0, 200);
-
+    if (isset($item['publishlevel']) && !empty($item['publishlevel'])) {
+      $node->field_os2web_meetings_bul_plevel[$node->language][0]['value'] = $item['publishlevel'];
+    }
     if (module_exists('os2dagsorden_esdh_provider')) {
       $node = os2dagsorden_esdh_provider_bullet_add_number($node, $item['id']);
     }

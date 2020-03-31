@@ -22,7 +22,6 @@
  */
 function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments = TRUE) {
   require_once DRUPAL_ROOT . '/profiles/os2dagsorden/libraries/mpdf/vendor/autoload.php';
-
   // Set up and prepare mPDF tool.
   module_load_include('inc', 'print', 'includes/print');
 
@@ -69,7 +68,7 @@ function os2web_print_send_to_friend_pdf_generate($meeting_id, $with_attachments
 
       $is_last_bp = ($i === count($meeting->field_os2web_meetings_bullets['und']) - 1);
 
-      if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id)) {
+      if (os2dagsorden_access_helper_check_user_has_access_to_bullet_point($meeting_id, $bp_id)) {
         $mpdf = os2web_print_send_to_friend_generate_pdf_bullet_point($bp_id, $mpdf, $is_last_bp, $with_attachments);
       }
     }
@@ -151,16 +150,30 @@ function os2web_print_send_to_friend_generate_pdf_meeting_general_info($meeting,
  */
 function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id, $mpdf, $is_last_bp, $with_attachments = TRUE) {
   $bullet_point = node_load($bullet_point_id);
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->fieldCondition('field_os2web_meetings_bullets', 'target_id', $bullet_point_id, '=');
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $meeting_id = reset($nids);
+  }
 
+  if (variable_get('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', FALSE)) {
+    $publish_level = intval($bullet_point->field_os2web_meetings_bul_plevel['und'][0]['value']);
+    $title = os2dagsorden_access_helper_get_bullet_point_title($meeting_id, $bullet_point_id, $bullet_point->title, $publish_level);
+  }
   if (strcmp($bullet_point->type, 'os2web_meetings_bullet') === 0) {
-    $mpdf->WriteHtml('<h2>' . $bullet_point->title . '</h2>');
+    $mpdf->WriteHtml('<h2>' . $title . '</h2>');
 
     // Eliminating duplicates in bullet points attachments.
     $attachments = array();
     if ($bullet_point->field_os2web_meetings_attach['und']) {
       foreach ($bullet_point->field_os2web_meetings_attach['und'] as $attachment_id) {
-        $hash = $attachment_id['target_id'];
-        $attachments[$hash] = $attachment_id;
+        if (os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bullet_point_id, $attachment_id['target_id'])) {
+          $hash = $attachment_id['target_id'];
+          $attachments[$hash] = $attachment_id;
+        }
       }
     }
 
@@ -175,7 +188,11 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
       }
 
       $attachment = node_load($attachment_id['target_id']);
-      $mpdf->WriteHtml('<h3>' . $attachment->title . '</h3>');
+      if (variable_get('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', FALSE)) {
+        $publish_level = intval($attachment->field_os2web_meetings_bpa_plevel['und'][0]['value']);
+        $title = os2dagsorden_access_helper_get_bilag_title($meeting_id, $bp_id, $attachment->title, $publish_level);
+      }
+      $mpdf->WriteHtml('<h3>' . $title . '</h3>');
 
       if (!empty($attachment->field_os2web_meetings_bpa_body['und'][0]['value'])) {
         $mpdf->WriteHtml(preg_match("|^<p>(.*)</p>|", $attachment->field_os2web_meetings_bpa_body['und'][0]['value']) ? $attachment->field_os2web_meetings_bpa_body['und'][0]['value'] : "<p>" . $attachment->field_os2web_meetings_bpa_body['und'][0]['value'] . "</p>");

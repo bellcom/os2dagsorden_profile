@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2web_meetings_content_types.features.field_base.inc
@@ -394,6 +395,24 @@ function os2web_meetings_content_types_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
+  // Exported field_base: 'field_os2web_meetings_bpa_plevel'.
+  $field_bases['field_os2web_meetings_bpa_plevel'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_bpa_plevel',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
   // Exported field_base: 'field_os2web_meetings_bpa_type'.
   $field_bases['field_os2web_meetings_bpa_type'] = array(
     'active' => 1,
@@ -558,6 +577,24 @@ function os2web_meetings_content_types_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'list_boolean',
+  );
+
+  // Exported field_base: 'field_os2web_meetings_bul_plevel'.
+  $field_bases['field_os2web_meetings_bul_plevel'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2web_meetings_bul_plevel',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
   );
 
   // Exported field_base: 'field_os2web_meetings_bullets'.

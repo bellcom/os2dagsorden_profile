@@ -210,6 +210,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This decides whether a closed bullet point will open in new browser window.'),
     '#default_value' => variable_get('os2dagsorden_open_closed_bullet_in_new_tab', FALSE),
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_closed_bullet_content_depending_of_publishlevel'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('show closed bullet points dependging of publishlevel'),
+    '#description' => t('This decides whether a closed bullet point content will be shown based on publishlelel settings.'),
+    '#default_value' => variable_get('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', FALSE),
+  );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show bullet point attachment (bilag) on meeting view and bullet point attachment views'),
@@ -1453,6 +1459,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_title_meeting_new_speaker_paper_hide', FALSE),
     '#title' => t('Hide New speaker paper text'),
   );
+  $form['os2dagsorden_help_text_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_anonymiseret'] = array(
+    '#type' => 'textarea',
+    '#rows' => 2,
+    '#default_value' => variable_get('os2dagsorden_title_anonymiseret', 'Anonymiseret'),
+    '#title' => t('Title for Anonymous bullet point or bilag'),
+  );
+
 
   // Upload quide PDF file.
   $form['upload_guide'] = array(
@@ -1825,6 +1838,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_show_comments', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_comments']);
     variable_set('os2dagsorden_show_closed_bullet_point_content', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_closed_bullet_point_content']);
     variable_set('os2dagsorden_open_closed_bullet_in_new_tab', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_open_closed_bullet_in_new_tab']);
+    variable_set('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_closed_bullet_content_depending_of_publishlevel']);
     variable_set('os2dagsorden_show_bilag', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag']);
     variable_set('os2dagsorden_sager_group_title', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_sager_group_title ']);
     variable_set('os2dagsorden_use_abbr', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_use_abbr']);
@@ -2008,7 +2022,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_title_meeting_new_speaker_paper_hide', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_new_speaker_paper_hide']);
     variable_set('os2dagsorden_meeting_notes_title', $setting_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_meeting_notes_title']);
     variable_set('os2dagsorden_title_meeting_referent', $settings_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_meeting_referent']);
-
+    variable_set('os2dagsorden_title_anonymiseret', $settings_array['os2dagsorden_terminology_placeholder']['os2dagsorden_terminology_meeting_placeholder']['os2dagsorden_title_anonymiseret']);
     variable_set('os2dagsorden_meeting_view_calendar_short_name', $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_view_calendar_short_name']);
     variable_set('os2dagsorden_meeting_show_calendar_block_on_cal_pages', $setting_array['os2dagsorden_meeting_view_calendar_settings']['os2dagsorden_meeting_show_calendar_block_on_cal_pages']);
 
