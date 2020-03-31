@@ -42,6 +42,38 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
        });
    });
 
+   if (!jQuery("body .annotator-touch-controls.dummy-controls").length ) {
+            jQuery('body').append(
+                '<div class="annotator-touch-widget annotator-touch-controls dummy-controls">' +
+                    '<div class="annotator-touch-widget-inner">' +
+                        '<a class="annotator-button annotator-add annotator-focus">' + Drupal.settings.os2dagsorden_annotator.annotator_button_text + '</a>' +
+                    '</div>' +
+                '</div>'
+            );
+            jQuery('body .annotator-touch-controls.dummy-controls').click(function(e) {
+                e.preventDefault();
+                if (jQuery("#ToolTipDiv2").css('display') != 'block') {
+                  jQuery("#ToolTipDiv2").html("Marker tekst og klik herefter på Lav note").fadeIn(400);
+                  setTimeout(function(){
+                      jQuery("#ToolTipDiv2").fadeOut("slow");
+                  },5000)
+                }
+                else {
+                  jQuery("#ToolTipDiv2").css({'display': 'none'});
+                }
+            });
+        }
+
+        // Changing button text.
+        jQuery(".annotator-button.annotator-add.annotator-focus").text(Drupal.settings.os2dagsorden_annotator.annotator_button_text);
+        if (Drupal.settings.os2dagsorden_annotator.annotator_hide_text) {
+            jQuery(".annotator-button.annotator-add.annotator-focus").html('&nbsp;');
+            jQuery(".annotator-button.annotator-add.annotator-focus").css("cssText", "padding-right: 0 !important;");
+        }
+        if (Drupal.settings.os2dagsorden_annotator.annotator_use_title) {
+            jQuery(".annotator-touch-widget-inner").attr("title", Drupal.settings.os2dagsorden_annotator.annotator_button_text);
+        }
+
         if (jQuery(".bilag-list-btn").length) {
           jQuery(".bilag-list-btn").click(function(){
             jQuery(".bilag-list").toggle();
@@ -80,7 +112,6 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
         jQuery("#content").animate({
           scrollTop:  offset
         }, 100 );
-        console.log(offset);
       }
   });
 }
