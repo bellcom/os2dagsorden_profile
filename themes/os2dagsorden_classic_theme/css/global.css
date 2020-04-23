@@ -2352,6 +2352,9 @@ div.note.subscribe::before{
   position: absolute;
   right: 0;
 }
+.attachment-text #sidebar {
+    background: none;
+}
 /* ---------------------------- Notes page END --------------------------------- */
 .views-exposed-widgets .restricted-search-text {
   text-align: center;
