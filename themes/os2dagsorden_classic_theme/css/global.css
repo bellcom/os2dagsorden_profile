@@ -2353,7 +2353,7 @@ div.note.subscribe::before{
   right: 0;
 }
 .attachment-text #sidebar {
-    background: none;
+    display: none;
 }
 /* ---------------------------- Notes page END --------------------------------- */
 .views-exposed-widgets .restricted-search-text {
