@@ -103,6 +103,41 @@ function annotatorImageSelect(options) {
       }
     },
 
+    recalculatePositioning: function(selectedArea, image) {
+      var percentFunc = this.percent;
+
+      // Wrapper attributes.
+      var wrapper = image.parent();
+      var wrapperWidth = wrapper[0].clientWidth;
+      var wrapperHeight = wrapper[0].clientHeight;
+
+      // Image attributes.
+      var imageWidth = image[0].clientWidth;
+      var imageHeight = image[0].clientHeight;
+      var imageOuterDistanceLeft = parseInt(image.css('left'));
+      var imageOuterDistanceTop = parseInt(image.css('top'));
+
+      // Convert the selected area (of the image) to pixels.
+      var selectedAreaLeftInPixels = parseInt((imageWidth / 100) * parseFloat(selectedArea.x));
+      var selectedAreaTopInPixels = parseInt((imageHeight / 100) * parseFloat(selectedArea.y));
+      var selectedAreaHeightInPixels = parseInt((imageHeight / 100) * parseFloat(selectedArea.h));
+      var selectedAreaWidthInPixels = parseInt((imageWidth / 100) * parseFloat(selectedArea.w));
+
+      // Recalculate the selected area inside the wrapper.
+      var leftRecalculatedInPixels = (selectedAreaLeftInPixels + imageOuterDistanceLeft) / wrapperWidth;
+      var topRecalculatedInPixels = (selectedAreaTopInPixels + imageOuterDistanceTop) / wrapperHeight;
+      var heightRecalculatedInPixels = selectedAreaHeightInPixels / wrapperHeight;
+      var widthRecalculatedInPixels = selectedAreaWidthInPixels / wrapperWidth;
+
+      // Convert to percent and return.
+      return {
+        top: percentFunc(topRecalculatedInPixels),
+        left: percentFunc(leftRecalculatedInPixels),
+        width: percentFunc(widthRecalculatedInPixels),
+        height: percentFunc(heightRecalculatedInPixels),
+      };
+    },
+
     // draw a highlight element for an image annotation
     drawImageHighlight: function(annotation) {
       // if annotation is not an image selection annotation,
@@ -116,28 +151,33 @@ function annotatorImageSelect(options) {
         // if the highlighted image is not found, skip
         return;
       }
+
+      var recalculatedPositions = this.recalculatePositioning(imgselection, img);
+
       // create a highlight element
       var hl = jQuery(document.createElement('span'));
       hl.addClass('annotator-hl');
       // set position, width, height, annotation id
-      hl.css({
-        width: imgselection.w,
-        height: imgselection.h,
-        left: imgselection.x,
-        top: imgselection.y,
+      var styles = {
+        width: recalculatedPositions.width,
+        height: recalculatedPositions.height,
+        left: recalculatedPositions.left,
+        top: recalculatedPositions.top,
         position: 'absolute',
         display: 'block'
-      });
+      };
+
+      hl.css(styles);
       // Add a data attribute for annotation id if the annotation has one
       if (typeof annotation.id !== 'undefined' && annotation.id !== null) {
-       hl.attr('data-annotation-id', annotation.id);
-     }
-     // Save the annotation data on each highlighter element.
-     hl.attr('data-annotation', JSON.stringify(annotation));
+        hl.attr('data-annotation-id', annotation.id);
+      }
+      // Save the annotation data on each highlighter element.
+      hl.attr('data-annotation', JSON.stringify(annotation));
 
-     // add highlight to img parent element
-     // NOTE: this relies on readux style/layout for correct placement
-     img.parent().append(hl);
+      // add highlight to img parent element
+      // NOTE: this relies on readux style/layout for correct placement
+      img.parent().append(hl);
 
       // return the added highlight element
       return hl;
@@ -178,7 +218,7 @@ function annotatorImageSelect(options) {
       // storing all dimensions as percentages so it can
       // be scaled for different sizes if necessary
       var w = (selection.x2 - selection.x1) / img.width,
-         h = (selection.y2 - selection.y1) / img.height;
+        h = (selection.y2 - selection.y1) / img.height;
       return {
         // full uri to the image
         uri: img.src,
@@ -197,103 +237,103 @@ function annotatorImageSelect(options) {
   return {
 
     // when annotator starts, load & configure image selection
-      start: function (app) {
-          if (!jQuery.imgAreaSelect || typeof jQuery.imgAreaSelect !== 'function') {
-              console.warn(_t("To use the ImageSelect annotator module, you must " +
-                  "include imgAreaSelect in the page."));
-              return;
-          }
-          // NOTE: might be possible to set fallback logic to identify
-          // annotable image content, but this is probably good enough for now.
-          if (! options.element) {
-              console.warn(_t("To use the ImageSelect annotator module, you must " +
-                  "configure elements for image selection."));
-              return;
-          }
+    start: function (app) {
+      if (!jQuery.imgAreaSelect || typeof jQuery.imgAreaSelect !== 'function') {
+        console.warn(_t("To use the ImageSelect annotator module, you must " +
+          "include imgAreaSelect in the page."));
+        return;
+      }
+      // NOTE: might be possible to set fallback logic to identify
+      // annotable image content, but this is probably good enough for now.
+      if (! options.element) {
+        console.warn(_t("To use the ImageSelect annotator module, you must " +
+          "configure elements for image selection."));
+        return;
+      }
 
-          // enable image selection on configured annotatable image
-          var ias_opts = {
-              instance: true,  // return an instance for later interaction
-              handles: true,
-              onInit: imgselect_utils.selectionSetup,
-              onSelectStart: imgselect_utils.selectionStart,
-              onSelectChange: imgselect_utils.selectionChange,
-              onSelectEnd: imgselect_utils.selectionEnd,
-              keys: false  // disable keyboard shortcuts because they conflict with annotator keys
-           }
-          // NOTE: imgAreaSelect is supposed to handle multiple elements,
-          // but cancelSelection does NOT work on secondary images
-          // As a workaround, initialize one imgAreaSelect instance for
-          // each image configured for image annotation
-          s.ias = jQuery(options.element).toArray().map(function(el) {
-              return jQuery(el).imgAreaSelect(ias_opts);
-          });
+      // enable image selection on configured annotatable image
+      var ias_opts = {
+        instance: true,  // return an instance for later interaction
+        handles: true,
+        onInit: imgselect_utils.selectionSetup,
+        onSelectStart: imgselect_utils.selectionStart,
+        onSelectChange: imgselect_utils.selectionChange,
+        onSelectEnd: imgselect_utils.selectionEnd,
+        keys: false  // disable keyboard shortcuts because they conflict with annotator keys
+      }
+      // NOTE: imgAreaSelect is supposed to handle multiple elements,
+      // but cancelSelection does NOT work on secondary images
+      // As a workaround, initialize one imgAreaSelect instance for
+      // each image configured for image annotation
+      s.ias = jQuery(options.element).toArray().map(function(el) {
+        return jQuery(el).imgAreaSelect(ias_opts);
+      });
 
-          // Customize the mouse cursor to indicate when configured image
-          // can be selected for annotation.
-          options.element.css({'cursor': 'crosshair'});
+      // Customize the mouse cursor to indicate when configured image
+      // can be selected for annotation.
+      options.element.css({'cursor': 'crosshair'});
 
-          // create annotation adder
-          // borrowed from annotator.ui.main
-          s.adder = new annotator.ui.adder.Adder({
-            onCreate: function (ann) {
-                app.annotations.create(ann);
-            }
-          });
-          s.adder.attach();
-
-          return true;
-      },
-
-      beforeAnnotationCreated: function(annotation) {
-        // hide the image selection tool
-        s.adder.hide();
-        // cancel image selection box if there is one
-        // (mirrors annotator logic for unselecting text)
-        if (s.ias !== null) {
-          jQuery.each(s.ias, function(idx, ias){ias.cancelSelection();});
+      // create annotation adder
+      // borrowed from annotator.ui.main
+      s.adder = new annotator.ui.adder.Adder({
+        onCreate: function (ann) {
+          app.annotations.create(ann);
         }
+      });
+      s.adder.attach();
 
-        // if this is an image annotation,
-        // create a temporary highlight to show what is being annotated
-        if (annotation.image_selection && annotation.image_selection.src) {
-          var tmp_hl = imgselect_utils.drawImageHighlight(annotation);
-          if (tmp_hl) {
-            tmp_hl.addClass('tmp-img-selection').removeClass('annotator-hl');
-          }
+      return true;
+    },
+
+    beforeAnnotationCreated: function(annotation) {
+      // hide the image selection tool
+      s.adder.hide();
+      // cancel image selection box if there is one
+      // (mirrors annotator logic for unselecting text)
+      if (s.ias !== null) {
+        jQuery.each(s.ias, function(idx, ias){ias.cancelSelection();});
+      }
+
+      // if this is an image annotation,
+      // create a temporary highlight to show what is being annotated
+      if (annotation.image_selection && annotation.image_selection.src) {
+        var tmp_hl = imgselect_utils.drawImageHighlight(annotation);
+        if (tmp_hl) {
+          tmp_hl.addClass('tmp-img-selection').removeClass('annotator-hl');
         }
-        return true;
-      },
+      }
+      return true;
+    },
 
-      annotationCreated: function(annotation) {
-        // hide the temporary highlight
-        jQuery(".active-img-selection").removeClass('.active-img-selection');
-        // show image highlight div for new image annotation
-        imgselect_utils.drawImageHighlight(annotation);
-        return true;
-      },
+    annotationCreated: function(annotation) {
+      // hide the temporary highlight
+      jQuery(".active-img-selection").removeClass('.active-img-selection');
+      // show image highlight div for new image annotation
+      imgselect_utils.drawImageHighlight(annotation);
+      return true;
+    },
 
-      // nothing to do for annotationUpdated
-      // (image selection not currently editable)
+    // nothing to do for annotationUpdated
+    // (image selection not currently editable)
 
-      beforeAnnotationDeleted: function(annotation) {
-        // remove highlight element for deleted image annotation
-        if (annotation.id && annotation.image_selection) {
-            jQuery('.annotator-hl[data-annotation-id='+ annotation.id +']').remove();
-        }
-        return true;
-      },
+    beforeAnnotationDeleted: function(annotation) {
+      // remove highlight element for deleted image annotation
+      if (annotation.id && annotation.image_selection) {
+        jQuery('.annotator-hl[data-annotation-id='+ annotation.id +']').remove();
+      }
+      return true;
+    },
 
-      annotationsLoaded: function(annotations) {
-        // look for any annotations with an image-selection
-        // and create positioned div based on the selection coordinates
-        // using the same styles as text annotations.
-        jQuery.each(annotations, function(i){
-          imgselect_utils.drawImageHighlight(annotations[i]);
-        });
-        // return true so annotator will draw text highlights normally
-        return true;
-      },
+    annotationsLoaded: function(annotations) {
+      // look for any annotations with an image-selection
+      // and create positioned div based on the selection coordinates
+      // using the same styles as text annotations.
+      jQuery.each(annotations, function(i){
+        imgselect_utils.drawImageHighlight(annotations[i]);
+      });
+      // return true so annotator will draw text highlights normally
+      return true;
+    },
 
   };
 }
