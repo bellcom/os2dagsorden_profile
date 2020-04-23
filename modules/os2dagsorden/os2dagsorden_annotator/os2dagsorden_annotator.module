@@ -486,10 +486,10 @@ HTML;
     $html .= '</div><div class="clearfix"></div>' .
       _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount);
     if ($outline_pager) {
-      $html .= '<div class = "annotator-outline-pager">' . $outline_pager . '</div><div id="content" class = "has-outline-pager">';
+      $html .= '<div class = "annotator-outline-pager">' . $outline_pager . '</div><div id="content" class = "has-outline-pager"><div class="dummy"></div>';
     }
     else {
-      $html .= '<div id="content">';
+      $html .= '<div id="content"><div class="dummy"></div>';
     }
     $html .= '<div class="attachment-text">' . $text . '</div></div>' .
       _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
@@ -874,7 +874,7 @@ function _os2dagsorden_annotator_meeting_all_notes_generate_html($meeting_id) {
               else {
                 if (!empty($bilag->field_os2web_meetings_bpa_file['und'])) {
                   $annotation_lists['bilags'] .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $bilag_note_nr, TRUE,
-                    '/meeting/' . $meeting_id . '/bulletb-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $bilag->nid, $bilag->title);
+                    '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point->nid . '/bullet-point-attachment/' . $bilag->nid, $bilag->title);
                   $bilag_note_nr++;
                 }
                 else {

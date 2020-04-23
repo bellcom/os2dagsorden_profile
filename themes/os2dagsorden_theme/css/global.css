@@ -3401,7 +3401,7 @@ ul#follows .checkbox.premeeting {
   color: #fff;
 }
 
-.has-touch .annotator-outer {
+/*.has-touch .annotator-outer {
   position: fixed !important;
   display: flex;
 
@@ -3414,7 +3414,7 @@ ul#follows .checkbox.premeeting {
   bottom: 0 !important;
 
   background-color: rgba(0, 0, 0, .5);
-}
+}*/
 .has-touch .annotator-widget {
   position: static !important;
 
