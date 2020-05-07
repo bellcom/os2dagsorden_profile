@@ -190,12 +190,25 @@ function os2intra_simplesaml_init() {
   }
    // Do not run this from CLI.
   // Only proceed if user is NOT logged in and is NOT using drush uli for admin.
-  if (php_sapi_name() != 'cli' && $user->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
+   if (php_sapi_name() != 'cli' && $user->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
     if ($_simplesamlphp_auth_as->isAuthenticated() && !empty(variable_get('os2intra_simplesaml_nemid_login_pid_attr'))) {
-      if (isset($_simplesamlphp_auth_saml_attributes) && isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')])){
-        $pid = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')];
-        session_destroy();
+      if (isset($_simplesamlphp_auth_saml_attributes) && isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0])){
+        $pid = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0];
+        $pid = str_replace('PID:', '', $pid);
         $_SESSION['nemlogin_pid'] = $pid;
+        $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
+          ->fields("os2pid", array("uid"))
+          ->condition("pid", $pid)
+          ->execute()
+          ->fetchField();
+        if (!empty($uid)) {
+          $user = user_load($uid);
+          $edit = array();
+          user_login_finalize($edit);
+        }
+        else {
+          session_destroy();
+        }
       }
     }
     else {
