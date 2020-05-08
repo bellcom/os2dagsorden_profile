@@ -66,7 +66,7 @@ function os2intra_simplesaml_settings_form($form, &$form_state) {
     '#description' => t('Comma separated. Ex. 192.168.1.1,192.168.2.1'),
     '#default_value' => variable_get('os2intra_simplesaml_redirected_ips'),
   );
-   $form['os2intra_simplesaml_nemid_login'] = array(
+  $form['os2intra_simplesaml_nemid_login'] = array(
     '#type' => 'fieldset',
     '#title' => t('NemID login'),
     '#collapsible' => FALSE,
@@ -183,37 +183,70 @@ function os2intra_simplesaml_init() {
     // Get the simplesamlphp session.
     $basedir = variable_get('simplesamlphp_auth_installdir', '/var/simplesamlphp');
     require_once($basedir . '/lib/_autoload.php');
-
     // Load simpleSAMLphp metadata.
     $_simplesamlphp_auth_as = new SimpleSAML_Auth_Simple(variable_get('simplesamlphp_auth_authsource', 'default-sp'));
     $_simplesamlphp_auth_saml_attributes = $_simplesamlphp_auth_as->getAttributes();
   }
-   // Do not run this from CLI.
+  // Do not run this from CLI.
   // Only proceed if user is NOT logged in and is NOT using drush uli for admin.
-   if (php_sapi_name() != 'cli' && $user->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
+  if (php_sapi_name() != 'cli' && $user->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
+    if (strpos($_GET['q'], 'user/reset/') === 0) {
+      $_SESSION['os2intra_simplesaml_user_login_link'] = $_GET['q'];
+    }
+    // login with NemID.
     if ($_simplesamlphp_auth_as->isAuthenticated() && !empty(variable_get('os2intra_simplesaml_nemid_login_pid_attr'))) {
-      if (isset($_simplesamlphp_auth_saml_attributes) && isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0])){
+      if (isset($_simplesamlphp_auth_saml_attributes) && isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0])) {
         $pid = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0];
         $pid = str_replace('PID:', '', $pid);
-        $_SESSION['nemlogin_pid'] = $pid;
+        // If PID already exitst.
         $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
-          ->fields("os2pid", array("uid"))
-          ->condition("pid", $pid)
-          ->execute()
-          ->fetchField();
+            ->fields("os2pid", array("uid"))
+            ->condition("pid", $pid)
+            ->execute()
+            ->fetchField();
         if (!empty($uid)) {
+          unset($_SESSION['os2intra_simplesaml_user_login_link']);
+          $_SESSION['nemlogin_pid'] = $pid;
           $user = user_load($uid);
           $edit = array();
           user_login_finalize($edit);
         }
         else {
-          session_destroy();
+          $_SESSION['nemlogin_pid'] = $pid;
+          // If have password_reset link.
+          if (isset($_SESSION['os2intra_simplesaml_user_login_link'])) {
+            $url_parts = explode('/', $_SESSION['os2intra_simplesaml_user_login_link']);
+            $uid = $url_parts[2];
+            $timestamp = (int) $url_parts[3];
+            $hashed_pass = $url_parts[4];
+            $timeout = variable_get('user_password_reset_timeout', 86400);
+            $current = REQUEST_TIME;
+            $users = user_load_multiple(array($uid), array('status' => '1'));
+            if ($timestamp <= $current && $account = reset($users)) {
+              $login = (int) $account->login;
+              // No time out for first time login.
+              if ($account->login && $current - $timestamp > $timeout) {
+                watchdog('os2intra_simplesaml', 'Attemping to login witha one-time login link that has expired, PID (%pid) started for user %login (uid: %uid).', array(
+                  '%pid' => $pid,
+                  '%login' => $account->name,
+                  '%uid' => $account->uid,
+                ));
+                unset($_SESSION['os2intra_simplesaml_user_login_link']);
+              }
+              elseif ($account->uid && $account->login === "0" && $timestamp <= $current && $hashed_pass == user_pass_rehash($account->pass, $timestamp, $login, $uid)) {
+                $user = user_load($uid);
+                $edit = array();
+                user_login_finalize($edit);
+                drupal_goto(base_path());
+              }
+            }
+          }
         }
       }
     }
     else {
-    $custom_ips = array();
-    $remote_ip = ip_address();
+      $custom_ips = array();
+      $remote_ip = ip_address();
       if (variable_get('os2intra_simplesaml_simplesaml_enable')) {
         $simplesaml_redirect = FALSE;
         $redirected_ips = variable_get('os2intra_simplesaml_redirected_ips');
@@ -269,4 +302,12 @@ function os2intra_simplesaml_init() {
       }
     }
   }
+}
+/*
+ * Implements hook_user_delete.
+ */
+function os2intra_simplesaml_user_delete($account) {
+  db_delete('os2intra_simplesaml_nemid_pid_mapping')
+    ->condition('uid', $account->uid)
+    ->execute();
 }
