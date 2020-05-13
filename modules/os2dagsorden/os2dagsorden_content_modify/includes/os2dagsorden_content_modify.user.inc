@@ -193,7 +193,8 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
       'id' => 'member_of_hidden',
     ),
   );
-  $user_can_change_follow_commitee = ((int)$current_user->uid === 1 || !user_has_role(user_role_load_by_name("os2dagsorden limited")->rid));
+  $external_user = ((int) $current_user->field_user_external['und'][0]['value'] === 1);
+  $user_can_change_follow_commitee = ((int)$current_user->uid === 1 || !(user_has_role(user_role_load_by_name("os2dagsorden limited")->rid) || $external_user));
   $form['follows_div'] = array(
     '#access' => $user_can_change_follow_commitee,
     '#type' => 'item',
@@ -464,12 +465,13 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     $content .= '</ul>';
     $form['follows_plus_plus_div']['#markup'] = $content;
 
-    // Printing arrows reverse.
-    $form[]['#markup'] =
-      '<div class="arrows-reverse">
-      <img src = "' . base_path() . drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/img_arrows_reverse.png">
-      </div>';
-
+    if (!$external_user) {
+      // Printing arrows reverse.
+      $form[]['#markup'] =
+        '<div class="arrows-reverse">
+          <img src = "' . base_path() . drupal_get_path('theme', 'os2dagsorden_classic_theme') . '/img/img_arrows_reverse.png">
+        </div>';
+    }
     // Printing available committees.
     $com_list = "<ul id='available_committee' class='droptrue'>";
     asort($com_select);

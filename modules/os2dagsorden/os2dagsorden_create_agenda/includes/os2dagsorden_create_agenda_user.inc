@@ -73,6 +73,9 @@ function _os2dagsorden_create_agenda_meeting_create_user_form_email_validate($el
   if (!valid_email_address($value)) {
     form_error($element, t('Please enter a valid email address.'));
   }
+ if (db_query("SELECT COUNT(*) FROM {users} WHERE mail = :mail;", array(':mail' => $value))->fetchField()) {
+   form_error($element, t('User with this email is already exists.'));
+ }
 }
 /**
  * Helper functions to save user.
