@@ -1,4 +1,4 @@
-/*  Annotator Touch Plugin - v2.0.1
+/*  Annotator Touch Plugin - v2.1.1
  *  Copyright 2012-2020, Compendio <www.compendio.ch>
  *  Released under the MIT license
  *  More Information: https://github.com/aron/annotator.touch.js
@@ -116,6 +116,16 @@
   background-position: 0 -270px;
 }
 
+.annotator-touch-widget .annotator-enable {
+  padding-left: 20px;
+}
+.annotator-touch-widget .annotator-enable::after,
+.annotator-touch-widget .annotator-enable:hover::after,
+.annotator-touch-widget .annotator-enable:focus::after,
+.annotator-touch-widget .annotator-enable.annotator-focus::after {
+  background-position: 0 -9999px;
+}
+
 /* Adder Styles */
 
 .annotator-touch-controls {
@@ -206,7 +216,7 @@
 }
 
 .annotator-touch-viewer .annotator-touch-controls button {
-  line-height: 30px;
+  line-height: 44px;
   padding-left: 40px;
   padding-right: 20px;
   margin-left: 6px;
