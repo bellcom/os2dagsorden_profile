@@ -71,10 +71,10 @@ function os2dagsorden_create_agenda_meeting_create_user_form($form, &$form_state
 function _os2dagsorden_create_agenda_meeting_create_user_form_email_validate($element, $form, &$form_state) {
   $value = $element['#value'];
   if (!valid_email_address($value)) {
-    form_error($element, t('Please enter a valid email address.'));
+    form_error($element, t('Indtast en gyldig email adresse.'));
   }
  if (db_query("SELECT COUNT(*) FROM {users} WHERE mail = :mail;", array(':mail' => $value))->fetchField()) {
-   form_error($element, t('User with this email is already exists.'));
+   form_error($element, t('Der findes allerede en bruger med denne email.'));
  }
 }
 /**
