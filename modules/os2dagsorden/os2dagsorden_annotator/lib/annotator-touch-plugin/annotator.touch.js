@@ -1,4 +1,4 @@
-/*  Annotator Touch Plugin - v2.1.1
+/*  Annotator Touch Plugin - v2.1.2
  *  Copyright 2012-2020, Compendio <www.compendio.ch>
  *  Released under the MIT license
  *  More Information: https://github.com/aron/annotator.touch.js
@@ -2243,10 +2243,10 @@ if (!window.annotator.touch) window.annotator.touch = {};
       s.enabled = enabler.instance.isEnabled();
 
       var toggleImgAreaSelect = function () {
-        $.each($(options.element).find("img"), function () {
-          if ($(this).data("imgAreaSelect")) {
-            $(this).data("imgAreaSelect").setOptions({disable: !s.enabled})
-            $(this).css({'cursor': s.enabled ? 'crosshair' : ''});
+        jQuery.each(jQuery(options.element).find("img"), function () {
+          if (jQuery(this).data("imgAreaSelect")) {
+            jQuery(this).data("imgAreaSelect").setOptions({disable: !s.enabled})
+            jQuery(this).css({'cursor': s.enabled ? 'crosshair' : ''});
           }
         });
       }
