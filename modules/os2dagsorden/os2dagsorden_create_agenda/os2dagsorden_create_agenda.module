@@ -306,3 +306,11 @@ function os2dagsorden_create_agenda_user_delete($account) {
     }
   }
 }
+
+/**
+ * Implements hook_mail().
+ */
+function os2dagsorden_create_agenda_mail($key, &$message, $params) {
+  $message['subject'] = $params['subject'];
+  $message['body'][] = $params['body'];
+}
