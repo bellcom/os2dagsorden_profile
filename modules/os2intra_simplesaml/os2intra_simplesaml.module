@@ -31,6 +31,13 @@ function os2intra_simplesaml_menu() {
     'page arguments' => array('os2intra_simplesaml_settings_form'),
     'access arguments' => array('administer os2intra simplesaml'),
   );
+  $items['os2intra/simplesaml/logout'] = array(
+    'title' => 'NemID logout',
+    'description' => 'NemID logout callback',
+    'page callback' => 'os2intra_simplesaml_logout_method',
+    'access callback' => TRUE,
+
+  );
 
   return $items;
 }
@@ -324,4 +331,19 @@ function os2intra_simplesaml_user_delete($account) {
   db_delete('os2intra_simplesaml_nemid_pid_mapping')
     ->condition('uid', $account->uid)
     ->execute();
+}
+
+function os2intra_simplesaml_logout_method() {
+  global $_simplesamlphp_auth_as;
+  // Get the simplesamlphp session.
+  $basedir = variable_get('simplesamlphp_auth_installdir', '/var/simplesamlphp');
+  require_once($basedir . '/lib/_autoload.php');
+  if ($_simplesamlphp_auth_as->isAuthenticated()) {
+    $url = $_simplesamlphp_auth_as->getLogoutURL();
+    header('Location: ' . $url, TRUE, 302);
+    drupal_exit($url);
+  }
+  else {
+    drupal_goto('/logout');
+  }
 }
