@@ -434,12 +434,13 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
       setlocale(LC_CTYPE, "en_DK.UTF-8");
       $shell_file_path_real = escapeshellarg($file_path_real);
       $shell_dest_dir_real = escapeshellarg($dest_dir_real);
+      $shell_path = escapeshellarg($path);
       $process_annotation = "--process-annotation 1";
       if (version_compare($_os2dagsorden_pdf2htmlex_version, OS2DAGSORDEN_PDF2HTMLEX_MIN_RECOMENDED_PDF2HTMLEX_VERSION) === -1) {
         $process_annotation = '';
       }
-      shell_exec(variable_get('os2dagsorden_pdf2htmlex_path') . ' ' .
-      $shell_file_path_real . ' "' . $dest_filename . '" --dest-dir ' . $shell_dest_dir_real . ' --fallback 1 --printing 0 --process-outline 0 --embed-image 0 ' . $process_annotation . ' --zoom ' . OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_ZOOM . ' 2>&1');
+      shell_exec(variable_get('os2dagsorden_pdf2htmlex_path') .' --fallback 1 --printing 0 --process-outline 0 --embed-image 0 ' . $process_annotation . ' --zoom ' . OS2DAGSORDEN_PDF2HTMLEX_DEFAULT_ZOOM . ' ' .
+      $shell_file_path_real . ' ' . $shell_path . '  2>&1');
 
       // Successful conversion?
       if (file_exists($path)) {
