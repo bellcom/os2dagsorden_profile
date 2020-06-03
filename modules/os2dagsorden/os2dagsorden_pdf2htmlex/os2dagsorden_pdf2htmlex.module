@@ -408,7 +408,7 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
   }
   else {
     $uri_parts = pathinfo($file->uri);
-    $folder_name = os2dagsorden_pdf2htmlex_satanize_folder_name($file->uri);
+    $folder_name = md5($uri_parts['filename']);
     $dest_dir_real = $file_pathinfo['dirname'] . '/' .  $folder_name;
     $dest_uri = $uri_parts['dirname'] . '/' . $folder_name;
 
@@ -421,7 +421,7 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
   }
   if (isset($file)) {
     // filename.html.
-    $dest_filename = $file_pathinfo['filename'] . '.html';
+    $dest_filename = md5($file_pathinfo['filename']) . '.html';
     $path = $dest_dir_real . '/' . $dest_filename;
 
 
@@ -760,21 +760,4 @@ function os2dagsorden_pdf2htmlex_cleanup_html($data, $strip_class) {
   $parent->removeChild($node);
   }
   return trim($doc->saveHTML());
-}
-
-
-function os2dagsorden_pdf2htmlex_satanize_folder_name($uri) {
-  $uri_parts = pathinfo($uri);
-  $folder_name = $uri_parts['filename'];
-  $folder_name = str_replace(array('-', '_','.', ','), '', $folder_name);
-  $folder_name = preg_replace('/\s+/', ' ', $folder_name);
-  $folder_name = str_replace(' ', '_', $folder_name);
-
-
-  $dest_uri = $uri_parts['dirname'] . '/' . $folder_name . '/' . $uri_parts['filename'] .'.html';
-  if (strlen($dest_uri)>255) {
-    $symbols = strlen($dest_uri) - 255;
-    $folder_name = substr($folder_name, 0, strlen($folder_name)-$symbols);
-  }
-  return $folder_name;
 }
