@@ -18,8 +18,7 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
       }
     }
     var app = new annotator.App();
-    app.include(annotator.touch.main, {element: document.getElementById(element_to_annotate)})
-     .include(annotator.storage.http, {
+    app.include(annotator.storage.http, {
        prefix: url,
        urls: {
 			  create:  'annotator/create',
@@ -32,6 +31,7 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
     .include(annotatorImageSelect, {
         element: jQuery('#' + element_to_annotate +' img'),
     })
+    .include(annotator.touch.main, {element: document.getElementById(element_to_annotate)})
     .include(pageUri);
     app.start()
    .then(function () {
