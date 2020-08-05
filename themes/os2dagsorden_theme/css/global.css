@@ -2142,7 +2142,7 @@ table .speaker-paper-link-container {
           width: 78px;
           min-width: 78px; }
           .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a {
-            display: inline-block;
+            display: table-cell;
             padding: 3px 3px 0 3px;
             line-height: 15px;
             border-radius: 0; }
