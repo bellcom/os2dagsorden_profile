@@ -230,8 +230,8 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bp_title_system_text'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Show system text <strong>"Punkt x"</strong> in bullet point title' ),
-    '#description' => t('This decides whether system text <strong>"Punkt x"</strong> will be shown in bullet point title'),
+    '#title' => t('Vis systemtekst <strong>"Punkt x"</strong> i punkttitel' ),
+    '#description' => t('Dette beslutter, om systemteksten <strong>"Punkt x"</strong> skal vises i punkttitel'),
     '#default_value' => variable_get('os2dagsorden_show_bp_title_system_text', TRUE),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bullet_case_id_link'] = array(
@@ -242,27 +242,27 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_bilag_pages_amount'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Show amount of pages in bilag file'),
+    '#title' => t('Vis antal sider i bilag'),
     '#default_value' => variable_get('os2dagsorden_show_bilag_pages_amount', FALSE),
-    '#description' => t('This decides whether amount of BPA pages will be shown on meeting page'),
+    '#description' => t('Dette afgør, om mængden af ​​BPA-sider vises på mødesiden'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_group_pager_on_bpa_page'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Show group pager on bullet point attachment page'),
+    '#title' => t('Vis sidegruppering på vedhæftede side med punkt'),
     '#default_value' => variable_get('os2dagsorden_show_group_pager_on_bpa_page', FALSE),
-    '#description' => t('This decides whether "group" of pages will be shown on the bottom of BPA apge'),
+    '#description' => t('Dette beslutter, om "grupper" af sider vil blive vist i bunden af ​​BPA-apgee'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist_enabled'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Enable PDF download whitelist'),
-    '#description' => t("This decides whether PDF download for meeting and attachments is allowed only to whitelisted IP's"),
+    '#title' => t('Aktivér whitelisting til PDF-download'),
+    '#description' => t("Dette beslutter, om PDF-download til møde og vedhæftede filer kun er tilladt til whitelistede IP'er"),
     '#default_value' => variable_get('os2dagsorden_pdf_download_whitelist_enabled', FALSE),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_search_restrict_search_function'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Restrict search function when on a meeting page'),
+    '#title' => t('Begræns søgefunktion, når du er på en mødeside'),
     '#default_value' => variable_get('os2dagsorden_search_restrict_search_function', FALSE),
-    '#description' => t('This decides whether on meeting page the free text search will be only searching in the meeting you are on'),
+    '#description' => t('Dette afgør, om fritekstsøgningen på mødesiden kun søges i det møde, du er på'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_whitelist'] = array(
     '#type' => 'textfield',
@@ -277,10 +277,9 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Both links to open and closed agendas are enabled for downloading'),
+    '#title' => t('Begge links til åbne og lukkede dagsordener er aktiveret til download'),
     '#default_value' => variable_get('os2dagsorden_pdf_download_enabled_both_closed_open_agendas_links', FALSE),
-    '#description' => t('This decides whether on meeting page will be shown links for downloading both open and closed agendas, if user has permissions to see them, '
-        . 'or only link for only downloding agenda with current status'),
+    '#description' => t('Dette afgør, om der på mødesiden vises links til download af både åbne og lukkede dagsordener, hvis bruger har tilladelse til at se dem, eller kun link til kun downloding-dagsorden med den aktuelle status'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_sager_group_title'] = array(
     '#type' => 'textfield',
@@ -305,11 +304,11 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_users_accessed_hidden_agenda_committee'] = array(
     '#type' => 'textfield',
-    '#title' => t('Users, that can see hidden agendas'),
+    '#title' => t('Brugere, der kan se skjulte dagsordener'),
     '#size' => 40,
     '#maxlength' => 60,
     '#autocomplete_path' => 'get_users/autocomplete',
-    '#description' => t('Comma-separated list of users that can see hidden agendas'),
+    '#description' => t('Kommasepareret liste over brugere, der kan se skjulte dagsordener'),
     '#default_value' => variable_get('os2dagsorden_users_accessed_hidden_agenda_committee', ''),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_download_dropdown'] = array(
@@ -321,16 +320,16 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_title'] = array(
     '#type' => 'textfield',
-    '#title' => t('Meeting description generate PDF button'),
+    '#title' => t('Mødebeskrivelse genererer PDF-knap'),
     '#maxlength' => 200,
-    '#description' => t('Title of the meeting description PDF generate button'),
+    '#description' => t('Titel på mødebeskrivelsen PDF-genereringsknap'),
     '#default_value' => variable_get('os2dagsorden_meeting_description_generate_pdf_title', 'Samlet dokument i PDF'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_generate_pdf_full_title'] = array(
     '#type' => 'textfield',
-    '#title' => t('Meeting description generate full PDF button'),
+    '#title' => t('Mødebeskrivelse genererer fuld PDF-knap'),
     '#maxlength' => 200,
-    '#description' => t('Title of the meeting description full PDF generate button'),
+    '#description' => t('Titel på mødebeskrivelsen fuld PDF-genereringsknap'),
     '#default_value' => variable_get('os2dagsorden_meeting_description_generate_pdf_full_title', 'Samlet dokument med bilag i PDF'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_meeting_description_with_att_download_title'] = array(
@@ -369,35 +368,35 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text'] = array(
     '#type' => 'textfield',
-    '#title' => t('Create note button text'),
+    '#title' => t('Opret note knappetekst'),
     '#maxlength' => 200,
-    '#description' => t('Text that will be display on a Create note button'),
+    '#description' => t('Tekst, der vises på knappen Opret note'),
     '#default_value' => variable_get('os2dagsorden_create_note_text', 'Lav note'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_search_switch_to_note_text'] = array(
     '#type' => 'textfield',
-    '#title' => t('Switch to note button text'),
+    '#title' => t('Skift til tekstknaptekst'),
     '#maxlength' => 200,
-    '#description' => t('Text that will be display on a Switch to note button'),
+    '#description' => t('Tekst, der vises på knappen Skift til note'),
     '#default_value' => variable_get('os2dagsorden_search_switch_to_note_text', 'Skift til noter'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_hide_text'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Create note button hide text'),
+    '#title' => t('Opret note knap skjule tekst'),
     '#default_value' => variable_get('os2dagsorden_create_note_hide_text', FALSE),
-    '#description' => t('Text on the create note button will be hidden'),
+    '#description' => t('Tekst på knappen Opret note bliver skjult'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_create_note_text_use_title'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Create note button put text to title attribute'),
+    '#title' => t('Opret note knap, sæt tekst til titelattribut'),
     '#default_value' => variable_get('os2dagsorden_create_note_text_use_title', FALSE),
-    '#description' => t('The text will also be put into the title HTML attribute of a button (available on mouse hover)'),
+    '#description' => t('Teksten sættes også i titlen HTML-attribut for en knap (tilgængelig på musemarkøren)'),
   );
   $form['os2dagsorden_meeting_view_settings']['os2dagsorden_notes_page_standart_layout'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Use standart notes page layout'),
+    '#title' => t('Brug standard notelayout'),
     '#default_value' => variable_get('os2dagsorden_notes_page_standart_layout', TRUE),
-    '#description' => t('This desides what layout will be used for notes page'),
+    '#description' => t('Dette bestemmer, hvilket layout der skal bruges til notesiden'),
   );
 
   // Expand or not expand bilag on bullet point expand
@@ -461,8 +460,8 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_show_all_bilags_list_on_attachment_page'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Show all bullet point\'s bilags list on bialg view page'),
-    '#description' => t('This decides whether all bullet point\'s bilags list will be shown on bilag page'),
+    '#title' => t('Vis alle punktets bilag som liste på visningssiden.'),
+    '#description' => t('Dette afgør, om alle punktets bilag vises i bilagsvisningen'),
     '#default_value' => variable_get('os2dagsorden_show_all_bilags_list_on_attachment_page', FALSE),
   );
    $form['os2dagsorden_meeting_view_layout']['os2dagsorden_show_bilag_bullet_point'] = array(
@@ -485,8 +484,8 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop'] = array(
     '#type' => 'textfield',
-    '#title' => t('How many attachment\'s  pages are shown on meetings on desktop devices'),
-    '#description' => t('This decides how many pages will be shown in attachments on desktop devices.'),
+    '#title' => t('Hvor mange sider vises i bilag på møder på stationære enheder'),
+    '#description' => t('Dette afgør, hvor mange sider der skal vises i bilag filer på skrivebordsenheder..'),
     '#maxlength' => 10,
     '#size' => 10,
     '#field_suffix' => t('Pages'),
@@ -494,13 +493,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Activate for meeting view also'),
+    '#title' => t('Aktivér også til mødevisning'),
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_desktop_meeting_veiw', FALSE),
   );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile'] = array(
     '#type' => 'textfield',
-    '#title' => t('How many attachment\'s  pages are shown on meetings on mobile devices'),
-    '#description' => t('This decides how many pages will be shown in attachments on mobile devices.'),
+    '#title' => t('Hvor mange sider vises i bilag på møder på mobile enheder'),
+    '#description' => t('Dette afgør, hvor mange sider der skal vises i vedhæftede filer på mobile enheder.'),
     '#maxlength' => 10,
     '#size' => 10,
     '#field_suffix' => t('Pages'),
@@ -508,20 +507,20 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
    $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Activate for meeting view also'),
+    '#title' => t('Aktivér også til mødevisning'),
     '#default_value' => variable_get('os2dagsorden_attachments_pages_per_view_mobile_meeting_veiw', FALSE),
   );
    $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Show scrollbar on attachment page'),
-    '#options' => array( 'thumbnails' => t('for thumbnails pager area'), 'attachment' => t('for bilag content area')),
-    '#description' => t('This decides if scrollbar will be shown when attachment displayed as HTML.'),
+    '#title' => t('Vis rullepanel på bilag'),
+    '#options' => array( 'thumbnails' => t('På thumbnail pagineringsområde'), 'attachment' => t('På indholdsområdet i bilag')),
+    '#description' => t('Dette beslutter, om rullebjælken skal vises, når bilag vises som HTML.'),
     '#default_value' => variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', ''),
   );
   $form['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Open bilags attachments in new tab each'),
-    '#description' => t('This decides if bilag pages opened from the attachments menu will be open as a new tab each'),
+    '#title' => t('Åbn bilag i ny fane'),
+    '#description' => t('Dette bestemmer, om bilag, der åbnes fra vedhæftningsmenuen, vil åbne som en ny fane.'),
     '#default_value' => variable_get('os2dagsorden_attachments_open_bilags_as_new_tab', FALSE),
   );
 
@@ -796,8 +795,8 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_sidepane_menu_layout']['os2dagsorden_budgetforhandling_button_committees'] = array(
     '#type' => 'textfield',
-    '#title' => t('Committees whose members have access to <b>Budgetforhandlingt</b> button in sidepane'),
-    '#description' => t('Comma separated list of committees whose members have access to <b>Budgetforhandlingt</b> button in sidepane'),
+    '#title' => t('Udvalg, hvis medlemmer har adgang til knappen <b>Budgetforhandlingt</b> i sidepanelet'),
+    '#description' => t('Kommasepareret liste over udvalg, hvis medlemmer har adgang til knappen <b>Budgetforhandlingt</b> i sidepanelet'),
     '#default_value' => variable_get('os2dagsorden_budgetforhandling_button_committees', FALSE),
   );
 
@@ -874,13 +873,13 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_import_full_agenda_as_attachments'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Import full agenda files as bullet point attahcments'),
-    '#description' => t('Decide whether agenda files will be added to special bullet point as attachments.'),
+    '#title' => t('Importer agenda-filer som punkter'),
+    '#description' => t('Afgør, om agenda-filer vil blive tilføjet til punkter som vedhæftede filer.'),
     '#default_value' => variable_get('os2dagsorden_import_full_agenda_as_attachments', FALSE),
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_point_title'] = array(
     '#type' => 'textfield',
-    '#title' => t('General bullet point title'),
+    '#title' => t('Titler på punkter'),
     '#maxlength' => 200,
     '#default_value' => variable_get('os2dagsorden_general_bullet_point_title', t('Generalt')),
      '#states' => array(
@@ -891,7 +890,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_title'] = array(
     '#type' => 'textfield',
-    '#title' => t('Title for bilag that contains full agenda '),
+    '#title' => t('Titel til bilag, der indeholder fuld dagsorden'),
     '#maxlength' => 200,
     '#default_value' => variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument')),
      '#states' => array(
@@ -902,7 +901,7 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
   );
   $form['os2dagsorden_meeting_import']['os2dagsorden_general_bullet_full_doc_with_attach_title'] = array(
     '#type' => 'textfield',
-    '#title' => t('Title for bilag that contains full agenda with bilags'),
+    '#title' => t('Titel til bilag, der indeholder fuld dagsorden med bilag'),
     '#maxlength' => 200,
     '#default_value' => variable_get('os2dagsorden_general_bullet_full_doc_with_attach_title', t('Åben samlet dokument med bilag')),
      '#states' => array(

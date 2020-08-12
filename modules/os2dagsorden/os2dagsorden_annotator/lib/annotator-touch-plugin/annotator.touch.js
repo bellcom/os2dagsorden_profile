@@ -166,7 +166,7 @@ window.annotator.touch.enabler = {};
     },
 
     _update: function(event) {
-      this.element.find(".annotator-enable").text(this.enabled ? _t("Disable annotation") : _t("Enable annotation"));
+      this.element.find(".annotator-enable").text(this.enabled ? _t("Deaktiver noter") : _t("Aktivér noter"));
 
       // Run callbacks
       $.each(this.callbacks, function () {
@@ -191,7 +191,7 @@ window.annotator.touch.enabler = {};
     '<div class="annotator-touch-widget annotator-touch-controls annotator-touch-hide">',
     '  <div class="annotator-touch-widget-inner">',
     '    <a class="annotator-button annotator-enable annotator-focus">' +
-      _t("Enable annotation") +
+      _t("Aktivér noter") +
       "</a>",
     "  </div>",
     "</div>"
@@ -519,11 +519,11 @@ window.annotator.touch.editor = {};
     '    <ul class="annotator-listing"></ul>',
     '    <div class="annotator-controls">',
     '     <a href="#cancel" class="annotator-cancel annotator-button">' +
-      _t("Cancel") +
+      _t("Fortryd") +
       "</a>",
     '      <a href="#save"',
     '         class="annotator-save annotator-focus annotator-button">' +
-      _t("Save") +
+      _t("Gem") +
       "</a>",
     "    </div>",
     "  </form>",
@@ -1823,14 +1823,14 @@ window.annotator.touch.viewer = {};
     '       title="' + _t("View as webpage") + '"',
     '       class="annotator-link">' + _t("View as webpage") + "</a>",
     '    <button type="button"',
-    '            title="' + _t("Edit") + '"',
+    '            title="' + _t("Redigér") + '"',
     '            class="annotator-edit annotator-button">' +
-      _t("Edit") +
+      _t("Redigér") +
       "</button>",
     '    <button type="button"',
-    '            title="' + _t("Delete") + '"',
+    '            title="' + _t("Slet") + '"',
     '            class="annotator-delete annotator-button">' +
-      _t("Delete") +
+      _t("Slet") +
       "</button>",
     "  </span>",
     "</li>"
