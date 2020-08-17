@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -29,6 +30,13 @@ function os2intra_simplesaml_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2intra_simplesaml_settings_form'),
     'access arguments' => array('administer os2intra simplesaml'),
+  );
+  $items['os2intra/simplesaml/logout'] = array(
+    'title' => 'NemID logout',
+    'description' => 'NemID logout callback',
+    'page callback' => 'os2intra_simplesaml_logout_method',
+    'access callback' => TRUE,
+
   );
 
   return $items;
@@ -66,7 +74,23 @@ function os2intra_simplesaml_settings_form($form, &$form_state) {
     '#description' => t('Comma separated. Ex. 192.168.1.1,192.168.2.1'),
     '#default_value' => variable_get('os2intra_simplesaml_redirected_ips'),
   );
-
+  $form['os2intra_simplesaml_nemid_login'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('NemID login'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+  $form['os2intra_simplesaml_nemid_login']['os2intra_simplesaml_nemid_login_pid_attr'] = array(
+    '#title' => t("Which attribute from simpleSAMLphp should be used as user's name"),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2intra_simplesaml_nemid_login_pid_attr'),
+  );
+  $form['os2intra_simplesaml_nemid_login']['os2intra_simplesaml_nemid_login_error_message'] = array(
+    '#title' => t("NemID error message"),
+    '#type' => 'textfield',
+    '#description' => t('NemID error message, when user does not exist'),
+    '#default_value' => variable_get('os2intra_simplesaml_nemid_login_error_message'),
+  );
   return system_settings_form($form);
 }
 
@@ -166,63 +190,160 @@ function os2intra_simplesaml_user_login(&$edit, $account) {
  * Implements hook_init().
  */
 function os2intra_simplesaml_init() {
-  // Do not run this from CLI.
+  global $user;
+  global $_simplesamlphp_auth_as;
+  global $_simplesamlphp_auth_saml_attributes;
+  if (_simplesamlphp_auth_isEnabled(TRUE) && $user->uid == 0) {
+    // Get the simplesamlphp session.
+    $basedir = variable_get('simplesamlphp_auth_installdir', '/var/simplesamlphp');
+    require_once($basedir . '/lib/_autoload.php');
+    // Load simpleSAMLphp metadata.
+    $_simplesamlphp_auth_as = new SimpleSAML_Auth_Simple(variable_get('simplesamlphp_auth_authsource', 'default-sp'));
+    $_simplesamlphp_auth_saml_attributes = $_simplesamlphp_auth_as->getAttributes();
+  }
+   // Do not run this from CLI.
   // Only proceed if user is NOT logged in and is NOT using drush uli for admin.
-  if (php_sapi_name() != 'cli' && $GLOBALS['user']->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
-    $custom_ips = array();
-    $remote_ip = ip_address();
-    if (variable_get('os2intra_simplesaml_simplesaml_enable')) {
-      $simplesaml_redirect = FALSE;
-      $redirected_ips = variable_get('os2intra_simplesaml_redirected_ips');
-
-      if (empty($redirected_ips)) {
-        // No redirect IPs set, then redirect for all IPs.
-        $simplesaml_redirect = TRUE;
+  if (php_sapi_name() != 'cli' && $user->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
+    if (strpos($_GET['q'], 'user/reset/') === 0) {
+      $_SESSION['os2intra_simplesaml_user_login_link'] = $_GET['q'];
+    }
+    // login with NemID.
+    if ($_simplesamlphp_auth_as->isAuthenticated() && !empty(variable_get('os2intra_simplesaml_nemid_login_pid_attr'))) {
+      if (isset($_simplesamlphp_auth_saml_attributes) && isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0])) {
+        $pid = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0];
+        $pid = str_replace('PID:', '', $pid);
+        // If PID already exitst.
+        $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
+            ->fields("os2pid", array("uid"))
+            ->condition("pid", $pid)
+            ->execute()
+            ->fetchField();
+        if (!empty($uid)) {
+          unset($_SESSION['os2intra_simplesaml_user_login_link']);
+          $_SESSION['nemlogin_pid'] = $pid;
+          $user = user_load($uid);
+          $edit = array();
+          user_login_finalize($edit);
+        }
+        else {
+          $_SESSION['nemlogin_pid'] = $pid;
+          // If have password_reset link.
+          if (isset($_SESSION['os2intra_simplesaml_user_login_link'])) {
+            $url_parts = explode('/', $_SESSION['os2intra_simplesaml_user_login_link']);
+            $uid = $url_parts[2];
+            $timestamp = (int) $url_parts[3];
+            $hashed_pass = $url_parts[4];
+            $timeout = variable_get('user_password_reset_timeout', 86400);
+            $current = REQUEST_TIME;
+            $users = user_load_multiple(array($uid), array('status' => '1'));
+            if ($timestamp <= $current && $account = reset($users)) {
+              $login = (int) $account->login;
+              // No time out for first time login.
+              if ($account->login && $current - $timestamp > $timeout) {
+                watchdog('os2intra_simplesaml', 'Attemping to login witha one-time login link that has expired, PID (%pid) started for user %login (uid: %uid).', array(
+                  '%pid' => $pid,
+                  '%login' => $account->name,
+                  '%uid' => $account->uid,
+                ));
+                unset($_SESSION['os2intra_simplesaml_user_login_link']);
+              }
+              elseif ($account->uid && $account->login === "0" && $timestamp <= $current && $hashed_pass == user_pass_rehash($account->pass, $timestamp, $login, $uid)) {
+                $user = user_load($uid);
+                $edit = array();
+                user_login_finalize($edit);
+                drupal_goto(base_path());
+              }
+            }
+          }
+          else {
+            $uid = db_query("SELECT MAX(uid) as max_uid FROM users")->fetchCol();
+            $uid = array_pop($uid);
+            $uid = $uid + 100;
+            drupal_set_message(variable_get('os2intra_simplesaml_nemid_login_error_message'), 'error');
+            $user->uid = $uid;
+          }
+        }
       }
-      else {
-        $custom_ips = explode(',', $redirected_ips);
+    }
+    else {
+      $custom_ips = array();
+      $remote_ip = ip_address();
+      if (variable_get('os2intra_simplesaml_simplesaml_enable')) {
+        $simplesaml_redirect = FALSE;
+        $redirected_ips = variable_get('os2intra_simplesaml_redirected_ips');
 
-        // If the client request is from one of the IP's, login using
-        // SimpleSAMLphp; otherwise use nemid login.
-        //
-        // Check performed on parts of the ip address.
-        // This makes it possible to add only the beginning of the IP range.
-        // F.ex. 192.168 will allow all ip addresses including 192.168 as part
-        // of the it.
-        foreach ($custom_ips as $custom_ip) {
-          if (strpos($remote_ip, $custom_ip) !== FALSE) {
-            $simplesaml_redirect = TRUE;
-            break;
+        if (empty($redirected_ips)) {
+          // No redirect IPs set, then redirect for all IPs.
+          $simplesaml_redirect = TRUE;
+        }
+        else {
+          $custom_ips = explode(',', $redirected_ips);
+
+          // If the client request is from one of the IP's, login using
+          // SimpleSAMLphp; otherwise use nemid login.
+          //
+          // Check performed on parts of the ip address.
+          // This makes it possible to add only the beginning of the IP range.
+          // F.ex. 192.168 will allow all ip addresses including 192.168 as part
+          // of the it.
+          foreach ($custom_ips as $custom_ip) {
+            if (strpos($remote_ip, $custom_ip) !== FALSE) {
+              $simplesaml_redirect = TRUE;
+              break;
+            }
+          }
+        }
+
+        if ($simplesaml_redirect && module_exists('simplesamlphp_auth')) {
+          $non_redirect_paths = array(
+            'saml_login',
+            'user/logout',
+            'user/login',
+            'logout',
+          );
+          if (!in_array($_GET['q'], $non_redirect_paths)) {
+            drupal_goto('saml_login', array('query' => drupal_get_destination()));
           }
         }
       }
 
-      if ($simplesaml_redirect && module_exists('simplesamlphp_auth')) {
-        $non_redirect_paths = array(
-          'saml_login',
-          'user/logout',
-          'user/login',
-          'logout',
-        );
-        if (!in_array($_GET['q'], $non_redirect_paths)) {
-          drupal_goto('saml_login', array('query' => drupal_get_destination()));
+      // Redirect to Nemid Login.
+      if (!in_array($remote_ip, $custom_ips)) {
+        if (!isset($_SESSION['nemlogin_pid']) && strpos($_GET['q'], 'nemid') !== 0) {
+          // Unsetting session in case it had any nemid errors.
+          if (isset($_SESSION['nemid_login'])) {
+            unset($_SESSION['nemid_login']);
+          }
+
+          // Redirecting only if module exists and path is valid.
+          if (module_exists('drupal_nemid_login')) {
+            drupal_goto('nemid', array('query' => array('destination' => current_path())));
+          }
         }
       }
     }
+  }
+}
+/*
+ * Implements hook_user_delete.
+ */
+function os2intra_simplesaml_user_delete($account) {
+  db_delete('os2intra_simplesaml_nemid_pid_mapping')
+    ->condition('uid', $account->uid)
+    ->execute();
+}
 
-    // Redirect to Nemid Login.
-    if (!in_array($remote_ip, $custom_ips)) {
-      if (!isset($_SESSION['nemlogin_pid']) && strpos($_GET['q'], 'nemid') !== 0) {
-        // Unsetting session in case it had any nemid errors.
-        if (isset($_SESSION['nemid_login'])) {
-          unset($_SESSION['nemid_login']);
-        }
-
-        // Redirecting only if module exists and path is valid.
-        if (module_exists('drupal_nemid_login')) {
-          drupal_goto('nemid', array('query' => array('destination' => current_path())));
-        }
-      }
-    }
+function os2intra_simplesaml_logout_method() {
+  global $_simplesamlphp_auth_as;
+  // Get the simplesamlphp session.
+  $basedir = variable_get('simplesamlphp_auth_installdir', '/var/simplesamlphp');
+  require_once($basedir . '/lib/_autoload.php');
+  if ($_simplesamlphp_auth_as->isAuthenticated()) {
+    $url = $_simplesamlphp_auth_as->getLogoutURL();
+    header('Location: ' . $url, TRUE, 302);
+    drupal_exit($url);
+  }
+  else {
+    drupal_goto('/logout');
   }
 }

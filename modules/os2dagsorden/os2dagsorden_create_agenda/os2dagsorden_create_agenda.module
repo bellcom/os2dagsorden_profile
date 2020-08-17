@@ -275,3 +275,42 @@ function os2dagsorden_create_agenda_meeting_delete_submit($form, &$form_state) {
   node_delete($form_state['meeting_id']);
   drupal_goto('/');
 }
+
+/**
+ * Implements hook_user_delete().
+ *
+ * Delete user from meeting participants
+ */
+function os2dagsorden_create_agenda_user_delete($account) {
+  $uid = $account->uid;
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'os2web_meetings_meeting')
+    ->fieldCondition('field_os2web_meetings_partic_ext', 'uid',  $uid);
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $nodes = array_keys($result['node']);
+  }
+  foreach ($nodes as $nid) {
+    $meeting = node_load($nid);
+    $ext_participants = array();
+    if(is_array($meeting->field_os2web_meetings_partic_ext['und'])) {
+      foreach ($meeting->field_os2web_meetings_partic_ext['und'] as $key => $value) {
+        if($value['uid'] != $uid) {
+          $ext_participants[] = $value;
+        }
+      }
+      $meeting->field_os2web_meetings_partic_ext['und'] = $ext_participants;
+      field_attach_update('node', $meeting);
+    }
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function os2dagsorden_create_agenda_mail($key, &$message, $params) {
+  $message['subject'] = $params['subject'];
+  $message['body'][] = $params['body'];
+}

@@ -401,6 +401,9 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
     }
   }
   node_save($node);
+  if ($input['send_meeting_invitation']) {
+    os2dagsorden_create_agenda_send_meeting_invitation($node);
+  }
   return $node;
 }
 
@@ -677,4 +680,93 @@ function os2dagsorden_create_agenda_create_general_item($node) {
 function os2dagsorden_create_agenda_meeting_create_user($form, &$form_state) {
   $form_state['page_num'] = 4;
   $form_state['rebuild'] = TRUE;
+}
+
+function os2dagsorden_create_agenda_send_meeting_invitation($node) {
+  $uids = array();
+   if ($partic_ext = field_get_items('node', $node, 'field_os2web_meetings_partic_ext')) {
+    foreach($partic_ext as $uid) {
+      $uids[] = $uid['uid'] ;
+    }
+  }
+  if ($partic_int = field_get_items('node', $node, 'field_os2web_meetings_partic_int')) {
+    foreach($partic_int as $uid) {
+      $uids[] = $uid['uid'] ;
+    }
+  }
+  if ($partic_inv = field_get_items('node', $node, 'field_os2web_meetings_partic_inv')) {
+    foreach($partic_inv as $uid) {
+      $uids[] = $uid['uid'] ;
+    }
+  }
+  if (!empty($uids)) {
+    $committee_id = $node->field_os2web_meetings_committee['und'][0]['tid'];
+    $committee = taxonomy_term_load($committee_id);
+    $status = $node->field_os2web_meetings_type['und'][0]['value'];
+    global $base_url;
+    $cName = taxonomy_term_load($committee_id)->name;
+    $mName = check_plain($node->title);
+    $date = field_get_items('node', $node, 'field_os2web_meetings_date');
+    $mDate = format_date(strtotime($date[0]["value"]), $type = 'short', '', $date[0]['timezone']);
+    $published_item = (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) ? 'en dagsorden' : 'et referat';
+    $meeting_url = $base_url . '/meeting/' . $node->nid;
+    $mLink = $meeting_url;
+    $subject_template = variable_get('os2dagsorden_send_email_subject', '!meeting_type til !committee er publiceret');
+    $body_template = variable_get('os2dagsorden_send_email_body', 'Til !user' . PHP_EOL . PHP_EOL .
+      'Du abonnerer på !committee.' . PHP_EOL . 'Der er publiceret !meeting_type til !meeting_name !meeting_date.');
+    foreach ($uids as $uid) {
+      $query = db_select('os2dagsorden_notification_emails', 'ne');
+      $query->fields('ne')
+        ->condition('uid', $uid)
+        ->condition('meeting_id', $node->field_os2web_meetings_id['und'][0]['value'])
+        ->condition('status', strtolower($status));
+      $result = $query->execute();
+
+      // If result is empty, then send the mail.
+      if (!$result->rowCount()) {
+        $user = user_load($uid);
+        $uName = empty($user->field_user_full_name['und'][0]['value']) ? $user->name : $user->field_user_full_name['und'][0]['value'];
+        // Composing search/replace.
+        $search = array(
+          '!committee',
+          '!meeting_name',
+          '!meeting_date',
+          '!meeting_type',
+          '!user',
+          '!meeting_link',
+          PHP_EOL,
+        );
+        $replace = array(
+          $cName,
+          $mName,
+          $mDate,
+          $published_item,
+          $uName,
+          $mLink,
+          '<br/>',
+        );
+        // Making replacements.
+        $subject = str_replace($search, $replace, $subject_template);
+        $subject = ucfirst($subject);
+        $body = str_replace($search, $replace, $body_template);
+        $body = ucfirst($body);
+
+        $from = variable_get('system_mail');
+        $params = array(
+          'subject' => $subject,
+          'body' => $body,
+        );
+        drupal_mail('os2dagsorden_create_agenda', 'os2dagsorden_notification_email_', $user->mail, language_default(), $params, $from);
+        // Setting the database entry about sent email.
+        db_insert('os2dagsorden_notification_emails')
+          ->fields(array(
+            'uid' => $uid,
+            'meeting_id' => $node->nid,
+            'date' => gmdate("Y-m-d H:i:s", REQUEST_TIME),
+            'status' => strtolower($status),
+          ))
+          ->execute();
+      }
+    }
+  }
 }

@@ -145,7 +145,14 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form, $form
       '#title' => t('Vis Punkt nummerering'),
       '#default_value' => TRUE,
     );
-  }   
+  }
+
+  $form['send_meeting_invitation'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Send møder indkaldelse'),
+    '#default_value' => FALSE,
+  );
+
 
   // Finishing form.
   $form['#attached']['css'] = array(
@@ -195,12 +202,12 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
     $punkt_numbering = array_pop($punkt_numbering);
     $form['field_os2web_meetings_punkt_num']['#default_value'] = $punkt_numbering['value'];
   }
-  
+
   if ($attachment_view = field_get_items('node', $node, 'field_os2web_meetings_full_attac')) {
     $attachment_view = array_pop($attachment_view);
     $form['field_os2web_meetings_full_attac']['#default_value'] = $attachment_view['value'];
   }
-  
+
   if (field_get_items('node', $node, 'field_os2web_meetings_referent')) {
     $referent_field = array_pop(field_get_items('node', $node, 'field_os2web_meetings_referent'));
     $referents = explode(',', $referent_field['safe_value']);
@@ -318,7 +325,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $participants = $input['participants'];
   $referents = $input['referents'];
   $attachment_view = $form_state['values']['field_os2web_meetings_full_attac'];
-  
+
   $participants = explode(',', $input['participants_hidden']);
   $invisible_participants = explode(',', $input['participants_invisible_hidden']);
   if (!$form_state['meeting_id']) {
@@ -344,7 +351,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
     $node->field_os2web_meetings_punkt_num['und'][0]['value'] = $form_state['values']['field_os2web_meetings_punkt_num'];
   }
 
-  
+
 
   if (!empty($end_date)) {
     $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time, new DateTimeZone(date_default_timezone()));

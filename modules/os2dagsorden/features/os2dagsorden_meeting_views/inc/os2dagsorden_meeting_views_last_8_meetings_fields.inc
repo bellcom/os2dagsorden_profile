@@ -198,8 +198,8 @@ function os2dagsorden_meeting_views_last_8_meetings_filter_in_my_list($tid) {
  * @param int $tid
  *   Tid of the committees.
  */
-function os2dagsorden_meeting_views_last_8_meetings_all_meetings_filter_in_my_list($tid) {
-  return !os2dagsorden_access_helper_check_user_can_see_meeting(NULL, $tid);
+function os2dagsorden_meeting_views_last_8_meetings_all_meetings_filter_in_my_list($nid, $tid) {
+  return !os2dagsorden_access_helper_check_user_can_see_meeting($nid, $tid);
 }
 
 /**

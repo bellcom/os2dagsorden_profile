@@ -9,7 +9,7 @@
  * Generates link for logging off.
  */
 function os2dagsorden_front_page_views_fields_text_log_off() {
-  print '<a href="' . $GLOBALS['base_url'] . '/logout" class="user-logout-btn button">' . variable_get('os2dagsorden_title_general_log_off', 'Log af') . '</a>';
+  print '<a href="' . $GLOBALS['base_url'] . '/os2intra/simplesaml/logout" class="user-logout-btn button">' . variable_get('os2dagsorden_title_general_log_off', 'Log af') . '</a>';
 }
 
 /**

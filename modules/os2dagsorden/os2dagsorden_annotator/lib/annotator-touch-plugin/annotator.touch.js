@@ -1,4 +1,4 @@
-/*  Annotator Touch Plugin - v2.0.1
+/*  Annotator Touch Plugin - v2.1.2
  *  Copyright 2012-2020, Compendio <www.compendio.ch>
  *  Released under the MIT license
  *  More Information: https://github.com/aron/annotator.touch.js
@@ -22,7 +22,7 @@ window.annotator.touch.adder = {};
       Widget.call(this, options);
 
       this.annotation = null;
-
+      this.isVisible = false;
       this.onCreate = this.options.onCreate;
 
       var self = this;
@@ -59,7 +59,22 @@ window.annotator.touch.adder = {};
     //
     // Returns nothing.
     show: function() {
-      Widget.prototype.show.call(this);
+      if (!this.isVisible) {
+        if (window.annotator.touch.enabler.instance) {
+          window.annotator.touch.enabler.instance.hide();
+        }
+        Widget.prototype.show.call(this);
+        this.isVisible = true;
+      }
+    },
+    hide: function() {
+      if (this.isVisible) {
+        if (window.annotator.touch.enabler.instance) {
+          window.annotator.touch.enabler.instance.show();
+        }
+        Widget.prototype.hide.call(this);
+        this.isVisible = false;
+      }
     },
 
     // Event callback: called when the adder is clicked.
@@ -76,6 +91,10 @@ window.annotator.touch.adder = {};
       // Create a new annotation
       if (this.annotation !== null && typeof this.onCreate === "function") {
         this.onCreate(this.annotation, event);
+
+        if (window.annotator.touch.enabler.instance) {
+          window.annotator.touch.enabler.instance.disable();
+        }
       }
     }
   });
@@ -102,6 +121,83 @@ window.annotator.touch.adder = {};
   };
 
   window.annotator.touch.adder.Adder = Adder;
+})();
+if (!window.annotator.touch) window.annotator.touch = {};
+window.annotator.touch.enabler = {};
+
+(function() {
+  var Widget = window.annotator.ui.widget.Widget,
+    util = window.annotator.util;
+
+  var $ = util.$;
+  var _t = util.gettext;
+
+  var NS = "annotator-enabler";
+
+  var Enabler = Widget.extend({
+    constructor: function() {
+      Widget.call(this, {});
+
+      var self = this;
+      self.enabled = false;
+      self.callbacks = [];
+      this.element.on("tap." + NS, "a.annotator-button", function(e) {
+        self._onClick(e);
+      });
+    },
+
+    destroy: function() {
+      this.element.off("." + NS);
+      Widget.prototype.destroy.call(this);
+    },
+
+    disable: function() {
+      this.enabled = false;
+
+      this._update();
+    },
+
+    isEnabled: function() {
+      return this.enabled;
+    },
+
+    onChange: function(callback) {
+      this.callbacks.push(callback);
+    },
+
+    _update: function(event) {
+      this.element.find(".annotator-enable").text(this.enabled ? _t("Deaktiver noter") : _t("Aktivér noter"));
+
+      // Run callbacks
+      $.each(this.callbacks, function () {
+        this();
+      });
+    },
+
+    _onClick: function(event) {
+      event.preventDefault();
+
+      this.enabled = !this.enabled;
+
+      this._update();
+    }
+  });
+
+  Enabler.classes = {
+    hide: "annotator-touch-hide"
+  };
+
+  Enabler.template = [
+    '<div class="annotator-touch-widget annotator-touch-controls annotator-touch-hide">',
+    '  <div class="annotator-touch-widget-inner">',
+    '    <a class="annotator-button annotator-enable annotator-focus">' +
+      _t("Aktivér noter") +
+      "</a>",
+    "  </div>",
+    "</div>"
+  ].join("\n");
+
+  window.annotator.touch.enabler.Enabler = Enabler;
 })();
 if (!window.annotator.touch) window.annotator.touch = {};
 window.annotator.touch.editor = {};
@@ -423,11 +519,11 @@ window.annotator.touch.editor = {};
     '    <ul class="annotator-listing"></ul>',
     '    <div class="annotator-controls">',
     '     <a href="#cancel" class="annotator-cancel annotator-button">' +
-      _t("Cancel") +
+      _t("Fortryd") +
       "</a>",
     '      <a href="#save"',
     '         class="annotator-save annotator-focus annotator-button">' +
-      _t("Save") +
+      _t("Gem") +
       "</a>",
     "    </div>",
     "  </form>",
@@ -1727,14 +1823,14 @@ window.annotator.touch.viewer = {};
     '       title="' + _t("View as webpage") + '"',
     '       class="annotator-link">' + _t("View as webpage") + "</a>",
     '    <button type="button"',
-    '            title="' + _t("Edit") + '"',
+    '            title="' + _t("Redigér") + '"',
     '            class="annotator-edit annotator-button">' +
-      _t("Edit") +
+      _t("Redigér") +
       "</button>",
     '    <button type="button"',
-    '            title="' + _t("Delete") + '"',
+    '            title="' + _t("Slet") + '"',
     '            class="annotator-delete annotator-button">' +
-      _t("Delete") +
+      _t("Slet") +
       "</button>",
     "  </span>",
     "</li>"
@@ -1906,6 +2002,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
   };
 
   var adder = window.annotator.touch.adder;
+  var enabler = window.annotator.touch.enabler;
   var editor = window.annotator.touch.editor;
   var highlighter = window.annotator.ui.highlighter;
   var textselector = window.annotator.touch.textselector;
@@ -1969,6 +2066,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
     var sel =
       "*" +
       ":not(annotator-adder)" +
+      ":not(annotator-enabler)" +
       ":not(annotator-outer)" +
       ":not(annotator-notice)" +
       ":not(annotator-filter)";
@@ -1987,7 +2085,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
     max = Math.max(max, 1000);
 
     var rules = [
-      ".annotator-adder, .annotator-outer, .annotator-notice {",
+      ".annotator-adder, .annotator-enabler, .annotator-outer, .annotator-notice {",
       "  z-index: " + (max + 20) + ";",
       "}",
       ".annotator-filter {",
@@ -2136,6 +2234,30 @@ if (!window.annotator.touch) window.annotator.touch = {};
       });
       s.adder.attach();
 
+      if (!enabler.instance) {
+        enabler.instance = new enabler.Enabler();
+        enabler.instance.attach();
+        enabler.instance.show();
+      }
+
+      s.enabled = enabler.instance.isEnabled();
+
+      var toggleImgAreaSelect = function () {
+        jQuery.each(jQuery(options.element).find("img"), function () {
+          if (jQuery(this).data("imgAreaSelect")) {
+            jQuery(this).data("imgAreaSelect").setOptions({disable: !s.enabled})
+            jQuery(this).css({'cursor': s.enabled ? 'crosshair' : ''});
+          }
+        });
+      }
+
+      toggleImgAreaSelect();
+
+      enabler.instance.onChange(function () {
+        s.enabled = enabler.instance.isEnabled();
+        toggleImgAreaSelect();
+      });
+
       s.editor = new editor.Editor({
         extensions: options.editorExtensions
       });
@@ -2147,7 +2269,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
 
       s.textselector = new textselector.TextSelector(options.element, {
         onSelection: function(ranges) {
-          if (ranges.length > 0) {
+          if (s.enabled && ranges.length > 0) {
             var annotation = makeAnnotation(ranges);
             s.adder.load(annotation);
           } else {
