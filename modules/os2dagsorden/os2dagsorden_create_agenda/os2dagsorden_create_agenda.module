@@ -326,6 +326,6 @@ function os2dagsorden_create_agenda_mail($key, &$message, $params) {
 function _os2dagsorden_create_agenda_get_meeting_file_folder($meeting_id) {
     $meeting = node_load($meeting_id);
     $meeting_dates = field_get_items('node', $meeting, 'field_os2web_meetings_date');
-    $meeting_files_folder = variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $meeting->title . '_' . date('d_m_Y', strtotime($meeting_dates[0]['value']));
+    $meeting_files_folder = variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . str_replace(' ', '_', $meeting->title) . '_' . date('d_m_Y', strtotime($meeting_dates[0]['value']));
     return $meeting_files_folder;
 }

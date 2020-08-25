@@ -337,7 +337,7 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
 
   $input = $form_state['input'];
   // file_prepare_directory();
-  $folder_uri = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $node->title . '_' . date('d_m_Y', strtotime($node->field_os2web_meetings_date['und'][0]['value'])));
+  $folder_uri = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . str_replace(' ', '_', $node->title) . '_' . date('d_m_Y', strtotime($node->field_os2web_meetings_date['und'][0]['value'])));
   if (!file_prepare_directory($folder_uri, FILE_CREATE_DIRECTORY)){
     watchdog('os2dagsorden_create_agenda', 'Folder %uri can\'t be created.', array('%uri' => $folder_uri), WATCHDOG_ERROR);
   }
