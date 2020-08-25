@@ -259,7 +259,7 @@ function os2intra_simplesaml_init() {
             $uid = db_query("SELECT MAX(uid) as max_uid FROM users")->fetchCol();
             $uid = array_pop($uid);
             $uid = $uid + 100;
-            drupal_set_message(variable_get('os2intra_simplesaml_nemid_login_error_message'), 'error');
+            drupal_set_message(variable_get('os2intra_simplesaml_nemid_login_error_message') . ' <br/><a href=/os2intra/simplesaml/logout>' . t('Logout') .'</a>', 'error');
             $user->uid = $uid;
           }
         }
