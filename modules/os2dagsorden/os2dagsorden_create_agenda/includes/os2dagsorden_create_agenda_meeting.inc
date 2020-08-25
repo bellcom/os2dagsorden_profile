@@ -336,6 +336,13 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
   $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
 
   $input = $form_state['input'];
+  // file_prepare_directory();
+  $folder_uri = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $node->title . '_' . date('d_m_Y', strtotime($node->field_os2web_meetings_date['und'][0]['value'])));
+  if (!file_prepare_directory($folder_uri, FILE_CREATE_DIRECTORY)){
+    watchdog('os2dagsorden_create_agenda', 'Folder %uri can\'t be created.', array('%uri' => $folder_uri), WATCHDOG_ERROR);
+  }
+
+
   if (variable_get('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form', FALSE)) {
     // File extraction.
     $description_opened = $form_state['values']['description_opened'];
@@ -346,7 +353,7 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
       if ($description_file['status'] == 'done') {
         // Resaving file permanently.
         $source = $description_file['tmppath'];
-        $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $description_file['name']);
+        $destination = file_stream_wrapper_uri_normalize($folder_uri . $description_file['name']);
         $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
         $description_file = plupload_file_uri_to_object($destination);
         file_save($description_file);
@@ -372,7 +379,7 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state) {
         if ($description_file['status'] == 'done') {
           // Resaving file permanently.
           $source = $description_file['tmppath'];
-          $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $description_file['name']);
+          $destination = file_stream_wrapper_uri_normalize($folder_uri . '/' . $description_file['name']);
           $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
           $description_file = plupload_file_uri_to_object($destination);
           file_save($description_file);

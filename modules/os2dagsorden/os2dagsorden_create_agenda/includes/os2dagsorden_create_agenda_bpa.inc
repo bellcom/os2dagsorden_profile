@@ -221,7 +221,7 @@ function os2dagsorden_create_agenda_bpa_validate($form, &$form_state) {
  */
 function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
   $input = $form_state['input'];
-
+  $meeting_id = $form_state['meeting_id'];
   $title = $input['bpa_title'];
   $body = $input['body']['value'];
   $bilag = $form_state['values']['file'];
@@ -244,7 +244,8 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state) {
     if ($bilag_file['status'] == 'done') {
     // Resaving file permanently.
       $source = $bilag_file['tmppath'];
-      $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/'. $bilag_file['name']);
+      $folder_uri = _os2dagsorden_create_agenda_get_meeting_file_folder($meeting_id);
+      $destination = file_stream_wrapper_uri_normalize($folder_uri . '/'. $bilag_file['name']);
       $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
       $file = plupload_file_uri_to_object($destination);
       file_save($file);
