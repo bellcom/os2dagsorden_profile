@@ -15,7 +15,7 @@
     $('#edit-start-date-datepicker-popup-0').datepicker({
         dateFormat: 'd/m/yy',
         onClose: function(){
-          $(this).focus();
+          $('#edit-start-date-timeEntry-popup-1').focus();
           $('#edit-end-date-datepicker-popup-0').val( $(this).val())
         },
     });
@@ -23,7 +23,7 @@
     $('#edit-end-date-datepicker-popup-0').datepicker({
         dateFormat: 'd/m/yy',
         onClose: function(){
-        $(this).focus();
+        $('#edit-end-date-timeEntry-popup-1').focus();
         }
     });
 

@@ -258,7 +258,7 @@ function os2dagsorden_create_agenda_bullet_point($form, &$form_state) {
     '#markup' => '</div>',
   );
   $form['#attached']['css'] = array(
-     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css', 
+     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/css/form_theme.css',
   );
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js',
@@ -551,10 +551,11 @@ function os2dagsorden_create_agenda_delete_bpa_ajax_call($meeting_id, $bp_id, $b
  */
 function os2dagsorden_create_agenda_save_bilag_files($bp_id, $form_state) {
   $bilags = $form_state['values']['bilags'];
-
+  $meeting_id = $form_state['meeting_id'];
   foreach ($bilags as $bilag) {
     if ($bilag['status'] == 'done') {
-      _os2dagsorden_create_agenda_create_bpa_from_file($bp_id, $bilag);
+      $folder_uri = _os2dagsorden_create_agenda_get_meeting_file_folder($meeting_id);
+      _os2dagsorden_create_agenda_create_bpa_from_file($bp_id, $bilag, $folder_uri);
     }
   }
 }
@@ -672,6 +673,7 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form_submit($form, &$
   $create_as_bpa = $form_state['values']['create_as_bpa'];
   $form_state['meeting_id'] = $meeting_id;
   if (isset($bilags) && !empty($bilags)) {
+    $file_folder_uri = _os2dagsorden_create_agenda_get_meeting_file_folder($meeting_id);
     if ($create_as_bpa == 1) {
       $number = os2dagsorden_create_agenda_bullet_point_find_last_number($meeting_id);
       $bp_node = new stdClass();
@@ -683,7 +685,7 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form_submit($form, &$
       node_save($bp_node);
       os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bp_node->nid);
       foreach ($bilags as $bilag) {
-       _os2dagsorden_create_agenda_create_bpa_from_file($bp_node->nid, $bilag);
+       _os2dagsorden_create_agenda_create_bpa_from_file($bp_node->nid, $bilag, $file_folder_uri);
       }
     }
     else {
@@ -698,7 +700,7 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form_submit($form, &$
           $bp_node->field_os2web_meetings_bul_number['und'][0]['value'] = $number;
           node_save($bp_node);
           os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bp_node->nid);
-          _os2dagsorden_create_agenda_create_bpa_from_file($bp_node->nid, $bilag);
+          _os2dagsorden_create_agenda_create_bpa_from_file($bp_node->nid, $bilag, $file_folder_uri);
         }
       }
     }
@@ -713,42 +715,50 @@ function os2dagsorden_create_agenda_bullet_point_from_file_form_submit($form, &$
  *   The form.
  * @param mixed $bilag_array
  *   The array from plupupload widget.
+ * @param string $folder_uri
+ *   URI to meeting's files folder.
  */
-function _os2dagsorden_create_agenda_create_bpa_from_file($bp_id, $bilag_array) {
+function _os2dagsorden_create_agenda_create_bpa_from_file($bp_id, $bilag_array, $folder_uri) {
   $source = $bilag_array['tmppath'];
-  $destination = file_stream_wrapper_uri_normalize(variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . $bilag_array['name']);
-  $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
-  $bilag = plupload_file_uri_to_object($destination);
-  file_save($bilag);
-  $node = new stdClass();
-  $node->type = "os2web_meetings_bullet_attach";
-  $node->language = LANGUAGE_NONE;
-  node_object_prepare($node);
-  $node->title = pathinfo($bilag->filename, PATHINFO_FILENAME);
-  $bilag->status = FILE_STATUS_PERMANENT;
-  $bilag->display = 1;
-  file_save($bilag);
-  $node->field_os2web_meetings_bpa_file['und'][0] = (array) $bilag;
-  node_save($node);
-  os2dagsorden_create_agenda_add_bpa_to_bullet_point($bp_id, $node->nid);
-  if ($bilag) {
-    if (module_exists("os2dagsorden_pdf2htmlex")) {
-      // If is PDF, schedule for HTML conversion.
-      if (mime_content_type(drupal_realpath($bilag->uri)) === 'application/pdf') {
-        os2dagsorden_pdf2htmlex_schedule($bilag->fid, $node->nid);
+  if (file_prepare_directory($folder_uri, FILE_CREATE_DIRECTORY)){
+      $destination = file_stream_wrapper_uri_normalize($folder_uri . '/' . $bilag_array['name']);
+      $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
+      $bilag = plupload_file_uri_to_object($destination);
+      file_save($bilag);
+      $node = new stdClass();
+      $node->type = "os2web_meetings_bullet_attach";
+      $node->language = LANGUAGE_NONE;
+      node_object_prepare($node);
+      $node->title = pathinfo($bilag->filename, PATHINFO_FILENAME);
+      $bilag->status = FILE_STATUS_PERMANENT;
+      $bilag->display = 1;
+      file_save($bilag);
+      $node->field_os2web_meetings_bpa_file['und'][0] = (array) $bilag;
+      node_save($node);
+      os2dagsorden_create_agenda_add_bpa_to_bullet_point($bp_id, $node->nid);
+      if ($bilag) {
+        if (module_exists("os2dagsorden_pdf2htmlex")) {
+          // If is PDF, schedule for HTML conversion.
+          if (mime_content_type(drupal_realpath($bilag->uri)) === 'application/pdf') {
+            os2dagsorden_pdf2htmlex_schedule($bilag->fid, $node->nid);
+          }
+        }
+        if (module_exists('os2web_pdf_conversion_manager')) {
+          if (mime_content_type(drupal_realpath($bilag->uri)) !== 'application/pdf') {
+           _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($bilag->fid);
+          }
+        }
+        // PNG  conversion.
+        if (module_exists("os2dagsorden_pdf2png_conversion")) {
+          // If is PDF, schedule for HTML conversion.
+          if (mime_content_type(drupal_realpath($bilag->uri)) === 'application/pdf') {
+            os2dagsorden_pdf2png_conversion_schedule_if_bpa($bilag->fid);
+          }
+        }
       }
-    }
-    if (module_exists('os2web_pdf_conversion_manager')) {
-      if (mime_content_type(drupal_realpath($bilag->uri)) !== 'application/pdf') {
-       _os2web_pdf_conversion_manager_copy_file_to_convertion_dir($bilag->fid);
-      }
-    }
-    // PNG  conversion.
-    if (module_exists("os2dagsorden_pdf2png_conversion")) {
-      // If is PDF, schedule for HTML conversion.
-      if (mime_content_type(drupal_realpath($bilag->uri)) === 'application/pdf') {
-        os2dagsorden_pdf2png_conversion_schedule_if_bpa($bilag->fid);
-      }
-    }
   }
+  else {
+    watchdog('os2dagsorden_create_agenda', 'Folder %uri can\'t be created.', array('%uri' => $folder_uri), WATCHDOG_ERROR);
+  }
+
 }
