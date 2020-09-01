@@ -577,6 +577,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#description' => t('This specify how many characters the location column should crop the text at. If this is set to 0 then we show the full title.'),
     '#default_value' => variable_get('os2dagsorden_meetings_views_last_8_meeting_location_len', 25),
   );
+  $form['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_external_committee'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Only members of external committee can see meetings in external committee'),
+    '#description' => t('This decides whether a meeting from external committee is visible for users that are not committe members.'),
+    '#default_value' => variable_get('os2dagsorden_meetings_views_last_8_show_external_committee', TRUE),
+  );
 
   // Frontpage layout settings.
   $form['os2dagsorden_frontpage_layout'] = array(
@@ -1894,7 +1900,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_is_closed', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_is_closed']);
     variable_set('os2dagsorden_meetings_views_last_8_meeting_title_len', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_meeting_title_len']);
     variable_set('os2dagsorden_meetings_views_last_8_meeting_location_len', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_meeting_location_len']);
-
+    variable_set('os2dagsorden_meetings_views_last_8_show_external_committee', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_external_committe']);
     variable_set('os2dagsorden_collapse_menu', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu']);
     variable_set('os2dagsorden_collapse_menu_touch', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch']);
     variable_set('os2dagsorden_collapse_menu_touch_pages', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch_pages']);
