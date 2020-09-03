@@ -43,6 +43,7 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
   if (!$committee_tid) {
     $committee_tid = $meeting->field_os2web_meetings_committee['und'][0]['tid'];
   }
+
 //external user
   if (is_object($meeting)) {
     if ((int) $user->field_user_external['und'][0]['value'] === 1) {
@@ -56,7 +57,11 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
       return FALSE;
     }
   }
+
   $committee = taxonomy_term_load($committee_tid);
+  $is_external_committee = array_pop(field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_ext'));
+  $is_external_committee = $is_external_committee['value'];
+
 // Checking category.
   if (isset($committee->field_os2web_meetings_com_categ['und'])) {
     $meeting_category = $committee->field_os2web_meetings_com_categ['und'][0]['tid'];
@@ -97,6 +102,17 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
 // return FALSE;
 // }
 // }
+//
+
+// Checking if is meeting in external committee
+    if ($is_external_committee && variable_get('os2dagsorden_meetings_views_last_8_show_external_committee', TRUE)) {
+      if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
+        return TRUE;
+      }
+      else {
+        return FALSE;
+      }
+    }
 // Checking if is meeting in hidden agendas list.
     $hidden_agendas = explode(',', variable_get('os2dagsorden_hidden_agenda_committee'));
     if (strpos($meeting->field_os2web_meetings_type['und'][0]['value'], OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) {
@@ -726,7 +742,7 @@ function os2dagsorden_access_helper_bullet_point_attachment_is_public($bp_publis
     else if (intval($bp_publish_level) == OS2DAGSORDEN_ACCESS_HELPER_CLOSED_BP_TITLE_SUGGESTED_DESICION &&
         (strpos(strtolower($attachment->title), 'beslutning') === 0 || strpos(strtolower($attachment->title), 'indstilling') === 0)) {
       return TRUE;
-    }  
+    }
   }
   return FALSE;
 }

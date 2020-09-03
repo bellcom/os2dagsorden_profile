@@ -329,3 +329,41 @@ function _os2dagsorden_create_agenda_get_meeting_file_folder($meeting_id) {
     $meeting_files_folder = variable_get('os2dagsorden_plupupload_filedir_uri', 'private://manual_agendas') . '/' . str_replace(' ', '_', $meeting->title) . '_' . date('d_m_Y', strtotime($meeting_dates[0]['value']));
     return $meeting_files_folder;
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function os2dagsorden_create_agenda_form_alter(&$form, &$form_state, $form_id) {
+  switch($form_id) {
+    case 'user_admin_settings':
+      if (is_array($form) && $form['email']['#type'] == 'vertical_tabs') {
+        foreach ($form as $key => $value) {
+          if (is_array($value) && $value['#type'] == 'fieldset') {
+            $form[$key]['#description'] .= '<br />' . t('Also available variable is: ') . '[user_fullname]';
+          }
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function os2dagsorden_create_agenda_mail_alter(&$message) {
+  switch ($message['id']) {
+    case "user_register_admin_created":
+    case "user_register_no_approval_required":
+    case "user_register_pending_approval":
+    case "user_password_reset":
+    case "user_status_blocked":
+    case "user_status_deleted":
+    case "logintoboggan_register_no_approval_required":
+      $token_replacements = array(
+        '[user_fullname]' => $message['params']['account']->field_user_full_name['und'][0]['value'],
+      );
+      $message['subject'] = strtr($message['subject'], $token_replacements);
+      $message['body'][0] = strtr($message['body'][0], $token_replacements);
+      break;
+  }
+}
