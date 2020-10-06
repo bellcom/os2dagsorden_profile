@@ -46,8 +46,8 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
 
 //external user
   if (is_object($meeting)) {
-    if ((int) $user->field_user_external['und'][0]['value'] === 1) {
-      if (isset($meeting->field_os2web_meetings_partic_ext['und'])) {
+    if (isset($user->field_user_external['und']) && (int) $user->field_user_external['und'][0]['value'] === 1) {
+       if (isset($meeting->field_os2web_meetings_partic_ext['und'])) {
         foreach ($meeting->field_os2web_meetings_partic_ext['und'] as $ext_partic) {
           if ($ext_partic['uid'] == $user->uid) {
             return TRUE;
@@ -59,10 +59,12 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
   }
 
   $committee = taxonomy_term_load($committee_tid);
-  $is_external_committee = array_pop(field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_ext'));
-  $is_external_committee = $is_external_committee['value'];
-
-// Checking category.
+  $is_external_committee = FALSE;
+  if ($field_is_external_commitee_ext = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_ext')) {
+    $is_external_committee = array_pop($field_is_external_commitee_ext);
+    $is_external_committee = $is_external_committee['value'];
+  }
+  // Checking category.
   if (isset($committee->field_os2web_meetings_com_categ['und'])) {
     $meeting_category = $committee->field_os2web_meetings_com_categ['und'][0]['tid'];
     if (isset($user->field_user_com_forbid_categ['und'])) {
