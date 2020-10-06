@@ -200,9 +200,9 @@ function os2dagsorden_meeting_views_last_8_meetings_filter_in_my_list($tid) {
  */
 function os2dagsorden_meeting_views_last_8_meetings_all_meetings_filter_in_my_list($nid, $tid) {
   $user = os2dagsorden_access_helper_get_user();
-  //external user
+  // External user.
   if (isset($user->field_user_external['und']) && (int) $user->field_user_external['und'][0]['value'] === 1) {
-    return !os2dagsorden_access_helper_check_user_can_see_meeting($nid, $tid);
+    return !(in_array($tid, os2dagsorden_access_helper_get_user_member_of_committees()) && !os2dagsorden_meeting_views_common_filter_meeting($nid));
   }
   return !os2dagsorden_access_helper_check_user_can_see_meeting(null, $tid);
 }
