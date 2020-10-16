@@ -402,7 +402,8 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, SimpleXMLEle
   // Process enclsures.
   foreach ($xml_item_document as $enclosures) {
     foreach ($enclosures->Enclosure as $enclosure) {
-      $enclosure_item['filename_in'] = (string) "Enclosures/" . $enclosure->InstantiationFileName;
+      $enclosure_item['filename_in'] = (string) $enclosure->InstantiationFilePathRelative;
+      $enclosure_item['filename_in'] = str_replace("\\", "/",  $enclosure_item['filename_in'] );
       $enclosure_item['access'] = (string) $enclosure->PublishingType;
       if (strlen($enclosure_item['filename_in']) > 0) {
         $item['enclosures'][] = array(
