@@ -2703,7 +2703,8 @@ div.note {
 }
 div.note.premeeting,
 div.note.subscribe, 
-div.note.external-user {
+div.note.external-user,
+div.note.committee-admin {
   display: block;
   float: none;
   margin-left: 18px;
@@ -2717,6 +2718,7 @@ div.note.external-user {
 .checkbox_invisible,
 .checkbox.premeeting,
 .checkbox.can-subscribe,
+.checkbox.committee-admin
 {
   float: right;
 }
@@ -2725,10 +2727,23 @@ div.note.external-user {
 .checkbox.invisible,
 .checkbox.premeeting,
 .checkbox.can-subscribe,
-.checkbox.external-user {
+.checkbox.external-user,
+.checkbox.committee-admin {
   float: right;
   display: inline;
   position: relative;
+}
+.checkbox.committee-admin::before {
+  content: '';
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center; 
 }
 .checkbox.premeeting::before{
   content: '';
@@ -2809,15 +2824,23 @@ ul#follows {
   right: 20px;
  }
 }
+.checkbox.committee-admin {
+  right: 20px;
+}
+ul#follows .checkbox.committee-admin {
+  right: 40px; 
+}
 .checkbox_follows,
 .checkbox_invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.committee-admin {
   float: right;
 }
 
 .checkbox_follows,
 .checkbox.invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.committee-admin{
   float: right;
   display: inline;
   position: relative;

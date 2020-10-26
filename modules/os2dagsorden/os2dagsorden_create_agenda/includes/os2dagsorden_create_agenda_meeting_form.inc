@@ -429,29 +429,6 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
 }
 
 /**
- * Checks is current user is committee admin .
- *
- * @param int $committee_tid
- *   The committee ID.
- *
- * @return bool
- *   True of false.
- */
-function os2dagsorden_create_agenda_is_user_committee_admin($committee_tid) {
-  $user = os2dagsorden_access_helper_get_user();
-  $committee = taxonomy_term_load($committee_tid);
-  $committee_admins = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_admin');
-  if ($committee_admins) {
-    foreach ($committee_admins as $key => $admin) {
-      if ($user->uid === $admin['uid']) {
-        return TRUE;
-      }
-    }
-  }
-  return FALSE;
-}
-
-/**
  * Fills forms with drag and drop controls for manipulating participants.
  *
  * External/internal, invisible/visible participants.

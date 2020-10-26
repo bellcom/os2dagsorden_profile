@@ -194,7 +194,7 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Indhold: Udgivet */
+  /* Filter criterion: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -334,7 +334,7 @@ function os2dagsorden_admin_views_views_default_views() {
     t('næste >'),
     t('sidste »'),
     t('Indhold'),
-    t('- Choose an operation -'),
+    t('- Vælg en handling -'),
     t('Titel'),
     t('Opdateret'),
     t('Udvalg'),
@@ -548,7 +548,7 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['fields']['field_user_full_name']['table'] = 'field_data_field_user_full_name';
   $handler->display->display_options['fields']['field_user_full_name']['field'] = 'field_user_full_name';
   $handler->display->display_options['fields']['field_user_full_name']['label'] = 'Fuldt navn';
-  /* Felt: Bruger: Aktiv */
+  /* Felt: Bruger: Active status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'users';
   $handler->display->display_options['fields']['status']['field'] = 'status';
@@ -557,12 +557,36 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['fields']['field_user_organization']['id'] = 'field_user_organization';
   $handler->display->display_options['fields']['field_user_organization']['table'] = 'field_data_field_user_organization';
   $handler->display->display_options['fields']['field_user_organization']['field'] = 'field_user_organization';
-  $handler->display->display_options['fields']['field_user_organization']['label'] = 'Organisation';
+  $handler->display->display_options['fields']['field_user_organization']['label'] = 'Organisatorisk';
+  /* Felt: Global: PHP */
+  $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['fields']['php_1']['table'] = 'views';
+  $handler->display->display_options['fields']['php_1']['field'] = 'php';
+  $handler->display->display_options['fields']['php_1']['label'] = 'Committee admin';
+  $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_1']['php_output'] = '<?php _os2dagsorden_admin_views_user_admin_committees($row->uid) ?>';
+  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
   /* Felt: Bruger: Roller */
   $handler->display->display_options['fields']['rid']['id'] = 'rid';
   $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
   $handler->display->display_options['fields']['rid']['field'] = 'rid';
   $handler->display->display_options['fields']['rid']['type'] = 'ul';
+  /* Felt: Bruger: External user */
+  $handler->display->display_options['fields']['field_user_external']['id'] = 'field_user_external';
+  $handler->display->display_options['fields']['field_user_external']['table'] = 'field_data_field_user_external';
+  $handler->display->display_options['fields']['field_user_external']['field'] = 'field_user_external';
+  $handler->display->display_options['fields']['field_user_external']['label'] = 'Ekstern bruger';
+  $handler->display->display_options['fields']['field_user_external']['empty'] = 'Nej';
+  /* Felt: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Nemid user';
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php _os2dagsorden_admin_views_nemid_user($row->uid) ?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Felt: Bruger: Created date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'users';
@@ -583,7 +607,7 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['fields']['nothing']['alter']['text'] = 'redigér';
   $handler->display->display_options['fields']['nothing']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['nothing']['alter']['path'] = 'user/[uid]/simple_edit';
-  /* Felt: Bruger: Edit link */
+  /* Felt: Bruger: Link to edit user */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'users';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
@@ -592,7 +616,7 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['alter']['text'] = 'test';
   $handler->display->display_options['fields']['edit_node']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['edit_node']['alter']['path'] = 'user/%/simple_edit';
-  /* Felt: Bruger: Cancel link */
+  /* Felt: Bruger: Link to cancel user */
   $handler->display->display_options['fields']['cancel_node']['id'] = 'cancel_node';
   $handler->display->display_options['fields']['cancel_node']['table'] = 'users';
   $handler->display->display_options['fields']['cancel_node']['field'] = 'cancel_node';
@@ -624,7 +648,7 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['filters']['field_user_organization_value']['group'] = 1;
   $handler->display->display_options['filters']['field_user_organization_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_user_organization_value']['expose']['operator_id'] = 'field_user_organization_value_op';
-  $handler->display->display_options['filters']['field_user_organization_value']['expose']['label'] = 'Organisation';
+  $handler->display->display_options['filters']['field_user_organization_value']['expose']['label'] = 'Organisatorisk';
   $handler->display->display_options['filters']['field_user_organization_value']['expose']['operator'] = 'field_user_organization_value_op';
   $handler->display->display_options['filters']['field_user_organization_value']['expose']['identifier'] = 'field_user_organization_value';
   $handler->display->display_options['filters']['field_user_organization_value']['expose']['remember_roles'] = array(
@@ -735,17 +759,20 @@ function os2dagsorden_admin_views_views_default_views() {
     t('næste >'),
     t('sidste »'),
     t('No users available.'),
-    t('- Choose an operation -'),
-    t('Delete'),
+    t('- Vælg en handling -'),
     t('Change value'),
     t('Change user roles'),
     t('Batch edit committees'),
     t('Send e-mail'),
     t('Navn'),
     t('Fuldt navn'),
-    t('Aktiv'),
-    t('Organisation'),
+    t('Active status'),
+    t('Organisatorisk'),
+    t('Committee admin'),
     t('Roller'),
+    t('Ekstern bruger'),
+    t('Nej'),
+    t('Nemid user'),
     t('Medlem i'),
     t('Seneste tilgang'),
     t('Handlinger'),

@@ -184,7 +184,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['member_of_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Member of:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
+    '#prefix' => '<label>' . t('Member of:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : '') . (($is_admin) ? '<div class="note committee-admin">' . t('Committee admin:') . '</div>' : '' ),
     '#markup' => '',
   );
   $form['member_of_hidden'] = array(
@@ -198,7 +198,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['follows_div'] = array(
     '#access' => $user_can_change_follow_commitee,
     '#type' => 'item',
-    '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note subscribe">' . t('Notifikationer på mail:') . '</div>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
+    '#prefix' => '<label class="label_follows">' . t('Follows:') . '</label><div class="note subscribe">' . t('Notifikationer på mail:') . '</div>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : '' ) . (($is_admin) ? '<div class="note committee-admin">' . t('Committee admin:') . '</div>' : '' ),
     '#markup' => '',
   );
   $form['follows_hidden'] = array(
@@ -217,7 +217,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['follows_plus_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Follows+:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
+    '#prefix' => '<label>' . t('Follows+:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : '') . (($is_admin) ? '<div class="note committee-admin">' . t('Committee admin:') . '</div>' : '' ),
     '#markup' => '',
 
   );
@@ -231,7 +231,7 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
   $form['follows_plus_plus_div'] = array(
     '#access' => user_access('administer users'),
     '#type' => 'item',
-    '#prefix' => '<label>' . t('Follows++:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : ''),
+    '#prefix' => '<label>' . t('Follows++:') . '</label>' . (($is_admin) ? '<div class="note premeeting">' . t('Formøde publicering:') . '</div>' : '') . (($is_admin) ? '<div class="note committee-admin">' . t('Committee admin:') . '</div>' : '' ),
     '#markup' => '',
 
   );
@@ -245,6 +245,12 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
     '#type' => 'hidden',
     '#attributes' => array(
       'id' => 'premeeting_committee_hidden',
+    ),
+  );
+  $form['committee_admin_hidden'] = array(
+    '#type' => 'hidden',
+    '#attributes' => array(
+      'id' => 'committee_admin_hidden',
     ),
   );
   $form[] = array(
@@ -369,11 +375,19 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
         if ($premeeting_check_id === $tid) {
           $checked = "checked='checked'";
         }
+        $is_commitee_admin = os2dagsorden_access_helper_is_user_committee_admin($tid, $user->uid);
+        $is_commitee_admin_checked = $is_commitee_admin ? "checked='checked'" : '';
+        if ($is_commitee_admin) {
+          $form['committee_admin_hidden']['#value'] .= $tid . ',';
+        }
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
         if ($is_admin) {
           $content .= " <span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
         }
-        $content .= '</li>';
+         if ($is_admin) {
+          $content .= " <span class='checkbox committee-admin'><input id='committee_admin_checkbox_$tid' type='checkbox' class='' {$is_commitee_admin_checked}></span>";
+        }
+                $content .= '</li>';
       }
     }
     $content .= '</ul>';
@@ -400,10 +414,18 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
         if ($premeeting_check_id === $tid) {
           $checked = "checked='checked'";
         }
+        $is_commitee_admin = os2dagsorden_access_helper_is_user_committee_admin($tid, $user->uid);
+        $is_commitee_admin_checked = $is_commitee_admin ? "checked='checked'" : '';
+        if ($is_commitee_admin) {
+          $form['committee_admin_hidden']['#value'] .= $tid . ',';
+        }
         if ($check_id === $tid) {
           $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><span class='checkbox {$subscribed_class}'><input id='follows_checkbox_$tid' type='checkbox' class='checkbox_follows' checked='checked'></span>";
           if ($is_admin) {
             $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
+          }
+          if ($is_admin) {
+            $content .= " <span class='checkbox committee-admin'><input id='committee_admin_checkbox_$tid' type='checkbox' class='' {$is_commitee_admin_checked}></span>";
           }
           $content .= '</li>';
         }
@@ -411,6 +433,9 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
           $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span><span class='checkbox {$subscribed_class}'><input id='follows_checkbox_$tid' type='checkbox' class='checkbox_follows'></span>";
           if ($is_admin) {
             $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
+          }
+          if ($is_admin) {
+            $content .= " <span class='checkbox committee-admin'><input id='committee_admin_checkbox_$tid' type='checkbox' class='' {$is_commitee_admin_checked}></span>";
           }
           $content .= '</li>';
         }
@@ -433,8 +458,16 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
           $checked = "checked='checked'";
         }
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
+       $is_commitee_admin = os2dagsorden_access_helper_is_user_committee_admin($tid, $user->uid);
+       $is_commitee_admin_checked = $is_commitee_admin ? "checked='checked'" : '';
+        if ($is_commitee_admin) {
+          $form['committee_admin_hidden']['#value'] .= $tid . ',';
+        }
         if ($is_admin) {
           $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
+        }
+        if ($is_admin) {
+          $content .= " <span class='checkbox committee-admin'><input id='committee_admin_checkbox_$tid' type='checkbox' class='' {$is_commitee_admin_checked}></span>";
         }
         $content .= '</li>';
       }
@@ -452,12 +485,20 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
           $premeeting_check_id = $tid;
         }
         $checked = '';
+        $is_commitee_admin = os2dagsorden_access_helper_is_user_committee_admin($tid, $user->uid);
+        $is_commitee_admin_checked = $is_commitee_admin ? "checked='checked'" : '';
+        if ($is_commitee_admin) {
+          $form['committee_admin_hidden']['#value'] .= $tid . ',';
+        }
         if ($premeeting_check_id === $tid) {
           $checked = "checked='checked'";
         }
         $content .= "<li id='{$tid}' class='ui-state-default'><span>{$com_select[$tid]}</span>";
         if ($is_admin) {
           $content .= "<span class='checkbox premeeting'><input id='premeeting_checkbox_$tid' type='checkbox' class='' {$checked}></span>";
+        }
+        if ($is_admin) {
+          $content .= " <span class='checkbox committee-admin'><input id='committee_admin_checkbox_$tid' type='checkbox' class='' {$is_commitee_admin_checked}></span>";
         }
         $content .= '</li>';
       }
@@ -480,8 +521,12 @@ function _os2dagsorden_content_modify_render_drag_and_drop_controls(&$form, $uid
       if ($shared_all_user_committee[$tid] < count($uids)) {
         $com_list .= "<li id='{$tid}' class='ui-state-default'><span>{$com_term}</span><span class='checkbox'><input id='follows_checkbox_$tid'  type='checkbox' class='checkbox'></span>";
         if ($is_admin) {
-          $com_list .= "<span class='checkbox'><input id='premeeting_checkbox_$tid' type='checkbox' class='' >";
+          $com_list .= "<span class='checkbox'><input id='premeeting_checkbox_$tid' type='checkbox' class='' ></span>";
         }
+        if ($is_admin) {
+          $com_list .= " <span class='checkbox'><input id='committee_admin_checkbox_$tid' type='checkbox' class=''></span>";
+        }
+
         $com_list .= '</li>';
       }
     }
@@ -593,6 +638,8 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
   $member_of = explode(',', $member_of_hidden);
   $follows_plus = explode(',', $follows_plus_hidden);
   $follows_plus_plus = explode(',', $follows_plus_plus_hidden);
+  $committee_admin = explode(',', $committee_admin_hidden);
+  $committee_admin= array_filter($committee_admin, function($a) { return ($a != 0); });
 
   // If the forbidden categories are not preset and categories mode is allowed,
   // fill the variable artificially.
@@ -660,6 +707,28 @@ function os2dagsorden_content_modify_user_submit($form, $form_state) {
       foreach ($premeeting_member_of as $tid) {
         if (!empty($tid)) {
           $user->field_user_premeeting_committee['und'][]['tid'] = $tid;
+        }
+      }
+    }
+    $committee_user_is_admin =  os2dagsorden_access_helper_get_all_committee_user_is_admin($user->uid);
+    $committee_to_add = array_diff($committee_admin, $committee_user_is_admin);
+    $committee_to_delete =  array_diff($committee_user_is_admin, $committee_admin);
+    if (!empty($committee_to_add)) {
+      foreach ($committee_to_add as $tid) {
+        $committee = taxonomy_term_load($tid);
+        $committee->field_os2web_meetings_com_admin['und'][]['uid'] = $user->uid;
+        taxonomy_term_save($committee);
+      }
+    }
+    if (!empty($committee_to_delete)) {
+      foreach ($committee_to_delete as $key => $tid) {
+        $committee = taxonomy_term_load($tid);
+        foreach ($committee->field_os2web_meetings_com_admin['und'] as $key => $term) {
+          if ($term['uid'] == $user->uid) {
+            unset($committee->field_os2web_meetings_com_admin['und'][$key]);
+            taxonomy_term_save($committee);
+            break;
+          }
         }
       }
     }

@@ -22,6 +22,9 @@ function follows_subscribe_click(event) {
     if (jQuery(event.target).hasClass('premeeting')) {
       return;
     }
+    if (jQuery(event.target).hasClass('committee_admin')) {
+      return;
+    }
     if (jQuery('#follows_subscribed_hidden').val() != '') {
         subscribed_elements = jQuery('#follows_subscribed_hidden').val().split(',');
     }
@@ -43,8 +46,11 @@ function follows_subscribe_click(event) {
 function premeeting_committee_click(event) {
   var premeeting_committee_elements = [];
   if (jQuery(event.target).hasClass('checkbox_follows')) {
-      return;
-    }
+    return;
+  }
+  if (jQuery(event.target).hasClass('committee_admin')) {
+    return;
+  }
   if (jQuery('#premeeting_committee_hidden').val() != '') {
     premeeting_committee_elements = jQuery('#premeeting_committee_hidden').val().split(',');
   }
@@ -83,6 +89,31 @@ function invisible_participants_click(event) {
     //console.log(event.target);
 }
 
+function committee_admin_click(event) {
+  var premeeting_committee_elements = [];
+  if (jQuery(event.target).hasClass('checkbox_follows')) {
+    return;
+  }
+  if (jQuery(event.target).hasClass('premeeting')) {
+   return;
+  }
+  if (jQuery('#committee_admin_hidden').val() != '') {
+    premeeting_committee_elements = jQuery('#committee_admin_hidden').val().split(',');
+  }
+console.log('here');
+  var id_toggle = jQuery(event.target).attr('id').replace("committee_admin_checkbox_", "");
+  if (premeeting_committee_elements.indexOf(id_toggle) > -1) {
+    //removing element 1 element
+    premeeting_committee_elements.splice(premeeting_committee_elements.indexOf(id_toggle), 1);
+  } else {
+    //adding this element
+    premeeting_committee_elements.push(id_toggle);
+  }
+
+  jQuery('#committee_admin_hidden').val(premeeting_committee_elements.join(','));
+    //console.log(event.target);
+}
+
 jQuery(document).ready(function() {
     jQuery("ul.droptrue").sortable({
         connectWith: 'ul',
@@ -105,6 +136,7 @@ jQuery(document).ready(function() {
 
     jQuery(".select-committee #edit-follows-div ul.droptrue li input.checkbox_follows").click(follows_subscribe_click);
     jQuery(".select-committee  ul.droptrue li span.checkbox.premeeting input").click(premeeting_committee_click);
+    jQuery(".select-committee  ul.droptrue li span.checkbox.committee-admin input").click(committee_admin_click);
     //add behaviour to item that is added to the participants section
     jQuery(".select-participants ul.droptrue").bind("sortreceive", function(event, ui){
       jQuery('#follows_checkbox_' + ui.item.context.id).addClass('invisible');
@@ -134,17 +166,22 @@ jQuery(document).ready(function() {
        jQuery('#follows_checkbox_' + ui.item.context.id).addClass('checkbox_follows');
        jQuery('#follows_checkbox_' + ui.item.context.id).parent('span').addClass('can-subscribe');
        jQuery('#premeeting_checkbox_' + ui.item.context.id).addClass('premeeting');
+       jQuery('#committee_admin_checkbox_' + ui.item.context.id).addClass('committee-admin');
         //console.log(ui.item);
         setTimeout(function(){
           jQuery(ui.item).find("input.checkbox_follows").bind('click', follows_subscribe_click);
-          jQuery(ui.item).find(["input.checkbox.premeeting"]).bind('click', premeeting_committee_click); }, 1);
+          jQuery(ui.item).find(["input.checkbox.premeeting"]).bind('click', premeeting_committee_click); 
+          jQuery(ui.item).find(["input.checkbox.committee-admin"]).bind('click',  committee_admin_click); }, 1);
     });
     jQuery(".select-committee ul.droptrue").bind("sortreceive", function(event, ui){
         jQuery('#premeeting_checkbox_' + ui.item.context.id).parent('span').addClass('premeeting');
+        jQuery('#committee_admin_checkbox_' + ui.item.context.id).parent('span').addClass('committee-admin');
 
         //console.log(ui.item);
-        setTimeout(function(){console.log(ui.item);
-          jQuery(ui.item).find("#premeeting_checkbox_" + ui.item.context.id).bind('click', premeeting_committee_click); }, 1);
+        setTimeout(function(){;
+          jQuery(ui.item).find("#premeeting_checkbox_" + ui.item.context.id).bind('click', premeeting_committee_click);
+          jQuery(ui.item).find("#committee_admin_checkbox_" + ui.item.context.id).bind('click',  committee_admin_click); }, 1);
+
     });
     //remove behaviour from item that is removed from the follow section
     jQuery(".select-committee.single ul.droptrue").bind("sortremove", function(event, ui){
@@ -152,13 +189,14 @@ jQuery(document).ready(function() {
         jQuery('#follows_checkbox_' + ui.item.context.id ).removeClass('follows subscribed');
         jQuery('#follows_checkbox_' + ui.item.context.id ).removeClass('checkbox_follows');
         jQuery('#premeeting_checkbox_' + ui.item.context.id ).parent('span').removeClass('premeeting');
+        jQuery('#committee_admin_checkbox_' + ui.item.context.id ).parent('span').removeClass('committee-admin');
         jQuery('#follows_checkbox_' + ui.item.context.id).parent('span').removeClass('can-subscribe');
         jQuery('#follows_checkbox_' + ui.item.context.id).parent('span').removeClass('subscribed');
         jQuery('#follows_checkbox_' + ui.item.context.id).addClass('checkbox');
         jQuery(ui.item).find("input[type=checkbox]").removeAttr("checked");
         jQuery('#follows_checkbox_' + ui.item.context.id).unbind('click');
         jQuery('#premeeting_checkbox_' + ui.item.context.id).unbind('click');
-
+        jQuery('#committee_admin_checkbox' + ui.item.context.id).unbind('click');
         //removing this element from subscribed
         var subscribed_elements = [];
         if (jQuery('#follows_subscribed_hidden').val() != '') {

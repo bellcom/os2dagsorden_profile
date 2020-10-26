@@ -874,3 +874,45 @@ function os2dagsorden_admin_views_taxonomy_term_update_validate($form, $form_sta
     }
   }
 }
+
+/**
+ * Helper function to check if user login with NemID.
+ *
+ * @param int $uid
+ *
+ */
+
+function _os2dagsorden_admin_views_nemid_user($uid) {
+  if (module_exists('os2intra_simplesaml')) {
+    $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
+      ->fields("os2pid", array("uid"))
+      ->condition("uid", $uid)
+      ->execute()
+       ->fetchField();
+    if (!empty($uid)) {
+      print t('Yes');
+
+    }
+    else{
+      print t('No');
+    }
+  }
+}
+
+
+/**
+ * Returns list of committees where user is admin. 
+ *
+ * @param int $uid
+ *
+ */
+
+function _os2dagsorden_admin_views_user_admin_committees($uid) {
+  $committee_list = array();
+  $committees = os2dagsorden_access_helper_get_all_committee_user_is_admin($uid);
+  foreach ($committees as $tid) {
+    $term = taxonomy_term_load($tid);
+    $committee_list[] = $term->name;
+  }
+  print implode(', ', $committee_list);
+}
