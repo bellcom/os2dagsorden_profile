@@ -562,7 +562,7 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
   $handler->display->display_options['fields']['php_1']['field'] = 'php';
-  $handler->display->display_options['fields']['php_1']['label'] = 'Committee admin';
+  $handler->display->display_options['fields']['php_1']['label'] = 'Udvalgs admin';
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php _os2dagsorden_admin_views_user_admin_committees($row->uid) ?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
@@ -582,7 +582,7 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
   $handler->display->display_options['fields']['php']['field'] = 'php';
-  $handler->display->display_options['fields']['php']['label'] = 'Nemid user';
+  $handler->display->display_options['fields']['php']['label'] = 'NemID bruger';
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php _os2dagsorden_admin_views_nemid_user($row->uid) ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
@@ -768,11 +768,11 @@ function os2dagsorden_admin_views_views_default_views() {
     t('Fuldt navn'),
     t('Active status'),
     t('Organisatorisk'),
-    t('Committee admin'),
+    t('Udvalgs admin'),
     t('Roller'),
     t('Ekstern bruger'),
     t('Nej'),
-    t('Nemid user'),
+    t('NemID bruger'),
     t('Medlem i'),
     t('Seneste tilgang'),
     t('Handlinger'),

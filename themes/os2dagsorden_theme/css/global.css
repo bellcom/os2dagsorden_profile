@@ -3078,6 +3078,7 @@ div.note.committee-admin {
   content: '';
   position: absolute;
   background-repeat: no-repeat;
+  background-image: url(../img/wrench.png);
   background-size: 15px;
   right: 20px;
   top: 2px;
@@ -3085,6 +3086,7 @@ div.note.committee-admin {
   height: 16px;
   display: flex;
   align-items: center; }
+
 .checkbox.premeeting::before {
   content: '';
   position: absolute;
@@ -3120,7 +3122,15 @@ div.note.premeeting::before {
   left: 8px;
   width: 16px;
   height: 16px; }
-
+div.note.committee-admin::before {
+  content: '';
+  position: absolute;
+  background-image: url(../img/wrench.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  left: 8px;
+  width: 16px;
+  height: 16px; }
 div.note.external-user {
   position: relative;
   margin-top: 1em; }
