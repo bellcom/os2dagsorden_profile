@@ -552,6 +552,7 @@ function os2dagsorden_admin_views_views_default_views() {
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'users';
   $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['label'] = 'Aktiv status';
   $handler->display->display_options['fields']['status']['not'] = 0;
   /* Felt: Bruger: Organization */
   $handler->display->display_options['fields']['field_user_organization']['id'] = 'field_user_organization';
@@ -766,7 +767,7 @@ function os2dagsorden_admin_views_views_default_views() {
     t('Send e-mail'),
     t('Navn'),
     t('Fuldt navn'),
-    t('Active status'),
+    t('Aktiv status'),
     t('Organisatorisk'),
     t('Udvalgs admin'),
     t('Roller'),
