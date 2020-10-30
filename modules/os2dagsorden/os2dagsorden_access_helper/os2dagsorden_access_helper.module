@@ -363,7 +363,7 @@ function os2dagsorden_access_helper_node_save($node) {
         $cName = taxonomy_term_load($committee_id)->name;
         $mName = check_plain($node->title);
         $date = field_get_items('node', $node, 'field_os2web_meetings_date');
-        $mDate = format_date(strtotime($date[0]["value"]), $type = 'short', '', $date[0]['timezone']);
+        $mDate = format_date(strtotime($date[0]['value'] . 'UTC'), $type = 'short', '', $date[0]['timezone']);
         $published_item = (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) ? 'en dagsorden' : 'et referat';
         $meeting_url = $base_url . '/meeting/' . $node->nid;
         $mLink = $meeting_url;
@@ -624,7 +624,7 @@ function os2dagsorden_access_helper_module_implements_alter(&$implementations, $
 }
 
 /**
- * 
+ *
  */
 function _os2dagsorden_access_helper_get_genaral_bullet_point($meeting_id) {
   $existing_bullet_points = array();
@@ -632,7 +632,7 @@ function _os2dagsorden_access_helper_get_genaral_bullet_point($meeting_id) {
   if ($node->field_os2web_meetings_bullets['und']) {
     $existing_bullet_points = $node->field_os2web_meetings_bullets['und'];
   }
-  foreach ($existing_bullet_points as $bullet_nid) { 
+  foreach ($existing_bullet_points as $bullet_nid) {
     $bullet = node_load($bullet_nid['target_id']);
     if ((int) $bullet->field_os2web_meetings_bul_gener[LANGUAGE_NONE][0]['value'] === 1) {
       return $bullet;
