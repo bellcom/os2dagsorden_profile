@@ -640,3 +640,59 @@ function _os2dagsorden_access_helper_get_genaral_bullet_point($meeting_id) {
   }
   return FALSE;
 }
+
+
+/**
+ * Checks is current user is committee admin .
+ *
+ * @param int $committee_tid
+ *   The committee ID.
+ *
+ * @return bool
+ *   True of false.
+ */
+function os2dagsorden_access_helper_is_user_committee_admin($committee_tid, $uid = FALSE) {
+  if (!$uid) {
+    $user = os2dagsorden_access_helper_get_user();
+  }
+  else {
+    $user = user_load($uid);
+  }
+  $user = os2dagsorden_access_helper_get_user();
+  $committee = taxonomy_term_load($committee_tid);
+  $committee_admins = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_admin');
+  if ($committee_admins) {
+    foreach ($committee_admins as $key => $admin) {
+      if ($user->uid === $admin['uid']) {
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
+}
+
+
+
+/**
+ * Sorting terms alphabetically based on field_os2web_meetings_com_shname.
+ *
+ * @param mixed $term_list
+ *   The list of terms.
+ *
+ * @return mixed
+ *   Sorted array of terms.
+ */
+function os2dagsorden_access_helper_get_all_committee_user_is_admin($uid) {
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'taxonomy_term')
+    ->entityCondition('bundle', 'os2web_meetings_tax_committee')
+    ->fieldCondition('field_os2web_meetings_com_admin', 'uid', $uid);
+  $results = $query->execute();
+  $committees =  array();
+  foreach($results['taxonomy_term'] as $tid) {
+    $committees[] = $tid->tid;
+  }
+  return $committees;
+}
+

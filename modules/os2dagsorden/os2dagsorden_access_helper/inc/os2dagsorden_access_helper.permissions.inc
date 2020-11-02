@@ -568,7 +568,7 @@ function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_commi
     $user = user_load($uid);
   }
 
-  if (os2dagsorden_create_agenda_is_user_committee_admin($meeting->field_os2web_meetings_committee['und'][0]['tid'])) {
+  if (os2dagsorden_access_helper_is_user_committee_admin($meeting->field_os2web_meetings_committee['und'][0]['tid'])) {
     return TRUE;
   }
 
@@ -622,7 +622,7 @@ function os2dagsorden_access_helper_is_external_committee($committee_tid) {
  */
 function os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($committee_tid) {
   if (os2dagsorden_access_helper_is_external_committee($committee_tid) === TRUE) {
-    if (!os2dagsorden_create_agenda_is_user_committee_admin($committee_tid)) {
+    if (!os2dagsorden_access_helper_is_user_committee_admin($committee_tid)) {
       return FALSE;
     }
   }
@@ -640,7 +640,7 @@ function os2dagsorden_access_helper_check_user_can_create_meeting_in_committee($
  */
 function os2dagsorden_access_helper_check_user_can_delete_meeting_content($committee_tid) {
   if (os2dagsorden_access_helper_is_external_committee($committee_tid) === TRUE) {
-    if (os2dagsorden_create_agenda_is_user_committee_admin($committee_tid)) {
+    if (os2dagsorden_access_helper_is_user_committee_admin($committee_tid)) {
       return TRUE;
     }
   }

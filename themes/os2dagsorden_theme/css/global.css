@@ -3034,7 +3034,7 @@ ul.droptrue {
       }
     }*/ }
     ul.droptrue li span:not(.checkbox) {
-      max-width: 200px;
+      max-width: 150px;
       display: inline-block; }
 
 label.label_follows,
@@ -3047,7 +3047,8 @@ div.note {
 
 div.note.premeeting,
 div.note.subscribe,
-div.note.external-user {
+div.note.external-user,
+div.note.committee-admin {
   display: block;
   float: none;
   margin-left: 18px; }
@@ -3059,17 +3060,32 @@ div.note.external-user {
 .checkbox.follows,
 .checkbox_invisible,
 .checkbox.premeeting,
-.checkbox.can-subscribe {
+.checkbox.can-subscribe,
+.checkbox.committee-admin {
   float: right; }
 
 .checkbox.follows,
 .checkbox.invisible,
 .checkbox.premeeting,
 .checkbox.can-subscribe,
-.checkbox.external-user {
+.checkbox.external-user,
+.checkbox.committee-admin {
   float: right;
   display: inline;
   position: relative; }
+
+.checkbox.committee-admin::before {
+  content: '';
+  position: absolute;
+  background-repeat: no-repeat;
+  background-image: url(../img/wrench.png);
+  background-size: 15px;
+  right: 20px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center; }
 
 .checkbox.premeeting::before {
   content: '';
@@ -3106,7 +3122,15 @@ div.note.premeeting::before {
   left: 8px;
   width: 16px;
   height: 16px; }
-
+div.note.committee-admin::before {
+  content: '';
+  position: absolute;
+  background-image: url(../img/wrench.png);
+  background-repeat: no-repeat;
+  background-size: 15px;
+  left: 8px;
+  width: 16px;
+  height: 16px; }
 div.note.external-user {
   position: relative;
   margin-top: 1em; }
@@ -3146,15 +3170,21 @@ div.note.subscribe::before {
 
 ul#follows .checkbox.premeeting {
   right: 20px; }
-
+.checkbox.committee-admin {
+  right: 20px;
+}
+ul#follows .checkbox.committee-admin {
+  right: 40px; }
 .checkbox_follows,
 .checkbox_invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.committee-admin {
   float: right; }
 
 .checkbox_follows,
 .checkbox.invisible,
-.checkbox.premeeting {
+.checkbox.premeeting,
+.checkbox.committee-admin {
   float: right;
   display: inline;
   position: relative;
