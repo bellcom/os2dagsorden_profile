@@ -75,8 +75,8 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
       }
     }
   }
-// Has os2dagsorden limited role, perform committees check.
-  if (in_array('os2dagsorden limited', $user->roles)) {
+// Has os2dagsorden limited role or has no roles, perform committees check.
+  if (in_array('os2dagsorden limited', $user->roles) || (count($user->roles) == 1 && in_array('authenticated user', $user->roles))) {
 // Is part of the committee.
     if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
       return TRUE;
