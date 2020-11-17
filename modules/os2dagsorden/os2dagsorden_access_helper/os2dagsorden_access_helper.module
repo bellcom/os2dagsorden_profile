@@ -658,7 +658,6 @@ function os2dagsorden_access_helper_is_user_committee_admin($committee_tid, $uid
   else {
     $user = user_load($uid);
   }
-  $user = os2dagsorden_access_helper_get_user();
   $committee = taxonomy_term_load($committee_tid);
   $committee_admins = field_get_items('taxonomy_term', $committee, 'field_os2web_meetings_com_admin');
   if ($committee_admins) {
