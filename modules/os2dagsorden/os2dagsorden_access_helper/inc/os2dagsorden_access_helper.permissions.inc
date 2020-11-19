@@ -108,7 +108,7 @@ function os2dagsorden_access_helper_check_user_can_see_meeting($meeting, $commit
 
 // Checking if is meeting in external committee
     if ($is_external_committee && variable_get('os2dagsorden_meetings_views_last_8_show_external_committee', TRUE)) {
-      if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees($uid))) {
+      if (in_array($committee_tid, os2dagsorden_access_helper_get_user_member_of_committees($uid)) || in_array($committee_tid, os2dagsorden_access_helper_get_all_committee_user_is_admin($user->uid))) {
         return TRUE;
       }
       else {
