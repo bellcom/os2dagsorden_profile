@@ -108,10 +108,12 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
           jQuery('.annotator-outline-pager').innerHeight(height);
           jQuery(".annotator-outline-pager").css('overflow-y', 'auto');
         }
-        var offset = jQuery('span[data-annotation-id='+ hash +']').offset().top - jQuery('#content.has-outline-pager').offset().top - 40;
-        jQuery("#content").animate({
-          scrollTop:  offset
-        }, 100 );
+        if (hash) {
+            var offset = jQuery('span[data-annotation-id='+ hash +']').offset().top - jQuery('#content.has-outline-pager').offset().top - 40;
+            jQuery("#content").animate({
+              scrollTop:  offset
+            }, 100 );
+        }
       }
   });
 }
