@@ -535,14 +535,14 @@ function _os2web_edoc_middelfart_esdh_mm_order_addenums($drush = FALSE) {
         break;
       }
     }
-
-    // Resetting primary node field_os2web_meetings_addendum field, if present.
-    $addenum_to = field_get_items('node', $primary, 'field_os2web_meetings_addendum');
-    if (!empty($addenum_to[0]['nid'])) {
-      $primary->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
-      node_save($primary);
+    if ($primary) {
+      // Resetting primary node field_os2web_meetings_addendum field, if present.
+      $addenum_to = field_get_items('node', $primary, 'field_os2web_meetings_addendum');
+      if (!empty($addenum_to[0]['nid'])) {
+        $primary->field_os2web_meetings_addendum[LANGUAGE_NONE] = array();
+        node_save($primary);
+      }
     }
-
     // Updating additional/tillægsdagsorden with our primary meeting reference.
     foreach ($meeting_versions as $meeting_version_key => $meeting_version) {
       $additional_meeting = $nodes[$meeting_version];
