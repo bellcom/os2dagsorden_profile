@@ -1,4 +1,4 @@
-/*  Annotator Touch Plugin - v2.1.2
+/*  Annotator Touch Plugin - v2.1.3
  *  Copyright 2012-2020, Compendio <www.compendio.ch>
  *  Released under the MIT license
  *  More Information: https://github.com/aron/annotator.touch.js
@@ -166,7 +166,7 @@ window.annotator.touch.enabler = {};
     },
 
     _update: function(event) {
-      this.element.find(".annotator-enable").text(this.enabled ? _t("Deaktiver noter") : _t("Aktivér noter"));
+      this.element.find(".annotator-enable").text(this.enabled ? _t("Disable annotation") : _t("Enable annotation"));
 
       // Run callbacks
       $.each(this.callbacks, function () {
@@ -191,7 +191,7 @@ window.annotator.touch.enabler = {};
     '<div class="annotator-touch-widget annotator-touch-controls annotator-touch-hide">',
     '  <div class="annotator-touch-widget-inner">',
     '    <a class="annotator-button annotator-enable annotator-focus">' +
-      _t("Aktivér noter") +
+      _t("Enable annotation") +
       "</a>",
     "  </div>",
     "</div>"
@@ -519,11 +519,11 @@ window.annotator.touch.editor = {};
     '    <ul class="annotator-listing"></ul>',
     '    <div class="annotator-controls">',
     '     <a href="#cancel" class="annotator-cancel annotator-button">' +
-      _t("Fortryd") +
+      _t("Cancel") +
       "</a>",
     '      <a href="#save"',
     '         class="annotator-save annotator-focus annotator-button">' +
-      _t("Gem") +
+      _t("Save") +
       "</a>",
     "    </div>",
     "  </form>",
@@ -1823,14 +1823,14 @@ window.annotator.touch.viewer = {};
     '       title="' + _t("View as webpage") + '"',
     '       class="annotator-link">' + _t("View as webpage") + "</a>",
     '    <button type="button"',
-    '            title="' + _t("Redigér") + '"',
+    '            title="' + _t("Edit") + '"',
     '            class="annotator-edit annotator-button">' +
-      _t("Redigér") +
+      _t("Edit") +
       "</button>",
     '    <button type="button"',
-    '            title="' + _t("Slet") + '"',
+    '            title="' + _t("Delete") + '"',
     '            class="annotator-delete annotator-button">' +
-      _t("Slet") +
+      _t("Delete") +
       "</button>",
     "  </span>",
     "</li>"
@@ -2244,10 +2244,19 @@ if (!window.annotator.touch) window.annotator.touch = {};
 
       var toggleImgAreaSelect = function () {
         jQuery.each(jQuery(options.element).find("img"), function () {
-          if (jQuery(this).data("imgAreaSelect")) {
-            jQuery(this).data("imgAreaSelect").setOptions({disable: !s.enabled})
-            jQuery(this).css({'cursor': s.enabled ? 'crosshair' : ''});
+          var img = this;
+          var $img = jQuery(img);
+
+          var imgLoad = function() {
+            setTimeout(function () {
+              if ($img.data("imgAreaSelect")) {
+                $img.data("imgAreaSelect").setOptions({disable: !s.enabled})
+                $img.css({'cursor': s.enabled ? 'crosshair' : ''});
+              }
+            }, 50);
           }
+
+          img.complete || img.readyState == 'complete' || !$img.is('img') ? imgLoad() : $img.one('load', imgLoad);
         });
       }
 
