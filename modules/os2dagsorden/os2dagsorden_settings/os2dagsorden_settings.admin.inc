@@ -1898,7 +1898,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page']);
     variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
     variable_set('os2dagsorden_attachments_open_bilags_as_new_tab',  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab']);
-    variable_set('os2dagsorden_show_user_no_roles_permissions', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_user_no_roles_permissions']);
+    variable_set('os2dagsorden_show_user_no_roles_permissions', $setting_array['os2dagsorden_meeting_view_settings']['os2dagsorden_show_user_no_roles_permissions']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_title', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title']);
