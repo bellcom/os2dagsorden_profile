@@ -137,6 +137,12 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#title' => t("Don't attach tillægsdagsordener to meeting"),
     '#description' => ('This decides whether a additional agenda will be attached to the meeting')
   );
+  $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_user_no_roles_permissions'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Users with "no roles" have same permissions as "os2dagsorden limited" role'),
+    '#default_value' => variable_get('os2dagsorden_show_user_no_roles_permissions', FALSE),
+    '#description' => t('This decides whether a users that have no roles will be have same access to meetings as users with "os2dagsorden limited" role.'),
+  );
   if (module_exists('os2web_print_send_to_friend')) {
     $form['os2dagsorden_meeting_view_settings']['os2dagsorden_show_print_icon'] = array(
       '#type' => 'checkbox',
@@ -1892,6 +1898,7 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_get('os2dagsorden_attachments_show_scrollbar_on_attachment_page', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_show_scrollbar_on_attachment_page']);
     variable_set('os2dagsorden_show_expand_all_button', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_expand_all_button']);
     variable_set('os2dagsorden_attachments_open_bilags_as_new_tab',  $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_attachments_open_bilags_as_new_tab']);
+    variable_set('os2dagsorden_show_user_no_roles_permissions', $setting_array['os2dagsorden_meeting_view_layout']['os2dagsorden_show_user_no_roles_permissions']);
 
     variable_set('os2dagsorden_latest_meetings_view_mode', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_latest_meetings_view_mode']);
     variable_set('os2dagsorden_meetings_views_last_8_show_meeting_title', $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_meeting_title']);
@@ -1906,7 +1913,6 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_collapse_menu_touch_pages', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch_pages']);
     variable_set('os2dagsorden_show_search_block_title', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_show_search_block_title']);
     variable_set('os2dagsorden_frontpage_layout_show_hide_zoom_buttons', $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_frontpage_layout_show_hide_zoom_buttons']);
-
     variable_set('os2dagsorden_meetings_search_show_meeting_committee', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_show_meeting_committee']);
     variable_set('os2dagsorden_meetings_search_show_meeting_location', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_show_meeting_location']);
     variable_set('os2dagsorden_meetings_search_show_meeting_status', $setting_array['os2dagsorden_meeting_search_view_settings']['os2dagsorden_meetings_search_show_meeting_status']);
