@@ -72,7 +72,7 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
           }
         }
 
-        $uris[] = array(
+        $uris[$meeting_id] = array(
           'id' => $agenda_id,
           'uri' => $xml_file->uri,
           'publish' => $isPublished,
