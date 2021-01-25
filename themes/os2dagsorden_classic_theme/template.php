@@ -132,7 +132,8 @@ function os2dagsorden_classic_theme_preprocess_page(&$variables) {
     }
   }
   else {
-    if ($variables['page']['content']['content']['content']['system_main']['content']['#attributes']['class'][1] === 'node-os2web_meetings_spaper-form') {
+    if (isset($variables['page']['content']['content']['content']['system_main']) &&
+      $variables['page']['content']['content']['content']['system_main']['content']['#attributes']['class'][1] === 'node-os2web_meetings_spaper-form') {
       // In "creating speaker paper"
       // hide extra fields.
       drupal_add_js("jQuery(document).ready(function(){jQuery('.form-item-field-os2web-meetings-sp-bullet-und-0-target-id').hide();});", "inline");
@@ -309,7 +310,7 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
       }
     }
     else {
-    if (!is_array($_SESSION['views']['meetings_search']['page']['from_date']['value'])) {
+    if (isset($_SESSION['views']) && !is_array($_SESSION['views']['meetings_search']['page']['from_date']['value'])) {
       if (!empty($_SESSION['views']['meetings_search']['page']['from_date']['value'])) {
         $old_value = $_SESSION['views']['meetings_search']['page']['from_date']['value'];
         $_SESSION['views']['meetings_search']['page']['from_date']['value'] = array();
@@ -319,7 +320,7 @@ function os2dagsorden_classic_theme_form_alter(&$form, &$form_state) {
       }
     }
 
-    if (!is_array($_SESSION['views']['meetings_search']['page']['to_date']['value'])) {
+    if (isset($_SESSION['views']) && !is_array($_SESSION['views']['meetings_search']['page']['to_date']['value'])) {
       if (!empty($_SESSION['views']['meetings_search']['page']['to_date']['value'])) {
         $old_value = $_SESSION['views']['meetings_search']['page']['to_date']['value'];
         $_SESSION['views']['meetings_search']['page']['to_date']['value'] = array();
