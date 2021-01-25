@@ -2876,7 +2876,7 @@ function os2web_meetings_content_types_field_default_fields() {
       'locked' => '0',
       'module' => 'computed_field',
       'settings' => array(
-        'code' => 'if (module_exists(os2dagsorden_fields_and_content_types)){
+        'code' => 'if (module_exists(\'os2dagsorden_fields_and_content_types\')){
         $entity_field[0][\'value\'] = os2dagsorden_fields_and_content_types_meeting_search_metadata($entity, $entity_type);
         } else if (function_exists(\'_os2web_meetings_generate_search_data\')) {
         $entity_field[0][\'value\'] = _os2web_meetings_generate_search_data($entity);
