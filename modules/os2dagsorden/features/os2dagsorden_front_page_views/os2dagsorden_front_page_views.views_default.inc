@@ -77,7 +77,7 @@ os2dagsorden_front_page_views_user_committees_help_text();
   $handler->display->display_options['fields']['field_os2web_meetings_com_shname']['field'] = 'field_os2web_meetings_com_shname';
   $handler->display->display_options['fields']['field_os2web_meetings_com_shname']['label'] = '';
   $handler->display->display_options['fields']['field_os2web_meetings_com_shname']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_os2web_meetings_com_shname']['alter']['path'] = 'meetings-search?field_os2web_meetings_committee_tid_depth=[tid]&from_date=&to_date&search_params=';
+  $handler->display->display_options['fields']['field_os2web_meetings_com_shname']['alter']['path'] = 'meetings-search?field_os2web_meetings_committee_tid_depth=[tid]';
   $handler->display->display_options['fields']['field_os2web_meetings_com_shname']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_os2web_meetings_com_shname']['empty'] = '[name]';
   $handler->display->display_options['fields']['field_os2web_meetings_com_shname']['hide_alter_empty'] = FALSE;
@@ -343,7 +343,7 @@ os2dagsorden_front_page_views_fields_create_meering();
   $handler->display->display_options['fields']['nothing_1']['label'] = '';
   $handler->display->display_options['fields']['nothing_1']['alter']['text'] = '[php_1][php_3] [php]';
   $handler->display->display_options['fields']['nothing_1']['element_label_colon'] = FALSE;
-  /* Filter criterion: Bruger: Aktiv */
+  /* Filter criterion: Bruger: Active status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
