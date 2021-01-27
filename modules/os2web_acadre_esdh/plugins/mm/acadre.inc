@@ -12,6 +12,7 @@ define('ACADRE_MM_ACCESS_OPEN', 1);
 define('ACADRE_MM_ACCESS_LUKKET', 2);
 define('ACADRE_MM_ACCESS_PERSON', 3);
 define('MM_REPUBLISH_SUBVERSION', TRUE);
+define('ACADRE_MM_IMPORT_DIR', 'private://');
 
 /**
  * Plugin definition with callbacks.

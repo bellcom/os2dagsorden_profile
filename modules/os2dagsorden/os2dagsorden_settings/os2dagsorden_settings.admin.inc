@@ -14,7 +14,6 @@
  * @link http://bellcom.dk
  */
 
-define('ACADRE_MM_IMPORT_DIR', 'private://');
 define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
 
 /**

@@ -547,7 +547,7 @@ function _os2web_edoc_middelfart_esdh_mm_order_addenums($drush = FALSE) {
     foreach ($meeting_versions as $meeting_version_key => $meeting_version) {
       $additional_meeting = $nodes[$meeting_version];
 
-      if ($additional_meeting->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] !== $primary->nid) {
+      if (!isset($additional_meeting->field_os2web_meetings_addendum[LANGUAGE_NONE]) || $additional_meeting->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] !== $primary->nid) {
         $additional_meeting->field_os2web_meetings_addendum[LANGUAGE_NONE][0]['nid'] = $primary->nid;
         node_save($additional_meeting);
       }

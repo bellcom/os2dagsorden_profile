@@ -276,7 +276,7 @@ function _os2dagsorden_access_helper_trigger_hook($entity, $type) {
  *   Meeting node.
  */
 function os2dagsorden_access_helper_node_save($node) {
-  if ($node->status == 1) {
+  if (isset($node->status) && $node->status == 1) {
     $status = $node->field_os2web_meetings_type['und'][0]['value'];
     if (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0 || strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT) === 0) {
       $committee_id = $node->field_os2web_meetings_committee['und'][0]['tid'];
