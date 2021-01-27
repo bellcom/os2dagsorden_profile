@@ -14,6 +14,7 @@
  * @link http://bellcom.dk
  */
 
+define('ACADRE_MM_IMPORT_DIR', 'private://');
 define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
 
 /**
@@ -1476,6 +1477,18 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#title' => t('Title for Anonymous bullet point or bilag'),
   );
 
+  // Annotator settings.
+  $form['os2dagsorden_annotator_settings'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('Annotator settings'),
+  );
+  $form['os2dagsorden_annotator_settings']['os2dagsorden_annotator_settings_save_notes'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('os2dagsorden_annotator_settings_save_notes', TRUE),
+    '#title' => t('Save annotation notes when meeting deleting'),
+  );
 
   // Upload quide PDF file.
   $form['upload_guide'] = array(
@@ -2060,4 +2073,5 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_create_agenda_meeting_start_date_default', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_meeting_start_date_default']);
     variable_set('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form']);
   }
+  variable_set('os2dagsorden_annotator_settings_save_notes', $setting_array['os2dagsorden_annotator_settings']['os2dagsorden_annotator_settings_save_notes']);
 }
