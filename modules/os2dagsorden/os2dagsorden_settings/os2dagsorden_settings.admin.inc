@@ -1488,7 +1488,18 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_annotator_settings_save_notes', TRUE),
     '#title' => t('Save annotation notes when meeting deleting'),
   );
-
+  // Speaking papers settings.
+  $form['os2dagsorden_speaker_paper_settings'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('Speaking paper settings'),
+  );
+  $form['os2dagsorden_speaker_paper_settings']['os2dagsorden_speaker_paper_settings_save_speaker_paper'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('os2dagsorden_speaker_paper_settings_save_speaker_paper', TRUE),
+    '#title' => t('Save speaker papers when meeting deleting'),
+  );
   // Upload quide PDF file.
   $form['upload_guide'] = array(
     '#type' => 'fieldset',
@@ -2073,4 +2084,5 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
     variable_set('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form', $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form']);
   }
   variable_set('os2dagsorden_annotator_settings_save_notes', $setting_array['os2dagsorden_annotator_settings']['os2dagsorden_annotator_settings_save_notes']);
-}
+  variable_set('os2dagsorden_speaker_paper_settings_save_speaker_paper', $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_speaker_paper_settings_save_speaking_paper']);
+} 

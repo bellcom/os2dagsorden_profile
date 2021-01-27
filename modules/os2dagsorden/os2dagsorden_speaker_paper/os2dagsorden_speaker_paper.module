@@ -35,11 +35,45 @@ function os2dagsorden_speaker_paper_node_insert($node) {
         }
       }
     }
+    $bullet_point = node_load($node->field_os2web_meetings_sp_bullet['und'][0]['target_id']);
+    $bullet_point_acadre_id = $bullet_point->field_os2web_bullet_point_id['und'][0]['value'];
+    $uid = $node->uid;
+    $speaking_paper_id = $node->nid;
+    // Inserting values to the mapper wich will take care of republish deletion of spealing papers.
+    $nid = db_insert('os2dagsorden_speaking_paper_mapping')
+      ->fields(array(
+        'uid' => $uid,
+        'speaking_paper_node_id' => $speaking_paper_id,
+        'speaking_paper_bullet_sysid' => $bullet_point_acadre_id,
+      ))
+    ->execute();
+  }
+  // Catching node insert of type meetings
+  // Now will be to catch meetings import and try find a relation on speaking paper in our custom table - rk_speaking_paper_mapping
+  // If we found any, we will update the realtions on the speaking paper node itself and in the mapping table. 
+  if ($node->type === 'os2web_meetings_meeting') { 
+    // Looping through all bullets assosiated with the meeting
+    foreach($node->field_os2web_meetings_bullets['und'] as $bullet) {
+      // Getting the node information on bullet
+      $bullet_node = node_load($bullet['target_id']);
+      $query = db_select('os2dagsorden_speaking_paper_mapping', 'q');
+      $query->fields('q');
+      $query->condition('speaking_paper_bullet_sysid', $bullet_node->field_os2web_bullet_point_id['und'][0]['value'], '=');
+      $stored_speaking_paper_info = $query->execute();
+      while ($speaking_paper_relations = $stored_speaking_paper_info->fetchAssoc()) {
+        db_update('field_data_field_os2web_meetings_sp_bullet')
+          ->fields(array(
+            'field_os2web_meetings_sp_bullet_target_id' => $bullet_node->nid,
+          ))
+          ->condition('entity_id', $speaking_paper_relations['speaking_paper_node_id'], '=')
+          ->execute();
+      }
+    }
   }
 }
 
 /**
- * Implements hook_node_insert().
+ * Implements hook_node_update().
  *
  * The function will send the email to the user (if it wasn't sent before), with
  * which this speaker paper has been shared.
