@@ -34,6 +34,15 @@ function os2web_acadre_esdh_mm_test($stuff) {
 }
 
 /**
+ * Gets the Plugin ID.
+ *
+ * Plugin ID must be same as the filename with no exception.
+ */
+function os2web_acadre_esdh_get_plugin_id() {
+  return 'acadre';
+}
+
+/**
  * Returns a list of meeting_ids for import.
  *
  * In our case a list of uri's of xml files.
@@ -55,10 +64,10 @@ function os2web_acadre_esdh_mm_get_import_list() {
   foreach (file_scan_directory(variable_get('os2web_meetings_path', ACADRE_MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => FALSE)) as $xml_file) {
     $pub_id = (int) str_replace('XML_', '', $xml_file->name);
     if (is_numeric($pub_id)) {
-      $uris[] = array('id' => $pub_id, 'uri' => $xml_file->uri);
+      $uris[] = array('id' => $pub_id, 'uri' => $xml_file->uri, 'plugin_id' => os2web_acadre_esdh_get_plugin_id());
     }
     else {
-      $uris[] = array('id' => $xml_file->name, 'uri' => $xml_file->uri);
+      $uris[] = array('id' => $xml_file->name, 'uri' => $xml_file->uri, 'plugin_id' => os2web_acadre_esdh_get_plugin_id());
     }
   }
   usort($uris, '_acadre_esdh_mm_sort_import_list');

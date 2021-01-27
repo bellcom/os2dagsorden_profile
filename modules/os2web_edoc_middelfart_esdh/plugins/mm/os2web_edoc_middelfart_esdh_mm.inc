@@ -25,6 +25,15 @@ function os2web_edoc_middelfart_esdh_mm_test($stuff) {
 }
 
 /**
+ * Gets the Plugin ID.
+ *
+ * Plugin ID must be same as the filename with no exception.
+ */
+function os2web_edoc_middelfart_esdh_mm_get_plugin_id() {
+  return 'os2web_edoc_middelfart_esdh_mm';
+}
+
+/**
  * Returns a list of meeting_ids for import.
  *
  * In our case a list of uri's of xml files.
@@ -77,6 +86,7 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
           'uri' => $xml_file->uri,
           'publish' => $isPublished,
           'lastModified' => filemtime($real_path),
+          'plugin_id' => os2web_edoc_middelfart_esdh_mm_get_plugin_id(),
         );
       }
     }

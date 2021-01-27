@@ -83,9 +83,16 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     return FALSE;
   }
 
+  if (!isset($meeting_id['plugin_id'])) {
+    watchdog('acadre MM', '[XML_ID: !id] Manifest import plugin_id is missing. Skipping manifest', array('!id' => $_os2web_esdh_provider_processing_meeting_id), WATCHDOG_WARNING);
+    lock_release(__FUNCTION__ . $meeting_id['id']);
+    return FALSE;
+  }
+
   watchdog('acadre MM', '[XML_ID: !id] Initialized meeting import', array('!id' => $_os2web_esdh_provider_processing_meeting_id), WATCHDOG_NOTICE);
 
-  $meetings = os2web_esdh_provider_invoke('mm', 'import_meeting', $meeting_id);
+  // Calling specific plugin to do the import.
+  $meetings = os2web_esdh_provider_plugin_invoke('mm', 'import_meeting', $meeting_id['plugin_id'], $meeting_id);
 
   $nids = array();
 

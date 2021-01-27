@@ -25,6 +25,15 @@ function os2web_sbsys_esdh_mm_test($stuff) {
 }
 
 /**
+ * Gets the Plugin ID.
+ *
+ * Plugin ID must be same as the filename with no exception.
+ */
+function os2web_sbsys_esdh_mm_get_plugin_id() {
+  return 'os2web_sbsys_esdh_mm';
+}
+
+/**
  * Returns a list of meeting_ids for import.
  *
  * In our case a list of uri's of xml files.
@@ -41,7 +50,7 @@ function os2web_sbsys_esdh_mm_get_import_list() {
   $uris = array();
   foreach (file_scan_directory(variable_get('os2web_sbsys_esdh_mm_path', OS2WEB_SBSYS_ESDH_MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => TRUE)) as $xml_file) {
     $pub_id = (int) str_replace('Publication', '', $xml_file->name);
-    $uris[] = array('id' => $pub_id, 'uri' => $xml_file->uri);
+    $uris[] = array('id' => $pub_id, 'uri' => $xml_file->uri, 'plugin_id' => os2web_sbsys_esdh_mm_get_plugin_id());
   }
   return $uris;
 }
