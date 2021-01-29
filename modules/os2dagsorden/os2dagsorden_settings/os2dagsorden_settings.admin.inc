@@ -691,6 +691,51 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     <b>!meeting_url</b> - ' . t('link to the meeting'),
     '#title' => t('Available variables'),
   );
+// Import meeting in unpublished state.
+  $form['os2dagsorden_meeting_published_admin_notification'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('Notification admins when meetings published'),
+  );
+  $form['os2dagsorden_meeting_published_admin_notification']['os2dagsorden_meeting_published_admin_notification_committee'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Send notification of committees'),
+    '#maxlength' => 10000,
+    '#default_value' => variable_get('os2dagsorden_meeting_published_admin_notification_committee', FALSE),
+    '#description' => t('Comma-separated list of committees changing status of which should send an email notification.'),
+    '#autocomplete_path' => 'get_committee/autocomplete',
+  );
+  $form['os2dagsorden_meeting_published_admin_notification']['os2dagsorden_meeting_published_admin_notification_emails'] = array(
+    '#type' => 'textfield',
+    '#title' => t('To emails'),
+    '#description' => t('Insert comma seperated emails that we should sent informations to.'),
+    '#default_value' => variable_get('os2dagsorden_meeting_published_admin_notification_emails', ''),
+  );
+  $form['os2dagsorden_meeting_published_admin_notification']['os2dagsorden_meeting_published_admin_notification_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('Add subject'),
+    '#default_value' => variable_get('os2dagsorden_meeting_published_admin_notification_subject', ''),
+  );
+  $form['os2dagsorden_meeting_published_admin_notification']['os2dagsorden_meeting_published_admin_notification_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message'),
+    '#description' => t('Add text'),
+    '#default_value' => variable_get('os2dagsorden_meeting_published_admin_notification_body', ''),
+  );
+  $form['os2dagsorden_meeting_published_admin_notification']['os2dagsorden_meeting_published_admin_notification_subject_available_variables'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#value' => t('Can be used both in subject and body:') . '<br/>
+    <b>!committe</b> - ' . t('name of the committee') . '<br/>
+    <b>!meeting_name</b> - ' . t('title of the meeting') . '<br/>
+    <b>!meeting_date</b> - ' . t('date of the meeting') . '<br/>
+    <b>!meeting_type</b> - ' . t('type of the meeting with acticle: <i>et referat</i> or <i>en dagsorden</i>') . '<br/>
+    <b>!meeting_url</b> - ' . t('link to the meeting'),
+    '#title' => t('Available variables'),
+  );
 
   // Meeting search view settings.
   $form['os2dagsorden_meeting_search_view_settings'] = array(
@@ -2085,4 +2130,4 @@ function os2dagsorden_settings_import_from_file($form, &$form_state) {
   }
   variable_set('os2dagsorden_annotator_settings_save_notes', $setting_array['os2dagsorden_annotator_settings']['os2dagsorden_annotator_settings_save_notes']);
   variable_set('os2dagsorden_speaker_paper_settings_save_speaker_paper', $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_speaker_paper_settings_save_speaking_paper']);
-} 
+}

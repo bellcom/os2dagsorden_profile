@@ -276,7 +276,16 @@ function _os2dagsorden_access_helper_trigger_hook($entity, $type) {
  *   Meeting node.
  */
 function os2dagsorden_access_helper_node_save($node) {
-  if (isset($node->status) && $node->status == 1) {
+  if ($node->status == 1) {
+    global $base_url;
+    $cName = taxonomy_term_load($committee_id)->name;
+    $mName = check_plain($node->title);
+    $date = field_get_items('node', $node, 'field_os2web_meetings_date');
+    $mDate = format_date(strtotime($date[0]['value'] . 'UTC'), $type = 'short', '', $date[0]['timezone']);
+    $published_item = (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) ? 'en dagsorden' : 'et referat';
+    $meeting_url = $base_url . '/meeting/' . $node->nid;
+    $mLink = $meeting_url;
+    
     $status = $node->field_os2web_meetings_type['und'][0]['value'];
     if (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0 || strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT) === 0) {
       $committee_id = $node->field_os2web_meetings_committee['und'][0]['tid'];
@@ -297,7 +306,7 @@ function os2dagsorden_access_helper_node_save($node) {
           }
         }
       }
-
+           
       $days_since_meeting_date = (time() - strtotime($node->field_os2web_meetings_date['und'][0]['value'])) / 60 / 60 / 24;
 
       if ($send_notification && $days_since_meeting_date < variable_get('os2dagsorden_send_timespan_of_notification', 10)) {
@@ -359,15 +368,6 @@ function os2dagsorden_access_helper_node_save($node) {
         if (isset($result['user'])) {
           $uids = array_merge($uids, array_keys($result['user']));
         }
-        global $base_url;
-        $cName = taxonomy_term_load($committee_id)->name;
-        $mName = check_plain($node->title);
-        $date = field_get_items('node', $node, 'field_os2web_meetings_date');
-        $mDate = format_date(strtotime($date[0]['value'] . 'UTC'), $type = 'short', '', $date[0]['timezone']);
-        $published_item = (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) ? 'en dagsorden' : 'et referat';
-        $meeting_url = $base_url . '/meeting/' . $node->nid;
-        $mLink = $meeting_url;
-
         // Getting subject and body.
         $subject_template = variable_get('os2dagsorden_send_email_subject', '!meeting_type til !committee er publiceret');
         $body_template = variable_get('os2dagsorden_send_email_body', 'Til !user' . PHP_EOL . PHP_EOL .
@@ -439,6 +439,61 @@ function os2dagsorden_access_helper_node_save($node) {
               ->execute();
           }
         }
+      }
+    }
+    
+    // Send notification for admin
+    if (!empty(variable_get('os2dagsorden_meeting_published_admin_notification_emails', ''))) {
+      $meeting_published_notification_committees = array_map('strtolower', array_map('trim', explode(',', variable_get('os2dagsorden_meeting_published_admin_notification_committee', FALSE))));
+      $meeting_published_send_notification = FALSE;
+      if (in_array(strtolower($committee->name), $meeting_published_notification_committees)) {
+        $meeting_published_send_notification = TRUE;
+      }
+      else {
+        if (isset($committee->field_os2web_meetings_com_subid['und'])) {
+          foreach ($committee->field_os2web_meetings_com_subid['und'] as $id_raw) {
+            if (in_array(intval($id_raw['value']), $meeting_published_notification_committees_committees)) {
+              $meeting_published_send_notification = TRUE;
+              break;
+            }
+          }
+        }
+      }
+      if ($meeting_published_send_notification) {
+        // Composing search/replace.
+        $search = array(
+          '!committee',
+          '!meeting_name',
+          '!meeting_date',
+          '!meeting_type',
+          '!user',
+          '!meeting_link',
+          PHP_EOL,
+        );
+        $replace = array(
+          $cName,
+          $mName,
+          $mDate,
+          $published_item,
+          $uName,
+          $mLink,
+          '<br/>',
+        );
+        $subject_template = variable_get('os2dagsorden_meeting_published_admin_notification_subject', '');
+        $body_template = variable_get('os2dagsorden_meeting_published_admin_notification_body', '');
+        // Making replacements.
+        $subject = str_replace($search, $replace, $subject_template);
+        $subject = ucfirst($subject);
+        $body = str_replace($search, $replace, $body_template);
+        $body = ucfirst($body);
+
+        $from = variable_get('system_mail');
+        $to = variable_get('os2dagsorden_meeting_published_admin_notification_emails', '');
+        $params = array(
+          'subject' => $subject,
+          'body' => $body,
+        );
+        drupal_mail('os2dagsorden_access_helper', 'os2dagsorden_meeting_email_', $to, language_default(), $params, $from);
       }
     }
   }
