@@ -1,12 +1,12 @@
-/*  Annotator Touch Plugin - v2.1.3
- *  Copyright 2012-2020, Compendio <www.compendio.ch>
+/*  Annotator Touch Plugin - v2.1.4
+ *  Copyright 2012-2021, Compendio <www.compendio.ch>
  *  Released under the MIT license
  *  More Information: https://github.com/aron/annotator.touch.js
  */
 if (!window.annotator.touch) window.annotator.touch = {};
 window.annotator.touch.adder = {};
 
-(function() {
+(function () {
   var Widget = window.annotator.ui.widget.Widget,
     util = window.annotator.util;
 
@@ -18,7 +18,7 @@ window.annotator.touch.adder = {};
   // Adder shows and hides an annotation adder button that can be clicked on to
   // create an annotation.
   var Adder = Widget.extend({
-    constructor: function(options) {
+    constructor: function (options) {
       Widget.call(this, options);
 
       this.annotation = null;
@@ -26,12 +26,12 @@ window.annotator.touch.adder = {};
       this.onCreate = this.options.onCreate;
 
       var self = this;
-      this.element.on("tap." + NS, "a.annotator-button", function(e) {
+      this.element.on("tap." + NS, "a.annotator-button", function (e) {
         self._onClick(e);
       });
     },
 
-    destroy: function() {
+    destroy: function () {
       this.element.off("." + NS);
       Widget.prototype.destroy.call(this);
     },
@@ -45,7 +45,7 @@ window.annotator.touch.adder = {};
     // intermediary step between making a selection and creating an annotation.
     //
     // Returns nothing.
-    load: function(annotation) {
+    load: function (annotation) {
       this.annotation = annotation;
       this.show();
     },
@@ -58,20 +58,14 @@ window.annotator.touch.adder = {};
     //   adder.hide()
     //
     // Returns nothing.
-    show: function() {
+    show: function () {
       if (!this.isVisible) {
-        if (window.annotator.touch.enabler.instance) {
-          window.annotator.touch.enabler.instance.hide();
-        }
         Widget.prototype.show.call(this);
         this.isVisible = true;
       }
     },
-    hide: function() {
+    hide: function () {
       if (this.isVisible) {
-        if (window.annotator.touch.enabler.instance) {
-          window.annotator.touch.enabler.instance.show();
-        }
         Widget.prototype.hide.call(this);
         this.isVisible = false;
       }
@@ -82,7 +76,7 @@ window.annotator.touch.adder = {};
     // event - A tap Event object
     //
     // Returns nothing.
-    _onClick: function(event) {
+    _onClick: function (event) {
       event.preventDefault();
 
       // Hide the adder
@@ -91,16 +85,12 @@ window.annotator.touch.adder = {};
       // Create a new annotation
       if (this.annotation !== null && typeof this.onCreate === "function") {
         this.onCreate(this.annotation, event);
-
-        if (window.annotator.touch.enabler.instance) {
-          window.annotator.touch.enabler.instance.disable();
-        }
       }
-    }
+    },
   });
 
   Adder.classes = {
-    hide: "annotator-touch-hide"
+    hide: "annotator-touch-hide",
   };
 
   Adder.template = [
@@ -110,94 +100,17 @@ window.annotator.touch.adder = {};
       _t("Annotate") +
       "</a>",
     "  </div>",
-    "</div>"
+    "</div>",
   ].join("\n");
 
   // Configuration options
   Adder.options = {
     // Callback, called when the user clicks the adder when an
     // annotation is loaded.
-    onCreate: null
+    onCreate: null,
   };
 
   window.annotator.touch.adder.Adder = Adder;
-})();
-if (!window.annotator.touch) window.annotator.touch = {};
-window.annotator.touch.enabler = {};
-
-(function() {
-  var Widget = window.annotator.ui.widget.Widget,
-    util = window.annotator.util;
-
-  var $ = util.$;
-  var _t = util.gettext;
-
-  var NS = "annotator-enabler";
-
-  var Enabler = Widget.extend({
-    constructor: function() {
-      Widget.call(this, {});
-
-      var self = this;
-      self.enabled = false;
-      self.callbacks = [];
-      this.element.on("tap." + NS, "a.annotator-button", function(e) {
-        self._onClick(e);
-      });
-    },
-
-    destroy: function() {
-      this.element.off("." + NS);
-      Widget.prototype.destroy.call(this);
-    },
-
-    disable: function() {
-      this.enabled = false;
-
-      this._update();
-    },
-
-    isEnabled: function() {
-      return this.enabled;
-    },
-
-    onChange: function(callback) {
-      this.callbacks.push(callback);
-    },
-
-    _update: function(event) {
-      this.element.find(".annotator-enable").text(this.enabled ? _t("Disable annotation") : _t("Enable annotation"));
-
-      // Run callbacks
-      $.each(this.callbacks, function () {
-        this();
-      });
-    },
-
-    _onClick: function(event) {
-      event.preventDefault();
-
-      this.enabled = !this.enabled;
-
-      this._update();
-    }
-  });
-
-  Enabler.classes = {
-    hide: "annotator-touch-hide"
-  };
-
-  Enabler.template = [
-    '<div class="annotator-touch-widget annotator-touch-controls annotator-touch-hide">',
-    '  <div class="annotator-touch-widget-inner">',
-    '    <a class="annotator-button annotator-enable annotator-focus">' +
-      _t("Enable annotation") +
-      "</a>",
-    "  </div>",
-    "</div>"
-  ].join("\n");
-
-  window.annotator.touch.enabler.Enabler = Enabler;
 })();
 if (!window.annotator.touch) window.annotator.touch = {};
 window.annotator.touch.editor = {};
@@ -1917,7 +1830,7 @@ window.annotator.touch.viewer = {};
 })();
 if (!window.annotator.touch) window.annotator.touch = {};
 
-(function() {
+(function () {
   var util = window.annotator.util;
 
   // Adds a new "tap" event to jQuery. This offers improved performance over
@@ -1948,23 +1861,23 @@ if (!window.annotator.touch) window.annotator.touch = {};
   //   jQuery(doument).delegate "button", "tap", options, =>
   //     # This is called on "touchend" on the same element.
   util.$.event.special.tap = {
-    add: function(eventHandler) {
+    add: function (eventHandler) {
       var context, data, onTapEnd, onTapStart;
       data = eventHandler.data = eventHandler.data || {};
       context = this;
-      onTapStart = function(event) {
+      onTapStart = function (event) {
         if (data.preventDefault !== false) event.preventDefault();
         if (data.onTapDown) data.onTapDown.apply(this, arguments);
         data.event = event;
-        data.touched = setTimeout(function() {
+        data.touched = setTimeout(function () {
           return (data.touched = null);
         }, data.timeout || 300);
         return jQuery(document).bind({
           touchend: onTapEnd,
-          mouseup: onTapEnd
+          mouseup: onTapEnd,
         });
       };
-      onTapEnd = function(event) {
+      onTapEnd = function (event) {
         var handler;
         if (data.touched != null) {
           clearTimeout(data.touched);
@@ -1980,12 +1893,12 @@ if (!window.annotator.touch) window.annotator.touch = {};
         if (data.onTapUp) data.onTapUp.apply(this, arguments);
         return jQuery(document).unbind({
           touchstart: onTapEnd,
-          mousedown: onTapEnd
+          mousedown: onTapEnd,
         });
       };
       data.tapHandlers = {
         touchstart: onTapStart,
-        mousedown: onTapStart
+        mousedown: onTapStart,
       };
       if (eventHandler.selector) {
         return jQuery(context).delegate(
@@ -1996,13 +1909,12 @@ if (!window.annotator.touch) window.annotator.touch = {};
         return jQuery(context).bind(data.tapHandlers);
       }
     },
-    remove: function(eventHandler) {
+    remove: function (eventHandler) {
       return jQuery(this).unbind(eventHandler.data.tapHandlers);
-    }
+    },
   };
 
   var adder = window.annotator.touch.adder;
-  var enabler = window.annotator.touch.enabler;
   var editor = window.annotator.touch.editor;
   var highlighter = window.annotator.ui.highlighter;
   var textselector = window.annotator.touch.textselector;
@@ -2024,7 +1936,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
   // annotationFactory returns a function that can be used to construct an
   // annotation from a list of selected ranges.
   function annotationFactory(contextEl, ignoreSelector) {
-    return function(ranges) {
+    return function (ranges) {
       var text = [],
         serializedRanges = [];
 
@@ -2036,7 +1948,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
 
       return {
         quote: text.join(" / "),
-        ranges: serializedRanges
+        ranges: serializedRanges,
       };
     };
   }
@@ -2066,18 +1978,12 @@ if (!window.annotator.touch) window.annotator.touch = {};
     var sel =
       "*" +
       ":not(annotator-adder)" +
-      ":not(annotator-enabler)" +
       ":not(annotator-outer)" +
       ":not(annotator-notice)" +
       ":not(annotator-filter)";
 
     // use the maximum z-index in the page
-    var max = maxZIndex(
-      util
-        .$(window.document.body)
-        .find(sel)
-        .get()
-    );
+    var max = maxZIndex(util.$(window.document.body).find(sel).get());
 
     // but don't go smaller than 1010, because this isn't bulletproof --
     // dynamic elements in the page (notifications, dialogs, etc.) may well
@@ -2085,12 +1991,12 @@ if (!window.annotator.touch) window.annotator.touch = {};
     max = Math.max(max, 1000);
 
     var rules = [
-      ".annotator-adder, .annotator-enabler, .annotator-outer, .annotator-notice {",
+      ".annotator-adder, .annotator-outer, .annotator-notice {",
       "  z-index: " + (max + 20) + ";",
       "}",
       ".annotator-filter {",
       "  z-index: " + (max + 10) + ";",
-      "}"
+      "}",
     ].join("\n");
 
     util
@@ -2145,12 +2051,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
         if (!annotation.permissions) {
           annotation.permissions = {};
         }
-        if (
-          util
-            .$(field)
-            .find("input")
-            .is(":checked")
-        ) {
+        if (util.$(field).find("input").is(":checked")) {
           delete annotation.permissions[action];
         } else {
           // While the permissions model allows for more complex entries
@@ -2166,14 +2067,14 @@ if (!window.annotator.touch) window.annotator.touch = {};
       type: "checkbox",
       label: _t("Allow anyone to <strong>view</strong> this annotation"),
       load: createLoadCallback("read"),
-      submit: createSubmitCallback("read")
+      submit: createSubmitCallback("read"),
     });
 
     editor.addField({
       type: "checkbox",
       label: _t("Allow anyone to <strong>edit</strong> this annotation"),
       load: createLoadCallback("update"),
-      submit: createSubmitCallback("update")
+      submit: createSubmitCallback("update"),
     });
   }
 
@@ -2208,7 +2109,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
    *      extensions.
    *
    */
-  window.annotator.touch.main = function(options) {
+  window.annotator.touch.main = function (options) {
     if (typeof options === "undefined" || options === null) {
       options = {};
     }
@@ -2228,47 +2129,16 @@ if (!window.annotator.touch) window.annotator.touch = {};
       var authz = app.registry.getUtility("authorizationPolicy");
 
       s.adder = new adder.Adder({
-        onCreate: function(ann) {
+        onCreate: function (ann) {
           app.annotations.create(ann);
-        }
+        },
       });
       s.adder.attach();
 
-      if (!enabler.instance) {
-        enabler.instance = new enabler.Enabler();
-        enabler.instance.attach();
-        enabler.instance.show();
-      }
-
-      s.enabled = enabler.instance.isEnabled();
-
-      var toggleImgAreaSelect = function () {
-        jQuery.each(jQuery(options.element).find("img"), function () {
-          var img = this;
-          var $img = jQuery(img);
-
-          var imgLoad = function() {
-            setTimeout(function () {
-              if ($img.data("imgAreaSelect")) {
-                $img.data("imgAreaSelect").setOptions({disable: !s.enabled})
-                $img.css({'cursor': s.enabled ? 'crosshair' : ''});
-              }
-            }, 50);
-          }
-
-          img.complete || img.readyState == 'complete' || !$img.is('img') ? imgLoad() : $img.one('load', imgLoad);
-        });
-      }
-
-      toggleImgAreaSelect();
-
-      enabler.instance.onChange(function () {
-        s.enabled = enabler.instance.isEnabled();
-        toggleImgAreaSelect();
-      });
+      s.enabled = true;
 
       s.editor = new editor.Editor({
-        extensions: options.editorExtensions
+        extensions: options.editorExtensions,
       });
       s.editor.attach();
 
@@ -2277,31 +2147,31 @@ if (!window.annotator.touch) window.annotator.touch = {};
       s.highlighter = new highlighter.Highlighter(options.element);
 
       s.textselector = new textselector.TextSelector(options.element, {
-        onSelection: function(ranges) {
+        onSelection: function (ranges) {
           if (s.enabled && ranges.length > 0) {
             var annotation = makeAnnotation(ranges);
             s.adder.load(annotation);
           } else {
             s.adder.hide();
           }
-        }
+        },
       });
 
       s.viewer = new viewer.Viewer({
-        onEdit: function(ann) {
+        onEdit: function (ann) {
           app.annotations.update(ann);
         },
-        onDelete: function(ann) {
+        onDelete: function (ann) {
           app.annotations["delete"](ann);
         },
-        permitEdit: function(ann) {
+        permitEdit: function (ann) {
           return authz.permits("update", ann, ident.who());
         },
-        permitDelete: function(ann) {
+        permitDelete: function (ann) {
           return authz.permits("delete", ann, ident.who());
         },
         autoViewHighlights: options.element,
-        extensions: options.viewerExtensions
+        extensions: options.viewerExtensions,
       });
       s.viewer.attach();
 
@@ -2309,7 +2179,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
     }
 
     return {
-      configure: function(registry) {
+      configure: function (registry) {
         if (options.stylesheetUri) {
           util
             .$("<link />")
@@ -2326,7 +2196,7 @@ if (!window.annotator.touch) window.annotator.touch = {};
 
       start: start,
 
-      destroy: function() {
+      destroy: function () {
         s.adder.destroy();
         s.editor.destroy();
         s.highlighter.destroy();
@@ -2335,20 +2205,20 @@ if (!window.annotator.touch) window.annotator.touch = {};
         removeDynamicStyle();
       },
 
-      annotationsLoaded: function(anns) {
+      annotationsLoaded: function (anns) {
         s.highlighter.drawAll(anns);
       },
-      annotationCreated: function(ann) {
+      annotationCreated: function (ann) {
         s.highlighter.draw(ann);
       },
-      annotationDeleted: function(ann) {
+      annotationDeleted: function (ann) {
         s.highlighter.undraw(ann);
       },
-      annotationUpdated: function(ann) {
+      annotationUpdated: function (ann) {
         s.highlighter.redraw(ann);
       },
 
-      beforeAnnotationCreated: function(annotation) {
+      beforeAnnotationCreated: function (annotation) {
         // Editor#load returns a promise that is resolved if editing
         // completes, and rejected if editing is cancelled. We return it
         // here to "stall" the annotation process until the editing is
@@ -2356,9 +2226,9 @@ if (!window.annotator.touch) window.annotator.touch = {};
         return s.editor.load(annotation);
       },
 
-      beforeAnnotationUpdated: function(annotation) {
+      beforeAnnotationUpdated: function (annotation) {
         return s.editor.load(annotation);
-      }
+      },
     };
   };
 })();
