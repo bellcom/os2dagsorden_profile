@@ -92,7 +92,12 @@ function os2web_esdh_provider_form_os2web_settings_settings_form_alter(&$form, &
     '#description' => t('This is currently only tested on meetings imported with the acadre plugin'),
     '#default_value' => variable_get('os2web_meetings_unpublish_without_manifest', FALSE),
   );
-
+  $form['os2web_mm']['os2web_meetings_use_original_files'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use original bilag files during import.'),
+    '#description' => t('This decides if file copy should be created when enclosures imported'),
+    '#default_value' => variable_get('os2web_meetings_use_original_files', FALSE),
+  );
   $form['os2web_mm_clear_queue'] = array(
     '#type' => 'fieldset',
     '#title' => t('Clear MM Import Systemtable'),
