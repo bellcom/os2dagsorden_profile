@@ -806,7 +806,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
   else {
     $fname = $pinfo['filename'];
   }
-  if (variable_get('os2web_meetings_use_original_files', FALSE) === FALSE)
+  if ((bool) variable_get('os2web_meetings_use_original_files', FALSE) === FALSE)
     $uri_out = $pinfo['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename($fname . '.' . strtolower($pinfo['extension']));
   else {
     $uri_out = $uri_in;
@@ -814,7 +814,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
 
   // Generate unique filename.
   $real_path = drupal_realpath($uri_out);
-  if ($real_path !== FALSE && variable_get('os2web_meetings_use_original_files', FALSE) === FALSE && _os2web_esdh_provider_similar_file_exists($real_path)) {
+  if ($real_path !== FALSE && (bool) variable_get('os2web_meetings_use_original_files', FALSE) === FALSE && _os2web_esdh_provider_similar_file_exists($real_path)) {
     $file_counter = 0;
     do {
       $uri_out = $pinfo['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename(mb_substr($fname, 0, 145) . '_' . $file_counter++ . '.' . strtolower($pinfo['extension']));
@@ -846,7 +846,7 @@ function _os2web_esdh_provider_import_file($file_meta) {
   $pdf_real_path = drupal_realpath($uri_pdf);
   $uri_in_real_path = drupal_realpath($uri_in);
 
-  if (variable_get('os2web_meetings_use_original_files', FALSE) === FALSE) {
+  if ((bool) variable_get('os2web_meetings_use_original_files', FALSE) === FALSE) {
     // Start file import.
     $uri_old = $uri_in;
     if ($uri_in_real_path !== FALSE) {
