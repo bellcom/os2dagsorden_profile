@@ -58,18 +58,18 @@ function os2web_rules_rules_action_drupal_message($account) {
 
       if (!$user_is_part_of_committee) {
         $user->field_user_committee['und'][]['tid'] = $tid;
-        watchdog('OS2web LDAP Roles', 'User: %user assigned role: %role.', array('%role' => $key, '%user' => $user));
+        watchdog('OS2web LDAP Roles', 'User: %user assigned role: %role.', array('%role' => $key, '%user' => $user->name));
       }
       else {
         watchdog('OS2web LDAP Roles', 'User: %user NOT assigned role: %role. Role already added.', array(
           '%role' => $key,
-          '%user' => $user,
+          '%user' => $user->name,
         ));
       }
     }
     else {
       // Sending logging information to wachdog for the customer to monitor.
-      watchdog('OS2web LDAP Roles', 'User: %user NOT assigned role: %role.', array('%role' => $key, '%user' => $user));
+      watchdog('OS2web LDAP Roles', 'User: %user NOT assigned role: %role.', array('%role' => $key, '%user' => $user->name));
     }
   }
 
