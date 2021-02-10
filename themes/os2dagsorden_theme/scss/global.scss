@@ -587,7 +587,6 @@ h1.title.brugerroller{
     float: right;
     padding-right: 0;
   }
-
 }
 
 div.attachment {
@@ -1144,7 +1143,7 @@ ul.primary li {
     -webkit-appearance: none;
     color: $color-font-primary;
     padding: 5px 20px 5px 20px;
-    font-family: "Source Sans Pro";
+    font-family: $font-basic;
     font-size: 16px;
     text-decoration: none;
     cursor: pointer;
@@ -2494,7 +2493,6 @@ a.annotator-wrapper {
 .view-meetings-search .views-table, .bullet-point-attachments .views-table, .page-meeting-bullet-point .views-table table {
   table-layout: fixed;
 }
-
 
 /* ---------------------------- Pagescroller styles END---------------------------- */
 
