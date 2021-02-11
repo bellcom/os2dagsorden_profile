@@ -163,6 +163,10 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
     $publish_level = intval($bullet_point->field_os2web_meetings_bul_plevel['und'][0]['value']);
     $title = os2dagsorden_access_helper_get_bullet_point_title($meeting_id, $bullet_point_id, $bullet_point->title, $publish_level);
   }
+  else {
+    $title = $bullet_point->title;
+  }
+
   if (strcmp($bullet_point->type, 'os2web_meetings_bullet') === 0) {
     $mpdf->WriteHtml('<h2>' . $title . '</h2>');
 
@@ -190,8 +194,12 @@ function os2web_print_send_to_friend_generate_pdf_bullet_point($bullet_point_id,
       $attachment = node_load($attachment_id['target_id']);
       if (variable_get('os2dagsorden_show_closed_bullet_content_depending_of_publishlevel', FALSE)) {
         $publish_level = intval($attachment->field_os2web_meetings_bpa_plevel['und'][0]['value']);
-        $title = os2dagsorden_access_helper_get_bilag_title($meeting_id, $bp_id, $attachment->title, $publish_level);
+        $title = os2dagsorden_access_helper_get_bilag_title($meeting_id, $bullet_point->nid, $attachment->title, $publish_level);
       }
+      else {
+        $title = $attachment->title;
+      }
+
       $mpdf->WriteHtml('<h3>' . $title . '</h3>');
 
       if (!empty($attachment->field_os2web_meetings_bpa_body['und'][0]['value'])) {
