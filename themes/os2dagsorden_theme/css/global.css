@@ -1955,6 +1955,10 @@ table .speaker-paper-link-container {
     width: 45px;
     min-width: 45px; }
 
+table .print-bullet-point-link {
+  width: 36px;
+  min-width: 36px; }
+
 /*meeting details table*/
 .view-meeting-details {
   background: #fffffe;
