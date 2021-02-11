@@ -341,6 +341,9 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
   $caseIdentifier_xpath = $xml->xpath('edoc:HandlingItem/edoc:CaseIdentifier');
   $xml_item['case_id'] = (string) array_shift($caseIdentifier_xpath);
 
+  $ruleOfSpeaking_xpath = $xml->xpath('edoc:RuleOfSpeaking');
+  $xml_item['comname'] = (string) array_shift($ruleOfSpeaking_xpath);
+
   $behandlingsplan_place =  explode(',', variable_get('os2web_edoc_middelfart_esdh_bp_before_behandlingsplan', 'Høring,Økonomi,Sagsbeskrivelse,Forvaltningen foreslår'));
 
   if ($xml_item['access'] !== 'true') {
@@ -355,6 +358,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
     'case_id' => $xml_item['case_id'],
     'title' => 'Punkt ' . $xml_item['number'] . ' ' . $xml_item['name'],
     'access' => $xml_item['access'],
+    'comname' => isset($xml_item['comname']) ? $xml_item['comname'] : NULL,
     'bullets' => array(),
     'enclosures' => array(),
   );
