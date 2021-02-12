@@ -4,6 +4,7 @@
  * @file
  * This file describes the MM plugin as implemented by eDoc.
  */
+define('MM_REPUBLISH_MEETINGS', TRUE);
 
 /**
  * Plugin definition with callbacks.
