@@ -47,7 +47,6 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
    * We will enumerate the list with the publication-id
    * as parsed from the dir name of the manifest.
    */
-
   $uris = array();
   foreach (file_scan_directory(variable_get('os2web_edoc_middelfart_esdh_mm_path', OS2WEB_EDOC_MIDDELFART_ESDH_MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => FALSE, 'min_depth' => 0)) as $xml_file) {
     $meeting_date = NULL;
@@ -82,7 +81,7 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
           }
         }
 
-        $uris[] = array(
+        $uris[$meeting_id] = array(
           'id' => $agenda_id,
           'uri' => $xml_file->uri,
           'publish' => $isPublished,
