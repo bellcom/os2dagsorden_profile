@@ -687,7 +687,7 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
     if (isset($meetings[$meeting_id[0]['value']][$meeting_system_id[0]['value']])) {
       // Duplicate meeting detected.
       watchdog('acadre MM', 'Duplicate import found for meeting %mid. Deleting nid=%nid.', array(
-        '%mid' => $meeting_id['value'],
+        '%mid' => $meeting_id[0]['value'],
         '%nid' => $node->nid,
       ), WATCHDOG_WARNING);
       node_delete($node->nid);
