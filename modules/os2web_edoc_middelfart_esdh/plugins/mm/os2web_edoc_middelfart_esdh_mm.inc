@@ -440,8 +440,8 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
       $enclosure_item = array();
       $title_xpath = $bullet_xml->xpath('edoc:Title');
       $enclosure_item['title'] = (string) array_shift($title_xpath);
-      $accessName_xpath = $bullet_xml->xpath('edoc:AccessName');
-      $enclosure_item['access'] = (string) array_shift($accessName_xpath);
+      $accessName_xpath = $bullet_xml->xpath('edoc:AccessEnumName');
+      $enclosure_item['access'] = ((string) array_shift($accessName_xpath) == 'Closed') ? FALSE : TRUE;
       $identifier_xpath = $bullet_xml->xpath('edoc:Identifier');
       $enclosure_item['sysid'] = _os2web_edoc_middelfart_esdh_generate_id((string) array_shift($identifier_xpath));
       $link_xpath = $bullet_xml->xpath('edoc:Link');
@@ -454,7 +454,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
         )),
         'title' => trim($enclosure_item['title']),
         'sysid' => $enclosure_item['sysid'],
-        'access' => TRUE,
+        'access' => $enclosure_item['access'],
         'filetype' => '.pdf',
         'type' => 'Bilag',
       );
