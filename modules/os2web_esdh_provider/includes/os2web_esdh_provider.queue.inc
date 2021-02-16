@@ -244,21 +244,23 @@ function os2web_esdh_provider_index_meeting_update_committee_tid($meeting_xmlid,
 }
 
 /**
- * Check, if meeting has ignored agendas.
+ * Check, if meeting has all agendas as ignored.
  *
  * @param int $meeting_xmlid
  *   Meeting XML ID.
  *
  * @return bool
- *   TRUE if meeting has deleted agendas, otherwise - FALSE.
+ *   TRUE if all meeting agendas are ignored, otherwise - FALSE.
  */
-function os2web_esdh_provider_index_meeting_has_ignored_agendas($meeting_xmlid) {
-  $rowCount = db_select('os2web_esdh_provider_import', 'o')
-    ->fields('o')
+  function os2web_esdh_provider_index_meeting_is_ignored($meeting_xmlid) {
+  $import_status = db_select('os2web_esdh_provider_import', 'o')
+    ->distinct()
+    ->fields('o', array('import_status'))
     ->condition('meeting_xmlid', $meeting_xmlid, '=')
-    ->condition('import_status', IMPORT_STATUS_IGNORED, '=')
     ->execute()
-    ->rowCount();
+    ->fetchCol();
 
-  return $rowCount > 0;
+  if (count($import_status) !== 1 || !in_array(IMPORT_STATUS_IGNORED, $import_status)) {
+    return FALSE;
+  }
 }

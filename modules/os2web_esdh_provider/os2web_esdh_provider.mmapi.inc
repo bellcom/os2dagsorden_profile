@@ -67,8 +67,13 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
 
   $meeting_realpath = drupal_realpath($meeting_id['uri']);
 
-  if ($meeting_realpath !== FALSE && !os2web_esdh_provider_index_meeting_is_manifest_outdated($meeting_id['id'], filemtime($meeting_realpath)) &&
-    !os2web_esdh_provider_index_meeting_has_deleted_agendas($meeting_id['id']) && !os2web_esdh_provider_index_meeting_has_ignored_agendas($meeting_id['id']))
+  // Assuming meeting does not further import if:
+  // 1. meeting realpath is NOT empty AND meeting does NOT have outdated manifest
+  // 2. meeting IS NOT ignored
+  // 3. meeting does NOT have deleted agendas
+  if (($meeting_realpath !== FALSE && !os2web_esdh_provider_index_meeting_is_manifest_outdated($meeting_id['id'], filemtime($meeting_realpath))) &&
+    !os2web_esdh_provider_index_meeting_is_ignored($meeting_id['id']) &&
+    !os2web_esdh_provider_index_meeting_has_deleted_agendas($meeting_id['id']))
   {
     if ($nid) {
       watchdog('acadre MM', '[XML_ID: !id] Latest meeting version is already imported into nid: !nid. Skipping manifest', array(
