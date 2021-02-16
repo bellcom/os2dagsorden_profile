@@ -260,7 +260,9 @@ function os2web_esdh_provider_index_meeting_update_committee_tid($meeting_xmlid,
     ->execute()
     ->fetchCol();
 
-  if (count($import_status) !== 1 || !in_array(IMPORT_STATUS_IGNORED, $import_status)) {
-    return FALSE;
+  if (count($import_status) == 1 && in_array(IMPORT_STATUS_IGNORED, $import_status)) {
+    return TRUE;
   }
+
+  return FALSE;
 }
