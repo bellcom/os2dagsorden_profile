@@ -499,10 +499,18 @@ function _os2web_edoc_middelfart_esdh_mm_order_addenums($drush = FALSE) {
   $debug = variable_get('os2web_esdh_provider_debug_info');
   $debug && timer_start('_os2web_edoc_middelfart_esdh_mm_order_addenums') && error_log('MM Import - Start of addendums - ' . timer_read('_os2web_edoc_middelfart_esdh_mm_order_addenums') . 'ms - ' . memory_get_usage());
 
+  // Find all NIDs that belong to this plugin_id.
+  $meeting_nids = db_select('os2web_esdh_provider_import', 'o')
+    ->fields('o', array('nid'))
+    ->condition('plugin_id', os2web_edoc_middelfart_esdh_mm_get_plugin_id())
+    ->execute()
+    ->fetchCol();
+
   // Find all meetings and gather meeting and agenda_ids.
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node', '=')
-    ->propertyCondition('type', 'os2web_meetings_meeting', '=');
+    ->propertyCondition('type', 'os2web_meetings_meeting', '=')
+    ->propertyCondition('nid', $meeting_nids, 'IN');
   $nodes_result = $query->execute();
 
   if (!isset($nodes_result['node'])) {

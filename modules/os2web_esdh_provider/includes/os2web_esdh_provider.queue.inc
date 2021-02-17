@@ -75,6 +75,7 @@ function os2web_esdh_provider_index_meeting($nid, $manifest, $agenda) {
         'agenda_xml_changed' => ($agenda_real_path !== FALSE) ? filemtime($agenda_real_path) : NULL,
         'committeed_id' => $agenda['committee_id'],
         'committeed_tid' => 0,
+        'plugin_id' => $manifest['plugin_id'],
       ))
       ->execute();
   }
