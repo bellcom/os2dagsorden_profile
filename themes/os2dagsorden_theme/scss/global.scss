@@ -2151,6 +2151,17 @@ a.annotator-wrapper {
   -ms-box-orient: horizontal;
 }
 
+.imgareaselect-outer {
+  background: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  border-color: transparent !important;
+}
+
+.imgareaselect-selection {
+  background: rgba(255,255,10,.3) !important;
+}
+
 /* ---------------------------- Annotateit override END---------------------------- */
 
 /* ---------------------------- Bilag preview pdf2htmlEX PDF -> HTML START ---------------------------- */
