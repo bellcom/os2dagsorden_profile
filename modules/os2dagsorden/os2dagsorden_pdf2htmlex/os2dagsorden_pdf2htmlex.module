@@ -356,7 +356,6 @@ function _os2dagsorden_pdf2htmlex_improve_html($data, $filepath = '') {
   // Removing ZERO WIDTH SPACE character.
   $data = preg_replace('/[\x{200B}-\x{200D}]/u', "", $data);
   $data = os2dagsorden_pdf2htmlex_improve_img($data, $filepath);
-  $data = os2dagsorden_pdf2htmlex_cleanup_html($data, "c");
   return $data;
 }
 
@@ -733,31 +732,4 @@ function os2dagsorden_pdf2htmlex_improve_img($data, $filepath) {
     }
   }
   return $data;
-}
-
-
-/*
- * Helper function for removing HTML tags with certain class
- * @param string $data
- *   HTML string.
- * @param string $strip_class
- *   class name.
- * .
- * * @return string
- *   HTML without stripped class.
- */
-function os2dagsorden_pdf2htmlex_cleanup_html($data, $strip_class) {
-  $doc = new DOMDocument();
-  $doc->loadHTML($data);
-  $finder = new DomXPath($doc);
-  $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $strip_class ')]");
-
-  foreach ($nodes as $node) {
-    $parent = $node->parentNode;
-    while ($node->hasChildNodes()){
-      $parent->insertBefore($node->lastChild, $node->nextSibling);
-      }
-  $parent->removeChild($node);
-  }
-  return trim($doc->saveHTML());
 }
