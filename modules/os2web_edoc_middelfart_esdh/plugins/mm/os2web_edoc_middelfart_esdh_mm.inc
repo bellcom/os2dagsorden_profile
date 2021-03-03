@@ -62,17 +62,6 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
       libxml_use_internal_errors(FALSE);
 
       if (is_object($manifest)) {
-        $meeting_path = $manifest->xpath('/Root/edoc:Notification/edoc:PathToXml');
-        $meeting_path = (string) array_shift($meeting_path);
-
-        $meeting_id = $manifest->xpath('/Root/edoc:Notification/edoc:MeetingIdentifier');
-        $meeting_id = (string) array_shift($meeting_id);
-        $meeting_id = _os2web_edoc_middelfart_esdh_generate_id($meeting_id);
-
-        if(strpos($meeting_path, 'Tillægsdagsorden') !== false){
-          $meeting_id = $meeting_id . '_add';
-        }
-
         $agenda_id = $manifest->xpath('/Root/edoc:Notification/edoc:AgendaIdentifier');
         $agenda_id = (string) array_shift($agenda_id);
         $agenda_id = _os2web_edoc_middelfart_esdh_generate_id($agenda_id);
@@ -83,13 +72,13 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
 
         // Skipping if the last modified date is smaller, meaning older file
         // in this way we get only the newest agendas.
-        if (isset($uris[$meeting_id])) {
-          if (filemtime($real_path) < $uris[$meeting_id]['lastModified']) {
+        if (isset($uris[$agenda_id])) {
+          if (filemtime($real_path) < $uris[$agenda_id]['lastModified']) {
             continue;
           }
         }
 
-        $uris[$meeting_id] = array(
+        $uris[$agenda_id] = array(
           'id' => $agenda_id,
           'uri' => $xml_file->uri,
           'publish' => $isPublished,
