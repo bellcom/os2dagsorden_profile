@@ -177,11 +177,22 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
 
           $meeting_type_xpath = $agenda_manifest->xpath('/Root/edoc:OutputTypeEnumName');
           $meeting_type = (string) array_shift($meeting_type_xpath);
+
+          $meeting_note_xpath = $meeting_agenda->xpath('edoc:Note');
+          $meeting_note = (string) array_shift($meeting_note_xpath);
+
           if (strcasecmp($meeting_type, 'Minute') === 0) {
             $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT;
           }
           else {
             $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN;
+          }
+
+          // Allowing meeting type to be overridden by meeting note.
+          if (variable_get('os2web_edoc_middelfart_esdh_extract_type_from_notes', FALSE)) {
+            if (strpos(mb_strtolower($meeting_note), 'forpublicering') !== FALSE) {
+              $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING;
+            }
           }
 
           $agenda_access = 'Lukket';
