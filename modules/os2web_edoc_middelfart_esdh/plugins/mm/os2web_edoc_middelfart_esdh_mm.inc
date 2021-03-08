@@ -293,7 +293,7 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
  */
 function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda(&$meeting, SimpleXMLElement $agenda_xml) {
   // Check if the committee is allowed to publish.
-  $publish_committee = array_map('trim', explode(',', variable_get('os2web_edoc_middelfart_esdh_approved_committees', OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_APPROVED)));
+  $publish_committee = array_map('trim', str_getcsv(variable_get('os2web_edoc_middelfart_esdh_approved_committees', OS2WEB_EDOC_MIDDELFART_ESDH_MM_DEFAULT_APPROVED)));
   if ($meeting['committee'] === '' || !in_array($meeting['committee'], $publish_committee)) {
     watchdog('eDoc MM', 'Ignored agenda from "%committee" .', array('%committee' => $meeting['committee']));
     return FALSE;
