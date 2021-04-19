@@ -799,7 +799,6 @@ function _os2web_esdh_provider_import_file($file_meta) {
   else {
     $fname = $pinfo['filename'];
   }
-
   $uri_out = $pinfo['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename($fname . '.' . strtolower($pinfo['extension']));
 
   // Generate unique filename.
@@ -843,14 +842,13 @@ function _os2web_esdh_provider_import_file($file_meta) {
     if (strlen($uri_out) > 255) {
       $pi = pathinfo($uri_out);
       if (isset($pi['extension'])) {
-        $uri_out = $pi['dirname'] . '/' . substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255)) . '.' . $pi['extension'];
+        $uri_out = $pi['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename(substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255)) . '.' . $pi['extension']);
       }
       else {
-        $uri_out = $pi['dirname'] . '/' . substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255));
+        $uri_out = $pi['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename(substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255)));
       }
     }
   }
-
   if ($uri_in === FALSE || FALSE === file_unmanaged_copy($uri_in, $uri_out, FILE_EXISTS_REPLACE)) {
     // Bummed out on copy.
     watchdog('acadre MM', 'File copy failed for %infile -> %outfile. Check folder permissions.', array(
@@ -1231,10 +1229,10 @@ function _os2web_esdh_provider_sanetize_filename($filename) {
   }
   $pi = pathinfo($filename);
   if (isset($pi['extension'])) {
-    return mb_substr(trim($pi['filename']), 0, 160) . '.' . $pi['extension'];
+    return iconv("UTF-8", "UTF-8//IGNORE", mb_substr(trim($pi['filename']), 0, 160) . '.' . $pi['extension']);
   }
   else {
-    return mb_substr(trim($pi['filename']), 0, 160);
+    return iconv("UTF-8", "UTF-8//IGNORE", mb_substr(trim($pi['filename']), 0, 160));
   }
 }
 
