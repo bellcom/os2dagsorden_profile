@@ -17,8 +17,8 @@ function os2intra_simplesaml_schema() {
         'type' => 'int',
         'not null' => TRUE,
       ),
-      'pid' => array(
-        'description' => 'PID mapped with this used',
+      'nemlogin_uid' => array(
+        'description' => 'PID or RID mapped with this user',
         'type' => 'varchar',
         'length' => 24,
       ),
@@ -33,3 +33,17 @@ function os2intra_simplesaml_schema() {
   );
   return $schema;
 }
+
+/**
+ * Implements hook_update_N.
+ *
+ * Field renaming pid -> nemlogin_uid.
+ */
+function os2intra_simplesaml_update_7101(&$sandbox) {
+  db_change_field('os2intra_simplesaml_nemid_pid_mapping', 'pid', 'nemlogin_uid', array(
+    'description' => 'PID or RID mapped with this user',
+    'type' => 'varchar',
+    'length' => 24,
+  ));
+}
+
