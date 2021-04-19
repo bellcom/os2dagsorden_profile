@@ -218,14 +218,18 @@ function os2intra_simplesaml_init() {
 
       if (isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0])) {
         // Attempting to fetch PID.
-        $nemlogin_uid = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0];
-        $nemlogin_uid = str_replace('PID:', '', $nemlogin_uid);
+        $pid_raw = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0];
+        if (strpos($pid_raw, 'PID:') !== FALSE) {
+          $nemlogin_uid = str_replace('PID:', '', $pid_raw);
+        }
       }
 
       if (empty($nemlogin_uid) && isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_rid_attr')][0])) {
         // Attempting to fetch RID.
-        $nemlogin_uid = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_rid_attr')][0];
-        $nemlogin_uid = preg_replace('/CVR:\d*-RID:/', '', $nemlogin_uid);
+        $rid_raw = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_rid_attr')][0];
+        if (strpos($pid_raw, 'RID:') !== FALSE) {
+          $nemlogin_uid = preg_replace('/CVR:\d*-RID:/', '', $rid_raw);
+        }
       }
 
       // If nemlogin_uid already exists.
