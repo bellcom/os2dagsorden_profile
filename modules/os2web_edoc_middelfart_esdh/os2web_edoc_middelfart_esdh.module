@@ -143,11 +143,11 @@ function os2web_edoc_middelfart_esdh_form_os2web_settings_settings_form_alter(&$
     '#description' => t('This will be used as bullet point title for bullet points imported from PDF files'),
     '#default_value' => variable_get('os2web_edoc_middelfart_esdh_empty_bullet_title', 'Indhold'),
   );
-  $form['meetings']['os2web_edoc_middelfart_esdh_extract_type_from_notes'] = array(
+  $form['meetings']['os2web_edoc_middelfart_esdh_extract_type_from_state'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Determine Premeeting type from notes'),
-    '#description' => t('Use <b>edoc:Note</b> field to determine whether agenda is of <b>Premeeting</b> type.') . '<br/>' . t('It will decide based on <i><b>forpublicering</b></i> text occurrence. Case insensitive'),
-    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_extract_type_from_notes', FALSE),
+    '#title' => t('Determine Premeeting type from state'),
+    '#description' => t('Use <b>edoc:State</b> field to determine whether agenda is of <b>Premeeting</b> type.') . '<br/>' . t('It will decide based on <i><b>Godkendt</b></i> text occurrence. Case insensitive'),
+    '#default_value' => variable_get('os2web_edoc_middelfart_esdh_extract_type_from_state', FALSE),
   );
 }
 

@@ -178,8 +178,8 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           $meeting_type_xpath = $agenda_manifest->xpath('/Root/edoc:OutputTypeEnumName');
           $meeting_type = (string) array_shift($meeting_type_xpath);
 
-          $meeting_note_xpath = $meeting_agenda->xpath('edoc:Note');
-          $meeting_note = (string) array_shift($meeting_note_xpath);
+          $meeting_state_xpath = $meeting_agenda->xpath('edoc:State');
+          $meeting_state = (string) array_shift($meeting_state_xpath);
 
           if (strcasecmp($meeting_type, 'Minute') === 0) {
             $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT;
@@ -189,8 +189,8 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           }
 
           // Allowing meeting type to be overridden by meeting note.
-          if (variable_get('os2web_edoc_middelfart_esdh_extract_type_from_notes', FALSE)) {
-            if (strpos(mb_strtolower($meeting_note), 'forpublicering') !== FALSE) {
+          if (variable_get('os2web_edoc_middelfart_esdh_extract_type_from_state', FALSE)) {
+            if (strpos(mb_strtolower($meeting_state), 'godkendt') !== FALSE) {
               $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_PREMEETING;
             }
           }
