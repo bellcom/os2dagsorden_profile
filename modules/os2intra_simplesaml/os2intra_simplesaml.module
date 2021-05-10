@@ -81,9 +81,14 @@ function os2intra_simplesaml_settings_form($form, &$form_state) {
     '#collapsed' => FALSE,
   );
   $form['os2intra_simplesaml_nemid_login']['os2intra_simplesaml_nemid_login_pid_attr'] = array(
-    '#title' => t("Which attribute from simpleSAMLphp should be used as user's name"),
+    '#title' => t("Which attribute from simpleSAMLphp should be used as user's PID"),
     '#type' => 'textfield',
     '#default_value' => variable_get('os2intra_simplesaml_nemid_login_pid_attr'),
+  );
+  $form['os2intra_simplesaml_nemid_login']['os2intra_simplesaml_nemid_login_rid_attr'] = array(
+    '#title' => t("Which attribute from simpleSAMLphp should be used as user's RID"),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2intra_simplesaml_nemid_login_rid_attr'),
   );
   $form['os2intra_simplesaml_nemid_login']['os2intra_simplesaml_nemid_login_error_message'] = array(
     '#title' => t("NemID error message"),
@@ -109,36 +114,36 @@ function os2intra_simplesaml_settings_form_validate($form, &$form_state) {
  * Updates the user's LOOP account details.
  */
 function os2intra_simplesaml_user_login(&$edit, $account) {
-  if (isset($_SESSION['nemlogin_pid'])) {
-    $nemlogin_pid = $_SESSION['nemlogin_pid'];
+  if (isset($_SESSION['nemlogin_uid'])) {
+    $nemlogin_uid = $_SESSION['nemlogin_uid'];
 
-    watchdog('os2intra_simplesaml', 'Attemping to login with PID (%pid) started for user %login (uid: %uid).', array(
-      '%pid' => $nemlogin_pid,
+    watchdog('os2intra_simplesaml', 'Attemping to login with Nemlogin uid (%nemlogin_uid) started for user %login (uid: %uid).', array(
+      '%nemlogin_uid' => $nemlogin_uid,
       '%login' => $account->name,
       '%uid' => $account->uid,
     ));
 
-    // Check if account has PID stored in system.
-    $pid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
-      ->fields("os2pid", array("pid"))
+    // Check if account has nemlogin_uid stored in system.
+    $stored_nemlogin_uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
+      ->fields("os2pid", array("nemlogin_uid"))
       ->condition("uid", $account->uid)
       ->execute()
       ->fetchField();
 
-    if (!empty($pid)) {
-      // If yes - is the PID the same?
-      if (strcasecmp($pid, $nemlogin_pid) != 0) {
-        // NO = the PID in the system and $_SESSION do not match, prevent login.
+    if (!empty($stored_nemlogin_uid)) {
+      // If yes - is the nemlogin_uid the same?
+      if (strcasecmp($stored_nemlogin_uid, $nemlogin_uid) != 0) {
+        // NO = the nemlogin_uid in the system and $_SESSION do not match, prevent login.
         module_invoke_all('user_logout', $account);
         // Destroy the current session, and reset $user to the anonymous user.
         session_destroy();
 
-        drupal_set_message(t("The user you are trying to login with is already associated with different PID"), 'warning');
+        drupal_set_message(t("The user you are trying to login with is already associated with different Nemlogin UID"), 'warning');
         watchdog('user', 'Session closed for %name.', array('%name' => $account->name));
 
-        watchdog('os2intra_simplesaml', 'The PID (%pid1) associated with this user %login (uid: %uid) does not match the PID (%pid2) from request headers.', array(
-          '%pid1' => $pid,
-          '%pid2' => $nemlogin_pid,
+        watchdog('os2intra_simplesaml', 'The nemlogin uid (%nemlogin_uid1) associated with this user %login (uid: %uid) does not match the nemlogin uid (%nemlogin_uid2) from request headers.', array(
+          '%nemlogin_uid1' => $stored_nemlogin_uid,
+          '%nemlogin_uid2' => $nemlogin_uid,
           '%login' => $account->name,
           '%uid' => $account->uid,
         ));
@@ -151,10 +156,10 @@ function os2intra_simplesaml_user_login(&$edit, $account) {
       }
     }
     else {
-      // If no, store this PID for the user.
+      // If no, store this nemlogin_uid for the user.
       $num_updated = db_update('os2intra_simplesaml_nemid_pid_mapping')
         ->fields(array(
-          'pid' => $nemlogin_pid,
+          'nemlogin_uid' => $nemlogin_uid,
           'changed' => REQUEST_TIME,
         ))
         ->condition('uid', $account->uid)
@@ -165,21 +170,21 @@ function os2intra_simplesaml_user_login(&$edit, $account) {
         db_insert('os2intra_simplesaml_nemid_pid_mapping')
           ->fields(array(
             'uid' => $account->uid,
-            'pid' => $nemlogin_pid,
+            'nemlogin_uid' => $nemlogin_uid,
             'changed' => REQUEST_TIME,
           ))
           ->execute();
       }
 
-      watchdog('os2intra_simplesaml', 'Mapping new PID (%pid) with user %login (uid: %uid)', array(
-        '%pid' => $nemlogin_pid,
+      watchdog('os2intra_simplesaml', 'Mapping new nemlogin uid (%nemlogin_uid) with user %login (uid: %uid)', array(
+        '%nemlogin_uid' => $nemlogin_uid,
         '%login' => $account->name,
         '%uid' => $account->uid,
       ));
     }
 
-    watchdog('os2intra_simplesaml', 'User %login (uid: %uid) successfully logged in with PID (%pid).', array(
-      '%pid' => $nemlogin_pid,
+    watchdog('os2intra_simplesaml', 'User %login (uid: %uid) successfully logged in with nemloging uid (%nemlogin_uid).', array(
+      '%nemlogin_uid' => $nemlogin_uid,
       '%login' => $account->name,
       '%uid' => $account->uid,
     ));
@@ -208,60 +213,74 @@ function os2intra_simplesaml_init() {
       $_SESSION['os2intra_simplesaml_user_login_link'] = $_GET['q'];
     }
     // login with NemID.
-    if ($_simplesamlphp_auth_as->isAuthenticated() && !empty(variable_get('os2intra_simplesaml_nemid_login_pid_attr'))) {
-      if (isset($_simplesamlphp_auth_saml_attributes) && isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0])) {
-        $pid = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0];
-        $pid = str_replace('PID:', '', $pid);
-        // If PID already exitst.
-        $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
-            ->fields("os2pid", array("uid"))
-            ->condition("pid", $pid)
-            ->execute()
-            ->fetchField();
-        if (!empty($uid)) {
-          unset($_SESSION['os2intra_simplesaml_user_login_link']);
-          $_SESSION['nemlogin_pid'] = $pid;
-          $user = user_load($uid);
-          $edit = array();
-          user_login_finalize($edit);
+    if ($_simplesamlphp_auth_as->isAuthenticated()) {
+      $nemlogin_uid = NULL;
+
+      if (isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0])) {
+        // Attempting to fetch PID.
+        $pid_raw = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_pid_attr')][0];
+        if (strpos($pid_raw, 'PID:') !== FALSE) {
+          $nemlogin_uid = str_replace('PID:', '', $pid_raw);
         }
-        else {
-          $_SESSION['nemlogin_pid'] = $pid;
-          // If have password_reset link.
-          if (isset($_SESSION['os2intra_simplesaml_user_login_link'])) {
-            $url_parts = explode('/', $_SESSION['os2intra_simplesaml_user_login_link']);
-            $uid = $url_parts[2];
-            $timestamp = (int) $url_parts[3];
-            $hashed_pass = $url_parts[4];
-            $timeout = variable_get('user_password_reset_timeout', 86400);
-            $current = REQUEST_TIME;
-            $users = user_load_multiple(array($uid), array('status' => '1'));
-            if ($timestamp <= $current && $account = reset($users)) {
-              $login = (int) $account->login;
-              // No time out for first time login.
-              if ($account->login && $current - $timestamp > $timeout) {
-                watchdog('os2intra_simplesaml', 'Attemping to login witha one-time login link that has expired, PID (%pid) started for user %login (uid: %uid).', array(
-                  '%pid' => $pid,
-                  '%login' => $account->name,
-                  '%uid' => $account->uid,
-                ));
-                unset($_SESSION['os2intra_simplesaml_user_login_link']);
-              }
-              elseif ($account->uid && $account->login === "0" && $timestamp <= $current && $hashed_pass == user_pass_rehash($account->pass, $timestamp, $login, $uid)) {
-                $user = user_load($uid);
-                $edit = array();
-                user_login_finalize($edit);
-                drupal_goto(base_path());
-              }
+      }
+
+      if (empty($nemlogin_uid) && isset($_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_rid_attr')][0])) {
+        // Attempting to fetch RID.
+        $rid_raw = $_simplesamlphp_auth_saml_attributes[variable_get('os2intra_simplesaml_nemid_login_rid_attr')][0];
+        if (strpos($pid_raw, 'RID:') !== FALSE) {
+          $nemlogin_uid = preg_replace('/CVR:\d*-RID:/', '', $rid_raw);
+        }
+      }
+
+      // If nemlogin_uid already exists.
+      $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
+          ->fields("os2pid", array("uid"))
+          ->condition("nemlogin_uid", $nemlogin_uid)
+          ->execute()
+          ->fetchField();
+      if (!empty($uid)) {
+        unset($_SESSION['os2intra_simplesaml_user_login_link']);
+        $_SESSION['nemlogin_uid'] = $nemlogin_uid;
+        $user = user_load($uid);
+        $edit = array();
+        user_login_finalize($edit);
+      }
+      else {
+        $_SESSION['nemlogin_uid'] = $nemlogin_uid;
+        // If have password_reset link.
+        if (isset($_SESSION['os2intra_simplesaml_user_login_link'])) {
+          $url_parts = explode('/', $_SESSION['os2intra_simplesaml_user_login_link']);
+          $uid = $url_parts[2];
+          $timestamp = (int) $url_parts[3];
+          $hashed_pass = $url_parts[4];
+          $timeout = variable_get('user_password_reset_timeout', 86400);
+          $current = REQUEST_TIME;
+          $users = user_load_multiple(array($uid), array('status' => '1'));
+          if ($timestamp <= $current && $account = reset($users)) {
+            $login = (int) $account->login;
+            // No time out for first time login.
+            if ($account->login && $current - $timestamp > $timeout) {
+              watchdog('os2intra_simplesaml', 'Attemping to login witha one-time login link that has expired, PID (%pid) started for user %login (uid: %uid).', array(
+                '%pid' => $nemlogin_uid,
+                '%login' => $account->name,
+                '%uid' => $account->uid,
+              ));
+              unset($_SESSION['os2intra_simplesaml_user_login_link']);
+            }
+            elseif ($account->uid && $account->login === "0" && $timestamp <= $current && $hashed_pass == user_pass_rehash($account->pass, $timestamp, $login, $uid)) {
+              $user = user_load($uid);
+              $edit = array();
+              user_login_finalize($edit);
+              drupal_goto(base_path());
             }
           }
-          else {
-            $uid = db_query("SELECT MAX(uid) as max_uid FROM users")->fetchCol();
-            $uid = array_pop($uid);
-            $uid = $uid + 100;
-            drupal_set_message(variable_get('os2intra_simplesaml_nemid_login_error_message') . ' <br/><a href=/os2intra/simplesaml/logout>' . t('Logout') .'</a>', 'error');
-            $user->uid = $uid;
-          }
+        }
+        else {
+          $uid = db_query("SELECT MAX(uid) as max_uid FROM users")->fetchCol();
+          $uid = array_pop($uid);
+          $uid = $uid + 100;
+          drupal_set_message(variable_get('os2intra_simplesaml_nemid_login_error_message') . ' <br/><a href=/os2intra/simplesaml/logout>' . t('Logout') .'</a>', 'error');
+          $user->uid = $uid;
         }
       }
     }
@@ -309,7 +328,7 @@ function os2intra_simplesaml_init() {
 
       // Redirect to Nemid Login.
       if (!in_array($remote_ip, $custom_ips)) {
-        if (!isset($_SESSION['nemlogin_pid']) && strpos($_GET['q'], 'nemid') !== 0) {
+        if (!isset($_SESSION['nemlogin_uid']) && strpos($_GET['q'], 'nemid') !== 0) {
           // Unsetting session in case it had any nemid errors.
           if (isset($_SESSION['nemid_login'])) {
             unset($_SESSION['nemid_login']);
