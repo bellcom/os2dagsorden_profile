@@ -715,7 +715,7 @@ function os2dagsorden_create_agenda_send_meeting_invitation($node) {
     $mName = check_plain($node->title);
     $date = field_get_items('node', $node, 'field_os2web_meetings_date');
     $mDate = format_date(strtotime($date[0]["value"]), $type = 'short', '', $date[0]['timezone']);
-    $published_item = (strcasecmp($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) ? 'en dagsorden' : 'et referat';
+    $published_item = (stripos($status, OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_DAGSORDEN) === 0) ? 'en dagsorden' : 'et referat';
     $meeting_url = $base_url . '/meeting/' . $node->nid;
     $mLink = $meeting_url;
     $subject_template = variable_get('os2dagsorden_send_email_subject', '!meeting_type til !committee er publiceret');
