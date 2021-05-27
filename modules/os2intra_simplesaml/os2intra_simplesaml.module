@@ -232,6 +232,11 @@ function os2intra_simplesaml_init() {
         }
       }
 
+      // Preventing further if no UID is found.
+      if (!$nemlogin_uid) {
+        return;
+      }
+
       // If nemlogin_uid already exists.
       $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
           ->fields("os2pid", array("uid"))
