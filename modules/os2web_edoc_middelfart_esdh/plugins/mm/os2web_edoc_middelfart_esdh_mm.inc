@@ -89,6 +89,12 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
     }
   }
 
+  if (!empty($uris)) {
+    uasort($uris, function($a, $b) {
+      return $b['lastModified'] - $a['lastModified'];
+    });
+  }
+
   return $uris;
 }
 
