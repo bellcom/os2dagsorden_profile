@@ -187,6 +187,9 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
           $meeting_state_xpath = $meeting_agenda->xpath('edoc:State');
           $meeting_state = (string) array_shift($meeting_state_xpath);
 
+          $meeting_description_xpath = $meeting_agenda->xpath('edoc:Note');
+          $meeting_description = (string) array_shift($meeting_description_xpath);
+
           if (strcasecmp($meeting_type, 'Minute') === 0) {
             $meeting_type = OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT;
           }
@@ -241,6 +244,7 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
             'meeting_state' => $meeting_type,
             'agenda_xml' => $agenda_real_path,
             'agenda_access' => $agenda_access,
+            'description' => $meeting_description
           );
 
           // Collect participants.
