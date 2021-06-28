@@ -603,7 +603,8 @@ function _os2web_pdf_conversion_manager_import_attachments_file($fid, $msg_file_
           if ($file = _os2web_pdf_conversion_manager_import_file($meta_file)) {
             $bullet_point->field_os2web_meetings_enclosures[LANGUAGE_NONE][] = (array) $file;
             if (module_exists('os2dagsorden_esdh_provider')) {
-              $bullet_point->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = os2dagsorden_esdh_provider_process_enclosure($meta_file, $file);
+              $enclosure = os2dagsorden_esdh_provider_process_enclosure($meta_file, $file);
+              $bullet_point->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $enclosure->nid;
             }
           }
           $bullet_point = node_submit($bullet_point);

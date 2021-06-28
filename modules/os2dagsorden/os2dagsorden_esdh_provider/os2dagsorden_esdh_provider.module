@@ -19,8 +19,8 @@
  *
  * @access protected
  *
- * @return int
- *   Node id of the created attachment.
+ * @return object
+ *   Node of the created attachment.
  */
 function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
   global $_os2dagsorden_esdh_provider_processing_meeting_id, $_os2dagsorden_esdh_provider_processing_bp;
@@ -82,7 +82,7 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
     }
   }
 
-  return $node->nid;
+  return $node;
 }
 
 /**

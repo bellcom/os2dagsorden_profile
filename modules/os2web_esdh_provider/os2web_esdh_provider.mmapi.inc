@@ -946,7 +946,9 @@ function _os2web_esdh_provider_import_file($file_meta) {
  */
 function _os2web_esdh_import_handle_bullets($node, $item) {
   global $_os2web_esdh_provider_processing_meeting_id, $_os2web_esdh_provider_processing_bp, $_os2web_esdh_provider_processing_meeting_access;
+
   // Gather the bullets for the item.
+  $bullet_nids = [];
   if (isset($item['bullets']) && is_array($item['bullets'])) {
     $bullet_attachmets = array();
     if ($node->field_os2web_meetings_attach['und']) {
@@ -960,16 +962,14 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
         '!list' => print_r($bullet_nids, TRUE),
       ), WATCHDOG_DEBUG);
     if (module_exists('os2dagsorden_esdh_provider')) {
+
       // Delete all attachments before importing.
+      $attachments_to_delete = array();
       if (isset($node->field_os2web_meetings_attach['und'])) {
-        $attachments_to_delete = array();
-        $enclosures_to_delete = array();
         foreach ($node->field_os2web_meetings_attach['und'] as $attachment_nid) {
           $attachment_node = node_load($attachment_nid['target_id']);
-          if (isset($attachment_node->field_os2web_meetings_bpa_file['und']) && is_array($attachment_node->field_os2web_meetings_bpa_file['und'])) {
-            $enclosures_to_delete[$attachment_nid['target_id']] = $attachment_nid['target_id'];
-          }
-          else {
+
+          if (!isset($attachment_node->field_os2web_meetings_bpa_file['und']) || !is_array($attachment_node->field_os2web_meetings_bpa_file['und'])) {
             $attachments_to_delete[$attachment_nid['target_id']] = $attachment_nid['target_id'];
           }
         }
@@ -991,16 +991,32 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
         }
       }
     }
-    unset($node->field_os2web_meetings_attach['und']);
-    foreach ($bullet_nids as $key => $nid) {
-      $node->field_os2web_meetings_attach[LANGUAGE_NONE][$key]['target_id'] = $nid;
+  }
+
+  // Gather enclosures.
+  $enclosure_nids = array();
+
+  // Delete all enclosures before importing.
+  $enclosures_to_delete = array();
+  if (isset($node->field_os2web_meetings_attach['und'])) {
+    foreach ($node->field_os2web_meetings_attach['und'] as $attachment_nid) {
+      $attachment_node = node_load($attachment_nid['target_id']);
+      if (isset($attachment_node->field_os2web_meetings_bpa_file['und']) && is_array($attachment_node->field_os2web_meetings_bpa_file['und'])) {
+        // If this agenda is opened, only add enclosures that are opened to
+        // the potential delete list.
+        if ($attachment_node->field_os2web_meetings_bpa_closed['und'][0]['value'] == '1') {
+          if ($_os2web_esdh_provider_processing_meeting_access !== 'Lukket' && $_os2web_esdh_provider_processing_meeting_access !== 'Person') {
+            // Readding this to the list, with ID as the key.
+            $enclosure_nids[$attachment_node->field_os2web_meetings_bpa_id['und'][0]['value']] = $attachment_node->nid;
+            continue;
+          }
+        }
+
+        $enclosures_to_delete[$attachment_nid['target_id']] = $attachment_nid['target_id'];
+      }
     }
   }
-  else {
-    $node->field_os2web_meetings_attach[LANGUAGE_NONE] = array();
-  }
-  // Gather enclosures.
-  $enclosures_nids = array();
+
   foreach ($item['enclosures'] as $enclosure) {
     if ($enclosure['access'] || module_exists('os2dagsorden_esdh_provider')) {
       if ($file = _os2web_esdh_provider_import_file($enclosure)) {
@@ -1011,11 +1027,12 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
             '!file' => $file->uri,
           ), WATCHDOG_DEBUG);
         if (module_exists('os2dagsorden_esdh_provider')) {
+          $enclosure_node = NULL;
           if (!empty($enclosures_to_delete)) {
             $enclosure_node = os2dagsorden_esdh_provider_find_corresponding_enclosure($enclosure, $enclosures_to_delete);
           }
+
           if ($enclosure_node) {
-            $enclosures_nids[] = $enclosure_node->nid;
             if ((int) $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['filesize'] !== $file->filesize) {
               // Replacing old file.
               $enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0] = (array) $file;
@@ -1042,13 +1059,12 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
               // Delete unneeded file.
               file_delete($file);
             }
-            $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $enclosure_node->nid;
           }
           else {
-            $nid = os2dagsorden_esdh_provider_process_enclosure($enclosure, $file);
-            $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $nid;
-            $enclosures_nids[] = $nid;
+            $enclosure_node = os2dagsorden_esdh_provider_process_enclosure($enclosure, $file);
           }
+
+          $enclosure_nids[$enclosure_node->field_os2web_meetings_bpa_id['und'][0]['value']] = $enclosure_node->nid;
         }
       }
       else {
@@ -1061,12 +1077,12 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
       }
     }
   }
-  if (is_array($enclosures_to_delete) && is_array($enclosures_nids)) {
-    // Deleting only those, that were nor added again.
-    $enclosures_to_delete = array_diff($enclosures_to_delete, $enclosures_nids);
+  if (is_array($enclosures_to_delete) && is_array($enclosure_nids)) {
+    // Deleting only those, that were not added again.
+    $enclosures_to_delete = array_diff($enclosures_to_delete, $enclosure_nids);
   }
   if (!empty($enclosures_to_delete)) {
-    watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] Imported enclosers to be deleted !list',
+    watchdog('acadre MM', '[XML_ID: !id] [BP: !sysid] Imported enclosures to be deleted !list',
     array(
       '!id' => $_os2web_esdh_provider_processing_meeting_id,
       '!sysid' => $_os2web_esdh_provider_processing_bp,
@@ -1074,6 +1090,21 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
     ), WATCHDOG_DEBUG);
     node_delete_multiple($enclosures_to_delete);
   }
+
+  // Adding attachments.
+  unset($node->field_os2web_meetings_attach['und']);
+  foreach ($bullet_nids as $key => $nid) {
+    $node->field_os2web_meetings_attach[LANGUAGE_NONE][$key]['target_id'] = $nid;
+  }
+
+  // Order $enclosure_nid by key.
+  ksort($enclosure_nids);
+  // Adding enclosures.
+  dpm($enclosure_nids);
+  foreach ($enclosure_nids as $key => $nid) {
+    $node->field_os2web_meetings_attach[LANGUAGE_NONE][$key]['target_id'] = $nid;
+  }
+
   return $node;
 }
 
