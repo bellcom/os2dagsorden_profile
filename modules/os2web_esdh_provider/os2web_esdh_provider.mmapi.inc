@@ -67,8 +67,13 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
 
   $meeting_realpath = drupal_realpath($meeting_id['uri']);
 
-  if ($meeting_realpath !== FALSE && !os2web_esdh_provider_index_meeting_is_manifest_outdated($meeting_id['id'], filemtime($meeting_realpath)) &&
-    !os2web_esdh_provider_index_meeting_has_deleted_agendas($meeting_id['id']) && !os2web_esdh_provider_index_meeting_has_ignored_agendas($meeting_id['id']))
+  // Assuming meeting does not further import if:
+  // 1. meeting realpath is NOT empty AND meeting does NOT have outdated manifest
+  // 2. meeting IS NOT ignored
+  // 3. meeting does NOT have deleted agendas
+  if (($meeting_realpath !== FALSE && !os2web_esdh_provider_index_meeting_is_manifest_outdated($meeting_id['id'], filemtime($meeting_realpath))) &&
+    !os2web_esdh_provider_index_meeting_is_ignored($meeting_id['id']) &&
+    !os2web_esdh_provider_index_meeting_has_deleted_agendas($meeting_id['id']))
   {
     if ($nid) {
       watchdog('acadre MM', '[XML_ID: !id] Latest meeting version is already imported into nid: !nid. Skipping manifest', array(
@@ -83,9 +88,16 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     return FALSE;
   }
 
+  if (!isset($meeting_id['plugin_id'])) {
+    watchdog('acadre MM', '[XML_ID: !id] Manifest import plugin_id is missing. Skipping manifest', array('!id' => $_os2web_esdh_provider_processing_meeting_id), WATCHDOG_WARNING);
+    lock_release(__FUNCTION__ . $meeting_id['id']);
+    return FALSE;
+  }
+
   watchdog('acadre MM', '[XML_ID: !id] Initialized meeting import', array('!id' => $_os2web_esdh_provider_processing_meeting_id), WATCHDOG_NOTICE);
 
-  $meetings = os2web_esdh_provider_invoke('mm', 'import_meeting', $meeting_id);
+  // Calling specific plugin to do the import.
+  $meetings = os2web_esdh_provider_plugin_invoke('mm', 'import_meeting', $meeting_id['plugin_id'], $meeting_id);
 
   $nids = array();
 
@@ -799,11 +811,15 @@ function _os2web_esdh_provider_import_file($file_meta) {
   else {
     $fname = $pinfo['filename'];
   }
-  $uri_out = $pinfo['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename($fname . '.' . strtolower($pinfo['extension']));
+  if (!variable_get('os2web_meetings_use_original_files', FALSE))
+    $uri_out = $pinfo['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename($fname . '.' . strtolower($pinfo['extension']));
+  else {
+    $uri_out = $uri_in;
+  }
 
   // Generate unique filename.
   $real_path = drupal_realpath($uri_out);
-  if ($real_path !== FALSE && _os2web_esdh_provider_similar_file_exists($real_path)) {
+  if ($real_path !== FALSE && !variable_get('os2web_meetings_use_original_files', FALSE) && _os2web_esdh_provider_similar_file_exists($real_path)) {
     $file_counter = 0;
     do {
       $uri_out = $pinfo['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename(mb_substr($fname, 0, 145) . '_' . $file_counter++ . '.' . strtolower($pinfo['extension']));
@@ -835,51 +851,56 @@ function _os2web_esdh_provider_import_file($file_meta) {
   $pdf_real_path = drupal_realpath($uri_pdf);
   $uri_in_real_path = drupal_realpath($uri_in);
 
-  // Start file import.
-  $uri_old = $uri_in;
-  if ($uri_in_real_path !== FALSE) {
-    $uri_in = _os2web_esdh_provider_similar_file_exists($uri_in_real_path);
-    if (strlen($uri_out) > 255) {
-      $pi = pathinfo($uri_out);
-      if (isset($pi['extension'])) {
-        $uri_out = $pi['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename(substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255)) . '.' . $pi['extension']);
-      }
-      else {
-        $uri_out = $pi['dirname'] . '/' . _os2web_esdh_provider_sanetize_filename(substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255)));
+  if (!variable_get('os2web_meetings_use_original_files', FALSE)) {
+    // Start file import.
+    $uri_old = $uri_in;
+    if ($uri_in_real_path !== FALSE) {
+      $uri_in = _os2web_esdh_provider_similar_file_exists($uri_in_real_path);
+      if (strlen($uri_out) > 255) {
+        $pi = pathinfo($uri_out);
+        if (isset($pi['extension'])) {
+          $uri_out = $pi['dirname'] . '/' . substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255)) . '.' . $pi['extension'];
+        }
+        else {
+          $uri_out = $pi['dirname'] . '/' . substr($pi['filename'], 0, strlen($pi['filename']) - (strlen($uri_out) - 255));
+        }
       }
     }
+
+    if ($uri_in === FALSE || FALSE === file_unmanaged_copy($uri_in, $uri_out, FILE_EXISTS_REPLACE)) {
+      // Bummed out on copy.
+      watchdog('acadre MM', 'File copy failed for %infile -> %outfile. Check folder permissions.', array(
+        '%infile' => $uri_old,
+        '%outfile' => $uri_out,
+      ), WATCHDOG_WARNING);
+      return FALSE;
+    }
+    else {
+      $uri = $uri_out;
+    }
+
+    if (FALSE === $uri || empty($uri)) {
+      watchdog('acadre MM', 'Processing of %infile failed. If exists, check permissions.', array(
+        '%infile',
+        $uri_in,
+      ), WATCHDOG_WARNING);
+      return FALSE;
+    }
+
+    if (!(defined('MM_USE_ALTERNATIVE_FILE_URI_SCHEME') && MM_USE_ALTERNATIVE_FILE_URI_SCHEME) && file_uri_scheme($uri) != 'public' && file_uri_scheme($uri) != 'private') {
+      watchdog('acadre MM', 'Invalid scheme for uri %uri, Possibly absolut path ? %uri', array(
+        '%uri',
+        $uri,
+      ), WATCHDOG_ERROR);
+      error_log("Var: \$uri = " . print_r($uri, 1));
+      error_log("Var: \$uri_in = " . print_r($uri_in, 1));
+      error_log("Var: \$uri_out = " . print_r($uri_out, 1));
+      error_log("Var: \$uri_pdf = " . print_r($uri_pdf, 1));
+    }
   }
-  if ($uri_in === FALSE || FALSE === file_unmanaged_copy($uri_in, $uri_out, FILE_EXISTS_REPLACE)) {
-    // Bummed out on copy.
-    watchdog('acadre MM', 'File copy failed for %infile -> %outfile. Check folder permissions.', array(
-      '%infile' => $uri_old,
-      '%outfile' => $uri_out,
-    ), WATCHDOG_WARNING);
-    return FALSE;
-  }
-  else {
+  else  {
     $uri = $uri_out;
   }
-
-  if (FALSE === $uri || empty($uri)) {
-    watchdog('acadre MM', 'Processing of %infile failed. If exists, check permissions.', array(
-      '%infile',
-      $uri_in,
-    ), WATCHDOG_WARNING);
-    return FALSE;
-  }
-
-  if (!(defined('MM_USE_ALTERNATIVE_FILE_URI_SCHEME') && MM_USE_ALTERNATIVE_FILE_URI_SCHEME) && file_uri_scheme($uri) != 'public' && file_uri_scheme($uri) != 'private') {
-    watchdog('acadre MM', 'Invalid scheme for uri %uri, Possibly absolut path ? %uri', array(
-      '%uri',
-      $uri,
-    ), WATCHDOG_ERROR);
-    error_log("Var: \$uri = " . print_r($uri, 1));
-    error_log("Var: \$uri_in = " . print_r($uri_in, 1));
-    error_log("Var: \$uri_out = " . print_r($uri_out, 1));
-    error_log("Var: \$uri_pdf = " . print_r($uri_pdf, 1));
-  }
-
   // Is an absolute path.
   if (variable_get('os2web_edoc_esdh_mm_is_abs', FALSE) && module_exists('os2web_edoc_esdh')) {
     $uri = 'public://' . str_replace(variable_get('os2web_edoc_esdh_mm_abs_path_subs'), '', $uri);

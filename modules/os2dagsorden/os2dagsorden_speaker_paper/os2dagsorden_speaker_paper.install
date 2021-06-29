@@ -56,3 +56,52 @@ function os2dagsorden_speaker_paper_schema() {
   );
   return $schema;
 }
+
+/**
+ * Implements hook_update().
+ */
+function os2dagsorden_speaker_paper_update_7000() {
+  if (db_table_exists('rk_speaking_paper_mapping')) {
+    db_rename_table('rk_speaking_paper_mapping', 'os2dagsorden_speaking_paper_mapping');
+    $new_field = array(
+      'description' => 'The speaker_papers bullet acadre id.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+    );
+    db_change_field('os2dagsorden_speaking_paper_mapping', 'speaking_paper_bullet_acadre_id', 'speaking_paper_bullet_sysid', $new_field);
+    db_drop_field('os2dagsorden_speaking_paper_mapping', 'speaking_paper_bullet_relation_node_id');
+  }
+  else {
+  $schema['os2dagsorden_speaking_paper_mapping'] = array(
+      'description' => 'This table is holding the relation between acadre bullet id and a speaking paper.',
+      'fields' => array(
+        'id' => array(
+          'type' => 'serial',
+          'unsigned' => true,
+          'not null' => true,
+        ),
+        'uid' => array(
+          'description' => 'The user id to whom the speaking paper belongs.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'speaking_paper_node_id' => array(
+          'description' => 'The speaker_paper node id, of which the spealing paper has in drupal',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'speaking_paper_bullet_sysid' => array(
+          'description' => 'The speaker_papers bullet acadre id.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        )
+      ),
+      'primary key' => array('id'),
+    );
+    db_create_table('os2dagsorden_speaking_paper_mapping', $schema['os2dagsorden_speaking_paper_mapping']);
+  }
+}

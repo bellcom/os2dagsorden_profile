@@ -179,6 +179,11 @@ function os2web_esdh_provider_schema() {
         'type' => 'int',
         'unsigned' => TRUE,
       ),
+      'plugin_id' => array(
+        'description' => 'ID of the plugin',
+        'type' => 'varchar',
+        'length' => 100,
+      )
     ),
     'primary key' => array('meeting_xmlid', 'agenda_sysid'),
   );
@@ -284,5 +289,32 @@ function os2web_esdh_provider_update_7102() {
     return 'All meetings date have been converted from Europe/Copenhagen to UTC timezone. Do not forget to change your timezone to Europe/Copenhagen setting at: /admin/config/regional/settings !';
   } else {
     return 'The currently used timezone is not UTC. This hook is therefore skipped.';
+  }
+}
+
+/**
+ * Adding plugin_id column to os2web_esdh_provider_import.
+ */
+function os2web_esdh_provider_update_7103() {
+  // Adding plugin_id field.
+  $spec = array(
+    'type' => 'varchar',
+    'description' => 'ID of the plugin',
+    'length' => 100,
+  );
+  db_add_field('os2web_esdh_provider_import', 'plugin_id', $spec);
+
+  $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
+
+  foreach ($meetings as $meeting) {
+    $meeting_xmlid = $meeting['id'];
+    $plugin_id = $meeting['plugin_id'];
+
+    db_update('os2web_esdh_provider_import')
+      ->fields(array(
+        'plugin_id' => $plugin_id,
+      ))
+      ->condition('meeting_xmlid', $meeting_xmlid, '=')
+      ->execute();
   }
 }

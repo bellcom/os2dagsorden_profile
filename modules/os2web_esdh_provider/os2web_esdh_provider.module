@@ -92,7 +92,12 @@ function os2web_esdh_provider_form_os2web_settings_settings_form_alter(&$form, &
     '#description' => t('This is currently only tested on meetings imported with the acadre plugin'),
     '#default_value' => variable_get('os2web_meetings_unpublish_without_manifest', FALSE),
   );
-
+  $form['os2web_mm']['os2web_meetings_use_original_files'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use original bilag files during import.'),
+    '#description' => t('This decides if file copy should be created when enclosures imported'),
+    '#default_value' => variable_get('os2web_meetings_use_original_files', FALSE),
+  );
   $form['os2web_mm_clear_queue'] = array(
     '#type' => 'fieldset',
     '#title' => t('Clear MM Import Systemtable'),
@@ -316,8 +321,8 @@ function os2web_esdh_provider_has_api($api) {
   $info = ctools_plugin_get_info('os2web_esdh_provider', $api);
   if ($info) {
     $plugins = ctools_get_plugins('os2web_esdh_provider', $api);
-    if (count($plugins) > 1) {
-      watchdog('esdh provider', 'API %api has multiple implementations active.', array('%api' => $api), WATCHDOG_ERROR);
+    if (count($plugins) == 0) {
+      watchdog('esdh provider', 'API %api implementations not found.', array('%api' => $api), WATCHDOG_ERROR);
       return FALSE;
     }
     if (isset($info['required methods'])) {
@@ -382,18 +387,66 @@ function os2web_esdh_provider_invoke() {
   $api = array_shift($args);
   $method = array_shift($args);
   ctools_include('plugins');
-  $plugin = ctools_get_plugins('os2web_esdh_provider', $api);
-  $plugin = array_shift($plugin);
+  $plugins = ctools_get_plugins('os2web_esdh_provider', $api);
+
+  $result = [];
+  if (!empty($plugins)) {
+    foreach ($plugins as $plugin_key => $plugin) {
+      $function = ctools_plugin_get_function($plugin, $method);
+
+      if ($function) {
+        $output = call_user_func_array($function, $args);
+        if (count($plugins) == 1) {
+          $result = $output;
+        }
+        elseif ($output !== NULL) {
+          $result = array_merge($result, $output);
+        }
+      }
+      else {
+        watchdog('esdh_provider', 'os2web_esdh_provider_invoke Incomplete api implementation: method %method in api: %api called, but does not exists.', [
+          '%method' => $method,
+          '%api' => $api,
+        ], WATCHDOG_ERROR);
+      }
+    }
+  }
+
+  return $result;
+}
+
+/**
+ * Invokes a method from an api of the specific plugin.
+ *
+ * Expects:
+ * $arg[0] $api
+ * $arg[1] $method
+ * $arg[2] $plugin_id
+ * $ars[3:] additional arguments passed to the method
+ *
+ * @return any
+ *   Forwarded return value from method
+ */
+function os2web_esdh_provider_plugin_invoke() {
+  $args = func_get_args();
+
+  $api = array_shift($args);
+  $method = array_shift($args);
+  $plugin_id = array_shift($args);
+  ctools_include('plugins');
+
+  // Finding the correct plugin.
+  $plugin = ctools_get_plugins('os2web_esdh_provider', $api, $plugin_id);
 
   if ($plugin) {
     $function = ctools_plugin_get_function($plugin, $method);
     if ($function) {
       return call_user_func_array($function, $args);
     }
-    watchdog('esdh_provider', 'Incomplete api implementation: method %method in api: %api called, but does not exists.', array(
+    watchdog('esdh_provider', 'os2web_esdh_provider_plugin_invoke Incomplete api implementation: method %method in api: %api called, but does not exists.', [
       '%method' => $method,
       '%api' => $api,
-    ), WATCHDOG_ERROR);
+    ], WATCHDOG_ERROR);
   }
 }
 

@@ -175,6 +175,9 @@ function os2dagsorden_esdh_provider_bullet_add_number($node, $number) {
  * Deletes the associated speaker papers when deleting bullets.
  */
 function os2dagsorden_esdh_provider_node_delete($node) {
+  if (variable_get('os2dagsorden_speaker_paper_settings_save_speaker_paper', TRUE)) {
+    return;
+  }    
   if ($node->type === 'os2web_meetings_bullet') {
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')

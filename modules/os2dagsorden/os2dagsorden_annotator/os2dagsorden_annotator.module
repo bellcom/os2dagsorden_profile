@@ -140,6 +140,7 @@ function _os2dagsorden_annotator_create() {
   $bilag_id = $note_json['bilag_id'];
   $bullet_point_id = $note_json['bullet_point_id'];
   $meeting_id = $note_json['meeting_id'];
+  $bullet_point_node = node_load($bilag_id);
 
   // Filtering on fields - removing those, that are saved separatelly.
   unset($note_json['bilag_id']);
@@ -153,6 +154,7 @@ function _os2dagsorden_annotator_create() {
       'meeting_id' => $meeting_id,
       'uid' => $user->uid,
       'note_info' => json_encode($note_json),
+      'bpa_sysid' => $bullet_point_node->field_os2web_meetings_bpa_id['und'][0]['value']
     ))
     ->execute();
 
@@ -1098,6 +1100,9 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = FALSE,
  * Deletes the associated notes, when deleting the content.
  */
 function os2dagsorden_annotator_node_delete($node) {
+  if (variable_get('os2dagsorden_annotator_settings_save_notes', TRUE)) {
+    return;
+  }
   if ($node->type === 'os2web_meetings_meeting') {
     db_delete('os2dagsorden_annotator_notes')
       ->condition('meeting_id', $node->nid, '=')
@@ -1235,6 +1240,37 @@ function os2dagsorden_annotator_file_download($uri) {
       return array(
         'Content-Type' => $info['mime_type'],
       );
+    }
+  }
+}
+
+/*
+* Implements hook_node_insert().
+*/
+function os2dagsorden_annotator_node_insert($node) {
+  // Catching node insert of type meeting
+  if ($node->type === 'os2web_meetings_meeting') {
+    $meeting_id = $node->nid;
+    foreach($node->field_os2web_meetings_bullets['und'] as $bullet) {
+      $bullet_node = node_load($bullet['target_id']);
+      $bullet_point_id =  $bullet_node->nid;
+      // Getting bullet attachements
+      foreach($bullet_node->field_os2web_meetings_attach['und'] as $bullet_attachement) {
+        // Getting node information of the bullet attachement
+        $bullet_attachement_node = node_load($bullet_attachement['target_id']);
+        $bullet_attachement_sysid_id = $bullet_attachement_node->field_os2web_meetings_bpa_id['und'][0]['value'];
+        $bullet_point_attachments_id = $bullet_attachement_node->nid;
+        // This id is the one we have stored in the database when saving a note.
+        $bullet_attachement_sysid_id = $bullet_attachement_node->field_os2web_meetings_bpa_id['und'][0]['value'];
+        db_update('os2dagsorden_annotator_notes')
+          ->fields(array(
+            'bilag_id' => $bullet_point_attachments_id,
+            'bullet_point_id' => $bullet_point_id,
+            'meeting_id' => $meeting_id
+          ))
+        ->condition('bpa_sysid', $bullet_attachement_sysid_id, '=')
+        ->execute();
+      }
     }
   }
 }

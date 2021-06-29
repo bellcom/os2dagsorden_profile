@@ -60,7 +60,12 @@ function os2dagsorden_meetings_calendar_view_fields_filter_by_meeting_category($
 
   $meeting = node_load($meeting_id);
   $committee = taxonomy_term_load($meeting->field_os2web_meetings_committee['und'][0]['tid']);
-  $meeting_category = $committee->field_os2web_meetings_com_categ['und'][0]['tid'];
+
+  $meeting_category = NULL;
+  if (isset($committee->field_os2web_meetings_com_categ['und'])) {
+    $meeting_category = $committee->field_os2web_meetings_com_categ['und'][0]['tid'];
+  }
+
   if (isset($user_loaded->field_user_com_categ['und'])) {
     foreach ($user_loaded->field_user_com_categ['und'] as $user_category) {
       if ($user_category['tid'] === $meeting_category) {

@@ -20,7 +20,10 @@ include_once 'os2dagsorden_fields_and_content_types.features.inc';
  */
 function os2dagsorden_fields_and_content_types_meeting_search_metadata($entity, $entity_type) {
   // Extracting data from basic fields.
-  $title = $entity->title;
+  $title = '';
+  if (isset($entity->title)) {
+    $title = $entity->title;
+  }
 
   $location = '';
   if (isset($entity->field_os2web_meetings_location['und'])) {

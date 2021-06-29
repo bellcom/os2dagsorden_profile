@@ -587,7 +587,6 @@ h1.title.brugerroller{
     float: right;
     padding-right: 0;
   }
-
 }
 
 div.attachment {
@@ -1037,7 +1036,7 @@ pager li.pager-first {
     border-width: 0px;
     color: $color-white;
     padding: 5px 10px 5px 10px;
-    font-family: "Source Sans Pro";
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     text-decoration: none;
     cursor: pointer;
@@ -1088,7 +1087,7 @@ pager li.pager-first {
 }
 
 .controls-right.agenda-level.speaker-paper {
-  margin-top: 0b;
+  margin-top: 0;
 }
 
 .controls-left {
@@ -1144,7 +1143,7 @@ ul.primary li {
     -webkit-appearance: none;
     color: $color-font-primary;
     padding: 5px 20px 5px 20px;
-    font-family: "Source Sans Pro";
+    font-family: $font-basic;
     font-size: 16px;
     text-decoration: none;
     cursor: pointer;
@@ -1328,6 +1327,10 @@ table {
       width: 45px;
       min-width: 45px;
     }
+  }
+  .print-bullet-point-link {
+    width: 36px;
+    min-width: 36px;
   }
 }
 
@@ -2506,12 +2509,6 @@ a.annotator-wrapper {
   table-layout: fixed;
 }
 
-.bullet-point-attachments .views-table {
-  .print-bullet-point-link, .send-bullet-point-link {
-    width: 1%;
-  }
-}
-
 /* ---------------------------- Pagescroller styles END---------------------------- */
 
 /* ---------------------------- Manual create agenda START---------------------------- */
@@ -2683,7 +2680,7 @@ ul.droptrue {
     background-color: white;
     max-width: 250px;
     span:not(.checkbox){
-      max-width: 200px;
+      max-width: 150px;
       display: inline-block;
     }
     /*&.can-subscribe {
@@ -3114,4 +3111,144 @@ ul#follows .checkbox.committee-admin {
     border: 1px solid darken($color-branding-secondary, 15%) !important;
     background: $color-branding-secondary !important;
   }
+}
+
+@media (min-width: 768px) {
+  .view-meeting-details td.case-id-link-container {
+    width: 70px !important;
+    text-align: right;
+  }
+  /*.view-content table .item-list {*/
+  /*  margin-right: -200px;*/
+  /*}*/
+  .view-meeting-details .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
+    right: 25px;
+  }
+}
+
+
+/* Removal of annotator touch - begin */
+.has-touch .annotator-adder {
+  position: fixed !important;
+
+  top: auto !important;
+  left: auto !important;
+  right: 20px;
+  bottom: 20px;
+
+  width: auto !important;
+  height: auto !important;
+
+  background-image: none !important;
+}
+.has-touch .annotator-adder button {
+  position: relative;
+  padding: 10px 20px !important;
+  width: auto !important;
+  height: auto !important;
+  background-color: #9c1a5e !important;
+  border-radius: 4px;
+  border: 1px solid #9c1a5e !important;
+  font-size: 16px;
+  font-weight: bold;
+  text-indent: 0 !important;
+  color: #fff;
+}
+
+/*.has-touch .annotator-outer {
+  position: fixed !important;
+  display: flex;
+
+  width: auto !important;
+  height: auto !important;
+
+  top: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+
+  background-color: rgba(0, 0, 0, .5);
+}*/
+.has-touch .annotator-widget {
+  position: static !important;
+
+  max-width: 300px !important;
+  margin: auto !important;
+}
+.has-touch .annotator-editor .annotator-item textarea {
+  padding: 10px !important;
+  font-size: 16px !important;
+  font-style: initial !important;
+}
+.has-touch .annotator-controls {
+  padding: 10px !important;
+  background-image: none !important;
+}
+.has-touch .annotator-controls > a {
+  padding: 5px 30px 5px 30px !important;
+
+  font-size: 16px !important;
+
+  background-color: #9c1a5e !important;
+  border-radius: 4px !important;
+  border: 1px solid #9c1a5e !important;
+  background-image: none !important;
+
+  text-shadow: none !important;
+  color: #fff !important;
+
+  box-shadow: none !important;
+}
+.has-touch .annotator-controls > a::after {
+  display: none !important;
+}
+.has-touch .annotator-viewer div:first-of-type {
+  padding: 10px !important;
+
+  font-size: 16px !important;
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  font-style: initial !important;
+}
+.has-touch .annotator-viewer .annotator-controls {
+  opacity: 1 !important;
+}
+.has-touch .annotator-viewer .annotator-controls a,
+.has-touch .annotator-viewer .annotator-controls button {
+  opacity: 1 !important;
+}
+.has-touch .annotator-viewer .annotator-controls a:focus,
+.has-touch .annotator-viewer .annotator-controls a:hover,
+.has-touch .annotator-viewer .annotator-controls button:focus,
+.has-touch .annotator-viewer .annotator-controls button:hover {
+  opacity: 1 !important;
+}
+/* Removal of annotator touch - end */
+
+.page-meeting-notes .view-content h3 {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.page-meeting-notes .view-content i {
+  display: block;
+
+  margin-bottom: 4px;
+}
+.page-meeting-notes .view-content a.no-print {
+  display: inline-block;
+  background-color: #9c1a5e;
+  border: 1px solid #9c1a5e;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  color: #fff;
+  padding: 5px 20px 5px 20px;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  margin-left: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color .1s ease-in;
 }

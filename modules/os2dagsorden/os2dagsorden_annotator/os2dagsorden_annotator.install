@@ -65,10 +65,28 @@ function os2dagsorden_annotator_schema() {
  */
 function os2dagsorden_annotator_update_7000 () {
   $new_field = array(
-    'type' => 'blob', 
-    'size' => 'big', 
-    'not null' => FALSE,  
+    'type' => 'blob',
+    'size' => 'big',
+    'not null' => FALSE,
     'description' => 'The information of the note object',
   );
   db_change_field('os2dagsorden_annotator_notes', 'note_info', 'note_info', $new_field);
+}
+
+/*
+ * Implements hook_update_N().
+ * 
+ * Add new bpa_sysid field.
+ */
+function os2dagsorden_annotator_update_7001() {
+  $new_field = array(
+    'type' => 'int',
+    'not null' => FALSE,
+  );
+  if (db_field_exists('os2dagsorden_annotator_notes', 'acadre_id')) {
+    db_change_field('os2dagsorden_annotator_notes',  'acadre_id', 'bpa_sysid', $new_field);
+  }
+  else {
+    db_add_field('os2dagsorden_annotator_notes', 'bpa_sysid', $new_field);
+  }
 }
