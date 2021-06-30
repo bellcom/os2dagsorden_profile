@@ -383,8 +383,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
 
   if ($item['access'] !== 'Lukket' || variable_get('os2web_edoc_middelfart_esdh_import_closed_agenda', FALSE)) {
      // Process behandlingplans.
-    $behandlingplan_meetings = array();
-    $behandlingplan_decisions = array();
+    $behandlingplan = array();
 
     foreach ($xml_handlingPlans->xpath('edoc:Handling') as $key => $behandlingplan_xml) {
       $title = (string) array_shift($behandlingplan_xml->xpath('edoc:CommitteeName'));
@@ -392,32 +391,51 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
       $date = format_date(strtotime($date), 'os2dagsorden_long_date');
       $decision = (string) array_shift($behandlingplan_xml->xpath('edoc:Decision'));
       $excluded_decisions = explode(',', variable_get('os2web_edoc_middelfart_esdh_behandlingsplan_decision_exclude', 'Beslutning ikke frigivet'));
-      $behandlingplan_meetings[$key] =  $title . ' ' . t('den') . ' ' . $date;
+
       if (!in_array($decision, $excluded_decisions)) {
-        $behandlingplan_decisions[$key] = (string) array_shift($behandlingplan_xml->xpath('edoc:Decision'));
-      }
-    }
-    if (!empty($behandlingplan_meetings)) {
-      $bullet_body = '<strong>' . t('Behandlingsplan') . ':</strong><br/>';
-      $bullet_body .= implode('<br/>', $behandlingplan_meetings);
-      if (!empty($behandlingplan_decisions)) {
-        $bullet_body .= '<br/><br/>';
-        foreach ($behandlingplan_decisions as $key => $decision) {
-          if (!empty($decision)) {
-            $bullet_body .= '<strong>' . $behandlingplan_meetings[$key] . '</strong><br/>';
-            $bullet_body .= $decision . '<br/>';
+        $behandlingplan[$key]['meeting'] = $title . ' ' . t('den') . ' ' . $date;
+        $behandlingplan[$key]['decision'] = (string) array_shift($behandlingplan_xml->xpath('edoc:Decision'));
+
+        // Adding absent people only with reason Fravær.
+        $handling_absences = [];
+        foreach ($behandlingplan_xml->xpath('edoc:HandlingAbsences/edoc:HandlingAbsence') as $handling_absence) {
+          $reason = (string) array_shift($handling_absence->xpath('edoc:Reason'));
+
+          if ($reason == 'Fravær') {
+            $handling_absences[] = (string) array_shift($handling_absence->xpath('edoc:Name'));
           }
         }
+        $behandlingplan[$key]['absences'] = implode(', ', $handling_absences);
       }
+    }
+
+    if (!empty($behandlingplan)) {
       $bullet_title = t('Behandlingsplan');
       $bullet_id = _os2web_edoc_middelfart_esdh_generate_id($bullet_title . $xml_item['documentid']);
+
+      $bullet_body = '';
+      for ($i = 0; $i < count($behandlingplan); $i++) {
+        if ($i != 0) {
+          $bullet_body .= '<br/><br/>';
+        }
+
+        $bullet_body .= '<strong>' . $behandlingplan[$i]['meeting'] . '</strong><br/>';
+        $bullet_body .= $behandlingplan[$i]['decision'];
+
+        if (!empty($behandlingplan[$i]['absences'])) {
+          $bullet_body .= '<br/><i>Fraværende: ' . $behandlingplan[$i]['absences'] . '</i>';
+        }
+      }
+
       $behandlingsplan_item = array(
-          'title' => $bullet_title,
-          'body' => _os2web_edoc_esdh_mm_improve_body_html($bullet_body, $meeting['uri']),
-          'sysid' => $bullet_id,
-        );
+        'title' => $bullet_title,
+        'body' => _os2web_edoc_esdh_mm_improve_body_html($bullet_body, $meeting['uri']),
+        'sysid' => $bullet_id,
+      );
     }
+
     $bpa_indexes = array();
+
     // Process bullets.
     foreach ($xml_item_bullets->xpath('edoc:CasePresentation') as $bullet_xml) {
       $title_xpath = $bullet_xml->xpath('edoc:Title');
@@ -438,7 +456,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
         }
       }
     }
-    //dpm($bpa_indexes);
+
     if (!empty($bpa_indexes)) {
       ksort($bpa_indexes);
       $index = reset($bpa_indexes);
