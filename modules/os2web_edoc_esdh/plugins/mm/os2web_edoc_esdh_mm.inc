@@ -25,6 +25,15 @@ function os2web_edoc_esdh_mm_test($stuff) {
 }
 
 /**
+ * Gets the Plugin ID.
+ *
+ * Plugin ID must be same as the filename with no exception.
+ */
+function os2web_edoc_esdh_mm_get_plugin_id() {
+  return 'os2web_edoc_esdh_mm';
+}
+
+/**
  * Returns a list of meeting_ids for import.
  *
  * In our case a list of uri's of xml files.
@@ -61,6 +70,7 @@ function os2web_edoc_esdh_mm_get_import_list() {
     $uris[] = array(
       'id' => _os2web_edoc_esdh_generate_meeting_id($meeting_date, $committee),
       'uri' => $xml_file->uri,
+      'plugin_id' => os2web_edoc_esdh_mm_get_plugin_id(),
     );
   }
   return $uris;

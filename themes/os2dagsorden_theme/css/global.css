@@ -74,13 +74,13 @@
     display: block;
     width: 74px; }
 
- .page-user-reset #block-system-main {
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
-    background: #f7f1f1;
-    padding: 20px 40px;
-  }
+.page-user-reset #block-system-main {
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  background: #f7f1f1;
+  padding: 20px 40px; }
+
 #block-user-login {
   max-width: 450px;
   min-height: 400px;
@@ -1955,6 +1955,10 @@ table .speaker-paper-link-container {
     width: 45px;
     min-width: 45px; }
 
+table .print-bullet-point-link {
+  width: 36px;
+  min-width: 36px; }
+
 /*meeting details table*/
 .view-meeting-details {
   background: #fffffe;
@@ -2005,7 +2009,7 @@ table .speaker-paper-link-container {
       .view-meeting-details .view-content table.views-table tr td:nth-child(1) {
         padding-left: 10px;
         border-radius: 3px 0 0 3px; }
-      .view-meeting-details .view-content table.views-table tr td:nth-last-child {
+      .view-meeting-details .view-content table.views-table tr td:nth-last-child() {
         border-radius: 0 3px 3px 0; }
     .view-meeting-details .view-content table.views-table tr th, .view-meeting-details .view-content table.views-table tr td {
       font-size: 16px;
@@ -2145,7 +2149,7 @@ table .speaker-paper-link-container {
             display: table-cell;
             padding: 3px 3px 0 3px;
             line-height: 15px;
-            border-radius: 0; }
+            border-radius: none; }
             .view-meeting-details .attachment .bullet-point-attachments .view-content table.views-table tr td.bullet-point-modify-links-container a .indicator-edit-agenda {
               position: relative;
               background: url("../img/icon_edit.png") no-repeat 50% top;
@@ -2721,6 +2725,7 @@ a.annotator-wrapper {
           border-left: 0; }
         .bilags-block .bilag-list ul li.current a {
           font-weight: bold; }
+
 .annotator-outline-pager {
   top: 0;
   width: 10%;
@@ -2745,10 +2750,9 @@ a.annotator-wrapper {
 .has-outline-pager {
   display: inline-block;
   width: 100%; }
+  .has-outline-pager .attachment-text {
+    position: relative; }
 
-.has-outline-pager .attachment-text {
-  position: relative;
-}
 .annotator-outline-pager {
   display: none; }
 
@@ -2886,9 +2890,6 @@ a.annotator-wrapper {
 .view-meetings-search .views-table, .bullet-point-attachments .views-table, .page-meeting-bullet-point .views-table table {
   table-layout: fixed; }
 
-.bullet-point-attachments .views-table .print-bullet-point-link, .bullet-point-attachments .views-table .send-bullet-point-link {
-  width: 1%; }
-
 /* ---------------------------- Pagescroller styles END---------------------------- */
 /* ---------------------------- Manual create agenda START---------------------------- */
 .form-submit-edit, .form-submit-delete {
@@ -2980,7 +2981,7 @@ a.annotator-wrapper {
 
 /* ---------------------------- arrows_reverse START ---------------------------- */
 .arrows-reverse {
-  background-image: url('/profiles/os2dagsorden/themes/kldagsorden/img/img_arrows_reverse.png');
+  background-image: url(/profiles/os2dagsorden/themes/kldagsorden/img/img_arrows_reverse.png);
   background-repeat: no-repeat;
   background-position: center;
   /*displaying starting from default-normal*/
@@ -3086,8 +3087,8 @@ div.note.committee-admin {
 .checkbox.committee-admin::before {
   content: '';
   position: absolute;
-  background-repeat: no-repeat;
   background-image: url(../img/wrench.png);
+  background-repeat: no-repeat;
   background-size: 15px;
   right: 20px;
   top: 2px;
@@ -3131,6 +3132,7 @@ div.note.premeeting::before {
   left: 8px;
   width: 16px;
   height: 16px; }
+
 div.note.committee-admin::before {
   content: '';
   position: absolute;
@@ -3140,6 +3142,7 @@ div.note.committee-admin::before {
   left: 8px;
   width: 16px;
   height: 16px; }
+
 div.note.external-user {
   position: relative;
   margin-top: 1em; }
@@ -3179,11 +3182,13 @@ div.note.subscribe::before {
 
 ul#follows .checkbox.premeeting {
   right: 20px; }
+
 .checkbox.committee-admin {
-  right: 20px;
-}
+  right: 20px; }
+
 ul#follows .checkbox.committee-admin {
   right: 40px; }
+
 .checkbox_follows,
 .checkbox_invisible,
 .checkbox.premeeting,
@@ -3401,31 +3406,24 @@ ul#follows .checkbox.committee-admin {
 @media (min-width: 768px) {
   .view-meeting-details td.case-id-link-container {
     width: 70px !important;
-    text-align: right;
-  }
+    text-align: right; }
   /*.view-content table .item-list {*/
   /*  margin-right: -200px;*/
   /*}*/
   .view-meeting-details .ul-item-list-dagsordenspunkt li.bilag .bilag-pages {
-    right: 25px;
-  }
-}
-
+    right: 25px; } }
 
 /* Removal of annotator touch - begin */
 .has-touch .annotator-adder {
   position: fixed !important;
-
   top: auto !important;
   left: auto !important;
   right: 20px;
   bottom: 20px;
-
   width: auto !important;
   height: auto !important;
+  background-image: none !important; }
 
-  background-image: none !important;
-}
 .has-touch .annotator-adder button {
   position: relative;
   padding: 10px 20px !important;
@@ -3437,8 +3435,7 @@ ul#follows .checkbox.committee-admin {
   font-size: 16px;
   font-weight: bold;
   text-indent: 0 !important;
-  color: #fff;
-}
+  color: #fff; }
 
 /*.has-touch .annotator-outer {
   position: fixed !important;
@@ -3456,71 +3453,63 @@ ul#follows .checkbox.committee-admin {
 }*/
 .has-touch .annotator-widget {
   position: static !important;
-
   max-width: 300px !important;
-  margin: auto !important;
-}
+  margin: auto !important; }
+
 .has-touch .annotator-editor .annotator-item textarea {
   padding: 10px !important;
   font-size: 16px !important;
-  font-style: initial !important;
-}
+  font-style: initial !important; }
+
 .has-touch .annotator-controls {
   padding: 10px !important;
-  background-image: none !important;
-}
+  background-image: none !important; }
+
 .has-touch .annotator-controls > a {
   padding: 5px 30px 5px 30px !important;
-
   font-size: 16px !important;
-
   background-color: #9c1a5e !important;
   border-radius: 4px !important;
   border: 1px solid #9c1a5e !important;
   background-image: none !important;
-
   text-shadow: none !important;
   color: #fff !important;
+  box-shadow: none !important; }
 
-  box-shadow: none !important;
-}
 .has-touch .annotator-controls > a::after {
-  display: none !important;
-}
+  display: none !important; }
+
 .has-touch .annotator-viewer div:first-of-type {
   padding: 10px !important;
-
   font-size: 16px !important;
   border-radius: 4px !important;
   background-color: #fff !important;
-  font-style: initial !important;
-}
+  font-style: initial !important; }
+
 .has-touch .annotator-viewer .annotator-controls {
-  opacity: 1 !important;
-}
+  opacity: 1 !important; }
+
 .has-touch .annotator-viewer .annotator-controls a,
 .has-touch .annotator-viewer .annotator-controls button {
-  opacity: 1 !important;
-}
+  opacity: 1 !important; }
+
 .has-touch .annotator-viewer .annotator-controls a:focus,
 .has-touch .annotator-viewer .annotator-controls a:hover,
 .has-touch .annotator-viewer .annotator-controls button:focus,
 .has-touch .annotator-viewer .annotator-controls button:hover {
-  opacity: 1 !important;
-}
-/* Removal of annotator touch - end */
+  opacity: 1 !important; }
 
+/* Removal of annotator touch - end */
 .page-meeting-notes .view-content h3 {
   font-weight: bold;
   font-size: 20px;
   padding-left: 0;
-  padding-right: 0;
-}
+  padding-right: 0; }
+
 .page-meeting-notes .view-content i {
   display: block;
+  margin-bottom: 4px; }
 
-  margin-bottom: 4px;
-}
 .page-meeting-notes .view-content a.no-print {
   display: inline-block;
   background-color: #9c1a5e;
@@ -3535,5 +3524,4 @@ ul#follows .checkbox.committee-admin {
   margin-left: 3px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color .1s ease-in;
-}
+  transition: background-color .1s ease-in; }

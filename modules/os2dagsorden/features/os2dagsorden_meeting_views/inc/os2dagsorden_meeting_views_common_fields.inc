@@ -269,7 +269,7 @@ function os2dagsorden_meeting_views_common_show_additional_meeting($meeting_id) 
 function os2dagsorden_meeting_views_common_fields_status($meeting_id) {
   $meeting = node_load($meeting_id);
   $meeting_type = field_get_items('node', $meeting, 'field_os2web_meetings_type');
-  $options = field_info_field(field_os2web_meetings_type);
+  $options = field_info_field('field_os2web_meetings_type');
   $addendum_to = field_get_items('node', $meeting, 'field_os2web_meetings_addendum');
   if (!empty($addendum_to[0]['nid']) && variable_get('os2dagsorden_meeting_view_settings_not_attach_addtional_agenda', FALSE)) {
     print (substr($options['settings']['allowed_values'][$meeting_type[0]['value']], -1) === '+') ? 'Tillægsdagsorden+' : 'Tillægsdagsorden';
@@ -284,7 +284,7 @@ function os2dagsorden_meeting_views_common_fields_status($meeting_id) {
  *
  * @param string $title
  *   Bullet point title.
- * 
+ *
  * * @return string
  *   Bullet point title without system text.
  */

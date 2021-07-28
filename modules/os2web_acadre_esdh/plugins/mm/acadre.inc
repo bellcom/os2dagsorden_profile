@@ -12,6 +12,7 @@ define('ACADRE_MM_ACCESS_OPEN', 1);
 define('ACADRE_MM_ACCESS_LUKKET', 2);
 define('ACADRE_MM_ACCESS_PERSON', 3);
 define('MM_REPUBLISH_SUBVERSION', TRUE);
+define('ACADRE_MM_IMPORT_DIR', 'private://');
 
 /**
  * Plugin definition with callbacks.
@@ -30,6 +31,15 @@ $plugin = array(
  */
 function os2web_acadre_esdh_mm_test($stuff) {
   return 'Test successful. Recieved: ' . $stuff;
+}
+
+/**
+ * Gets the Plugin ID.
+ *
+ * Plugin ID must be same as the filename with no exception.
+ */
+function os2web_acadre_esdh_get_plugin_id() {
+  return 'acadre';
 }
 
 /**
@@ -54,10 +64,10 @@ function os2web_acadre_esdh_mm_get_import_list() {
   foreach (file_scan_directory(variable_get('os2web_meetings_path', ACADRE_MM_IMPORT_DIR), '/\.xml$/i', array('recurse' => FALSE)) as $xml_file) {
     $pub_id = (int) str_replace('XML_', '', $xml_file->name);
     if (is_numeric($pub_id)) {
-      $uris[] = array('id' => $pub_id, 'uri' => $xml_file->uri);
+      $uris[] = array('id' => $pub_id, 'uri' => $xml_file->uri, 'plugin_id' => os2web_acadre_esdh_get_plugin_id());
     }
     else {
-      $uris[] = array('id' => $xml_file->name, 'uri' => $xml_file->uri);
+      $uris[] = array('id' => $xml_file->name, 'uri' => $xml_file->uri, 'plugin_id' => os2web_acadre_esdh_get_plugin_id());
     }
   }
   usort($uris, '_acadre_esdh_mm_sort_import_list');
@@ -629,10 +639,18 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
 
   $rev_meetings = array();
 
+  // Find all NIDs that belong to this plugin_id.
+  $meeting_nids = db_select('os2web_esdh_provider_import', 'o')
+    ->fields('o', array('nid'))
+    ->condition('plugin_id', os2web_acadre_esdh_get_plugin_id())
+    ->execute()
+    ->fetchCol();
+
   // Find all meetings and gather meeting and agenda_ids.
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node', '=')
-    ->propertyCondition('type', 'os2web_meetings_meeting', '=');
+    ->propertyCondition('type', 'os2web_meetings_meeting', '=')
+    ->propertyCondition('nid', $meeting_nids, 'IN');
   $nodes_result = $query->execute();
 
   if (!isset($nodes_result['node'])) {
@@ -677,7 +695,7 @@ function _os2web_acadre_esdh_mm_order_addendums($drush = FALSE) {
     if (isset($meetings[$meeting_id[0]['value']][$meeting_system_id[0]['value']])) {
       // Duplicate meeting detected.
       watchdog('acadre MM', 'Duplicate import found for meeting %mid. Deleting nid=%nid.', array(
-        '%mid' => $meeting_id['value'],
+        '%mid' => $meeting_id[0]['value'],
         '%nid' => $node->nid,
       ), WATCHDOG_WARNING);
       node_delete($node->nid);

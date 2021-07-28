@@ -168,7 +168,7 @@ function os2dagsorden_settings_export_to_file() {
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_meeting_title_len'] = variable_get('os2dagsorden_meetings_views_last_8_meeting_title_len', 25);
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_meeting_location_len'] = variable_get('os2dagsorden_meetings_views_last_8_meeting_location_len', 25);
   $setting_array['os2dagsorden_latest_meetings_view_settings']['os2dagsorden_meetings_views_last_8_show_external_committe'] = variable_set('os2dagsorden_meetings_views_last_8_show_external_committee', TRUE);
- 
+
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu'] = variable_get('os2dagsorden_collapse_menu', TRUE);
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch'] = variable_get('os2dagsorden_collapse_menu_touch', TRUE);
   $setting_array['os2dagsorden_frontpage_layout']['os2dagsorden_collapse_menu_touch_pages'] = variable_get('os2dagsorden_collapse_menu_touch_pages', 'meetings/print');
@@ -328,6 +328,8 @@ function os2dagsorden_settings_export_to_file() {
     $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form'] = variable_get('os2dagsorden_create_agenda_full_agenda_upload_fields_edit_form', FALSE);
     $setting_array['os2dagsorden_create_agenda_settings']['os2dagsorden_create_agenda_meeting_start_date_default'] = variable_get('os2dagsorden_create_agenda_meeting_start_date_default');
   }
+  $setting_array['os2dagsorden_annotator_settings']['os2dagsorden_annotator_settings_save_notes'] = variable_get('os2dagsorden_annotator_settings_save_notes', TRUE);
+  $setting_array['os2dagsorden_speaker_paper_settings']['os2dagsorden_speaker_paper_settings_save_speaker_paper'] = variable_get('os2dagsorden_speaker_paper_settings_save_speaker_paper', TRUE);
   print os2dagsorden_settings_write_ini_file($setting_array, TRUE);
 }
 
@@ -665,7 +667,7 @@ function os2dagsorden_settings_block_view_alter(&$data, $block) {
     case 'menu-sidepane-menu':
       foreach ($data['content'] as &$menu_item) {
         // Filtering on actual menus.
-        if ($menu_item['#theme'] === 'menu_link__menu_sidepane_menu') {
+        if (isset($menu_item['#theme']) && $menu_item['#theme'] === 'menu_link__menu_sidepane_menu') {
           // Menu title: Forsiden.
           if ($menu_item['#title'] === 'Forsiden') {
             $menu_item['#title'] = variable_get('os2dagsorden_title_frontpage_home', 'Forsiden');

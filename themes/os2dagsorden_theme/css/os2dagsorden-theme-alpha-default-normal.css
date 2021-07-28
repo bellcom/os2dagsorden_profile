@@ -42,3 +42,13 @@ ul.droptrue li {
   display: inline-block; }
   .block-views .view-user-logout-menu li div.right {
     float: none; }
+
+/* ---------------------------- search_block START ---------------------------- */
+.region-content .block-views-exp-meetings-search-page .views-exposed-widget {
+  width: 20%; }
+
+.region-content .block-views-exp-meetings-search-page .views-submit-button {
+  position: absolute;
+  bottom: 7px; }
+
+/* ---------------------------- search_block END ---------------------------- */
