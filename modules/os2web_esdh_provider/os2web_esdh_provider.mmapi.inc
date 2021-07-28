@@ -1121,7 +1121,6 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
   // Order $enclosure_nid by key.
   ksort($enclosure_nids);
   // Adding enclosures.
-  dpm($enclosure_nids);
   foreach ($enclosure_nids as $key => $nid) {
     $node->field_os2web_meetings_attach[LANGUAGE_NONE][$key]['target_id'] = $nid;
   }
