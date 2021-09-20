@@ -700,14 +700,32 @@ function os2dagsorden_meeting_views_meeting_details_fields_dagsorden_header() {
   os2dagsorden_meeting_views_meeting_details_fields_create_bullet_point_button();
   os2dagsorden_meeting_views_meeting_details_fields_create_all_bullet_points_button();
 
-  print '<h3>' . variable_get('os2dagsorden_title_meeting_agenda', 'Dagsorden:') . '</h3>';
+  $meeting = node_load($meeting_id);
+  $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
+
+  $meeting_type_simple = 'Dagsorden';
+
+  if ($meeting_type == OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT || $meeting_type == OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT_PLUS) {
+    $meeting_type_simple = 'Referat';
+  }
+
+  print "<h3>$meeting_type_simple:</h3>";
 }
 
 /**
  * Closed agenda title.
  */
 function os2dagsorden_meeting_views_meeting_details_fields_lukket_dagsorden_header() {
-  print '<h3>' . variable_get('os2dagsorden_title_meeting_closed_agenda', 'Lukket Dagsorden:') . '</h3>';
+  $meeting_id = arg(1);
+  $meeting = node_load($meeting_id);
+  $meeting_type = $meeting->field_os2web_meetings_type['und'][0]['value'];
+
+  $meeting_type_simple = 'Dagsorden';
+  if ($meeting_type == OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT || $meeting_type == OS2WEB_MEETINGS_CONTENT_TYPES_MEETING_REFERAT_PLUS) {
+    $meeting_type_simple = 'Referat';
+  }
+
+  print "<h3>Lukket $meeting_type_simple:</h3>";
 }
 
 /**
@@ -1311,7 +1329,7 @@ function os2dagsorden_meeting_views_meeting_details_lukket_dagsorden_access() {
  * Prints tillags dagsorden header.
  */
 function os2dagsorden_meeting_views_meeting_details_fields_tilleags_dagsorden_header() {
-  print '<h3>' . 'Tillægs ' . variable_get('os2dagsorden_title_meeting_agenda', 'Dagsorden:') . '</h3>';
+  print '<h3>Tillægs Dagsorden:</h3>';
 }
 
 /**
