@@ -326,6 +326,7 @@ function os2intra_simplesaml_init() {
             'logout',
           );
           if (!in_array($_GET['q'], $non_redirect_paths)) {
+            watchdog('User', '[SimpleSAML redirect  - message] - ip "%ip" .', array('%ip' => ip_address()));
             drupal_goto('saml_login', array('query' => drupal_get_destination()));
           }
         }
