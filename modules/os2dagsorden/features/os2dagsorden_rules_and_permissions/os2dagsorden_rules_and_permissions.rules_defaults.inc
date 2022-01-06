@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2dagsorden_rules_and_permissions.rules_defaults.inc
@@ -33,12 +34,14 @@ function os2dagsorden_rules_and_permissions_default_rules_configuration() {
   $items['rules_os2web_set_committee_from_simplesaml'] = entity_import('rules_config', '{ "rules_os2web_set_committee_from_simplesaml" : {
       "LABEL" : "OS2web set committee from simplesaml",
       "PLUGIN" : "reaction rule",
-      "ACTIVE" : false,
       "OWNER" : "rules",
-      "REQUIRES" : [ "php", "rules", "simplesamlphp_auth" ],
+      "REQUIRES" : [ "rules", "php", "simplesamlphp_auth" ],
       "ON" : { "simplesamlphp_auth_rules_event_login" : [] },
+      "IF" : [
+        { "NOT data_is" : { "data" : [ "user:uid" ], "op" : "IN", "value" : { "value" : [ "1" ] } } }
+      ],
       "DO" : [
-        { "php_eval" : { "code" : "$user = os2dagsorden_access_helper_get_user();\\r\\n$user_committees = array();\\r\\n\\r\\n$field_user_committee = field_get_items(\\u0027user\\u0027, $user, \\u0027field_user_committee\\u0027);\\r\\nif (!empty($field_user_committee)) {\\r\\n  foreach ($field_user_committee as $user_committee) {\\r\\n    $user_committees[$user_committee[\\u0027tid\\u0027]] = $user_committee[\\u0027tid\\u0027];\\r\\n  }\\r\\n}\\r\\n\\r\\n$groups = simplesamlphp_auth_get_attributes(\\u0027http:\\/\\/schemas.xmlsoap.org\\/claims\\/Group\\u0027);\\r\\nforeach ($groups as $group) {\\r\\n  if (preg_match(\\u0027\\/.*_OS2Dagsorden_(.*)\\/i\\u0027, $group, $matches)) {\\r\\n    $committee_name = $matches[1];\\r\\n\\r\\n    $committee = taxonomy_get_term_by_name($committee_name, \\u0027os2web_meetings_tax_committee\\u0027);\\r\\n    if ($committee) {\\r\\n      $committee = reset($committee);\\r\\n      $updated_user_committees[$committee-\\u003Etid] = $committee-\\u003Etid;\\r\\n    }\\r\\n  }\\r\\n}\\r\\n\\r\\nsort($user_committees);\\r\\nsort($updated_user_committees);\\r\\n\\r\\nif ($user_committees != $updated_user_committees) {\\r\\n  $user-\\u003Efield_user_committee[\\u0027und\\u0027] = array();\\r\\n\\r\\n  foreach($updated_user_committees as $tid) {\\r\\n    $user-\\u003Efield_user_committee[\\u0027und\\u0027][][\\u0027tid\\u0027] = $tid;\\r\\n  }\\r\\n\\r\\n  user_save($user);\\r\\n}" } }
+        { "php_eval" : { "code" : "$user = os2dagsorden_access_helper_get_user();\\r\\n$user_committees = array();\\r\\n\\r\\n$field_user_committee = field_get_items(\\u0027user\\u0027, $user, \\u0027field_user_committee\\u0027);\\r\\nif (!empty($field_user_committee)) {\\r\\n  foreach ($field_user_committee as $user_committee) {\\r\\n    $user_committees[$user_committee[\\u0027tid\\u0027]] = $user_committee[\\u0027tid\\u0027];\\r\\n  }\\r\\n}\\r\\n\\r\\n$groups = simplesamlphp_auth_get_attributes(\\u0027http:\\/\\/schemas.xmlsoap.org\\/claims\\/Group\\u0027);\\r\\nforeach ($groups as $group) {\\r\\n  if (preg_match(\\u0027\\/.*_OS2Dagsorden_(.*)\\/i\\u0027, $group, $matches)) {\\r\\n    $committee_name = $matches[1];\\r\\n    $committee_name = str_replace(\\u0027_\\u0027, \\u0027 \\u0027, $committee_name);\\r\\n    $committee = taxonomy_get_term_by_name($committee_name, \\u0027os2web_meetings_tax_committee\\u0027);\\r\\n    if ($committee) {\\r\\n      $committee = reset($committee);\\r\\n      $updated_user_committees[$committee-\\u003Etid] = $committee-\\u003Etid;\\r\\n    }\\r\\n  }\\r\\n}\\r\\n\\r\\nsort($user_committees);\\r\\nsort($updated_user_committees);\\r\\n\\r\\nif ($user_committees != $updated_user_committees) {\\r\\n  $user-\\u003Efield_user_committee[\\u0027und\\u0027] = array();\\r\\n\\r\\n  foreach($updated_user_committees as $tid) {\\r\\n    $user-\\u003Efield_user_committee[\\u0027und\\u0027][][\\u0027tid\\u0027] = $tid;\\r\\n  }\\r\\n\\r\\n  user_save($user);\\r\\n}" } }
       ]
     }
   }');
