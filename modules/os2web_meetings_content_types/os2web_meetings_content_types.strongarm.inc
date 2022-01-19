@@ -163,18 +163,32 @@ function os2web_meetings_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__os2web_meetings_bullet';
   $strongarm->value = array(
-    'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '7',
+        ),
+        'title' => array(
+          'weight' => '3',
+        ),
+        'workbench_access' => array(
+          'weight' => '2',
+        ),
       ),
-      'related_block' => array(
-        'custom_settings' => TRUE,
+    ),
+    'view_modes' => array(
+      'full' => array(
+        'custom_settings' => FALSE,
       ),
       'os2web_meetings_meeting_detail_view' => array(
         'custom_settings' => TRUE,
       ),
-      'full' => array(
+      'print' => array(
         'custom_settings' => FALSE,
+      ),
+      'related_block' => array(
+        'custom_settings' => TRUE,
       ),
       'rss' => array(
         'custom_settings' => FALSE,
@@ -185,26 +199,12 @@ function os2web_meetings_content_types_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '5',
-        ),
-        'path' => array(
-          'weight' => '7',
-        ),
-        'workbench_access' => array(
-          'weight' => '2',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__os2web_meetings_bullet'] = $strongarm;
@@ -214,18 +214,26 @@ function os2web_meetings_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__os2web_meetings_bullet_attach';
   $strongarm->value = array(
-    'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'title' => array(
+          'weight' => '0',
+        ),
       ),
-      'related_block' => array(
-        'custom_settings' => TRUE,
+    ),
+    'view_modes' => array(
+      'full' => array(
+        'custom_settings' => FALSE,
       ),
       'os2web_meetings_meeting_detail_view' => array(
         'custom_settings' => TRUE,
       ),
-      'full' => array(
+      'print' => array(
         'custom_settings' => FALSE,
+      ),
+      'related_block' => array(
+        'custom_settings' => TRUE,
       ),
       'rss' => array(
         'custom_settings' => FALSE,
@@ -236,20 +244,12 @@ function os2web_meetings_content_types_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__os2web_meetings_bullet_attach'] = $strongarm;
@@ -259,14 +259,28 @@ function os2web_meetings_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__os2web_meetings_meeting';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'title' => array(
+          'weight' => '0',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'full' => array(
+        'custom_settings' => FALSE,
       ),
       'os2dagsorden_meeting_overview' => array(
         'custom_settings' => TRUE,
       ),
-      'full' => array(
+      'os2dagsorden_users_select' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -278,23 +292,9 @@ function os2web_meetings_content_types_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
-      'os2dagsorden_users_select' => array(
-        'custom_settings' => FALSE,
-      ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__os2web_meetings_meeting'] = $strongarm;
@@ -304,11 +304,22 @@ function os2web_meetings_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__os2web_meetings_spaper';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'title' => array(
+          'weight' => '-5',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
       ),
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -320,20 +331,9 @@ function os2web_meetings_content_types_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '-5',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__os2web_meetings_spaper'] = $strongarm;

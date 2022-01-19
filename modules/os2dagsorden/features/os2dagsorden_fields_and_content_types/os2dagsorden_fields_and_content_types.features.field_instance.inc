@@ -53,53 +53,6 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-os2web_meetings_bullet_attach-field_os2web_meetings_bpa_number'.
-  $field_instances['node-os2web_meetings_bullet_attach-field_os2web_meetings_bpa_number'] = array(
-    'bundle' => 'os2web_meetings_bullet_attach',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => '',
-        ),
-        'type' => 'number_integer',
-        'weight' => 9,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_meetings_bpa_number',
-    'label' => 'Number',
-    'required' => 0,
-    'settings' => array(
-      'max' => '',
-      'min' => '',
-      'prefix' => '',
-      'suffix' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'number',
-      'settings' => array(),
-      'type' => 'number',
-      'weight' => 4,
-    ),
-  );
-
-  // Exported field_instance:
   // 'node-os2web_meetings_meeting-field_os2web_meetings_full_attac'.
   $field_instances['node-os2web_meetings_meeting-field_os2web_meetings_full_attac'] = array(
     'bundle' => 'os2web_meetings_meeting',
@@ -1137,7 +1090,6 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
   t('ID');
   t('Is part of Committee');
   t('Login token');
-  t('Number');
   t('Organization');
   t('Premeeting committee');
   t('Rediger tekst');
