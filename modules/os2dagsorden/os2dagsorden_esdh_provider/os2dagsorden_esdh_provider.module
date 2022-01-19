@@ -53,7 +53,12 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
   else {
     $node->field_os2web_meetings_bpa_closed[$node->language][0]['value'] = 0;
   }
-
+  if (isset($enclosure['number'])) {
+    $node->field_os2web_meetings_bpa_number[$node->language][0]['value'] = $enclosure['number'];
+  }
+  else {
+    $node->field_os2web_meetings_bpa_number[$node->language][0]['value'] = $enclosure['sysid'];
+  }
   $node->field_os2web_meetings_bpa_type[$node->language][0]['value'] = $enclosure['type'];
 
   node_submit($node);
@@ -177,7 +182,7 @@ function os2dagsorden_esdh_provider_bullet_add_number($node, $number) {
 function os2dagsorden_esdh_provider_node_delete($node) {
   if (variable_get('os2dagsorden_speaker_paper_settings_save_speaker_paper', TRUE)) {
     return;
-  }    
+  }
   if ($node->type === 'os2web_meetings_bullet') {
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
