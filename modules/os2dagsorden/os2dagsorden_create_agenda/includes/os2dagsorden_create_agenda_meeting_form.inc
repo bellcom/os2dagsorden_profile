@@ -490,7 +490,7 @@ function _os2dagsorden_create_agenda_render_drag_and_drop_controls(&$form, $form
     }
 
     if($committee = field_get_items('node', $meeting, 'field_os2web_meetings_committee')) {
-      $committee_tid = $meeting_type[0]['tid'];
+      $committee_tid = $committee[0]['tid'];
     }
 
   }
