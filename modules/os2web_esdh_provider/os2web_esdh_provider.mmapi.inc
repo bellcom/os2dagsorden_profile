@@ -1057,6 +1057,7 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
             if ((int) $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['filesize'] !== $file->filesize) {
               // Replacing old file.
               $enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0] = (array) $file;
+              $enclosure_node->field_os2web_meetings_bpa_number[$enclosure_node->language][0]['value'] = $enclosure['number'];
 
               // Saving node.
               node_save($enclosure_node);
@@ -1077,6 +1078,11 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
               }
             }
             else {
+              // update BPA number
+              if ($enclosure_node->field_os2web_meetings_bpa_number[$enclosure_node->language][0]['value'] != $enclosure['number']) {
+                $enclosure_node->field_os2web_meetings_bpa_number[$enclosure_node->language][0]['value'] = $enclosure['number'];
+                node_save($enclosure_node);
+              }
               // Delete unneeded file.
               file_delete($file);
             }
@@ -1085,7 +1091,8 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
             $enclosure_node = os2dagsorden_esdh_provider_process_enclosure($enclosure, $file);
           }
 
-          $enclosure_nids[$enclosure_node->field_os2web_meetings_bpa_id['und'][0]['value']] = $enclosure_node->nid;
+          $enclosure_nids[$enclosure_node->field_os2web_meetings_bpa_number[$enclosure_node->language][0]['value']] = $enclosure_node->nid;
+
         }
       }
       else {
@@ -1122,7 +1129,7 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
   ksort($enclosure_nids);
   // Adding enclosures.
   foreach ($enclosure_nids as $key => $nid) {
-    $node->field_os2web_meetings_attach[LANGUAGE_NONE][$key]['target_id'] = $nid;
+    $node->field_os2web_meetings_attach[LANGUAGE_NONE][]['target_id'] = $nid;
   }
 
   return $node;

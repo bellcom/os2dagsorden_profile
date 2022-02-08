@@ -121,6 +121,12 @@ function os2dagsorden_fields_and_content_types_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 43,
       ),
+      'os2dagsorden_meeting_overview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),

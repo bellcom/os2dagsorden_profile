@@ -474,6 +474,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
       $enclosure_item['sysid'] = _os2web_edoc_middelfart_esdh_generate_id((string) array_shift($identifier_xpath));
       $link_xpath = $bullet_xml->xpath('edoc:Link');
       $enclosure_item['uri'] = (string) array_shift($link_xpath);
+      $enclosure_item['number'] = (int) array_shift($bullet_xml->xpath('edoc:ShowOrder'));
 
       $item['enclosures'][] = array(
         'uri' => implode('/', array(
@@ -485,6 +486,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
         'access' => $enclosure_item['access'],
         'filetype' => '.pdf',
         'type' => 'Bilag',
+        'number' =>  $enclosure_item['number'],
       );
     }
   }
