@@ -56,9 +56,7 @@ function os2dagsorden_esdh_provider_process_enclosure($enclosure, $file) {
   if (isset($enclosure['number'])) {
     $node->field_os2web_meetings_bpa_number[$node->language][0]['value'] = $enclosure['number'];
   }
-  else {
-    $node->field_os2web_meetings_bpa_number[$node->language][0]['value'] = $enclosure['sysid'];
-  }
+
   $node->field_os2web_meetings_bpa_type[$node->language][0]['value'] = $enclosure['type'];
 
   node_submit($node);
