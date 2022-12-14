@@ -100,10 +100,10 @@ function os2dagsorden_meeting_views_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'print_html_link_pos';
   $strongarm->value = array(
-    'link' => 0,
-    'corner' => 0,
     'block' => 'block',
+    'corner' => 0,
     'help' => 'help',
+    'link' => 0,
   );
   $export['print_html_link_pos'] = $strongarm;
 
@@ -322,10 +322,10 @@ function os2dagsorden_meeting_views_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'print_pdf_link_pos';
   $strongarm->value = array(
-    'link' => 0,
-    'corner' => 0,
     'block' => 'block',
+    'corner' => 0,
     'help' => 'help',
+    'link' => 0,
   );
   $export['print_pdf_link_pos'] = $strongarm;
 
@@ -347,7 +347,7 @@ function os2dagsorden_meeting_views_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'print_pdf_page_orientation';
-  $strongarm->value = 'landscape';
+  $strongarm->value = 'portrait';
   $export['print_pdf_page_orientation'] = $strongarm;
 
   $strongarm = new stdClass();
