@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Nemlogin main module file.
+ */
+
+define('OS2WEB_NEMLOGIN_BEL_OS2_REST_PATH', '/service/LoginService.php');
+define('OS2WEB_NEMLOGIN_BEL_OS2_LOGIN_PATH', '/nemlogin.php');
+define('OS2WEB_NEMLOGIN_BEL_OS2_LOGOUT_PATH', '/nemlogout.php');
+
+/**
+ * Implements hook_menu().
+ */
+function os2web_nemlogin_menu() {
+  $items = array();
+
+  $items['admin/config/system/os2web-nemlogin'] = array(
+    'title' => 'OS2web nemlogin',
+    'description' => 'Manage OS2web nemlogin settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_nemlogin_settings_form'),
+    'file' => 'inc/os2web_nemlogin.admin.inc',
+    'access arguments' => array('administer os2web'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['nemlogin/login'] = array(
+    'title' => 'OS2web nemlogin login',
+    'description' => 'OS2web nemlogin login callback',
+    'page callback' => 'os2web_nemlogin_login_callback',
+    'file' => 'inc/os2web_nemlogin.inc',
+    'access callback' => TRUE,
+  );
+
+  $items['nemlogin/session-destroy'] = array(
+    'title' => 'OS2web nemlogin session destroy',
+    'page callback' => 'os2web_nemlogin_session_destroy',
+    'file' => 'inc/os2web_nemlogin.inc',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+
