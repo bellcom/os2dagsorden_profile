@@ -459,8 +459,12 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
 
     if (!empty($bpa_indexes)) {
       ksort($bpa_indexes);
-      $index = reset($bpa_indexes);
-      array_splice($item['bullets'], $index, 0, array($behandlingsplan_item));
+
+      // Adding behandlingsplan_item.
+      if (!empty($behandlingsplan_item)) {
+        $index = reset($bpa_indexes);
+        array_splice($item['bullets'], $index, 0, array($behandlingsplan_item));
+      }
     }
 
     // Process enclosures.
