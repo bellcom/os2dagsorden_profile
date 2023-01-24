@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function os2web_nemlogin_schema() {
+  $schema['os2web_nemlogin_session_tokens'] = array(
+    'description' => 'This table stores the mapping between session IDs and tokens',
+    'fields' => array(
+      'token' => array(
+        'description' => 'Token from os2web_nemlogin IDP',
+        'type' => 'varchar',
+        'length' => 100,
+      ),
+      'sid' => array(
+        'description' => 'Session ID',
+        'type' => 'varchar',
+        'length' => 100,
+      ),
+    ),
+  );
+
+  return $schema;
+}
