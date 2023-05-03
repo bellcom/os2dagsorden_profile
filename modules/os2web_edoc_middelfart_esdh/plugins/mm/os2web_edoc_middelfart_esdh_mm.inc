@@ -481,10 +481,7 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
       $enclosure_item['number'] = (int) array_shift($bullet_xml->xpath('edoc:ShowOrder'));
 
       $item['enclosures'][] = array(
-        'uri' => implode('/', array(
-          trim($meeting['uri']),
-          str_replace('\\', '/', $enclosure_item['uri']),
-        )),
+        'uri' => trim($meeting['uri']) . str_replace('\\', '/', $enclosure_item['uri']),
         'title' => trim($enclosure_item['title']),
         'sysid' => $enclosure_item['sysid'],
         'access' => $enclosure_item['access'],
