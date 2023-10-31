@@ -206,7 +206,8 @@ function os2intra_simplesaml_init() {
     $_simplesamlphp_auth_as = new SimpleSAML_Auth_Simple(variable_get('simplesamlphp_auth_authsource', 'default-sp'));
     $_simplesamlphp_auth_saml_attributes = $_simplesamlphp_auth_as->getAttributes();
   }
-   // Do not run this from CLI.
+
+  // Do not run this from CLI.
   // Only proceed if user is NOT logged in and is NOT using drush uli for admin.
   if (php_sapi_name() != 'cli' && $user->uid == 0 && strpos($_GET['q'], 'user/reset/1') !== 0) {
     if (strpos($_GET['q'], 'user/reset/') === 0) {
@@ -350,6 +351,12 @@ function os2intra_simplesaml_init() {
             drupal_goto('nemlogin/login');
           }
         }
+        else {
+          if (isset($_SESSION['os2intra_simplesaml_user_login_link'])) {
+            unset($_SESSION['os2intra_simplesaml_user_login_link']);
+            os2intra_simplesaml_login_user_by_nemlogin_uid($user, $_SESSION['nemlogin_uid']);
+          }
+        }
       }
     }
   }
@@ -375,5 +382,19 @@ function os2intra_simplesaml_logout_method() {
   }
   else {
     drupal_goto('/logout');
+  }
+}
+
+function os2intra_simplesaml_login_user_by_nemlogin_uid(&$user, $nemlogin_uid) {
+  $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
+    ->fields("os2pid", array("uid"))
+    ->condition("nemlogin_uid", $nemlogin_uid)
+    ->execute()
+    ->fetchField();
+  if (!empty($uid)) {
+    unset($_SESSION['os2intra_simplesaml_user_login_link']);
+    $user = user_load($uid);
+    $edit = array();
+    user_login_finalize($edit);
   }
 }
