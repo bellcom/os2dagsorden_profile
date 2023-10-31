@@ -353,8 +353,18 @@ function os2intra_simplesaml_init() {
         }
         else {
           if (isset($_SESSION['os2intra_simplesaml_user_login_link'])) {
-            unset($_SESSION['os2intra_simplesaml_user_login_link']);
-            os2intra_simplesaml_login_user_by_nemlogin_uid($user, $_SESSION['nemlogin_uid']);
+            // Logging in user if one can be found.
+            $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
+              ->fields("os2pid", array("uid"))
+              ->condition("nemlogin_uid", $_SESSION['nemlogin_uid'])
+              ->execute()
+              ->fetchField();
+            if (!empty($uid)) {
+              unset($_SESSION['os2intra_simplesaml_user_login_link']);
+              $user = user_load($uid);
+              $edit = array();
+              user_login_finalize($edit);
+            }
           }
         }
       }
@@ -382,19 +392,5 @@ function os2intra_simplesaml_logout_method() {
   }
   else {
     drupal_goto('/logout');
-  }
-}
-
-function os2intra_simplesaml_login_user_by_nemlogin_uid(&$user, $nemlogin_uid) {
-  $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
-    ->fields("os2pid", array("uid"))
-    ->condition("nemlogin_uid", $nemlogin_uid)
-    ->execute()
-    ->fetchField();
-  if (!empty($uid)) {
-    unset($_SESSION['os2intra_simplesaml_user_login_link']);
-    $user = user_load($uid);
-    $edit = array();
-    user_login_finalize($edit);
   }
 }
