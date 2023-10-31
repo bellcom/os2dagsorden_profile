@@ -47,3 +47,14 @@ function os2intra_simplesaml_update_7101(&$sandbox) {
   ));
 }
 
+/**
+ * Changing length nemlogin_uid to 255 chars.
+ */
+function os2intra_simplesaml_update_7102(&$sandbox) {
+  db_change_field('os2intra_simplesaml_nemid_pid_mapping', 'nemlogin_uid', 'nemlogin_uid', array(
+    'description' => 'UID field mapped with this user',
+    'type' => 'varchar',
+    'length' => 255,
+  ));
+}
+

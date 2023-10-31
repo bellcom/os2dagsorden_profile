@@ -26,8 +26,7 @@ function os2web_nemlogin_login_callback() {
   $token = $_REQUEST['token'];
   $mnemo = $_REQUEST['mnemo'];
 
-  $response = NULL;
-  $pid = NULL;
+  $uid = NULL;
 
   $data = "token=$token&mnemo=$mnemo";
 
@@ -40,17 +39,18 @@ function os2web_nemlogin_login_callback() {
   $response = json_decode($responseRaw->data) ;
 
   if ($response) {
-    if (isset($response->pid)) {
-      $pidraw = $response->pid;
-      if ($pidraw) {
-        $pid = utf8_decode($pidraw);
-        $_SESSION['nemlogin_uid'] = $pid;
+    $uidField = variable_get('os2web_nemlogin_uid_field', 'pid');
+    if (isset($response->{$uidField})) {
+      $uidRaw = $response->{$uidField};
+      if ($uidRaw) {
+        $uid = utf8_decode($uidRaw);
+        $_SESSION['nemlogin_uid'] = $uid;
       }
     }
   }
 
-  if (!$pid) {
-    watchdog('os2web_nemlogin', "Could not fetch PID. Response is empty");
+  if (!$uid) {
+    watchdog('os2web_nemlogin', "Could not fetch UID field. Response is empty");
   }
 
   // Saving token into a sessions.

@@ -20,6 +20,14 @@ function os2web_nemlogin_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2web_nemlogin_mnemo'),
     '#description' => t('Value for IDP mnemo key. Example: bellcom.dk'),
   ];
+  $form['os2web_nemlogin_uid_field'] = [
+    '#type' => 'select',
+    '#title' => t('User identifier field (uid)'),
+    '#options' => ['pid' => 'PID', 'cpr_uuid' => 'CPR Uuid'],
+    '#required' => TRUE,
+    '#default_value' => variable_get('os2web_nemlogin_uid_field'),
+    '#description' => t('Field for identifying the user, must be available in the session'),
+  ];
 
   return system_settings_form($form);
 }
