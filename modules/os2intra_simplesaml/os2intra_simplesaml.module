@@ -348,7 +348,14 @@ function os2intra_simplesaml_init() {
 
           // Redirecting only if module exists and path is valid.
           if (module_exists('os2web_nemlogin')) {
-            drupal_goto('nemlogin/login');
+            if (isset($_SESSION['os2intra_simplesaml_user_login_link'])) {
+              // Load node.admin.inc from the node module.
+              module_load_include('inc', 'os2web_nemlogin', 'inc/os2web_nemlogin');
+              os2web_nemlogin_login_callback();
+            }
+            else {
+              drupal_goto('nemlogin/login');
+            }
           }
         }
         else {
@@ -371,6 +378,7 @@ function os2intra_simplesaml_init() {
     }
   }
 }
+
 /*
  * Implements hook_user_delete.
  */

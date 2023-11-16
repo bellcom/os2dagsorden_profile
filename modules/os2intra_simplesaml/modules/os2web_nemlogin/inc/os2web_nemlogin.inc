@@ -58,7 +58,7 @@ function os2web_nemlogin_login_callback() {
 
   // Logout on IDP.
   $getParams = http_build_query([
-    'RelayState' => $GLOBALS['base_url'],
+    'RelayState' => $GLOBALS['base_url'] . request_uri(),
   ]);
   $logoutUrl = variable_get('os2web_nemlogin_idp_base_url') . OS2WEB_NEMLOGIN_BEL_OS2_LOGOUT_PATH . '?' . $getParams;
   drupal_goto($logoutUrl);
