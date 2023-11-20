@@ -371,6 +371,7 @@ function os2intra_simplesaml_init() {
               $user = user_load($uid);
               $edit = array();
               user_login_finalize($edit);
+              drupal_goto();
             }
           }
         }
