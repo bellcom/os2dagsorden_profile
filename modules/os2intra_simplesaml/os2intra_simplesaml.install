@@ -20,7 +20,7 @@ function os2intra_simplesaml_schema() {
       'nemlogin_uid' => array(
         'description' => 'PID or RID mapped with this user',
         'type' => 'varchar',
-        'length' => 24,
+        'length' => 255,
       ),
       'changed' => array(
         'description' => 'The Unix timestamp when the entry was most recently changed.',

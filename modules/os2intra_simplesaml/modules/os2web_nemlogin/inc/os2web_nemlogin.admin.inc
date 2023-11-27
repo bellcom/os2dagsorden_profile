@@ -23,7 +23,7 @@ function os2web_nemlogin_settings_form($form, $form_state) {
   $form['os2web_nemlogin_uid_field'] = [
     '#type' => 'select',
     '#title' => t('User identifier field (uid)'),
-    '#options' => ['pid' => 'PID', 'cpr_uuid' => 'CPR Uuid'],
+    '#options' => ['pid' => 'PID', 'cpr_uuid' => 'CPR Uuid', 'cpr' => 'CPR (encrypted)'],
     '#required' => TRUE,
     '#default_value' => variable_get('os2web_nemlogin_uid_field'),
     '#description' => t('Field for identifying the user, must be available in the session'),

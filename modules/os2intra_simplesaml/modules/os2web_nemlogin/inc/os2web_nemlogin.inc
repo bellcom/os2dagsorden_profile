@@ -44,6 +44,10 @@ function os2web_nemlogin_login_callback() {
       $uidRaw = $response->{$uidField};
       if ($uidRaw) {
         $uid = utf8_decode($uidRaw);
+        if ($uidField == 'cpr') {
+          $uid = hash('sha256',drupal_get_hash_salt() . $uid);
+        }
+
         $_SESSION['nemlogin_uid'] = $uid;
       }
     }
@@ -58,7 +62,7 @@ function os2web_nemlogin_login_callback() {
 
   // Logout on IDP.
   $getParams = http_build_query([
-    'RelayState' => $GLOBALS['base_url'] . request_uri(),
+    'RelayState' => ($_SESSION['os2intra_simplesaml_user_login_link']) ? $GLOBALS['base_url'] . request_uri() : $GLOBALS['base_url'],
   ]);
   $logoutUrl = variable_get('os2web_nemlogin_idp_base_url') . OS2WEB_NEMLOGIN_BEL_OS2_LOGOUT_PATH . '?' . $getParams;
   drupal_goto($logoutUrl);
