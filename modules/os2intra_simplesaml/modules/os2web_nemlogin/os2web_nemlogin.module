@@ -40,6 +40,13 @@ function os2web_nemlogin_menu() {
     'access callback' => TRUE,
   );
 
+  $items['nemlogin/select-login'] = array(
+    'title' => 'OS2web nemlogin login type select',
+    'page callback' => 'os2web_nemlogin_select_login',
+    'file' => 'inc/os2web_nemlogin.inc',
+    'access callback' => TRUE,
+  );
+
   return $items;
 }
 

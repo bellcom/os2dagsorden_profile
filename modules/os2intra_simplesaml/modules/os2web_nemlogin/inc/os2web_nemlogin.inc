@@ -34,7 +34,7 @@ function os2web_nemlogin_login_callback() {
     'method' => 'POST',
     'data' => $data,
     'headers' => array('Content-Type' => 'application/x-www-form-urlencoded'),
-    ]);
+  ]);
 
   $response = json_decode($responseRaw->data) ;
 
@@ -62,8 +62,9 @@ function os2web_nemlogin_login_callback() {
 
   // Logout on IDP.
   $getParams = http_build_query([
-    'RelayState' => ($_SESSION['os2intra_simplesaml_user_login_link']) ? $GLOBALS['base_url'] . request_uri() : $GLOBALS['base_url'],
+    'RelayState' => ($_SESSION['os2intra_simplesaml_user_login_link']) ? $GLOBALS['base_url'] . '/' . $_SESSION['os2intra_simplesaml_user_login_link'] : $GLOBALS['base_url'],
   ]);
+
   $logoutUrl = variable_get('os2web_nemlogin_idp_base_url') . OS2WEB_NEMLOGIN_BEL_OS2_LOGOUT_PATH . '?' . $getParams;
   drupal_goto($logoutUrl);
 }
@@ -136,3 +137,10 @@ function os2web_nemlogin_remove_token($token) {
     ->condition('token', $token)
     ->execute();
 }
+
+function os2web_nemlogin_select_login() {
+  return (
+  '<a href="/nemlogin/login">Nemid</a><br/><a href="/saml_login">SimpleSAML</a>'
+  );
+}
+
