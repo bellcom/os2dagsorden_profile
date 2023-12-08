@@ -138,9 +138,22 @@ function os2web_nemlogin_remove_token($token) {
     ->execute();
 }
 
+/**
+ * Select login type callback.
+ */
 function os2web_nemlogin_select_login() {
+  global $user;
+
+  // If not anonym, redirect to frontpage.
+  if ($user->uid !== 0) {
+    drupal_goto("<front>");
+  }
+
   return (
-  '<a href="/nemlogin/login">Nemid</a><br/><a href="/saml_login">SimpleSAML</a>'
+  '<div style="text-align: center;padding: 10px;">
+    <a href="/nemlogin/login" class="form-submit" style="margin: 10px;">Nemid</a>
+    <a href="/saml_login"  class="form-submit" style="margin: 10px;">SimpleSAML</a>
+   </div>'
   );
 }
 

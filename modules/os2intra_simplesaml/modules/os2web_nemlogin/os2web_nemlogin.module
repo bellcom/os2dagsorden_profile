@@ -41,7 +41,7 @@ function os2web_nemlogin_menu() {
   );
 
   $items['nemlogin/select-login'] = array(
-    'title' => 'OS2web nemlogin login type select',
+    'title' => t('Select login type'),
     'page callback' => 'os2web_nemlogin_select_login',
     'file' => 'inc/os2web_nemlogin.inc',
     'access callback' => TRUE,
