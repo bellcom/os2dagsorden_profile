@@ -151,8 +151,8 @@ function os2web_nemlogin_select_login() {
 
   return (
   '<div style="text-align: center;padding: 10px;">
-    <a href="/nemlogin/login" class="form-submit" style="margin: 10px;">Nemid</a>
-    <a href="/saml_login"  class="form-submit" style="margin: 10px;">SimpleSAML</a>
+    <a href="/nemlogin/login" class="form-submit" style="margin: 10px;">Eksterne brugere</a>
+    <a href="/saml_login"  class="form-submit" style="margin: 10px;">Interne brugere</a>
    </div>'
   );
 }
