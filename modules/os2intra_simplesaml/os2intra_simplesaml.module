@@ -310,8 +310,14 @@ function os2intra_simplesaml_redirect_to_nemlogin() {
       'user/login',
       'logout',
     );
+
     if (!in_array($_GET['q'], $non_redirect_paths)) {
-      drupal_goto('nemlogin/select-login');
+      if (variable_get('os2web_nemlogin_enable_select_login_page', FALSE)) {
+        drupal_goto('nemlogin/select-login');
+      }
+      else {
+        drupal_goto('nemlogin/login');
+      }
     }
   }
 }
