@@ -410,6 +410,9 @@ function _os2web_edoc_middelfart_esdh_mm_import_meeting_agenda_item($meeting, Si
     }
 
     if (!empty($behandlingplan)) {
+      // Resetting values (sometimes array does not have sequential indices for keys).
+      $behandlingplan = array_values($behandlingplan);
+
       $bullet_title = t('Behandlingsplan');
       $bullet_id = _os2web_edoc_middelfart_esdh_generate_id($bullet_title . $xml_item['documentid']);
 
