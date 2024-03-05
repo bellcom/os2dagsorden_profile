@@ -87,6 +87,17 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   if (!node_access('view', $meeting)) {
     return;
   }
+
+  // Check if committee is flag with "external committee"
+  if (!empty($meeting->field_os2web_meetings_committee['und'][0]['tid'])) {
+      $tid =  $meeting->field_os2web_meetings_committee['und'][0]['tid'];
+      $term = taxonomy_term_load($tid);
+      if ($term && !empty($term->field_os2web_meetings_com_ext['und'][0]['value'])) {
+          return;
+      }
+  } else return;
+
+
   $meeting_full_access_granted = os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting);
   // Descriptions full doc.
   $has_full_doc = FALSE;
