@@ -135,13 +135,6 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
         'title' => 'Samlet dokument',
       );
 
-      // Check if the committee is allowed to publish.
-      $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_ishoj_esdh_approved_committees', OS2WEB_SBSYS_ISHOJ_ESDH_MM_DEFAULT_APPROVED)));
-      if ($committee === '' || !in_array($committee, $publish_committee)) {
-        watchdog('SBsys MM', 'Ignored agenda from "%committee" .', array('%committee' => $committee));
-        return FALSE;
-      }
-
       // Fix dates.
       $meeting_date_when = str_ireplace(array(
         ". januar ",
@@ -244,6 +237,13 @@ function os2web_sbsys_ishoj_esdh_mm_import_meeting($meeting) {
  *   Meeting_struct array for an accepted import, else FALSE
  */
 function _os2web_sbsys_ishoj_esdh_mm_import_meeting_agenda(&$meeting, $agenda_xml) {
+  // Check if the committee is allowed to publish.
+  $publish_committee = array_map('trim', explode(',', variable_get('os2web_sbsys_ishoj_esdh_approved_committees', OS2WEB_SBSYS_ISHOJ_ESDH_MM_DEFAULT_APPROVED)));
+  if ($meeting['committee_id'] === '' || !in_array($meeting['committee_id'], $publish_committee)) {
+    watchdog('SBsys MM', 'Ignored agenda from "%committee" .', array('%committee' => $meeting['committee_id']));
+    return FALSE;
+  }
+
   $meeting['items'] = array();
   $agenda = $meeting;
 
