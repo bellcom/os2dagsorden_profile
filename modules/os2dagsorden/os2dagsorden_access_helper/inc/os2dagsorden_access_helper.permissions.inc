@@ -379,6 +379,14 @@ function os2dagsorden_access_helper_check_user_can_send_bullet_point($meeting_id
     return FALSE;
   }
 
+  // Check if meeting committee is flag with "External committee"
+  $term = taxonomy_term_load($meeting->field_os2web_meetings_committee['und'][0]['tid']);
+  if ($term) {
+    if ((int) $term->field_os2web_meetings_com_ext['und'][0]['value'] === 1) {
+      return false;
+    }
+  }
+
   if (os2dagsorden_access_helper_check_bullet_point_is_part_of_meeting($meeting_id, $bullet_point_id)) {
     $bullet_points = entity_load('node', array($bullet_point_id), array('type' => 'os2web_meetings_bullet'));
     $is_closed = $bullet_points[$bullet_point_id]->field_os2web_meetings_bul_closed['und'][0]['value'];
