@@ -476,7 +476,18 @@ HTML;
         $extention = 'EXCEL';
       }
 
-      $html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent ' . $extention . '-version">';
+      $download = true;
+      $meeting = node_load($meeting_id);
+      $term = taxonomy_term_load($meeting->field_os2web_meetings_committee['und'][0]['tid']);
+      if ($term) {
+        if ((int) $term->field_os2web_meetings_com_ext['und'][0]['value'] === 1) {
+          $download = false;
+        }
+      }
+
+      if ($download) {
+        $html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent ' . $extention . '-version">';
+      }
 
       // Composing the print link.
       $print_link = $GLOBALS['base_url'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
