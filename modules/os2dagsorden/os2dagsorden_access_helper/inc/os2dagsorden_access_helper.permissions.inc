@@ -576,6 +576,14 @@ function os2dagsorden_access_helper_check_user_can_see_meeting_in_external_commi
     $user = user_load($uid);
   }
 
+  $user_is_member_of_this_committee = false;
+  foreach( $user->field_user_committee['und'] AS $committee) {
+    if (!empty($committee['tid']) && $committee['tid'] == $meeting->field_os2web_meetings_committee['und'][0]['tid']) {
+      $user_is_member_of_this_committee = true;
+      return true;
+    }
+  }
+
   if (os2dagsorden_access_helper_is_user_committee_admin($meeting->field_os2web_meetings_committee['und'][0]['tid'])) {
     return TRUE;
   }
