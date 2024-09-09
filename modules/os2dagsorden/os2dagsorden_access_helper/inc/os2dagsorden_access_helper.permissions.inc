@@ -379,11 +379,13 @@ function os2dagsorden_access_helper_check_user_can_send_bullet_point($meeting_id
     return FALSE;
   }
 
-  // Check if meeting committee is flag with "External committee"
-  $term = taxonomy_term_load($meeting->field_os2web_meetings_committee['und'][0]['tid']);
-  if ($term) {
-    if ((int) $term->field_os2web_meetings_com_ext['und'][0]['value'] === 1) {
-      return false;
+  // Check if committee is flag with "hide download for external user"
+  if (!empty($meeting->field_os2web_meetings_committee['und'][0]['tid'])) {
+    $term = taxonomy_term_load($meeting->field_os2web_meetings_committee['und'][0]['tid']);
+    if ($user_ent && $term && !empty($term->field_os2web_meetings_no_pdf['und'][0]['value'])) {
+        if (!empty($user_ent->field_user_external['und'][0]['value'])) {
+          return;
+        }
     }
   }
 
