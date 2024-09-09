@@ -88,18 +88,19 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
     return;
   }
 
-  // Check if committee is flag with "external committee"
+  // Check if committee is flag with "hide download for external user"
   if (!empty($meeting->field_os2web_meetings_committee['und'][0]['tid'])) {
       $tid =  $meeting->field_os2web_meetings_committee['und'][0]['tid'];
       $term = taxonomy_term_load($tid);
-      if ($term && !empty($term->field_os2web_meetings_com_ext['und'][0]['value'])) {
-          return;
+      if ($term && !empty($term->field_os2web_meetings_no_pdf['und'][0]['value'])) {
+        global $user;
+        if (!empty($user->uid)) {
+          $_user = user_load($user->uid);
+          if (!empty($_user->field_user_external['und'][0]['value'])) {
+            return;
+          }
+        }
       }
-  }
-
-  $user = os2dagsorden_access_helper_get_user();
-  if (!empty($user->field_user_external['und'][0]['value']) && $user->field_user_external['und'][0]['value']) {
-    return true;
   }
 
   $meeting_full_access_granted = os2dagsorden_access_helper_is_user_has_full_access_to_meeting_content($meeting);
@@ -111,7 +112,7 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
   $has_add_doc = FALSE;
   $has_add_doc_attachments = FALSE;
   $pdf_documents_lists_order = array (
-    'full_doc',
+    'full_doc',  // Check if committee is flag with "hide download for external user"
     'full_doc_html',
     'att_doc',
     'att_doc_html',
@@ -122,6 +123,7 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
     'full_doc_p',
     'att_doc_p'
   );
+
   $html_documents_list = array (
     'full_doc_html' => variable_get('os2dagsorden_general_bullet_full_doc_title', t('Åben samlet dokument')),
     'att_doc_html' => variable_get('os2dagsorden_general_bullet_full_doc_with_attach_title', t('Åben samlet dokument med bilag')),
