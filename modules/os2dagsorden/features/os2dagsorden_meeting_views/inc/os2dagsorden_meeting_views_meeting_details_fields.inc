@@ -93,13 +93,14 @@ function os2dagsorden_meeting_views_meeting_details_description_download() {
       $tid =  $meeting->field_os2web_meetings_committee['und'][0]['tid'];
       $term = taxonomy_term_load($tid);
       if ($term && !empty($term->field_os2web_meetings_no_pdf['und'][0]['value'])) {
-        global $user;
-        if (!empty($user->uid)) {
-          $_user = user_load($user->uid);
-          if (!empty($_user->field_user_external['und'][0]['value'])) {
-            return;
-          }
-        }
+          return;
+//        global $user;
+//        if (!empty($user->uid)) {
+//          $_user = user_load($user->uid);
+//          if (!empty($_user->field_user_external['und'][0]['value'])) {
+//            return;
+//          }
+//        }
       }
   }
 
@@ -1386,4 +1387,3 @@ function os2dagsorden_meeting_views_meeting_details_fields_create_all_bullet_poi
     print '</div>';
   }
 }
-
