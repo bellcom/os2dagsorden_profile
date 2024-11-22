@@ -36,7 +36,6 @@ function os2intra_simplesaml_menu() {
     'description' => 'NemID logout callback',
     'page callback' => 'os2intra_simplesaml_logout_method',
     'access callback' => TRUE,
-
   );
 
   return $items;
@@ -96,6 +95,13 @@ function os2intra_simplesaml_settings_form($form, &$form_state) {
     '#description' => t('NemID error message, when user does not exist'),
     '#default_value' => variable_get('os2intra_simplesaml_nemid_login_error_message'),
   );
+  $form['os2intra_simplesaml_tfa_skip'] = array(
+    '#title' => t('Enable TFA skip'),
+    '#type' => 'checkbox',
+    '#description' => t('Upon logging in with Nemlogin, if there is a user with the same "nemlogin_uid" mapped in database, this user is logged in to Drupal automatically skipping TFA.'),
+    '#default_value' => variable_get('os2intra_simplesaml_tfa_skip'),
+  );
+
   return system_settings_form($form);
 }
 
@@ -217,16 +223,23 @@ function os2intra_simplesaml_init() {
     return;
   }
 
-  // Checking if it's is a ULI request - save it.
+  // Skipping two-factor-authentication (TFA).
+  $skipTfa = variable_get('os2intra_simplesaml_tfa_skip');
+
+  // Checking if it's is a ULI request - save it, force TFA skip.
   if (strpos($_GET['q'], 'user/reset/') === 0) {
     $_SESSION['os2intra_simplesaml_user_login_link'] = $_GET['q'];
+    $skipTfa = TRUE;
+  }
 
-    // Logging in user if one can be found.
+  // Skip TFA, logging in user if one can be found.
+  if ($skipTfa) {
     $uid = db_select("os2intra_simplesaml_nemid_pid_mapping", "os2pid")
       ->fields("os2pid", array("uid"))
       ->condition("nemlogin_uid", $_SESSION['nemlogin_uid'])
       ->execute()
       ->fetchField();
+
     if (!empty($uid)) {
       unset($_SESSION['os2intra_simplesaml_user_login_link']);
       $user = user_load($uid);
