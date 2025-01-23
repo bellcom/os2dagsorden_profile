@@ -152,6 +152,11 @@ function os2dagsorden_pdf2png_conversion_file_download($uri) {
     ->fetchField();
   if (isset($result) && !empty($result)) {
     $info = image_get_info($uri);
+    // Not an image.
+    if (!$info) {
+      return NULL;
+    }
+
     return array(
       'Content-Type' => $info['mime_type'],
     );
