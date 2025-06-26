@@ -57,7 +57,7 @@ function os2web_edoc_middelfart_esdh_mm_get_import_list() {
     $real_path = drupal_realpath($xml_file->uri);
     if ($real_path !== FALSE && is_file($real_path)) {
       libxml_use_internal_errors(TRUE);
-      $manifest = simplexml_load_string(file_get_contents($real_path), 'SimpleXMLElement', LIBXML_NOWARNING);
+      $manifest = simplexml_load_string(file_get_contents($real_path), 'SimpleXMLElement', LIBXML_NOWARNING | LIBXML_PARSEHUGE);
       libxml_clear_errors();
       libxml_use_internal_errors(FALSE);
 
@@ -117,7 +117,7 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
   $real_path = drupal_realpath($file);
   if ($real_path !== FALSE && is_file($real_path)) {
     libxml_use_internal_errors(TRUE);
-    $manifest = simplexml_load_string(file_get_contents($real_path), 'SimpleXMLElement', LIBXML_NOWARNING);
+    $manifest = simplexml_load_string(file_get_contents($real_path), 'SimpleXMLElement', LIBXML_NOWARNING | LIBXML_PARSEHUGE);
     libxml_clear_errors();
     libxml_use_internal_errors(FALSE);
 
@@ -156,7 +156,7 @@ function os2web_edoc_middelfart_esdh_mm_import_meeting($agenda) {
       }
 
       libxml_use_internal_errors(TRUE);
-      $agenda_manifest = simplexml_load_string(file_get_contents($agenda_real_path), 'SimpleXMLElement', LIBXML_NOWARNING);
+      $agenda_manifest = simplexml_load_string(file_get_contents($agenda_real_path), 'SimpleXMLElement', LIBXML_NOWARNING | LIBXML_PARSEHUGE);
       libxml_clear_errors();
       libxml_use_internal_errors(FALSE);
 
