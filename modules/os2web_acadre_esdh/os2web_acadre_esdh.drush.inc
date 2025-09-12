@@ -8,7 +8,7 @@
 /**
  * Implements hook_drush_command().
  */
-function acadreos2web__esdh_drush_command() {
+function os2web_acadre_esdh_drush_command() {
   $items = array();
   $items['acadre-case-docs'] = array(
     'description' => 'Look up a case in the CM system, and list the included dokuments',
@@ -48,6 +48,22 @@ function acadreos2web__esdh_drush_command() {
     'arguments' => array(),
     'aliases' => array('esdh-af'),
   );
+  $items['os2web-acadre-esdh-delete-unused-dir'] = [
+    'description' => 'Delete unused acadre directories under the given parent path.',
+    'arguments' => [
+      'dir' => 'The parent directory where to look for acadre folders.',
+    ],
+    'options' => [
+      'dry-run' => 'Do not delete directories, just print what would be deleted.',
+      'quiet'   => 'Suppress normal output.',
+      'q'       => 'Alias for --quiet.',
+    ],
+    'examples' => [
+      'drush os2web-acadre-esdh-delete-unused-dir /var/www/private/upload' => 'Scan and delete unused directories.',
+      'drush os2web-acadre-esdh-delete-unused-dir /var/www/private/upload --dry-run' => 'Only show unused directories, do not delete.',
+    ],
+  ];
+
   return $items;
 }
 
@@ -155,6 +171,66 @@ function drush_os2web_acadre_esdh_acadre_addenum_fix() {
   if (os2web_esdh_provider_has_api('mm')) {
     if (os2web_esdh_provider_supports('mm', 'post_import_process')) {
       os2web_esdh_provider_invoke('mm', 'post_import_process');
+    }
+  }
+}
+
+/**
+ * Implements drush_COMMAND().
+ */
+function drush_os2web_acadre_esdh_delete_unused_dir($dir = NULL) {
+  if (empty($dir) || !is_dir($dir)) {
+    return drush_set_error('OS2WEB_ACADRE_ESDH_INVALID_DIR', dt('Invalid or missing directory argument.'));
+  }
+
+  $dry_run = drush_get_option('dry-run');
+  $quiet   = drush_get_option('quiet') || drush_get_option('q');
+
+  $unused = [];
+
+  $dirs = scandir($dir);
+  foreach ($dirs as $subdir) {
+    if ($subdir === '.' || $subdir === '..') {
+      continue;
+    }
+
+    $full_path = $dir . '/' . $subdir;
+    if (!is_dir($full_path)) {
+      continue;
+    }
+
+    // Only accept "Files_<int>_<int>".
+    if (!preg_match('/^Files_\d+_\d+$/', $subdir)) {
+      continue;
+    }
+
+    // Check if referenced in file_managed.
+    $like = '%' . db_like($subdir) . '%';
+    $count = db_query("SELECT COUNT(fid) FROM {file_managed} WHERE uri LIKE :like", [':like' => $like])->fetchField();
+
+    if ($count == 0) {
+      $unused[] = $full_path;
+    }
+  }
+
+  if (!$dry_run) drush_print('Not dry run.');
+
+  if (empty($unused)) {
+    if (!$quiet) {
+      drush_print('No unused directories found.');
+    }
+    return;
+  }
+
+  foreach ($unused as $path) {
+    if (!$quiet) {
+      drush_print($path);
+    }
+    if (!$dry_run) {
+      drush_delete_dir($path, TRUE);
+      if (!$quiet) {
+        drush_print("Deleted " . $path);
+      }
     }
   }
 }

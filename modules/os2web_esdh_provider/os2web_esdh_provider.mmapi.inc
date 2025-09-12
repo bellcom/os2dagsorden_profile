@@ -1054,39 +1054,48 @@ function _os2web_esdh_import_handle_bullets($node, $item) {
           }
 
           if ($enclosure_node) {
-            if ((int) $enclosure_node->field_os2web_meetings_bpa_file['und'][0]['filesize'] !== $file->filesize) {
-              // Replacing old file.
-              $enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0] = (array) $file;
-              if (isset($enclosure['number'])) {
-                $enclosure_node->field_os2web_meetings_bpa_number[$enclosure_node->language][0]['value'] = $enclosure['number'];
-              }
-
-              // Saving node.
-              node_save($enclosure_node);
-
-              // PDF conversion.
-              if (module_exists("os2dagsorden_pdf2htmlex")) {
-                // If is PDF, schedule for HTML conversion.
-                if (file_get_mimetype($file->uri) === 'application/pdf') {
-                  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_node->nid);
+            // Deleting old files.
+            if (!empty($enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0]['fid'])) {
+              if ($old_file = file_load($enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0]['fid'])) {
+                // Deleting and old file, only if it's a copy of the original source.
+                if (!variable_get('os2web_meetings_use_original_files')) {
+                  file_delete($old_file);
                 }
-              }
-              // PNG  conversion.
-              if (module_exists("os2dagsorden_pdf2png_conversion")) {
-                // If is PDF, schedule for HTML conversion.
-                if (file_get_mimetype($file->uri) === 'application/pdf') {
-                  os2dagsorden_pdf2png_conversion_schedule($file->fid);
-                }
+                unset($enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0]);
               }
             }
-            else {
-              // update BPA number
-              if (isset($enclosure['number']) && $enclosure_node->field_os2web_meetings_bpa_number[$enclosure_node->language][0]['value'] != $enclosure['number']) {
-                $enclosure_node->field_os2web_meetings_bpa_number[$enclosure_node->language][0]['value'] = $enclosure['number'];
-                node_save($enclosure_node);
+            if (!empty($enclosure_node->field_os2web_meetings_bpa_html[$enclosure_node->language][0]['fid'])) {
+              if ($old_file = file_load($enclosure_node->field_os2web_meetings_bpa_html[$enclosure_node->language][0]['fid'])) {
+                // Deleting an old file. HTML is always a new generated file.
+                // It's safe to delete it.
+                file_delete($old_file);
+                unset($enclosure_node->field_os2web_meetings_bpa_html[$enclosure_node->language][0]);
               }
-              // Delete unneeded file.
-              file_delete($file);
+            }
+
+            // Replacing old file.
+            $enclosure_node->field_os2web_meetings_bpa_file[$enclosure_node->language][0] = (array) $file;
+
+            if (isset($enclosure['number'])) {
+              $enclosure_node->field_os2web_meetings_bpa_number[$enclosure_node->language][0]['value'] = $enclosure['number'];
+            }
+
+            // Saving node.
+            node_save($enclosure_node);
+
+            // PDF conversion.
+            if (module_exists("os2dagsorden_pdf2htmlex")) {
+              // If is PDF, schedule for HTML conversion.
+              if (file_get_mimetype($file->uri) === 'application/pdf') {
+                os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_node->nid);
+              }
+            }
+            // PNG  conversion.
+            if (module_exists("os2dagsorden_pdf2png_conversion")) {
+              // If is PDF, schedule for HTML conversion.
+              if (file_get_mimetype($file->uri) === 'application/pdf') {
+                os2dagsorden_pdf2png_conversion_schedule($file->fid);
+              }
             }
           }
           else {
